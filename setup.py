@@ -23,8 +23,6 @@ setup(
     long_description=long_description,
     packages=find_packages(exclude=[]),
     keywords=['crawler', 'korean crawler', 'kochat'],
-    install_requires=read_file('requirements.txt', lambda f: list(
-        filter(bool, map(str.strip, f)))),
     python_requires='>=3',
     package_data={},
     zip_safe=False,
