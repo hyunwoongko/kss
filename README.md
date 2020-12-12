@@ -7,6 +7,13 @@
 - 이러한 문제를 해결하기 위해 순수 파이썬만 이용하여 KSS를 재구현한다.
 <br><br>
 
+## Install
+- pip를 이용하여 설치할 수 있다.
+```console
+pip install python-kss
+```
+<br><br>
+
 ## Usage
 - 기존 KSS 사용법과 100% 동일하다.
 ```python
