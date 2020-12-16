@@ -31,7 +31,7 @@ for sent in kss.split_sentences(s):
 <br><br>
 
 ## Bugfix Notes
-- version 0.0.1
+- version 0.0.2
   - 작은 따옴표가 들어간 문장에서 생기는 버그를 해결했습니다.
   - 관련 테스트 : `tests/test_kss.py`의 `test_single_quotes`
 <br><br>
