@@ -218,7 +218,7 @@ def split_sentences(text: str):
             if chr_string in ["\"", "“", "”"]:
                 # Double Quotes
                 do_push_pop_symbol(stack, "\"")
-            elif chr_string in ["'", "`", "‘", "‘"]:
+            elif chr_string in ["'", "`", "‘", "’"]:
                 # Single Quotes
                 do_push_pop_symbol(stack, "'")
             elif chr_string == "다":
@@ -300,7 +300,7 @@ def split_sentences(text: str):
                     # It's not a good design we suppose, but it's the best unless we change the whole structure.
                     if chr_string in ["\"", "“", "”"]:
                         do_push_pop_symbol(stack, "\"")
-                    elif chr_string in ["'", "`", "‘", "‘"]:
+                    elif chr_string in ["'", "`", "‘", "’"]:
                         do_push_pop_symbol(stack, "'")
 
                     endif = True

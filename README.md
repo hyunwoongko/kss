@@ -1,21 +1,21 @@
 # python-kss
 
 ## Objective
-- 박상길님의 KSS(Korean Sentence Splitter)는 cython으로 구현되어있다.
-- Cython의 빠른 속도는 장점이지만 `cythonize`때문에 cython이 설치된 환경에서만 설치 가능하다.
-- 이 때문에 현재의 KSS는 프로젝트 디펜던시에 추가하기 매우 까다롭다.
-- 이러한 문제를 해결하기 위해 순수 파이썬만 이용하여 KSS를 재구현한다.
+- 박상길님의 KSS(Korean Sentence Splitter)는 cython으로 구현되어있습니다.
+- Cython의 빠른 속도는 장점이지만 `cythonize`때문에 cython이 설치된 환경에서만 설치 가능합니다.
+- 이 때문에 현재의 KSS는 프로젝트 디펜던시에 추가하기 까다롭습니다.
+- 이러한 문제를 해결하기 위해 순수 파이썬만 이용하여 KSS를 재구현합니다.
 <br><br>
 
 ## Install
-- pip를 이용하여 설치할 수 있다.
+- pip를 이용하여 설치할 수 있습니다.
 ```console
 pip install python-kss
 ```
 <br><br>
 
 ## Usage
-- 기존 KSS 사용법과 100% 동일하다.
+- 기존 KSS 사용법과 100% 동일합니다.
 ```python
 import kss
 
@@ -28,6 +28,12 @@ for sent in kss.split_sentences(s):
 다만, 강남 토끼정이 강남 쉑쉑버거 골목길로 쭉 올라가야 하는데 다들 쉑쉑버거의 유혹에 넘어갈 뻔 했답니다
 강남역 맛집 토끼정의 외부 모습.
 ```
+<br><br>
+
+## Bugfix Notes
+- version 0.0.1
+  - 작은 따옴표가 들어간 문장에서 생기는 버그를 해결했습니다.
+  - 관련 테스트 : `tests/test_kss.py`의 `test_single_quotes`
 <br><br>
 
 ## Reference
