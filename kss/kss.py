@@ -220,11 +220,10 @@ def realignment_by_quote(text, last_quote_pos, quote_type):
 
 def split_sentences(text: str):
     prev_chr: str = ""
-    prev_prev_chr: str = ""
     cur_sentence: str = ""
-
     results: List[str] = []
     cur_stat: int = Stats.DEFAULT
+
     single_quote_stack: List[str] = []
     double_quote_stack: List[str] = []
     last_single_quote_pos = 0
@@ -325,7 +324,7 @@ def split_sentences(text: str):
 
     if _map[cur_stat][prev_chr] & ID.NEXT1:
         cur_sentence += prev_chr
-        do_trim_sent_push_results(cur_sentence, results)
+        cur_sentence = do_trim_sent_push_results(cur_sentence, results)
 
     if len(single_quote_stack) != 0:
         results = realignment_by_quote(text, last_single_quote_pos, "'")

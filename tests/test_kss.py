@@ -32,7 +32,7 @@ class KssTest(unittest.TestCase):
         splitted = kss.split_sentences(text)
         self.assertEqual(len(splitted), 2)
 
-        text = """삼성전자가 11월 13일 삼성전자 서초사옥 다목적홀 5층에서 진행되는 2013 S"데'이 멤버십 블루 강연회 "Challenge BLUE, 박찬호&이동우의 삶과 도전" 멤버십 블루 고객 480명을 초청한다.강연회는 삼성전자 멤버십 블루 회원들을 위해 마련된 고객 혜택 행사로 한국인 최초의 메이저리거 박찬호와 시각장애 개그맨 이동우를 초청, 그들의 삶 속에서 펼쳐진 다양한 도전기를 들을 수 있도록 마련했다."""
+        text = """삼성전자가 11월 13일 삼성전자 서초사옥 다목적홀 5층에서 진행되는 2013 S"데'이 멤버십 블루 강연회 "Challenge BLUE, 박찬호&이동우의 삶과 도전" 멤버십 블루 고객 480명을 초청한다.강연회는 삼성전자 멤버십 블루 회원들을 위해 마련된 고객 혜택 행사로 한국인 최초의 메이저리거 박찬호와 시각장애 개그맨 이동우를 초청, 그들의 삶 속에서 펼쳐진 다양한 도전기를 들을 수 있도록 마련했'다."""
         splitted = kss.split_sentences(text)
         self.assertEqual(len(splitted), 2)
 

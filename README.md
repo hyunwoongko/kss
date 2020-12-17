@@ -38,7 +38,7 @@ for sent in kss.split_sentences(s):
 - 따옴표가 misalign되는 경우 문장 분절이 되지 않는 이슈가 있었습니다.
   - https://github.com/likejazz/korean-sentence-splitter/issues/4
   - https://github.com/likejazz/korean-sentence-splitter/issues/8
-- 기존 kss 레포에서는 특정 케이스(n't, e's 등)에 대한 예외처리만 수행하도록 변경하였는데 이 방식으로는 모든 misalignment를 처리할 수 없습니다.
+- 기존 kss 레포에서는 특정 케이스(n't, e's 등)에 대한 예외처리만 수행하는데, 이 방식으로는 모든 misalignment를 처리할 수 없습니다.
 - 따라서 misalignment가 발생 할 경우 문제가 발생한 부분을 제외한 나머지 부분을 재귀적으로 처리하여 최종적으로 병합하는 방식을 도입했습니다.
 - 관련 테스트 : `tests/test_kss.py`의 `test_quote_misalignment`
 <br><br>
