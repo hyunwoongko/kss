@@ -316,7 +316,6 @@ def split_sentences(text: str):
         if cur_stat == Stats.DEFAULT or not (_map[cur_stat][chr_string] & ID.NEXT1):
             cur_sentence += chr_string
 
-        prev_prev_chr = prev_chr
         prev_chr = chr_string
 
     if not empty(cur_sentence):
