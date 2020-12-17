@@ -20,10 +20,10 @@ class Stats(object):
 
 
 class ID(object):
-    NONE: int = 0        # 0000 0000
-    PREV: int = 1 << 0   # 0000 0001
-    CONT: int = 1 << 1   # 0000 0010
-    NEXT: int = 1 << 2   # 0000 0100
+    NONE: int = 0  # 0000 0000
+    PREV: int = 1 << 0  # 0000 0001
+    CONT: int = 1 << 1  # 0000 0010
+    NEXT: int = 1 << 2  # 0000 0100
     NEXT1: int = 1 << 3  # 0000 1000
     NEXT2: int = 1 << 4  # 0001 0000
 
@@ -198,19 +198,24 @@ def do_push_pop_symbol(stack: List[str], symbol: str):
             stack.append(symbol)
 
 
-def process_single_quote(s, single_quotes_str, prev_chr, prev_prev_chr, stack):
-    # call by assignment
-    if s == single_quotes_str[2]:
-        if prev_chr == single_quotes_str[1]:
-            if prev_prev_chr == single_quotes_str[0]:
-                do_push_pop_symbol(stack, "'")
-
-
 def do_trim_sent_push_results(cur_sentence, results):
     # call by assignment
     results.append(cur_sentence.strip())
     cur_sentence = ""
     return cur_sentence
+
+
+def realignment_by_quote(text, last_quote_pos, quote_type):
+    before_quote = split_sentences(text[:last_quote_pos])
+    before_last = before_quote[-1]
+    before_quote = [] if len(before_quote) == 1 else before_quote[: -1]
+
+    after_quote = split_sentences(text[last_quote_pos + 1:])
+    after_first = after_quote[0]
+    after_quote = [] if len(after_quote) == 1 else after_quote[1:]
+
+    middle_quote = [before_last + quote_type + after_first]
+    return before_quote + middle_quote + after_quote
 
 
 def split_sentences(text: str):
@@ -220,36 +225,30 @@ def split_sentences(text: str):
 
     results: List[str] = []
     cur_stat: int = Stats.DEFAULT
-    stack: List[str] = []
+    single_quote_stack: List[str] = []
+    double_quote_stack: List[str] = []
+    last_single_quote_pos = 0
+    last_double_quote_pos = 0
 
-    for chr_string in text:
+    for i, chr_string in enumerate(text):
         if cur_stat == Stats.DEFAULT:
             if chr_string in ["\"", "“", "”"]:
                 # Double Quotes
-                do_push_pop_symbol(stack, "\"")
+                do_push_pop_symbol(double_quote_stack, "\"")
+                last_double_quote_pos = i
             elif chr_string in ["'", "`", "‘", "’"]:
                 # Single Quotes
-                do_push_pop_symbol(stack, "'")
+                do_push_pop_symbol(single_quote_stack, "'")
+                last_single_quote_pos = i
             elif chr_string == "다":
-                if empty(stack) and (_map[Stats.DA][prev_chr] & ID.PREV):
+                if empty(double_quote_stack) and empty(single_quote_stack) and (_map[Stats.DA][prev_chr] & ID.PREV):
                     cur_stat = Stats.DA
             elif chr_string == "요":
-                if empty(stack) and (_map[Stats.YO][prev_chr] & ID.PREV):
+                if empty(double_quote_stack) and empty(single_quote_stack) and (_map[Stats.YO][prev_chr] & ID.PREV):
                     cur_stat = Stats.YO
             elif chr_string in [".", "!", "?"]:
-                if empty(stack) and (_map[Stats.SB][prev_chr] & ID.PREV):
+                if empty(double_quote_stack) and empty(single_quote_stack) and (_map[Stats.SB][prev_chr] & ID.PREV):
                     cur_stat = Stats.SB
-
-            for single_quote_str in [
-                "e's", "I'm", "e'd", "n's", "n't", "I'd", "u'd"
-            ]:
-                process_single_quote(
-                    chr_string,
-                    single_quote_str,
-                    prev_chr,
-                    prev_prev_chr,
-                    stack,
-                )
 
         else:
             endif = False
@@ -308,9 +307,9 @@ def split_sentences(text: str):
 
                     # It's not a good design we suppose, but it's the best unless we change the whole structure.
                     if chr_string in ["\"", "“", "”"]:
-                        do_push_pop_symbol(stack, "\"")
+                        do_push_pop_symbol(double_quote_stack, "\"")
                     elif chr_string in ["'", "`", "‘", "’"]:
-                        do_push_pop_symbol(stack, "'")
+                        do_push_pop_symbol(single_quote_stack, "'")
 
                     endif = True
 
@@ -327,5 +326,11 @@ def split_sentences(text: str):
     if _map[cur_stat][prev_chr] & ID.NEXT1:
         cur_sentence += prev_chr
         do_trim_sent_push_results(cur_sentence, results)
+
+    if len(single_quote_stack) != 0:
+        results = realignment_by_quote(text, last_single_quote_pos, "'")
+
+    if len(double_quote_stack) != 0:
+        results = realignment_by_quote(text, last_double_quote_pos, "\"")
 
     return results
