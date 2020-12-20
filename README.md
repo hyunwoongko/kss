@@ -4,7 +4,7 @@ Split Korean text into sentences using heuristic algorithm.
 
 ## Install
 ```console
-pip install python-kss
+pip install kss
 ```
 <br><br>
 
