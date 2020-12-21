@@ -26,12 +26,12 @@ for sent in kss.split_sentences(s):
 ## Updates
 ### version 0.0.2
 - Fixed a bug in a sentence with single quotes.
-- Related test : `tests/test_kss.py`의 `test_single_quotes`
+- Related test : `test_single_quotes` in `tests/test_kss.py`
 ### version 0.0.3
 - Fixed an issue where the sentence was not splitted if quotation marks were not align.
   - https://github.com/likejazz/korean-sentence-splitter/issues/4
   - https://github.com/likejazz/korean-sentence-splitter/issues/8
-- Related test : `tests/test_kss.py`의 `test_quote_misalignment`
+- Related test : `test_quote_misalignment` in `tests/test_kss.py`
 <br><br>
 
 ## Reference
