@@ -28,7 +28,7 @@ for sent in kss.split_sentences(s):
 - Fixed a bug in a sentence with single quotes.
 - Related test : `test_single_quotes` in `tests/test_kss.py`
 ### version 0.0.3
-- Fixed a bug about quotation marks misalign.
+- Fixed a bug about quotation marks misalignment.
   - https://github.com/likejazz/korean-sentence-splitter/issues/4
   - https://github.com/likejazz/korean-sentence-splitter/issues/8
 - Related test : `test_quote_misalignment` in `tests/test_kss.py`
