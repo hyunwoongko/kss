@@ -79,4 +79,5 @@ ChunkWithIndex(start=236, text='그리고 No RDBMS가 NoSQL인 것도 아니다.
 ## Reference
 - [KSS C++](https://github.com/likejazz/korean-sentence-splitter)
 - [KSS Docs](http://docs.likejazz.com/kss/)
+- [PyPI](https://pypi.org/project/kss/)
 
