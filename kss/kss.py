@@ -219,11 +219,11 @@ def process_single_quote(s, single_quotes_str, prev_chr, prev_prev_chr, stack):
 
 def realign_by_quote(text, last_quote_pos, quote_type):
     before_quote = split_sentences(text[:last_quote_pos])
-    before_last = before_quote[-1]
+    before_last = before_quote[-1] if len(before_quote) > 0 else ""
     before_quote = [] if len(before_quote) == 1 else before_quote[: -1]
 
     after_quote = split_sentences(text[last_quote_pos + 1:])
-    after_first = after_quote[0]
+    after_first = after_quote[0] if len(after_quote) > 0 else ""
     after_quote = [] if len(after_quote) == 1 else after_quote[1:]
 
     middle_quote = [before_last + quote_type + after_first]

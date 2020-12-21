@@ -72,11 +72,14 @@ ChunkWithIndex(start=236, text='그리고 No RDBMS가 NoSQL인 것도 아니다.
 ### version 2.0.0
 - python-kss became the official version of kss.
 - From now on, you can install python-kss using `pip install kss`.
-- add `split_chunks` function that create chunks from text.
+- Add `split_chunks` function that create chunks from text.
+### version 2.0.1
+- Fix quote realignment bugs (list out of range)
+- Related test : `test_realignment` in `tests/test_kss.py`
 
 <br><br>
 
 ## Reference
 - [KSS C++](https://github.com/likejazz/korean-sentence-splitter)
 - [KSS Docs](http://docs.likejazz.com/kss/)
-
+- [PyPI](https://pypi.org/project/kss/)
