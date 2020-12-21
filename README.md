@@ -32,6 +32,7 @@ for sent in kss.split_sentences(s):
   - https://github.com/likejazz/korean-sentence-splitter/issues/4
   - https://github.com/likejazz/korean-sentence-splitter/issues/8
 - Related test : `test_quote_misalignment` in `tests/test_kss.py`
+
 <br><br>
 
 ## Reference
