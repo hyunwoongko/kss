@@ -25,13 +25,13 @@ for sent in kss.split_sentences(s):
 
 ## Updates
 ### version 0.0.2
-- 작은 따옴표가 들어간 문장에서 생기는 버그를 해결했습니다.
-- 관련 테스트 : `tests/test_kss.py`의 `test_single_quotes`
+- Fixed a bug in a sentence with single quotes.
+- Related test : `tests/test_kss.py`의 `test_single_quotes`
 ### version 0.0.3
-- 따옴표가 misalign되는 경우 문장 분절이 되지 않는 이슈를 해결하였습니다.
+- Fixed an issue where the sentence was not splitted if quotation marks were not align.
   - https://github.com/likejazz/korean-sentence-splitter/issues/4
   - https://github.com/likejazz/korean-sentence-splitter/issues/8
-- 관련 테스트 : `tests/test_kss.py`의 `test_quote_misalignment`
+- Related test : `tests/test_kss.py`의 `test_quote_misalignment`
 <br><br>
 
 ## Reference
