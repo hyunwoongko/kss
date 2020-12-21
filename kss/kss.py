@@ -7,8 +7,12 @@
 # This software may be modified and distributed under the terms
 # of the BSD license.  See the LICENSE file for details.
 
+import math
 from typing import List, Any
-from collections import defaultdict
+from collections import defaultdict, namedtuple
+
+SentenceIndex = namedtuple('SentenceIndex', ['start', 'end'])
+ChunkWithIndex = namedtuple('ChunkWithIndex', ['start', 'text'])
 
 
 class Stats(object):
@@ -205,7 +209,15 @@ def do_trim_sent_push_results(cur_sentence, results):
     return cur_sentence
 
 
-def realignment_by_quote(text, last_quote_pos, quote_type):
+def process_single_quote(s, single_quotes_str, prev_chr, prev_prev_chr, stack):
+    # call by assignment
+    if s == single_quotes_str[2]:
+        if prev_chr == single_quotes_str[1]:
+            if prev_prev_chr == single_quotes_str[0]:
+                do_push_pop_symbol(stack, "'")
+
+
+def realign_by_quote(text, last_quote_pos, quote_type):
     before_quote = split_sentences(text[:last_quote_pos])
     before_last = before_quote[-1]
     before_quote = [] if len(before_quote) == 1 else before_quote[: -1]
@@ -326,9 +338,40 @@ def split_sentences(text: str):
         cur_sentence = do_trim_sent_push_results(cur_sentence, results)
 
     if len(single_quote_stack) != 0:
-        results = realignment_by_quote(text, last_single_quote_pos, "'")
+        results = realign_by_quote(text, last_single_quote_pos, "'")
 
     if len(double_quote_stack) != 0:
-        results = realignment_by_quote(text, last_double_quote_pos, "\"")
+        results = realign_by_quote(text, last_double_quote_pos, "\"")
 
     return results
+
+
+def split_sentences_index(text) -> List[SentenceIndex]:
+    def get_sentence_index(sentence):
+        return SentenceIndex(text.index(sentence), text.index(sentence) + len(sentence))
+
+    sentences = split_sentences(text)
+    return [get_sentence_index(sentence) for sentence in sentences]
+
+
+def split_chunks(text: str, max_length=128, overlap=False, indexes=None) -> List[ChunkWithIndex]:
+    def get_chunk_with_index():
+        start = span[0].start
+        end = span[-1].end
+        return ChunkWithIndex(span[0].start, text[start:end])
+
+    if (indexes is None):
+        indexes = split_sentences_index(text)
+    span = []
+    chunks = []
+    for index in indexes:
+        if (len(span) > 0):
+            if (index.end - span[0].start > max_length):  # len = last_end - first_start
+                chunks.append(get_chunk_with_index())
+                if (overlap):
+                    span = span[math.trunc(len(span) / 2):]  # cut half
+                else:
+                    span = []
+        span.append(index)
+    chunks.append(get_chunk_with_index())
+    return chunks

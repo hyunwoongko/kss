@@ -11,11 +11,11 @@ with open('README.md', encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='python-kss',
-    version='0.0.3',
+    name='kss',
+    version='2.0.0',
     author='Hyunwoong Ko',
     author_email='kevin.woong@kakaobrain.com',
-    url='https://github.com/hyunwoongko/python-kss',
+    url='https://github.com/hyunwoongko/kss',
     license='BSD 3-Clause "New" or "Revised" License',
     description='Split Korean text into sentences using heuristic algorithm using pure python',
     long_description_content_type='text/markdown',
