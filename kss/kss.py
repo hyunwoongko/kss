@@ -347,11 +347,14 @@ def split_sentences(text: str):
 
 
 def split_sentences_index(text) -> List[SentenceIndex]:
-    def get_sentence_index(sentence):
-        return SentenceIndex(text.index(sentence), text.index(sentence) + len(sentence))
-
     sentences = split_sentences(text)
-    return [get_sentence_index(sentence) for sentence in sentences]
+    sentence_indexes = []
+    offset = 0
+    for sentence in sentences:
+        sentence_indexes.append(SentenceIndex(offset + text.index(sentence), offset + text.index(sentence) + len(sentence)))
+        offset += text.index(sentence) + len(sentence)
+        text = text[text.index(sentence) + len(sentence):]
+    return sentence_indexes
 
 
 def split_chunks(text: str, max_length=128, overlap=False, indexes=None) -> List[ChunkWithIndex]:
