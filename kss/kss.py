@@ -122,7 +122,7 @@ _map = create_dict(
             create_dict({
                 "가": ID.PREV,
                 "겨": ID.PREV,
-                "거": ID.PREV,
+                # "거": ID.PREV,  # 이거요새유명하나? -> [이거요, 새유명하나?]
                 "구": ID.PREV,
                 "군": ID.PREV,
                 "걸": ID.PREV,
@@ -131,7 +131,7 @@ _map = create_dict(
                 "껴": ID.PREV,
                 "네": ID.PREV,
                 "나": ID.PREV,
-                "니": ID.PREV,
+                # "니": ID.PREV,  # 아니요즘에누가그래 -> [아니요, 즘에누가그래]
                 "데": ID.PREV,
                 "든": ID.PREV,
                 "려": ID.PREV,
