@@ -90,7 +90,7 @@ ChunkWithIndex(start=236, text='그리고 No RDBMS가 NoSQL인 것도 아니다.
   - 폈다 (종이 등을 폈다)
   - 셨다 (높힘말)
 - Fix `split_chunks` bug
-  - Problems with getting location information correctly if duplicate sentences are found during the chunking process 
+  - Problems with getting location information correctly if duplicate sentences are found during the chunking
 
 <br><br>
 

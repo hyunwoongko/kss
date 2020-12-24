@@ -282,12 +282,12 @@ def realign_by_quote(text, last_quote_pos, quote_type):
 
 
 def quote_exception(
-        cur_chr,
-        prev_chr,
-        prev_prev_chr,
-        prev_prev_prev_chr,
-        single_stack,
-        double_stack,
+    cur_chr,
+    prev_chr,
+    prev_prev_chr,
+    prev_prev_prev_chr,
+    single_stack,
+    double_stack,
 ):
     if cur_chr in ["'", "’"]:
         # expt [1900's, 5'30]
@@ -306,30 +306,50 @@ def quote_exception(
                 do_push_pop_symbol(single_stack, "'")
 
     if prev_prev_chr + prev_chr + cur_chr in [
-        "n't", "n’t",  # don't, doesn't, can't
-        "I'm", "I’m",
-        "I'd", "I’d",
+            "n't",
+            "n’t",  # don't, doesn't, can't
+            "I'm",
+            "I’m",
+            "I'd",
+            "I’d",
     ]:
         do_push_pop_symbol(single_stack, "'")
 
     if prev_prev_prev_chr + prev_prev_chr + prev_chr + cur_chr in [
-        "I've", "I’ve",  # I've
-        "u've", "u’ve",  # you've
-        "e've", "e’ve",  # he've, she've, we've
-        "y've", "y’ve",  # they've
-        "ou'd", "ou’d",  # you'd
-        "ey'd", "ey’d",  # they'd
-        "he'd", "he’d",  # he'd, she'd
-        "we'd", "we’d",
-        "u're", "u’re",  # you're
-        "y're", "y’re",  # they're
-        "I'll", "I’ll",
-        "u'll", "u’ll",  # you'll
-        "e'll", "e’ll",  # He'll
-        "y'll", "y’ll",  # they'll
-        "o'cl", "o’cl",  # 10 o'clock
-        "O'cl", "O’cl",  # 10 O'clock
-        "O'Cl", "O’Cl",  # 10 O'Clock
+            "I've",
+            "I’ve",  # I've
+            "u've",
+            "u’ve",  # you've
+            "e've",
+            "e’ve",  # he've, she've, we've
+            "y've",
+            "y’ve",  # they've
+            "ou'd",
+            "ou’d",  # you'd
+            "ey'd",
+            "ey’d",  # they'd
+            "he'd",
+            "he’d",  # he'd, she'd
+            "we'd",
+            "we’d",
+            "u're",
+            "u’re",  # you're
+            "y're",
+            "y’re",  # they're
+            "I'll",
+            "I’ll",
+            "u'll",
+            "u’ll",  # you'll
+            "e'll",
+            "e’ll",  # He'll
+            "y'll",
+            "y’ll",  # they'll
+            "o'cl",
+            "o’cl",  # 10 o'clock
+            "O'cl",
+            "O’cl",  # 10 O'clock
+            "O'Cl",
+            "O’Cl",  # 10 O'Clock
     ]:
         do_push_pop_symbol(single_stack, "'")
 
@@ -480,16 +500,20 @@ def split_sentences_index(text) -> List[SentenceIndex]:
     offset = 0
     for sentence in sentences:
         sentence_indexes.append(
-            SentenceIndex(offset + text.index(sentence), offset + text.index(sentence) + len(sentence)))
+            SentenceIndex(offset + text.index(sentence),
+                          offset + text.index(sentence) + len(sentence)))
         offset += text.index(sentence) + len(sentence)
         text = text[text.index(sentence) + len(sentence):]
     return sentence_indexes
 
 
-def split_chunks(text: str,
-                 max_length=128,
-                 overlap=False,
-                 indexes=None) -> List[ChunkWithIndex]:
+def split_chunks(
+    text: str,
+    max_length=128,
+    overlap=False,
+    indexes=None,
+) -> List[ChunkWithIndex]:
+
     def get_chunk_with_index():
         start = span[0].start
         end = span[-1].end
