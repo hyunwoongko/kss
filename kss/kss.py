@@ -116,6 +116,8 @@ _map = create_dict(
         Stats.YO:
             create_dict({
                 "가": ID.PREV,
+                "겨": ID.PREV,
+                "거": ID.PREV,
                 "구": ID.PREV,
                 "군": ID.PREV,
                 "걸": ID.PREV,
@@ -124,8 +126,10 @@ _map = create_dict(
                 "껴": ID.PREV,
                 "네": ID.PREV,
                 "나": ID.PREV,
+                "니": ID.PREV,
                 "데": ID.PREV,
                 "든": ID.PREV,
+                "려": ID.PREV,
                 "서": ID.PREV,
                 "세": ID.PREV,
                 "아": ID.PREV,
@@ -158,6 +162,7 @@ _map = create_dict(
                 "놨": ID.PREV,
                 "녔": ID.PREV,
                 "냈": ID.PREV,
+                "니": ID.PREV,
                 "뒀": ID.PREV,
                 "았": ID.PREV,
                 "럽": ID.PREV,
@@ -223,21 +228,46 @@ _map = create_dict(
             }),
         Stats.COMMON:
             create_dict({
-                "ㅋ": ID.CONT,
-                "ㅅ": ID.CONT,
-                "ㅎ": ID.CONT,
-                "ㅠ": ID.CONT,
-                "ㅜ": ID.CONT,
+                "ㄱ": ID.CONT,  # ㄱㄱ
+                "ㄴ": ID.CONT,  # ㄴㄴ
+                "ㄷ": ID.CONT,  # ㄷㄷ, ㅎㄷㄷ
+                "ㄹ": ID.CONT,  # ㄹㄹ, ㅈㄹ
+                # "ㅁ": ID.CONT,  # ㅁㅁ는 잘 안씀
+                "ㅂ": ID.CONT,  # ㅂㅂ, ㅅㅂ
+                "ㅅ": ID.CONT,  # ㅅㅅ, ㄳ, ㅄ
+                "ㅇ": ID.CONT,  # ㅇㅇ
+                "ㅈ": ID.CONT,  # ㅈㅈ
+                "ㅊ": ID.CONT,  # ㅊㅊ
+                "ㅋ": ID.CONT,  # ㅋㅋ, ㅋㅋㅋ, ㅋㅋㅋㅋ...
+                "ㅌ": ID.CONT,  # ㅌㅌ, ㅎㅌㅌ
+                # "ㅍ": ID.CONT,  # ㅍㅍ는 잘 안씀
+                "ㅎ": ID.CONT,  # ㅇㅎ, ㅎㅎ, ㅎㅎㅎ, ㅎㅎㅎㅎ...
+                "ㅠ": ID.CONT,  # ㅜㅠ, ㅠㅠ
+                "ㅜ": ID.CONT,  # ㅜㅜ
+                "ㅡ": ID.CONT,  # ㅡㅡ
+                "ㅗ": ID.CONT,  # ㅗㅗ
                 "^": ID.CONT,
                 ";": ID.CONT,
                 ".": ID.CONT,
                 "?": ID.CONT,
                 "!": ID.CONT,
                 ")": ID.CONT,
+                "）": ID.CONT,
+                "〉": ID.CONT,
+                ">": ID.CONT,
+                "》": ID.CONT,
+                "]": ID.CONT,
+                "］": ID.CONT,
+                "〕": ID.CONT,
+                "】": ID.CONT,
+                "}": ID.CONT,
+                "｝": ID.CONT,
+                "』": ID.CONT,
+                "」": ID.CONT,
                 "~": ID.CONT,
                 "…": ID.CONT,
                 ",": ID.CONT,
-                "": ID.NONE
+                "": ID.NONE,
             })
     },
     default=create_dict({}))

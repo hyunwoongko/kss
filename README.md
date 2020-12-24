@@ -61,38 +61,7 @@ ChunkWithIndex(start=236, text='그리고 No RDBMS가 NoSQL인 것도 아니다.
 <br><br>
 
 ## Updates
-### version 0.0.2
-- Fixed a bug in a sentence with single quotes.
-- Related test : `test_single_quotes` in `tests/test_kss.py`
-### version 0.0.3
-- Fixed a bug about quotation marks misalignment.
-  - https://github.com/likejazz/korean-sentence-splitter/issues/4
-  - https://github.com/likejazz/korean-sentence-splitter/issues/8
-- Related test : `test_quote_misalignment` in `tests/test_kss.py`
-### version 2.0.0
-- python-kss became the official version of kss.
-- From now on, you can install python-kss using `pip install kss`.
-- Add `split_chunks` function that create chunks from text.
-### version 2.0.1
-- Fix quote realignment bugs (list out of range)
-- Related test : `test_realignment` in `tests/test_kss.py`
-### version 2.1
-- Add exception cases about prime and apostrophe
-    - number + ' or " : [1900's, 5'30, 60" inch]
-    - alphabet + ' + s : [He's, Jimmy's, KAKAO's]
-    - any other frequent cases : I'm, I'd, I'll, ...
-- Add new eomi "죠"
-  - input : "그땐 그랬죠 이젠 괜찮아요"
-  - output : ["그땐 그랬죠", "이젠 괜찮아요"]
-- And new splitting cases
-  - 볐다 (후볐다)
-  - 몄다 (꾸몄다)
-  - 폈다 (종이 등을 폈다)
-  - 셨다 (높힘말)
-  - 켰다 (불 등을 켰다)
-- Fix `split_chunks` bug
-  - Problems with getting location information correctly if duplicate sentences are found during the chunking
-
+- you can check [Update Notes](https://github.com/hyunwoongko/kss/blob/main/UPDATES.md)
 <br><br>
 
 ## Reference
