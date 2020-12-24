@@ -1,4 +1,9 @@
-## Update Notes
+# Update Notes
+## python-kss (DEPRECATED)
+- `python-kss` is merged with kss-official (likejazz)
+- `python-kss` is removed from PyPI (use `kss` not `python-kss` )
+<br><br>
+
 #### python-kss 0.0.2
 - Fixed a bug in a sentence with single quotes.
 - Related test : `test_single_quotes` in `tests/test_kss.py`
@@ -7,6 +12,12 @@
   - https://github.com/likejazz/korean-sentence-splitter/issues/4
   - https://github.com/likejazz/korean-sentence-splitter/issues/8
 - Related test : `test_quote_misalignment` in `tests/test_kss.py`
+<br><br><br>
+
+## kss-official
+- upgrade :`pip install kss --upgrade` 
+<br><br>
+
 #### kss 2.0.0
 - python-kss became the official version of kss.
 - From now on, you can install python-kss using `pip install kss`.
