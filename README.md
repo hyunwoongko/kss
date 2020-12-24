@@ -61,6 +61,7 @@ ChunkWithIndex(start=236, text='그리고 No RDBMS가 NoSQL인 것도 아니다.
 <br><br>
 
 ## Updates
+- upgrade : `pip install kss --upgrade` 
 - you can check [Update Notes](https://github.com/hyunwoongko/kss/blob/main/UPDATES.md)
 <br><br>
 

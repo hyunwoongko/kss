@@ -15,11 +15,11 @@
 <br><br><br>
 
 ## kss-official
-- upgrade :`pip install kss --upgrade` 
+- `python-kss` became the official version of kss.
+- you can upgrade using `pip install kss --upgrade`
 <br><br>
 
 #### kss 2.0.0
-- python-kss became the official version of kss.
 - From now on, you can install python-kss using `pip install kss`.
 - Add `split_chunks` function that create chunks from text.
 #### kss 2.0.1
