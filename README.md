@@ -1,6 +1,6 @@
 # Korean Sentence Splitter
 Split Korean text into sentences using heuristic algorithm.
-<br><br>
+<br><br><br>
 
 ## Install
 ```console
@@ -62,15 +62,14 @@ ChunkWithIndex(start=236, text='그리고 No RDBMS가 NoSQL인 것도 아니다.
 
 ## Updates
 - upgrade : `pip install kss --upgrade` 
-- you can check [Update Notes](https://github.com/hyunwoongko/kss/blob/main/UPDATES.md)
-<br><br>
-
-## PyPI
+- you can check Update Notes [here](https://github.com/hyunwoongko/kss/blob/main/UPDATES.md).
 ```consol
-# test upload
+PyPI upload instructions
+
+1. test upload
 twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 
-# pypi upload
+2. pypi upload
 twine upload dist/*
 ```
 <br><br>
