@@ -26,10 +26,7 @@
 - Fix quote realignment bugs (list out of range)
 - Related test : `test_realignment` in `tests/test_kss.py`
 #### kss 2.1.0
-- Add exception cases about prime and apostrophe
-    - number + ' or " : [1900's, 5'30, 60" inch]
-    - alphabet + ' + s : [He's, Jimmy's, KAKAO's]
-    - any other frequent cases : I'm, I'd, I'll, ...
+- Add exception rule for apostrophe
 - Add new eomi (죠)
   - input : "그땐 그랬죠 이젠 괜찮아요"
   - output : ["그땐 그랬죠", "이젠 괜찮아요"]
@@ -50,3 +47,17 @@
   - ㄱ, ㄴ, ㄷ, ㄹ, ㅂ, ㅅ, ㅇ, ㅈ, ㅊ, ㅋ, ㅌ, ㅎ (punctuation)
   - ㅜ, ㅠ, ㅡ, ㅗ (punctuation)
   - ）, ], ］, 〕, 】, }, ｝, 〕, 〉, >, 》, 」, 』 (punctuation)
+#### kss 2.1.2
+- Add bracket stack to prevent split in bracket
+    - input : "친구랑 싸웠거든요? (근데 좀 너무하긴 하죠? 그쵸) 그래서 저는"
+    - before : 
+      - '친구랑 싸웠거든요?'
+      - '(아니 근데 좀 너무하긴 하죠?'
+      - '그쵸) 그래서 저는'
+    - after : 
+      - '친구랑 싸웠거든요?'
+      - '(아니 근데 좀 너무하긴 하죠? 그쵸) 그래서 저는'
+- Add exception rule for time and inch
+  - time : 5'30 (5h 30m)
+  - inch : 60" (60 inch)
+

@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # Korean Sentence Splitter
 # Split Korean text into sentences using heuristic algorithm.
 #
@@ -13,13 +16,15 @@ from collections import defaultdict, namedtuple
 
 SentenceIndex = namedtuple('SentenceIndex', ['start', 'end'])
 ChunkWithIndex = namedtuple('ChunkWithIndex', ['start', 'text'])
-lower_alphabets = [
-    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o',
-    'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
-]
 
+bracket = [")", "）", "〉", ">", "》", "]", "］", "〕", "】", "}", "｝",
+           "(", "（", "〈", "<", "《", "[", "［", "〔", "【", "{", "｛"]
+punctuation = [";", ".", ":", "?", "!", ',']
+special = punctuation + bracket
+
+lower_alphabets = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+                   'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 upper_alphabets = [_.upper() for _ in lower_alphabets]
-
 numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
 
@@ -309,7 +314,7 @@ def realign_by_quote(text, last_quote_pos, quote_type):
     after_first = after_quote[0] if len(after_quote) > 0 else ""
     after_quote = [] if len(after_quote) == 1 else after_quote[1:]
 
-    middle_quote = [before_last + quote_type + after_first]
+    middle_quote = [(before_last + quote_type + after_first).strip()]
     return before_quote + middle_quote + after_quote
 
 
@@ -321,21 +326,24 @@ def quote_exception(
         single_stack,
         double_stack,
 ):
-    if cur_chr in ["'", "’"]:
-        # expt [1900's, 5'30]
-        if prev_chr in numbers:
-            do_push_pop_symbol(single_stack, "'")
-
-    if cur_chr in ["\"", "”"]:
-        # expt [60" inch]
-        if prev_chr in numbers:
-            do_push_pop_symbol(double_stack, '"')
-
-    if cur_chr == "s":
-        # expt [He's, Jimmy's, KAKAO's]
-        if prev_chr in ["'", "`", "‘", "’"]:
-            if prev_prev_chr == lower_alphabets + upper_alphabets:
+    # for time
+    if prev_prev_chr in [" "] + numbers + special:
+        # expt [5'40"]
+        if prev_chr in ["'", "’"]:
+            if cur_chr in numbers:
                 do_push_pop_symbol(single_stack, "'")
+
+    # for inch
+    if prev_prev_chr in [" "] + numbers + special:
+        # expt [그 티비는 60" 이다., 휴대폰액정 크기는 3"이다., 티비(21")는, 휴대폰(6.5")은]
+        if prev_chr in numbers:
+            if cur_chr in ["\"", ""]:
+                do_push_pop_symbol(double_stack, "\"")
+
+    if cur_chr in ["s", "S"]:
+        # expt [He's, Jimmy's, KAKAO's, 상윤's, 1920's]
+        if prev_chr in ["'", "`", "‘", "’"]:
+            do_push_pop_symbol(single_stack, "'")
 
     if prev_prev_chr + prev_chr + cur_chr in [
         "n't", "n’t",  # don't, doesn't, can't
@@ -367,6 +375,8 @@ def quote_exception(
 
 
 def split_sentences(text: str):
+    text = text.replace("​", " ")
+
     prev_chr: str = ""
     prev_prev_chr: str = ""
     prev_prev_prev_chr: str = ""
@@ -377,12 +387,14 @@ def split_sentences(text: str):
 
     single_quote_stack: List[str] = []
     double_quote_stack: List[str] = []
+    bracket_stack: List[str] = []
     last_single_quote_pos = 0
     last_double_quote_pos = 0
+    last_bracket_quote_pos = 0
 
     for i, chr_string in enumerate(text):
         if cur_stat == Stats.DEFAULT:
-            if chr_string in ["\"", "“", "”"]:
+            if chr_string in ["\"", "“", "”", "″"]:
                 # Double Quotes
                 do_push_pop_symbol(double_quote_stack, "\"")
                 last_double_quote_pos = i
@@ -390,20 +402,24 @@ def split_sentences(text: str):
                 # Single Quotes
                 do_push_pop_symbol(single_quote_stack, "'")
                 last_single_quote_pos = i
+            elif chr_string in bracket:
+                # Bracket
+                do_push_pop_symbol(bracket_stack, "B")
+                last_bracket_quote_pos = i
             elif chr_string == "다":
-                if empty(double_quote_stack) and empty(single_quote_stack) and (
+                if empty(double_quote_stack) and empty(single_quote_stack) and empty(bracket_stack) and (
                         _map[Stats.DA][prev_chr] & ID.PREV):
                     cur_stat = Stats.DA
             elif chr_string == "요":
-                if empty(double_quote_stack) and empty(single_quote_stack) and (
+                if empty(double_quote_stack) and empty(single_quote_stack) and empty(bracket_stack) and (
                         _map[Stats.YO][prev_chr] & ID.PREV):
                     cur_stat = Stats.YO
             elif chr_string == "죠":
-                if empty(double_quote_stack) and empty(single_quote_stack) and (
+                if empty(double_quote_stack) and empty(single_quote_stack) and empty(bracket_stack) and (
                         _map[Stats.JYO][prev_chr] & ID.PREV):
                     cur_stat = Stats.JYO
             elif chr_string in [".", "!", "?"]:
-                if empty(double_quote_stack) and empty(single_quote_stack) and (
+                if empty(double_quote_stack) and empty(single_quote_stack) and empty(bracket_stack) and (
                         _map[Stats.SB][prev_chr] & ID.PREV):
                     cur_stat = Stats.SB
 
@@ -478,6 +494,8 @@ def split_sentences(text: str):
                         do_push_pop_symbol(double_quote_stack, "\"")
                     elif chr_string in ["'", "`", "‘", "’"]:
                         do_push_pop_symbol(single_quote_stack, "'")
+                    elif chr_string in bracket:
+                        do_push_pop_symbol(bracket_stack, "B")
 
                     endif = True
 
@@ -503,7 +521,10 @@ def split_sentences(text: str):
     if len(double_quote_stack) != 0:
         results = realign_by_quote(text, last_double_quote_pos, "\"")
 
-    return results
+    if len(bracket_stack) != 0:
+        results = realign_by_quote(text, last_bracket_quote_pos, " ")
+
+    return [s.strip() for s in results]
 
 
 def split_sentences_index(text) -> List[SentenceIndex]:
