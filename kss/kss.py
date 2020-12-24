@@ -17,8 +17,8 @@ from collections import defaultdict, namedtuple
 SentenceIndex = namedtuple('SentenceIndex', ['start', 'end'])
 ChunkWithIndex = namedtuple('ChunkWithIndex', ['start', 'text'])
 
-bracket = [")", "）", "〉", ">", "》", "]", "］", "〕", "】", "}", "｝",
-           "(", "（", "〈", "<", "《", "[", "［", "〔", "【", "{", "｛"]
+bracket = [")", "）", "〉", ">", "》", "]", "］", "〕", "】", "}", "｝", "』", "」",
+           "(", "（", "〈", "<", "《", "[", "［", "〔", "【", "{", "｛", "「", "『"]
 punctuation = [";", ".", ":", "?", "!", ',']
 special = punctuation + bracket
 
