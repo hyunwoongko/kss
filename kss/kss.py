@@ -89,6 +89,7 @@ _map = create_dict(
                 "졌": ID.PREV,
                 "쳤": ID.PREV,
                 "챘": ID.PREV,
+                "켰": ID.PREV,
                 "팠": ID.PREV,
                 "펐": ID.PREV,
                 "폈": ID.PREV,
@@ -179,6 +180,7 @@ _map = create_dict(
                 "졌": ID.PREV,
                 "쳤": ID.PREV,
                 "챘": ID.PREV,
+                "켰": ID.PREV,
                 "팠": ID.PREV,
                 "폈": ID.PREV,
                 "하": ID.PREV,
@@ -486,7 +488,7 @@ def split_sentences_index(text) -> List[SentenceIndex]:
     return sentence_indexes
 
 
-def split_chunks(text: str, max_length=128, overlap=False, indexes=None,) -> List[ChunkWithIndex]:
+def split_chunks(text: str, max_length=128, overlap=False, indexes=None, ) -> List[ChunkWithIndex]:
     def get_chunk_with_index():
         start = span[0].start
         end = span[-1].end
