@@ -76,6 +76,21 @@ ChunkWithIndex(start=236, text='그리고 No RDBMS가 NoSQL인 것도 아니다.
 ### version 2.0.1
 - Fix quote realignment bugs (list out of range)
 - Related test : `test_realignment` in `tests/test_kss.py`
+### version 2.1
+- Add exception cases about prime and apostrophe
+    - number + ' or " : [1900's, 5'30, 60" inch]
+    - alphabet + ' + s : [He's, Jimmy's, KAKAO's]
+    - any other frequent cases : I'm, I'd, I'll, ...
+- Add new eomi "죠"
+  - input : "그땐 그랬죠 이젠 괜찮아요"
+  - output : ["그땐 그랬죠", "이젠 괜찮아요"]
+- And new spliting cases
+  - 볐다 (후볐다)
+  - 몄다 (꾸몄다)
+  - 폈다 (종이 등을 폈다)
+  - 셨다 (높힘말)
+- Fix `split_chunks` bug
+  - Problems with getting location information correctly if duplicate sentences are found during the chunking process 
 
 <br><br>
 

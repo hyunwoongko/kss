@@ -12,7 +12,7 @@ with open('README.md', encoding='utf-8') as f:
 
 setup(
     name='kss',
-    version='2.0.1',
+    version='2.1.0',
     author='Hyunwoong Ko',
     author_email='kevin.woong@kakaobrain.com',
     url='https://github.com/hyunwoongko/kss',
