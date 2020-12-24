@@ -84,7 +84,7 @@ ChunkWithIndex(start=236, text='그리고 No RDBMS가 NoSQL인 것도 아니다.
 - Add new eomi "죠"
   - input : "그땐 그랬죠 이젠 괜찮아요"
   - output : ["그땐 그랬죠", "이젠 괜찮아요"]
-- And new spliting cases
+- And new splitting cases
   - 볐다 (후볐다)
   - 몄다 (꾸몄다)
   - 폈다 (종이 등을 폈다)
