@@ -75,7 +75,7 @@ ChunkWithIndex(start=236, text='그리고 No RDBMS가 NoSQL인 것도 아니다.
 
 ## Updates
 - upgrade : `pip install kss --upgrade` 
-s- you can check update notes [here](https://github.com/hyunwoongko/kss/blob/main/UPDATES.md).
+- you can check update notes [here](https://github.com/hyunwoongko/kss/blob/main/UPDATES.md).
 ```consol
 PyPI upload instructions
 
