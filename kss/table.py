@@ -162,7 +162,13 @@ Table = create_dict({
             "하": ID.PREV,
             "했": ID.PREV,
             "혔": ID.PREV,
-            "": ID.NONE
+            "고": ID.PREV | ID.NEXT2,
+            "는": ID.NEXT,
+            "라": ID.NEXT1,
+            "를": ID.NEXT,
+            "며": ID.NEXT2,
+            "면": ID.PREV | ID.NEXT2,
+            "": ID.NONE,
         }),
     Stats.SB:
         create_dict({
