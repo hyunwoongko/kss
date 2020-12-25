@@ -86,7 +86,7 @@ Table = create_dict({
         create_dict({
             "가": ID.PREV,
             "겨": ID.PREV,
-            # "거": ID.PREV,  # 이거요새유명하나? -> [이거요, 새유명하나?]
+            "거": ID.PREV,
             "구": ID.PREV,
             "군": ID.PREV,
             "걸": ID.PREV,
@@ -95,7 +95,7 @@ Table = create_dict({
             "껴": ID.PREV,
             "네": ID.PREV,
             "나": ID.PREV,
-            # "니": ID.PREV,  # 아니요즘에누가그래 -> [아니요, 즘에누가그래]
+            "니": ID.PREV,
             "데": ID.PREV,
             "든": ID.PREV,
             "려": ID.PREV,
@@ -116,6 +116,7 @@ Table = create_dict({
             "는": ID.NEXT,
             "라": ID.NEXT1,
             "를": ID.NEXT,
+            "즘": ID.NEXT,
             "며": ID.NEXT2,
             "면": ID.PREV | ID.NEXT2,
             "하": ID.NEXT1,
