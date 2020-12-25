@@ -11,7 +11,7 @@ pip install kss
 ## Performance Evaluation
 - You can check simple performance evaluation [here](https://github.com/hyunwoongko/kss/blob/main/EVALUATION.md).
 - There are 6 difficult example documents for a sentence segmentation.
-<br><br>
+<br><br><br>
 
 ## Usage
 ### 1. `split_sentences`
