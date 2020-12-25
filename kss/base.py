@@ -86,7 +86,7 @@ class BackupManager:
             "ho'd", "ho’d",  # who'd
             "u're", "u’re",  # you're
             "y're", "y’re",  # they're
-            "e're", "e’re",  # we.re
+            "e're", "e’re",  # we're
             "I'll", "I’ll",
             "u'll", "u’ll",  # you'll
             "e'll", "e’ll",  # He'll

@@ -33,8 +33,14 @@ from kss.base import (
 )
 
 # mapping table
-from kss.korean import post_processing_da, post_processing_jyo, post_processing_yo
 from kss.table import Table
+
+# postprocessing methods
+from kss.korean import (
+    post_processing_da,
+    post_processing_jyo,
+    post_processing_yo
+)
 
 
 # TODO (bug) : 책을 봤다. 고구려에 관한
