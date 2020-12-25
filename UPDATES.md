@@ -59,4 +59,16 @@
 - Add exception rule for time and inch
   - time : 5'30 (5h 30m)
   - inch : 60" (60 inch)
-
+#### kss 2.1.3
+- Add backup mechanism
+  - do back up cases which it should not be putted in the stack  and finally restore them.
+  - e.g. :), :(, I'm, 'We're, ...
+  - it is useful for bracket stack
+- Code refactoring
+#### kss 2.2.0
+- Add postprocessing method
+  - if you don't want postprocessing set argument `safe=True`
+- Fix quote realignment bugs
+- Refactoring All codes
+- Add some splitting cases
+- Add evaluation docs
