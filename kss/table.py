@@ -206,24 +206,31 @@ Table = create_dict({
         }),
     Stats.COMMON:
         create_dict({
-            "ㄱ": ID.CONT,  # ㄱㄱ
-            "ㄴ": ID.CONT,  # ㄴㄴ
-            "ㄷ": ID.CONT,  # ㄷㄷ, ㅎㄷㄷ
-            "ㄹ": ID.CONT,  # ㄹㄹ, ㅈㄹ
-            # "ㅁ": ID.CONT,  # ㅁㅁ는 잘 안씀
-            "ㅂ": ID.CONT,  # ㅂㅂ, ㅅㅂ
-            "ㅅ": ID.CONT,  # ㅅㅅ, ㄳ, ㅄ
-            "ㅇ": ID.CONT,  # ㅇㅇ
-            "ㅈ": ID.CONT,  # ㅈㅈ
-            "ㅊ": ID.CONT,  # ㅊㅊ
-            "ㅋ": ID.CONT,  # ㅋㅋ, ㅋㅋㅋ, ㅋㅋㅋㅋ...
-            "ㅌ": ID.CONT,  # ㅌㅌ, ㅎㅌㅌ
-            # "ㅍ": ID.CONT,  # ㅍㅍ는 잘 안씀
-            "ㅎ": ID.CONT,  # ㅇㅎ, ㅎㅎ, ㅎㅎㅎ, ㅎㅎㅎㅎ...
-            "ㅠ": ID.CONT,  # ㅜㅠ, ㅠㅠ
-            "ㅜ": ID.CONT,  # ㅜㅜ
-            "ㅡ": ID.CONT,  # ㅡㅡ
-            "ㅗ": ID.CONT,  # ㅗㅗ
+            "ㄱ": ID.CONT,
+            "ㄴ": ID.CONT,
+            "ㄷ": ID.CONT,
+            "ㄹ": ID.CONT,
+            "ㅁ": ID.CONT,
+            "ㅂ": ID.CONT,
+            "ㅅ": ID.CONT,
+            "ㅇ": ID.CONT,
+            "ㅈ": ID.CONT,
+            "ㅊ": ID.CONT,
+            "ㅋ": ID.CONT,
+            "ㅌ": ID.CONT,
+            "ㅍ": ID.CONT,
+            "ㅎ": ID.CONT,
+
+            "ㅏ": ID.CONT,
+            "ㅑ": ID.CONT,
+            "ㅓ": ID.CONT,
+            "ㅕ": ID.CONT,
+            "ㅗ": ID.CONT,
+            "ㅛ": ID.CONT,
+            "ㅜ": ID.CONT,
+            "ㅠ": ID.CONT,
+            "ㅡ": ID.CONT,
+            "ㅣ": ID.CONT,
             "^": ID.CONT,
             ";": ID.CONT,
             ".": ID.CONT,
