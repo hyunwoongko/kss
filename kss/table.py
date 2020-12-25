@@ -220,7 +220,6 @@ Table = create_dict({
             "ㅌ": ID.CONT,
             "ㅍ": ID.CONT,
             "ㅎ": ID.CONT,
-
             "ㅏ": ID.CONT,
             "ㅑ": ID.CONT,
             "ㅓ": ID.CONT,
