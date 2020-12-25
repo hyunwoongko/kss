@@ -67,8 +67,8 @@
 - Code refactoring
 #### kss 2.2.0
 - Add postprocessing method
-  - if you don't want postprocessing set argument `safe=True`
+  - if you don't want postprocessing, set argument `safe=True`
 - Fix quote realignment bugs
-  - utilize [ZWSP] (=\u200b) to split quotes correctly
+  - utilize [ZWSP] (=\u200b) to capture correct quote position
 - Add some splitting cases
 - Add evaluation docs
