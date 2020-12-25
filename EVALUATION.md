@@ -1,7 +1,7 @@
 # Performance Evaluation
 This is about Korean sentence segmentation performance comparison Python KSS(2.2.0) with C++ KSS(1.3.1), OKT and Hannanum sentence segmentation modules. 
 <br><br>
-As a result of the experiment, OKT and Hannanum sentence tokenizers "DO NOT" work without punctuation. Therefore, they will only be available in very limited environments. (Only for well-refined articles such as news articles and Wikipedia)
+As a result of the experiment, OKT and Hannanum sentence segmentation modules "DO NOT" work without punctuation. Therefore, they will only be available in very limited environments. (Only for well-refined articles such as news articles and Wikipedia)
 however, KSS works very well in these environments as well. It even worked very well in colloquialisms, including (ㅋㅋ, ㅎㅎ). 
 <br><br>
 Comparing each version of KSS, C++ KSS (1.3.1) is only possible in the case of 'DA' and 'YO', and even that, and it can perform sentence segmentation only in very limited cases. And C++ version is also very vulnerable to sentences containing quotes(따옴표) and parentheses(괄호).
