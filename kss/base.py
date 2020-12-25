@@ -66,38 +66,22 @@ class BackupManager:
         self.backup_dict = {k: str(abs(hash(k))) for k in self._get_data()}
         self.restore_dict = {v: k for k, v in self.backup_dict.items()}
 
-
     @staticmethod
     def _get_data():
         faces = [':)', ':(', ":'(", "O:)", "&)", ">:(", "3:)", '<(")']
-        apostrophe = [
-            "n't", "n’t",  # don't, doesn't, can't
-            "I'm", "I’m",
-            "I'd", "I’d",
-            "I've", "I’ve",  # I've
-            "u've", "u’ve",  # you've
-            "e've", "e’ve",  # he've, she've, we've
-            "y've", "y’ve",  # they've
-            "o've", "o’ve",  # who've
-            "ou'd", "ou’d",  # you'd
-            "ey'd", "ey’d",  # they'd
-            "he'd", "he’d",  # he'd, she'd
-            "we'd", "we’d",
-            "ho'd", "ho’d",  # who'd
-            "u're", "u’re",  # you're
-            "y're", "y’re",  # they're
-            "e're", "e’re",  # we're
-            "I'll", "I’ll",
-            "u'll", "u’ll",  # you'll
-            "e'll", "e’ll",  # He'll
-            "y'll", "y’ll",  # they'll
-            "o'll", "o’ll",  # who'll
-            "o'cl", "o’cl",  # 10 o'clock
-            "O'cl", "O’cl",  # 10 O'clock
-            "O'Cl", "O’Cl",  # 10 O'Clock
-        ]
+        low_upper_num = Const.lower_alphabets + Const.upper_alphabets
 
-        return faces + apostrophe
+        apostrophe = []
+        for i in low_upper_num:
+            for j in low_upper_num:
+                apostrophe.append(f"{i}'{j}")
+
+        year_s = []
+        for i in Const.numbers:
+            year_s.append(f"{i}'s")
+            year_s.append(f"{i}'S")
+
+        return faces + apostrophe + year_s
 
     def _process(self, text: str, purpose_dict: dict):
         for k, v in purpose_dict.items():

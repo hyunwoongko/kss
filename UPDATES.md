@@ -63,7 +63,7 @@
 - Add backup mechanism
   - do back up cases which it should not be putted in the stack  and finally restore them.
   - e.g. :), :(, I'm, 'We're, ...
-  - it is useful for bracket stack
+  - it is really useful for quotes and bracket stacking
 - Code refactoring
 #### kss 2.2.0
 - Add postprocessing method
