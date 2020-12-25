@@ -69,6 +69,6 @@
 - Add postprocessing method
   - if you don't want postprocessing set argument `safe=True`
 - Fix quote realignment bugs
-- Refactoring All codes
+  - utilize [ZWSP] (=\u200b) to split quotes correctly
 - Add some splitting cases
 - Add evaluation docs
