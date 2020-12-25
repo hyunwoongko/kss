@@ -137,6 +137,7 @@ Table = create_dict({
             "럽": ID.PREV,
             "렵": ID.PREV,
             "렸": ID.PREV,
+            "맞": ID.PREV,
             "몄": ID.PREV,
             "밌": ID.PREV,
             "볐": ID.PREV,

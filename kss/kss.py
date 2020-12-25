@@ -76,13 +76,14 @@ def post_processing(results, post_processing_list):
     final_results = []
     for res in results:
         split_idx = []
-        quotes = []
 
+        find_quotes = False
         for qt in Const.single_quotes + Const.double_quotes + Const.bracket:
             if qt in res:
-                quotes += list(find_all(res, qt))
+                find_quotes = True
+                break
 
-        if len(quotes) % 2 == 0:
+        if not find_quotes:
             for post in post_processing_list:
                 if post in res:
                     split_idx += list(find_all(res, post))
