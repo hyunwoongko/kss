@@ -159,3 +159,23 @@ class QuoteException:
                     if prev_3 == "\u200b":
                         if prev_4 != " ":
                             do_push_pop_symbol(single_stack, "'")
+
+
+class Safe(object):
+    LOW: int = 0
+    MID: int = 1
+    HIGH: int = 2
+
+    def __init__(self, safe: int=0):
+        level = int(safe)
+        # if safe:
+        #     self.level = Level.MID
+        # else:
+        if level > Safe.HIGH:
+            self.level = Safe.HIGH
+        elif level < Safe.LOW:
+            self.level = Safe.LOW
+        else:
+            self.level = level
+    def get_level(self):
+        return self.level
