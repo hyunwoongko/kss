@@ -59,6 +59,19 @@ class KssTest(unittest.TestCase):
         splitted = kss.split_sentences(text)
         self.assertEqual(len(splitted), 6)
 
+    def test_safe_high_level(self):
+        text = '국내에 판매하는 OEM 수입차의 판매량이 2017년까지 하락세를 보이다 지난해 반등했으며 수입차 대비 비중도 높아질 전망이다.'
+        splitted = kss.split_sentences(text, safe=2)
+        self.assertEqual(len(splitted), 1)
+
+        text = '전과 8범 A씨는 지난 17일 전자발찌를 끊고 도주하다 붙잡혀 전자발찌 부착기간이 2020년 8월14일까지 늘었다.'
+        splitted = kss.split_sentences(text, safe=2)
+        self.assertEqual(len(splitted), 1)
+
+        text = '국내에 판매하는 OEM 수입차의 판매량은 내년 보다 높아질 전망이다.'
+        splitted = kss.split_sentences(text, safe=2)
+        self.assertEqual(len(splitted), 1)
+
 
 if __name__ == '__main__':
     unittest.main()
