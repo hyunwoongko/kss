@@ -141,7 +141,7 @@ class QuoteException:
             if prev_1 in "\u200b":
                 if prev_2 in Const.single_quotes:
                     if prev_3 == "\u200b":
-                        if prev_4 in [" "] + Const.numbers + Const.special:
+                        if prev_4 in [] + Const.numbers + Const.special:
                             do_push_pop_symbol(single_stack, "'")
 
         # for inch (2.5") : ['.', '5', '\u', {"}, '\u']
@@ -149,7 +149,7 @@ class QuoteException:
             if prev_1 in Const.double_quotes:
                 if prev_2 == "\u200b":
                     if prev_3 in Const.numbers:
-                        if prev_4 in [" "] + Const.numbers + Const.special:
+                        if prev_4 in [] + Const.numbers + Const.special:
                             do_push_pop_symbol(double_stack, "\"")
 
         # for SOMETHING's : ['G', '\u', {'}, '\u', 's']

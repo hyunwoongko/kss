@@ -17,6 +17,10 @@ class KssTest(unittest.TestCase):
         splitted = kss.split_sentences(text)
         self.assertEqual(len(splitted), 6)
 
+        text = """한 시민은 "코로나로 인해 '2020년'이란 시간은 멈춘 듯 하다"고 말했다."""
+        splitted = kss.split_sentences(text)
+        self.assertEqual(len(splitted), 1)
+
     def test_quote_misalignment(self):
         # testcase from https://github.com/likejazz/korean-sentence-splitter/issues/8
         text = """부부 싸움 규칙 가운데 ‘돈 히트 언더 더 벨트’(Don’t hit under the belt)가 있다. 권투할 때 벨트 아래를 치면 반칙이듯이, 상대가 너무 아파할 만한 것을 건드리면 회복하기 어렵다. 그 부분은 사람마다 다르다."""
