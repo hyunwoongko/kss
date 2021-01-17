@@ -72,3 +72,10 @@
   - utilize [ZWSP] (=\u200b) to capture correct quote position
 - Add some splitting cases
 - Add evaluation docs
+#### kss 2.3.0
+- Add many rules to distinguish EC and EF
+- Modify `safe` option's concept. 
+  - if `safe=True`, only split on punctuation : `.`, `!`, `?`
+  - if `safe=False`, split on punctuation and EF (종결어미) : `다`, `요`, `죠`
+  - This idea was provided by Uoneway.
+- add many test cases

@@ -11,14 +11,12 @@
 # of the BSD license.  See the LICENSE file for details.
 
 import math
-import re
 from typing import List
 
 # classes
 from kss.base import (
     ID,
     Stats,
-    Safe,
     Const,
     BackupManager,
     QuoteException,
@@ -34,10 +32,10 @@ from kss.base import (
 )
 
 # mapping table
-from kss.table import Table
+from kss.rule import Table
 
 # postprocessing methods
-from kss.korean import (
+from kss.rule import (
     post_processing_da,
     post_processing_jyo,
     post_processing_yo
@@ -95,12 +93,10 @@ def post_processing(results, post_processing_list):
     return final_results
 
 
-def split_sentences(text: str, safe: int=Safe.LOW):
+def split_sentences(text: str, safe=False):
     backup_manager = BackupManager()
     quote_exception = QuoteException()
     text = backup_manager.backup(text)
-
-    safe_level = Safe(safe=safe).get_level()
 
     for s in Const.single_quotes + Const.double_quotes + Const.bracket:
         text = text.replace(s, f"\u200b{s}\u200b")
@@ -135,13 +131,13 @@ def split_sentences(text: str, safe: int=Safe.LOW):
             elif chr_string in Const.bracket:
                 do_push_pop_symbol(bracket_stack, "B")
                 last_bracket_pos = i
-            
+
             elif chr_string in [".", "!", "?"]:
                 if empty(double_quote_stack) and empty(single_quote_stack) and empty(bracket_stack) and (
                         Table[Stats.SB][prev_1] & ID.PREV):
                     cur_stat = Stats.SB
 
-            if safe_level <= Safe.MID:
+            if safe is False:
                 if chr_string == "다":
                     if empty(double_quote_stack) and empty(single_quote_stack) and empty(bracket_stack) and (
                             Table[Stats.DA][prev_1] & ID.PREV):
@@ -270,8 +266,7 @@ def split_sentences(text: str, safe: int=Safe.LOW):
 
     results = [backup_manager.restore(s).replace("\u200b", "") for s in results]
 
-    if safe_level <= Safe.LOW:
-        # 조사/대명사 + 다 or 요 or 죠 분절 기능
+    if safe is False:
         if "다 " in text:
             results = post_processing(results, post_processing_da)
 

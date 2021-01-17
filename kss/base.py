@@ -9,8 +9,11 @@
 #
 # This software may be modified and distributed under the terms
 # of the BSD license.  See the LICENSE file for details.
-
+from collections import namedtuple
 from typing import List
+
+SentenceIndex = namedtuple('SentenceIndex', ['start', 'end'])
+ChunkWithIndex = namedtuple('ChunkWithIndex', ['start', 'text'])
 
 
 class Stats(object):
@@ -48,18 +51,6 @@ class Const:
     special = punctuation + bracket
 
 
-class SentenceIndex:
-    def __init__(self, start, end):
-        self.start = start
-        self.end = end
-
-
-class ChunkWithIndex:
-    def __init__(self, start, text):
-        self.start = start
-        self.text = text
-
-
 class BackupManager:
 
     def __init__(self):
@@ -81,7 +72,114 @@ class BackupManager:
             year_s.append(f"{i}'s")
             year_s.append(f"{i}'S")
 
-        return faces + apostrophe + year_s
+        EC_cases = [
+            '쌓',  # 동사 (쌓이다가)
+            '보',  # 동사 (보이다가)
+            '먹',  # 동사 (먹이다가)
+            '죽',  # 동사 (죽이다가)
+            "끼",  # 동사 (끼이다가)
+            '트',  # 동사 (트이다가)
+            '까',  # 동사 (까이다가)
+            '꼬',  # 동사 (꼬이다가)
+            '데',  # 동사 (데이다가)
+            '치',  # 동사 (치이다가)
+            '쬐',  # 동사 (쬐이다가)
+            '꺾',  # 동사 (꺾이다가)
+            '낚',  # 동사 (낚이다가)
+            '녹',  # 동사 (녹이다가)
+            '벌',  # 동사 (벌이다가)
+            '사',  # 사이다
+            # '파',  # 형용사
+        ]
+
+        EC_cases = [_ + "이다" for _ in EC_cases]
+
+        Excepted_cases = [
+            '손자',
+            '요원',
+            '어린다',
+            '다이빙',
+            '우간다',
+            '초.중.고.',
+            "다적발",
+            "다 적발",
+            '다말하',
+            '다 말하',
+            '다말한',
+            '다 말한',
+            '다말했',
+            '다 말했',
+            '다밝혔',
+            '다 밝혔',
+            '다밝히',
+            '다 밝히',
+            '다밝힌',
+            '다 밝힌',
+            '다주장',
+            '다 주장',
+            '요라고',
+            '요 라고',
+            '요. 라고',
+            '죠라고',
+            '죠 라고',
+            '죠. 라고',
+            '다라고',
+            '다 라고',
+            '다. 라고',
+            '다하여',
+            '다 하여',
+            "다거나",
+            "다 거나",
+            "다. 거나",
+            '다시피',
+            "다 시피",
+            "다. 시피",
+            '다응답',
+            "다 응답",
+            '다로 응답',
+            "다 로 응답",
+            "다. 로 응답",
+            '요로 응답',
+            "요 로 응답",
+            "요. 로 응답",
+            '죠로 응답',
+            "죠 로 응답",
+            "죠. 로 응답",
+            "다에서"
+            "다 에서"
+            "다. 에서"
+            "요에서"
+            "요 에서"
+            "요. 에서"
+            "죠에서"
+            "죠 에서"
+            "죠. 에서"
+            '요소',
+            '타다 금지법',
+            '요법',
+            '요인',
+            '다리',
+            '다>',
+            '다스',
+            '다던',
+            '다습',
+            '다든',
+            '요금',
+            '다음',
+            '다거나',
+            '다식',
+            '초.중.고.',
+            "갔다온 사실",
+            "갔다 온 사실",
+            "갔다온 것",
+            "갔다 온 것",
+            "갔다 왔다",
+            "갔다왔다",
+            "하다 왔다",
+            "하다왔다",
+        ]
+
+        return faces + apostrophe + year_s + EC_cases + Excepted_cases
 
     def _process(self, text: str, purpose_dict: dict):
         for k, v in purpose_dict.items():
@@ -141,7 +239,7 @@ class QuoteException:
             if prev_1 in "\u200b":
                 if prev_2 in Const.single_quotes:
                     if prev_3 == "\u200b":
-                        if prev_4 in [] + Const.numbers + Const.special:
+                        if prev_4 in Const.numbers + Const.special:
                             do_push_pop_symbol(single_stack, "'")
 
         # for inch (2.5") : ['.', '5', '\u', {"}, '\u']
@@ -149,7 +247,7 @@ class QuoteException:
             if prev_1 in Const.double_quotes:
                 if prev_2 == "\u200b":
                     if prev_3 in Const.numbers:
-                        if prev_4 in [] + Const.numbers + Const.special:
+                        if prev_4 in Const.numbers + Const.special:
                             do_push_pop_symbol(double_stack, "\"")
 
         # for SOMETHING's : ['G', '\u', {'}, '\u', 's']
@@ -159,23 +257,3 @@ class QuoteException:
                     if prev_3 == "\u200b":
                         if prev_4 != " ":
                             do_push_pop_symbol(single_stack, "'")
-
-
-class Safe(object):
-    LOW: int = 0
-    MID: int = 1
-    HIGH: int = 2
-
-    def __init__(self, safe: int=0):
-        level = int(safe)
-        # if safe:
-        #     self.level = Level.MID
-        # else:
-        if level > Safe.HIGH:
-            self.level = Safe.HIGH
-        elif level < Safe.LOW:
-            self.level = Safe.LOW
-        else:
-            self.level = level
-    def get_level(self):
-        return self.level
