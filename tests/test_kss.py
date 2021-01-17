@@ -17,6 +17,10 @@ class KssTest(unittest.TestCase):
         splitted = kss.split_sentences(text)
         self.assertEqual(len(splitted), 6)
 
+        text = """한 시민은 "코로나로 인해 '2020년'이란 시간은 멈춘 듯 하다"고 말했다."""
+        splitted = kss.split_sentences(text)
+        self.assertEqual(len(splitted), 1)
+
     def test_quote_misalignment(self):
         # testcase from https://github.com/likejazz/korean-sentence-splitter/issues/8
         text = """부부 싸움 규칙 가운데 ‘돈 히트 언더 더 벨트’(Don’t hit under the belt)가 있다. 권투할 때 벨트 아래를 치면 반칙이듯이, 상대가 너무 아파할 만한 것을 건드리면 회복하기 어렵다. 그 부분은 사람마다 다르다."""
@@ -58,6 +62,19 @@ class KssTest(unittest.TestCase):
         text = "아무래도 그땐 그랬었죠 많이 힘들었으니까요 근데 이제는 괜찮아요 친구들이 많아졌어요 그때만 힘들었던거죠 이젠 괜찮아요"
         splitted = kss.split_sentences(text)
         self.assertEqual(len(splitted), 6)
+
+    def test_safe_high_level(self):
+        text = '국내에 판매하는 OEM 수입차의 판매량이 2017년까지 하락세를 보이다 지난해 반등했으며 수입차 대비 비중도 높아질 전망이다.'
+        splitted = kss.split_sentences(text, safe=2)
+        self.assertEqual(len(splitted), 1)
+
+        text = '전과 8범 A씨는 지난 17일 전자발찌를 끊고 도주하다 붙잡혀 전자발찌 부착기간이 2020년 8월14일까지 늘었다.'
+        splitted = kss.split_sentences(text, safe=2)
+        self.assertEqual(len(splitted), 1)
+
+        text = '국내에 판매하는 OEM 수입차의 판매량은 내년 보다 높아질 전망이다.'
+        splitted = kss.split_sentences(text, safe=2)
+        self.assertEqual(len(splitted), 1)
 
 
 if __name__ == '__main__':

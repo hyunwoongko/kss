@@ -18,6 +18,7 @@ from typing import List
 from kss.base import (
     ID,
     Stats,
+    Safe,
     Const,
     BackupManager,
     QuoteException,
@@ -94,10 +95,12 @@ def post_processing(results, post_processing_list):
     return final_results
 
 
-def split_sentences(text: str, safe=False):
+def split_sentences(text: str, safe: int=Safe.LOW):
     backup_manager = BackupManager()
     quote_exception = QuoteException()
     text = backup_manager.backup(text)
+
+    safe_level = Safe(safe=safe).get_level()
 
     for s in Const.single_quotes + Const.double_quotes + Const.bracket:
         text = text.replace(s, f"\u200b{s}\u200b")
@@ -132,23 +135,25 @@ def split_sentences(text: str, safe=False):
             elif chr_string in Const.bracket:
                 do_push_pop_symbol(bracket_stack, "B")
                 last_bracket_pos = i
-
-            elif chr_string == "다":
-                if empty(double_quote_stack) and empty(single_quote_stack) and empty(bracket_stack) and (
-                        Table[Stats.DA][prev_1] & ID.PREV):
-                    cur_stat = Stats.DA
-            elif chr_string == "요":
-                if empty(double_quote_stack) and empty(single_quote_stack) and empty(bracket_stack) and (
-                        Table[Stats.YO][prev_1] & ID.PREV):
-                    cur_stat = Stats.YO
-            elif chr_string == "죠":
-                if empty(double_quote_stack) and empty(single_quote_stack) and empty(bracket_stack) and (
-                        Table[Stats.JYO][prev_1] & ID.PREV):
-                    cur_stat = Stats.JYO
+            
             elif chr_string in [".", "!", "?"]:
                 if empty(double_quote_stack) and empty(single_quote_stack) and empty(bracket_stack) and (
                         Table[Stats.SB][prev_1] & ID.PREV):
                     cur_stat = Stats.SB
+
+            if safe_level <= Safe.MID:
+                if chr_string == "다":
+                    if empty(double_quote_stack) and empty(single_quote_stack) and empty(bracket_stack) and (
+                            Table[Stats.DA][prev_1] & ID.PREV):
+                        cur_stat = Stats.DA
+                elif chr_string == "요":
+                    if empty(double_quote_stack) and empty(single_quote_stack) and empty(bracket_stack) and (
+                            Table[Stats.YO][prev_1] & ID.PREV):
+                        cur_stat = Stats.YO
+                elif chr_string == "죠":
+                    if empty(double_quote_stack) and empty(single_quote_stack) and empty(bracket_stack) and (
+                            Table[Stats.JYO][prev_1] & ID.PREV):
+                        cur_stat = Stats.JYO
 
             quote_exception.process(
                 chr_string,
@@ -265,7 +270,7 @@ def split_sentences(text: str, safe=False):
 
     results = [backup_manager.restore(s).replace("\u200b", "") for s in results]
 
-    if not safe:
+    if safe_level <= Safe.LOW:
         # 조사/대명사 + 다 or 요 or 죠 분절 기능
         if "다 " in text:
             results = post_processing(results, post_processing_da)

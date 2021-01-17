@@ -1,6 +1,68 @@
+# Korean Sentence Splitter-fix
+기 kss library의 사용성 및 일부 성능 개선을 위한 수정 repo입니다.
+<br>
+
+## Update points from kss
+기본적으로 kss는 형태소분석과정 없이 종결형에 사용되는 음절(다/요/.!?)을 골라내어 이전/이후 음절을 매칭하여 문장을 구분합니다.   
+이로 kss는 처리속도가 아주 빠른 반면, 문장 종결 부호(".", "!", "?")가 잘 들어가 있는 뉴스와 같은 한글 텍스트에서는 분리하지 않아야 하는 곳 까지 분리하는 문제가 있습니다.
+
+이에 따라 다음을 수정하였습니다.
+
+1. 사용자가 알고리즘 적용 정도를 선택할 수 있도록 `safe` parameter 추가(3단계로 확장)
+
+- 기 kss 문제 예시
+
+  ```
+  '국내에 판매하는 OEM 수입차의 판매량이 2017년까지 하락세를 보이다 지난해 반등했으며 수입차 대비 비중도 높아질 전망이다.'
+  -> ['국내에 판매하는 OEM 수입차의 판매량이 2017년까지 하락세를 보이다', '지난해 반등했으며 수입차 대비 비중도 높아질 전망이다.']
+  '전과 8범 A씨는 지난 17일 전자발찌를 끊고 도주하다 붙잡혀 전자발찌 부착기간이 2020년 8월14일까지 늘었다.'
+  -> ['전과 8범 A씨는 지난 17일 전자발찌를 끊고 도주하다', '붙잡혀 전자발찌 부착기간이 2020년 8월14일까지 늘었다.']
+  ```
+
+- 변경사항
+
+  - 문장 종결 부호(".", "!", "?")가 존재하는 경우에만 한정하여 kss 알고리즘을 적용하는 `safe=2` 옵션 추가
+
+  ```
+  >>> kss.split_sentences(text, safe=2)
+  ['국내에 판매하는 OEM 수입차의 판매량이 2017년까지 하락세를 보이다 지난해 반등했으며 수입차 대비 비중도 높아질 전망이다.']
+  ```
+
+  - kss.split_sentences(text, safe=0)은 기 kss.split_sentences(text)와,
+    kss.split_sentences(text, safe=1)은 기 kss.split_sentences(text, safe=True)와 동일
+
+2. QuoteException 조건 수정
+
+   - 기 kss 문제 예시
+
+     `quote+숫자` 형태의 경우,  time 또는 inch로 인식
+
+   ```
+   >>> text= """한 시민은 "코로나로 인해 '2020년'이란 시간은 멈춘 듯 하다"고 말했다."""
+   >>> kss.split_sentences(text)
+   ["한 시민은 \"코로나로 인해 \'2020년\'이란 시간은 멈춘 듯 하다", "고 말했다.\""]
+   ```
+
+   - 수정사항
+
+     time 및 inch를 위한 조건에서 해당 기호 앞이 공백인 경우는 제외
+
+3. 기타 수정사항
+
+   - 각 사항에 대한 test case 추가
+   
+- corpus에 대한 테스트 시행 및 결과 추가
+   
+     <br>
+   
+
+------
+
 # Korean Sentence Splitter
+
 Split Korean text into sentences using heuristic algorithm.
-<br><br><br>
+
+<br>
 
 ## Install
 ```console
