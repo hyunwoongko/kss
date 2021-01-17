@@ -368,6 +368,7 @@ Table = create_dict({
             "!": ID.CONT,
             "~": ID.CONT,
             "…": ID.CONT,
+            ",": ID.CONT,
             "": ID.NONE,
         })
 },
