@@ -281,7 +281,7 @@ def split_sentences(text: str, safe=False):
     if len(bracket_stack) != 0:
         results = realign_by_quote(text, last_bracket_pos, " ")
 
-    results = [backup_manager.restore(s).replace("\u200b", "") for s in results]
+    results = [backup_manager.restore(s).replace("\u200b", "").strip() for s in results]
 
     if safe is False:
         if "다 " in text:
