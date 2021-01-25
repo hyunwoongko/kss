@@ -42,7 +42,7 @@ class Const:
     # <와 >는 수학기호나 화살표(<-, ->)로 쓰이는 경우가 잦아서 제외 함
     bracket = [")", "）", "〉", "》", "]", "］", "〕", "】", "}", "｝", "』", "」",
                "(", "（", "〈", "《", "[", "［", "〔", "【", "{", "｛", "「", "『"]
-    punctuation = [";", ".", ":", "?", "!", ',']
+    punctuation = [";", ".", ":", "?", "!", ',', '·']
     double_quotes = ["\"", "“", "”", "″"]
     single_quotes = ["'", "`", "‘", "’"]
 
@@ -55,7 +55,6 @@ class BackupManager:
 
     def __init__(self):
         self.backup_dict = {k: str(abs(hash(k))) for k in self._get_data()}
-        self.restore_dict = {v: k for k, v in self.backup_dict.items()}
 
     @staticmethod
     def _get_data():
@@ -73,117 +72,70 @@ class BackupManager:
             year_s.append(f"{i}'S")
 
         EC_cases = [
-            '쌓',  # 동사 (쌓이다가)
-            '보',  # 동사 (보이다가)
-            '먹',  # 동사 (먹이다가)
-            '죽',  # 동사 (죽이다가)
-            "끼",  # 동사 (끼이다가)
-            '트',  # 동사 (트이다가)
-            '까',  # 동사 (까이다가)
-            '꼬',  # 동사 (꼬이다가)
-            '데',  # 동사 (데이다가)
-            '치',  # 동사 (치이다가)
-            '쬐',  # 동사 (쬐이다가)
-            '꺾',  # 동사 (꺾이다가)
-            '낚',  # 동사 (낚이다가)
-            '녹',  # 동사 (녹이다가)
-            '벌',  # 동사 (벌이다가)
-            '사',  # 사이다
-            # '파',  # 형용사
-        ]
-
-        EC_cases = [_ + "이다" for _ in EC_cases]
-
-        Excepted_cases = [
-            '손자',
-            '요원',
-            '어린다',
-            '다이빙',
-            '우간다',
-            '초.중.고.',
-            "다적발",
+            '쌓이다',
+            '보이다',
+            '먹이다',
+            '죽이다',
+            "끼이다",
+            '트이다',
+            '까이다',
+            '꼬이다',
+            '데이다',
+            '치이다',
+            '쬐이다',
+            '꺾이다',
+            '낚이다',
+            '녹이다',
+            '벌이다',
             "다 적발",
-            '다말하',
             '다 말하',
-            '다말한',
             '다 말한',
-            '다말했',
             '다 말했',
-            '다밝혔',
+            '다 밝혀',
             '다 밝혔',
-            '다밝히',
             '다 밝히',
-            '다밝힌',
             '다 밝힌',
-            '다주장',
             '다 주장',
-            '요라고',
             '요 라고',
             '요. 라고',
-            '죠라고',
             '죠 라고',
             '죠. 라고',
-            '다라고',
             '다 라고',
             '다. 라고',
-            '다하여',
             '다 하여',
-            "다거나",
             "다 거나",
             "다. 거나",
-            '다시피',
             "다 시피",
             "다. 시피",
-            '다응답',
             "다 응답",
-            '다로 응답',
             "다 로 응답",
             "다. 로 응답",
-            '요로 응답',
             "요 로 응답",
             "요. 로 응답",
-            '죠로 응답',
             "죠 로 응답",
             "죠. 로 응답",
-            "다에서"
             "다 에서"
             "다. 에서"
-            "요에서"
             "요 에서"
             "요. 에서"
-            "죠에서"
             "죠 에서"
             "죠. 에서"
-            '요소',
             '타다 금지법',
-            '요법',
-            '요인',
-            '다리',
-            '다>',
-            '다스',
-            '다던',
-            '다습',
-            '다든',
-            '요금',
-            '다음',
-            '다거나',
-            '다식',
-            '초.중.고.',
-            "다온 사실",
             "다 온 사실",
-            "다온 것",
             "다 온 것",
-            "다온 사람",
             "다 온 사람",
             "다 왔다",
             "다 왔더",
             "다 와보",
-            "다왔다",
-            "다왔더",
-            "다왔보",
         ]
 
-        return faces + apostrophe + year_s + EC_cases + Excepted_cases
+        Exceptions = [
+            '초.중.고.',
+            "우간다",
+            "사이다",
+        ]
+
+        return faces + apostrophe + year_s + EC_cases + Exceptions
 
     def _process(self, text: str, purpose_dict: dict):
         for k, v in purpose_dict.items():
@@ -191,11 +143,20 @@ class BackupManager:
 
         return text.strip()
 
+    def add_item_to_dict(self, key, val):
+        self.backup_dict[key] = val
+
     def backup(self, text: str):
-        return self._process(text, self.backup_dict)
+        return self._process(
+            text=text,
+            purpose_dict=self.backup_dict
+        )
 
     def restore(self, text: str):
-        return self._process(text, self.restore_dict)
+        return self._process(
+            text=text,
+            purpose_dict={v: k for k, v in self.backup_dict.items()},
+        )
 
 
 def empty(obj) -> bool:

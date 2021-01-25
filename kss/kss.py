@@ -94,10 +94,27 @@ def post_processing(results, post_processing_list):
 
 
 def split_sentences(text: str, safe=False):
+    text = text.replace("\u200b", "")
+    endpoint = Const.single_quotes + \
+               Const.double_quotes + \
+               Const.bracket + \
+               Const.punctuation + \
+               [" ", ""]
+
     backup_manager = BackupManager()
     quote_exception = QuoteException()
-    text = backup_manager.backup(text)
 
+    for i in range(0, len(text)):
+        if text[i] in ["다", "요", "죠"]:
+            if i != len(text) - 1:
+                if text[i + 1] not in endpoint:
+                    target_to_backup = text[i] + text[i + 1]
+                    backup_manager.add_item_to_dict(
+                        key=target_to_backup,
+                        val=str(abs(hash(target_to_backup)))
+                    )
+
+    text = backup_manager.backup(text)
     for s in Const.single_quotes + Const.double_quotes + Const.bracket:
         text = text.replace(s, f"\u200b{s}\u200b")
 
