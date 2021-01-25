@@ -79,3 +79,11 @@
   - if `safe=False`, split on punctuation and EF (종결어미) : `다`, `요`, `죠`
   - This idea was provided by Uoneway.
 - add many test cases
+#### kss 2.4.0
+- Add autonomous EC case discriminate logic
+- kss 2.3.0
+  - `safe=False` accuracy : 0.847769028871391
+  - `safe=True` accuracy : 0.916010498687664
+- kss 2.4.0
+  - `safe=False` accuracy : 0.8923884514435696
+  - `safe=True` accuracy : 0.958005249343832
