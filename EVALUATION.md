@@ -1,5 +1,5 @@
 # Performance Evaluation
-This is about Korean sentence segmentation performance comparison Python KSS(2.4.0) with C++ KSS(1.3.1), OKT and Hannanum sentence segmentation modules. 
+This is about Korean sentence segmentation performance comparison Python KSS(2.4.0) with OKT and Hannanum sentence segmentation modules. 
 <br><br>
 As a result of the experiment, OKT and Hannanum sentence segmentation modules "DO NOT" work without punctuation. Therefore, they will only be available in very limited environments. (Only for well-refined articles such as news articles and Wikipedia)
 however, KSS works very well in these environments as well. It even worked very well in colloquialisms, including (ㅋㅋ, ㅎㅎ). 
