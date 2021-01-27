@@ -7,7 +7,6 @@ however, KSS works very well in these environments as well. It even worked very 
 
 ```python
 # OKT and Hannanum are powered by koalanlp.
-# experiment was conducted twice to test two different version of KSS.
 
 from kss import split_sentences
 from koalanlp.proc import SentenceSplitter
