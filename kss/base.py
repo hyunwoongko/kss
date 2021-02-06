@@ -43,8 +43,8 @@ class Const:
     bracket = [")", "）", "〉", "》", "]", "］", "〕", "】", "}", "｝", "』", "」",
                "(", "（", "〈", "《", "[", "［", "〔", "【", "{", "｛", "「", "『"]
     punctuation = [";", ".", ":", "?", "!", ',', '·']
-    double_quotes = ["\"", "“", "”", "″"]
-    single_quotes = ["'", "`", "‘", "’"]
+    double_quotes = ["\"", "“", "”"]
+    single_quotes = ["'", "‘", "’"]
 
     lower_alphabets = alphabets
     upper_alphabets = [_.upper() for _ in alphabets]
