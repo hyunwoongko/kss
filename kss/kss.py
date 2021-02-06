@@ -4,7 +4,7 @@
 # Korean Sentence Splitter
 # Split Korean text into sentences using heuristic algorithm.
 #
-# Copyright (C) 2019 Sang-Kil Park <skpark1224@hyundai.com> and Hyun-woong Ko <kevin.woong@kakaobrain.com>
+# Copyright (C) 2021 Hyun-woong Ko <kevin.woong@kakaobrain.com> and Sang-Kil Park <skpark1224@hyundai.com>
 # All rights reserved.
 #
 # This software may be modified and distributed under the terms
