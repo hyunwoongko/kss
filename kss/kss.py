@@ -35,20 +35,25 @@ from kss.base import (
 from kss.rule import Table
 
 # postprocessing methods
-from kss.rule import (
-    post_processing_da,
-    post_processing_jyo,
-    post_processing_yo
-)
+from kss.rule import (post_processing_da, post_processing_jyo,
+                      post_processing_yo)
 
 
 # TODO (bug) : 책을 봤다. 고구려에 관한
-def realign_by_quote(text, last_quote_pos, quote_type):
-    before_quote = split_sentences(text[:last_quote_pos])
-    before_last = before_quote[-1] if len(before_quote) > 0 else ""
-    before_quote = [] if len(before_quote) == 1 else before_quote[: -1]
+def realign_by_quote(text, last_quote_pos, quote_type, safe, recover_step):
+    before_quote = split_sentences(text[:last_quote_pos],
+                                   safe=safe,
+                                   recover_step=recover_step)
 
-    after_quote = split_sentences(text[last_quote_pos + 1:])
+    before_last = before_quote[-1] if len(before_quote) > 0 else ""
+    before_quote = [] if len(before_quote) == 1 else before_quote[:-1]
+
+    after_quote = split_sentences(
+        text[last_quote_pos + 1:],
+        safe=safe,
+        recover_step=recover_step,
+    )
+
     after_first = after_quote[0] if len(after_quote) > 0 else ""
     after_quote = [] if len(after_quote) == 1 else after_quote[1:]
 
@@ -93,16 +98,54 @@ def post_processing(results, post_processing_list):
     return final_results
 
 
-def split_sentences(text: str, safe=False):
-    text = text.replace("\u200b", "")
-    endpoint = Const.single_quotes + \
-               Const.double_quotes + \
-               Const.bracket + \
-               Const.punctuation + \
-               [" ", ""]
+quote_exception = QuoteException()
 
+endpoint = Const.single_quotes + \
+           Const.double_quotes + \
+           Const.bracket + \
+           Const.punctuation + \
+           [" ", ""]
+
+need_to_replace_zwsp = Const.single_quotes + \
+                       Const.double_quotes + \
+                       Const.bracket
+
+
+def split_sentences(
+        text: str,
+        safe: bool = False,
+        max_recover_step: int = 5,
+        max_recover_length: int = 20000,
+        recover_step: int = 0,
+        # DO NOT USE parameter `recover_step`
+):
+    """
+    split document to sentence
+
+    Args:
+        text (str):
+            input text
+        safe (bool):
+            safe mode or not
+        max_recover_step (int):
+            maximum step for quote and bracket misalignment recovering
+        max_recover_length (int):
+            maximum text length to recover when quote and bracket misaligned
+        recover_step (int):
+            current recover step when quote and bracket misaligned
+    Returns:
+        (List[str]): splitted sentences
+
+    """
+    if len(text) > max_recover_length:
+        max_recover_step = 0
+
+    text = text.replace("\u200b", "")
     backup_manager = BackupManager()
-    quote_exception = QuoteException()
+
+    double_quote_stack = []
+    single_quote_stack = []
+    bracket_stack = []
 
     for i in range(0, len(text)):
         if text[i] in ["다", "요", "죠"]:
@@ -111,11 +154,10 @@ def split_sentences(text: str, safe=False):
                     target_to_backup = text[i] + text[i + 1]
                     backup_manager.add_item_to_dict(
                         key=target_to_backup,
-                        val=str(abs(hash(target_to_backup)))
-                    )
+                        val=str(abs(hash(target_to_backup))))
 
     text = backup_manager.backup(text)
-    for s in Const.single_quotes + Const.double_quotes + Const.bracket:
+    for s in need_to_replace_zwsp:
         text = text.replace(s, f"\u200b{s}\u200b")
 
     prev_1: str = ""
@@ -126,10 +168,6 @@ def split_sentences(text: str, safe=False):
     cur_sentence: str = ""
     results: List[str] = []
     cur_stat: int = Stats.DEFAULT
-
-    single_quote_stack: List[str] = []
-    double_quote_stack: List[str] = []
-    bracket_stack: List[str] = []
 
     last_single_quote_pos = 0
     last_double_quote_pos = 0
@@ -150,22 +188,26 @@ def split_sentences(text: str, safe=False):
                 last_bracket_pos = i
 
             elif chr_string in [".", "!", "?"]:
-                if empty(double_quote_stack) and empty(single_quote_stack) and empty(bracket_stack) and (
-                        Table[Stats.SB][prev_1] & ID.PREV):
+                if empty(double_quote_stack) and empty(
+                        single_quote_stack) and empty(bracket_stack) and (
+                            Table[Stats.SB][prev_1] & ID.PREV):
                     cur_stat = Stats.SB
 
             if safe is False:
                 if chr_string == "다":
-                    if empty(double_quote_stack) and empty(single_quote_stack) and empty(bracket_stack) and (
-                            Table[Stats.DA][prev_1] & ID.PREV):
+                    if empty(double_quote_stack) and empty(
+                            single_quote_stack) and empty(bracket_stack) and (
+                                Table[Stats.DA][prev_1] & ID.PREV):
                         cur_stat = Stats.DA
                 elif chr_string == "요":
-                    if empty(double_quote_stack) and empty(single_quote_stack) and empty(bracket_stack) and (
-                            Table[Stats.YO][prev_1] & ID.PREV):
+                    if empty(double_quote_stack) and empty(
+                            single_quote_stack) and empty(bracket_stack) and (
+                                Table[Stats.YO][prev_1] & ID.PREV):
                         cur_stat = Stats.YO
                 elif chr_string == "죠":
-                    if empty(double_quote_stack) and empty(single_quote_stack) and empty(bracket_stack) and (
-                            Table[Stats.JYO][prev_1] & ID.PREV):
+                    if empty(double_quote_stack) and empty(
+                            single_quote_stack) and empty(bracket_stack) and (
+                                Table[Stats.JYO][prev_1] & ID.PREV):
                         cur_stat = Stats.JYO
 
             quote_exception.process(
@@ -272,17 +314,6 @@ def split_sentences(text: str, safe=False):
         cur_sentence += prev_1
         do_trim_sent_push_results(cur_sentence, results)
 
-    if len(single_quote_stack) != 0:
-        results = realign_by_quote(text, last_single_quote_pos, "'")
-
-    if len(double_quote_stack) != 0:
-        results = realign_by_quote(text, last_double_quote_pos, "\"")
-
-    if len(bracket_stack) != 0:
-        results = realign_by_quote(text, last_bracket_pos, " ")
-
-    results = [backup_manager.restore(s).replace("\u200b", "").strip() for s in results]
-
     if safe is False:
         if "다 " in text:
             results = post_processing(results, post_processing_da)
@@ -292,6 +323,37 @@ def split_sentences(text: str, safe=False):
 
         if "죠 " in text:
             results = post_processing(results, post_processing_jyo)
+
+    if len(single_quote_stack) != 0 and recover_step < max_recover_step:
+        results = realign_by_quote(
+            text,
+            last_single_quote_pos,
+            "'",
+            safe,
+            recover_step + 1,
+        )
+
+    if len(double_quote_stack) != 0 and recover_step < max_recover_step:
+        results = realign_by_quote(
+            text,
+            last_double_quote_pos,
+            "\"",
+            safe,
+            recover_step + 1,
+        )
+
+    if len(bracket_stack) != 0 and recover_step < max_recover_step:
+        results = realign_by_quote(
+            text,
+            last_bracket_pos,
+            " ",
+            safe,
+            recover_step + 1,
+        )
+
+    results = [
+        backup_manager.restore(s).replace("\u200b", "").strip() for s in results
+    ]
 
     return results
 
@@ -303,13 +365,18 @@ def split_sentences_index(text) -> List[SentenceIndex]:
 
     for sentence in sentences:
         sentence_indexes.append(
-            SentenceIndex(offset + text.index(sentence), offset + text.index(sentence) + len(sentence)))
+            SentenceIndex(offset + text.index(sentence),
+                          offset + text.index(sentence) + len(sentence)))
         offset += text.index(sentence) + len(sentence)
         text = text[text.index(sentence) + len(sentence):]
     return sentence_indexes
 
 
-def split_chunks(text: str, max_length=128, overlap=False, indexes=None) -> List[ChunkWithIndex]:
+def split_chunks(text: str,
+                 max_length=128,
+                 overlap=False,
+                 indexes=None) -> List[ChunkWithIndex]:
+
     def get_chunk_with_index():
         start = span[0].start
         end = span[-1].end
@@ -322,7 +389,8 @@ def split_chunks(text: str, max_length=128, overlap=False, indexes=None) -> List
     chunks = []
     for index in indexes:
         if len(span) > 0:
-            if index.end - span[0].start > max_length:  # len = last_end - first_start
+            if index.end - span[
+                    0].start > max_length:  # len = last_end - first_start
                 chunks.append(get_chunk_with_index())
                 if overlap:
                     span = span[math.trunc(len(span) / 2):]  # cut half

@@ -43,6 +43,23 @@ pip install kss
 ```
 <br>
 
+- When quotes or parentheses are misaligned, the realigning function to correct them automatically operates. However, this feature uses recursive calls, so it can operate very slowly on some text. 
+    - Therefore, the depth of the recursive call can be adjusted through a parameter `max_recover_step`. (default is 5)
+    - In addition, applying this feature to very long text significantly reduces the speed, so we can turn it off using the `max_recover_length` parameter for very long text. (default is 20,000)
+```python
+>>> from kss import split_sentences
+>>> text = "...very long text..."
+
+>>> split_sentences(text, max_recover_step=5)
+>>> # you can adjust recovery (recursive) depth using `max_recover_step` (default is 5)
+
+>>> split_sentences(text, max_recover_length=20000)
+>>> # you can turn it off when you inputted very long text using `max_recover_length` (default is 20000)
+```
+
+
+<br>
+
 ### 2. `split_chunks`
 - Collects the sentences and creates chunks of `max_length` or less.
 ```python

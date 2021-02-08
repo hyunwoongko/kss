@@ -487,6 +487,22 @@ class KssTest(unittest.TestCase):
         print(f"`safe=False` accuracy : {non_safe_cnt / len(cases)}")
         print(f"`safe=True` accuracy : {safe_cnt / len(cases)}")
 
+    def test_from_jaehyeongan(self):
+        text = open('code_example.txt', 'r', encoding='utf-8').read()
+        kss.split_sentences(text)
+        # max_recover_step=0, 0.524s
+        # 20000자 이상 넘어가면 realignment 꺼버림.
+
+        text = open('news_example.txt', 'r', encoding='utf-8').read()
+        output = kss.split_sentences(text, max_recover_step=10)
+        # 길이가 긴 뉴스 기사들은 대략 6,000자 안팍임.
+        # max_recover_step의 기본 값을 10으로 설정하였음.
+
+        output = kss.split_sentences(text, max_recover_step=5)
+        output = kss.split_sentences(text, max_recover_step=20)
+        # max_recover_step이라는 파라미터를 통해 이를 조정 가능.
+        # 이는 recursive call의 depth에 해당함.
+
 
 if __name__ == '__main__':
     unittest.main()
