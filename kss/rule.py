@@ -112,6 +112,11 @@ jyo = [
     '폈', '피', '하', '핥', '했', '휘', '희',
 ]
 
+ham = ['리', '절', '용', '편', '륭', '듯', '야', '족', '못', '끗', '안', '천',
+       '정', '각', '실', '소', '끔', '분', '이', '약']
+
+um = ['았', '었', '했', '없', '좋', '있', '웠', '였', '않', '같', '많', '겠', '찮', '났', '좁', '작', '싶', '셨', '졌', '넓']
+
 before = {
     # 조사
     "이", "가", "에서", "은", "는", "을", "를", "도", "에", "게", "께", "한테", "로", "써",
@@ -304,6 +309,90 @@ Table = create_dict({
             "면": ID.PREV | ID.NEXT2,
             "": ID.NONE,
         }),
+    Stats.UM:
+        create_dict({
+            '았': ID.PREV,
+            '없': ID.PREV,
+            '었': ID.PREV,
+            '했': ID.PREV,
+            '있': ID.PREV,
+            '좋': ID.PREV,
+            '웠': ID.PREV,
+            '였': ID.PREV,
+            '않': ID.PREV,
+            '같': ID.PREV,
+            '겠': ID.PREV,
+            '봤': ID.PREV,
+            '밌': ID.PREV,
+            '많': ID.PREV,
+            '찮': ID.PREV,
+            '났': ID.PREV,
+            '처': ID.PREV,
+            '렸': ID.PREV,
+            '졌': ID.PREV,
+            '싶': ID.PREV,
+            '이': ID.NEXT,
+            '에': ID.NEXT,
+            '악': ID.NEXT,
+            '식': ID.NEXT,
+            '을': ID.NEXT,
+            '으': ID.NEXT,
+            '부': ID.NEXT,
+            '도': ID.NEXT,
+            '은': ID.NEXT,
+            '엔': ID.NEXT,
+            '날': ID.NEXT,
+            '료': ID.NEXT,
+            '과': ID.NEXT,
+            '의': ID.NEXT,
+            '만': ID.NEXT,
+            '보': ID.NEXT,
+            '인': ID.NEXT,
+            '속': ID.NEXT,
+            "": ID.NONE,
+        }),
+    Stats.HAM:
+        create_dict({
+            '루': ID.PREV,
+            '편': ID.PREV,
+            '절': ID.PREV,
+            '포': ID.PREV,
+            '안': ID.PREV,
+            '못': ID.PREV,
+            '만': ID.PREV | ID.NEXT,
+            '족': ID.PREV,
+            '야': ID.PREV,
+            '치': ID.PREV,
+            '결': ID.PREV,
+            '수': ID.PREV,
+            '각': ID.PREV,
+            '끗': ID.PREV,
+            '리': ID.PREV,
+            '답': ID.PREV,
+            '중': ID.PREV,
+            '용': ID.PREV,
+            '심': ID.PREV,
+            '쾌': ID.PREV,
+            '께': ID.NEXT,
+            '이': ID.NEXT,
+            '을': ID.NEXT,
+            '과': ID.NEXT,
+            '에': ID.NEXT,
+            '은': ID.NEXT,
+            '의': ID.NEXT,
+            '도': ID.NEXT,
+            '으': ID.NEXT,
+            '되': ID.NEXT,
+            '없': ID.NEXT,
+            '부': ID.NEXT,
+            '된': ID.NEXT,
+            '정': ID.NEXT,
+            '해': ID.NEXT,
+            '한': ID.NEXT,
+            '까': ID.NEXT,
+            '축': ID.NEXT,
+            "": ID.NONE,
+        }),
     Stats.SB:
     # https://www.yeoju.go.kr/history/jsp/Theme/Save_View.jsp?BC_ID=d0400
         create_dict({
@@ -387,3 +476,5 @@ Table = create_dict({
 post_processing_da = list(set([f"{x} {_}다 " for _ in da for x in before]))
 post_processing_yo = list(set([f"{x} {_}요 " for _ in yo for x in before]))
 post_processing_jyo = list(set([f"{x} {_}죠 " for _ in jyo for x in before]))
+post_processing_ham = list(set([f"{x} {_}함 " for _ in ham for x in before]))
+post_processing_um = list(set([f"{x} {_}음 " for _ in um for x in before]))

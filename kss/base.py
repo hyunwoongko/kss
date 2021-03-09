@@ -22,8 +22,10 @@ class Stats(object):
     DA: int = 1
     YO: int = 2
     JYO: int = 3
-    SB: int = 4
-    COMMON: int = 5
+    HAM : int = 4
+    UM : int = 5
+    SB: int = 6
+    COMMON: int = 7
 
 
 class ID(object):
