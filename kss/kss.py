@@ -36,7 +36,7 @@ from kss.rule import Table
 
 # postprocessing methods
 from kss.rule import (post_processing_da, post_processing_jyo,
-                      post_processing_yo)
+                      post_processing_yo, post_processing_ham, post_processing_um)
 
 
 # TODO (bug) : 책을 봤다. 고구려에 관한
@@ -148,7 +148,7 @@ def split_sentences(
     bracket_stack = []
 
     for i in range(0, len(text)):
-        if text[i] in ["다", "요", "죠"]:
+        if text[i] in ["다", "요", "죠", "함", "음"]:
             if i != len(text) - 1:
                 if text[i + 1] not in endpoint:
                     target_to_backup = text[i] + text[i + 1]
@@ -209,6 +209,16 @@ def split_sentences(
                             single_quote_stack) and empty(bracket_stack) and (
                                 Table[Stats.JYO][prev_1] & ID.PREV):
                         cur_stat = Stats.JYO
+                elif chr_string == "함":
+                    if empty(double_quote_stack) and empty(
+                            single_quote_stack) and empty(bracket_stack) and (
+                                Table[Stats.HAM][prev_1] & ID.PREV):
+                        cur_stat = Stats.HAM
+                elif chr_string == "음":
+                    if empty(double_quote_stack) and empty(
+                            single_quote_stack) and empty(bracket_stack) and (
+                                Table[Stats.UM][prev_1] & ID.PREV):
+                        cur_stat = Stats.UM
 
             quote_exception.process(
                 chr_string,
@@ -323,6 +333,12 @@ def split_sentences(
 
         if "죠 " in text:
             results = post_processing(results, post_processing_jyo)
+
+        if "함 " in text:
+            results = post_processing(results, post_processing_ham)
+
+        if "음 " in text:
+            results = post_processing(results, post_processing_um)
 
     if len(single_quote_stack) != 0 and recover_step < max_recover_step:
         results = realign_by_quote(
