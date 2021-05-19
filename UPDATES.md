@@ -92,3 +92,11 @@
 #### kss 2.5.0
 - Add parameter `max_recover_step` and `max_recover_length`
 - to solve https://github.com/hyunwoongko/kss/issues/13
+
+#### kss 2.5.1
+- Add new eomi (함)
+  - input : "그거 너무 지루함 비추임"
+  - output : ["그거 너무 지루함", "비추임"]
+- Add new eomi (음)
+  - input : "밥 먹음? 나는 먹었는데"
+  - output : ["밥 먹음?", "나는 먹었는데"]
