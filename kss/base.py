@@ -204,7 +204,7 @@ class QuoteException:
     ):
         # for time (5'40) : ['5', '\u', {'}, '\u', '4']
         if cur_chr in Const.numbers:
-            if prev_1 in "\u200b":
+            if prev_1 == "\u200b":
                 if prev_2 in Const.single_quotes:
                     if prev_3 == "\u200b":
                         if prev_4 in Const.numbers + Const.special:
