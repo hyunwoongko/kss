@@ -1,14 +1,20 @@
 # Korean Sentence Splitter
 Split Korean text into sentences using heuristic algorithm.
 
+<br><br>
+
 ## 1. Installation
 ```console
 pip install kss
 ```
 
+<br><br>
+
 ## 2. Performance Evaluation
 - Kss is a Korean sentence segmentation toolkit with the best performance ever.
 - You can check [simple performance evaluation](https://github.com/hyunwoongko/kss/blob/main/EVALUATION.md) comparison with OKT and Hannanum.
+
+<br><br>
 
 ## 3. Usage of `split_sentences`
 ### 3.1. Split sentences with heuristics and punctuations.
@@ -88,6 +94,8 @@ pip install kss
 >>> # you can turn it off when you input very long text using `max_recover_length` (default is 30000)
 ```
 
+<br><br>
+
 ## 4.Usage of `split_sentences`
 ### 4.1. Set maximum length of chunks via `max_length`
 - `split_chunks` combine sentences into chunks of a certain length or less.
@@ -130,6 +138,8 @@ ChunkWithIndex(start=180, text='또한 NoSQL이 No RDBMS를 의미하지는 않�
 ChunkWithIndex(start=236, text='그리고 No RDBMS가 NoSQL인 것도 아니다. SQL호환 레이어를 제공하는 KV-store라는 예외가 역 시 존재한다. 물론 KV-store의 특징상 range query를 where절에 넣을 수 없으므로 완전한 SQL은 못 되고 SQL의 부분집합 정도를 제공한다.')]
 ```
 
+<br><br>
+
 ## 5. Updates
 - you can upgrade library by `pip install kss --upgrade` 
 - you can also check update notes [here](https://github.com/hyunwoongko/kss/blob/main/UPDATES.md).
@@ -138,12 +148,16 @@ test: twine upload --repository-url https://test.pypi.org/legacy/ dist/*
 realse: twine upload dist/*
 ```
 
+<br><br>
+
 ## 6. References
 - [KSS Java version (Coming soon...)](#)
 - [KSS C++ version](https://github.com/likejazz/korean-sentence-splitter)
 - [Docs of C++ version](http://docs.likejazz.com/kss/)
 - [PyPI repository](https://pypi.org/project/kss/)
-  
+
+<br><br>
+
 ## 7. Citation
 If you find this library useful, please consider citing:
 ```
