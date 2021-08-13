@@ -100,3 +100,12 @@
 - Add new eomi (음)
   - input : "그게 위축될 가능성도 지적했음 내가 그랬어"
   - output : ["그게 위축될 가능성도 지적했음", "내가 그랬어"]
+
+### kss 2.6.0
+- Add parameter `ignore_quotes_or_bracket`.
+  - Previous versions do not split sentences between brackets or quotation marks. 
+  - However, someone may need this feature when training a language model, etc.
+- Modify parameter name: `safe: False` → `use_heuristc: True` 
+  - if you turn on `use_heuristc` to `True`, kss will split sentence using heuristics
+  - if you turn off (`False`), kss only dependents punctuation points ('.', '?', '!')
+- Fix bugs reported in issue: https://github.com/hyunwoongko/kss/issues/16

@@ -12,12 +12,12 @@ with open('README.md', encoding='utf-8') as f:
 
 setup(
     name='kss',
-    version='2.5.1',
+    version='2.6.0',
     author='Hyunwoong Ko',
-    author_email='kevin.woong@kakaobrain.com',
+    author_email='kevin.ko@tunib.ai',
     url='https://github.com/hyunwoongko/kss',
     license='BSD 3-Clause "New" or "Revised" License',
-    description='Split Korean text into sentences using heuristic algorithm using pure python',
+    description='Korean sentence splitter',
     long_description_content_type='text/markdown',
     platforms=['any'],
     long_description=long_description,
