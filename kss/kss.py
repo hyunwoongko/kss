@@ -10,552 +10,606 @@
 # This software may be modified and distributed under the terms
 # of the BSD license.  See the LICENSE file for details.
 
+import gc
+import itertools
 import math
-from typing import List
 
-# functions
-# classes
-from kss.base import (
-    ID,
-    BackupManager,
-    ChunkWithIndex,
-    Const,
-    QuoteException,
-    SentenceIndex,
-    Stats,
+from concurrent.futures import ProcessPoolExecutor as Pool
+from functools import partial
+from typing import List, Union, Tuple
+
+from kss.functions import (
+    check_pos,
     do_push_pop_symbol,
-    do_trim_sent_push_results,
     empty,
+    length_constraints,
+    get_num_workers,
+    get_input_texts,
+    clear_list_to_sentences,
+    get_chunk_with_index,
+    remove_useless_space,
 )
-
-# postprocessing methods
-# mapping table
-from kss.rule import (
-    Table,
-    post_processing_da,
-    post_processing_ham,
-    post_processing_jyo,
-    post_processing_um,
-    post_processing_yo,
+from kss.classes import (
+    ID,
+    Const,
+    Eojeol,
+    Postprocessor,
+    Preprocessor,
+    Stats,
 )
-
-
-# TODO (bug) : 책을 봤다. 고구려에 관한
-def realign_by_quote(
-    text,
-    last_quote_pos,
-    quote_type,
-    use_heuristic,
-    max_recover_step,
-    max_recover_length,
-    ignore_quotes_or_brackets,
-    recover_step,
-):
-    before_quote = _split_sentences(
-        text[:last_quote_pos],
-        use_heuristic=use_heuristic,
-        max_recover_step=max_recover_step,
-        max_recover_length=max_recover_length,
-        ignore_quotes_or_brackets=ignore_quotes_or_brackets,
-        recover_step=recover_step,
-    )
-
-    before_last = before_quote[-1] if len(before_quote) > 0 else ""
-    before_quote = [] if len(before_quote) == 1 else before_quote[:-1]
-
-    after_quote = _split_sentences(
-        text[last_quote_pos + 1 :],
-        use_heuristic=use_heuristic,
-        max_recover_step=max_recover_step,
-        max_recover_length=max_recover_length,
-        ignore_quotes_or_brackets=ignore_quotes_or_brackets,
-        recover_step=recover_step,
-    )
-
-    after_first = after_quote[0] if len(after_quote) > 0 else ""
-    after_quote = [] if len(after_quote) == 1 else after_quote[1:]
-
-    middle_quote = [before_last] + [quote_type + after_first]
-    return before_quote + middle_quote + after_quote
-
-
-def lindexsplit(some_list, *args):
-    args = (0,) + tuple(data + 1 for data in args) + (len(some_list) + 1,)
-    return [some_list[start:end].strip() for start, end in zip(args, args[1:])]
-
-
-def find_all(a_str, sub):
-    start = 0
-    while True:
-        start = a_str.find(sub, start)
-        if start == -1:
-            return
-        yield start + len(sub) - 1
-        start += len(sub)
-
-
-def post_processing(results, post_processing_list):
-    final_results = []
-    for res in results:
-        split_idx = []
-
-        find_quotes = False
-        for qt in Const.single_quotes + Const.double_quotes + Const.bracket:
-            if qt in res:
-                find_quotes = True
-                break
-
-        if not find_quotes:
-            for post in post_processing_list:
-                if post in res:
-                    split_idx += list(find_all(res, post))
-
-        split_idx = sorted(split_idx)
-        final_results += lindexsplit(res, *split_idx)
-
-    return final_results
-
-
-quote_exception = QuoteException()
-
-endpoint = (
-    Const.single_quotes
-    + Const.double_quotes
-    + Const.bracket
-    + Const.punctuation
-    + [" ", ""]
-)
-
-need_to_replace_zwsp = Const.single_quotes + Const.double_quotes + Const.bracket
+from kss.classes import _morph
+from kss.rule import Table
 
 
 def split_sentences(
-    text: str,
+    text: Union[str, tuple, List[str]],
     use_heuristic: bool = True,
+    use_quotes_brackets_processing: bool = True,
     max_recover_step: int = 5,
-    max_recover_length: int = 30000,
-    ignore_quotes_or_brackets=False,
-):
+    max_recover_length: int = 20000,
+    backend: str = "pynori",
+    num_workers: int = -1,
+    disable_gc: bool = True,
+) -> Union[List[str], List[List[str]]]:
     """
-    split document to sentence
+    Split document to sentences.
 
     Args:
-        text (str):
-            input text
-        use_heuristic (bool):
-            use heuristic algorithms or not
-        max_recover_step (int):
-            maximum step for quote and bracket misalignment recovering
-        max_recover_length (int):
-            maximum text length to recover when quote and bracket misaligned
-        ignore_quotes_or_brackets (bool):
-            ignore quotes or bracket processing
+        text (Union[str, tuple, List[str]]): input text
+        use_heuristic (bool): use heuristic algorithms or not
+        use_quotes_brackets_processing (bool): use quotes or bracket processing or not
+        max_recover_step (int): maximum step for quote and bracket misalignment recovering
+        max_recover_length (int): maximum text length to recover when quote and bracket misaligned
+        backend (str): max length of text to use morpheme feature
+        num_workers (int): number of multiprocessing workers ('-1' means maximum processes)
+        disable_gc (bool): disable garbage collecting (It helps to improve speed)
 
     Returns:
-        (List[str]): list of sentences
+        Union[List[str], List[List[str]]]: list of segmented sentences
     """
-    return _split_sentences(
+    assert isinstance(backend, str), "param `backend` must be `str` type"
+
+    backend = backend.lower()
+
+    assert backend.lower() in [
+        "pynori",
+        "mecab",
+        "none",
+    ], "Wrong backend ! Currently, we support [`pynori`, `mecab`, `none`] backend."
+
+    assert (
+        isinstance(text, str) or isinstance(text, list) or isinstance(text, tuple)
+    ), "param `text` must be one of [str, List[str], Tuple[str]]."
+
+    assert isinstance(use_heuristic, bool), "param `use_heuristic` must be `bool` type"
+    assert isinstance(
+        use_quotes_brackets_processing, bool
+    ), "param `use_quotes_brackets_processing` must be `bool` type"
+    assert isinstance(
+        max_recover_step, int
+    ), "param `max_recover_step` must be `int` type"
+    assert isinstance(
+        max_recover_length, int
+    ), "param `max_recover_length` must be `int` type"
+    assert isinstance(num_workers, int), "param `num_workers` must be `int` type"
+
+    if disable_gc:
+        gc.disable()
+
+    max_recover_step = length_constraints(
         text,
-        use_heuristic,
-        max_recover_step,
         max_recover_length,
-        ignore_quotes_or_brackets,
+        max_recover_step,
     )
+
+    input_texts = get_input_texts(text)
+    num_workers = get_num_workers(num_workers)
+    multiprocessing = False
+
+    results = []
+    if num_workers == 1:
+        for input_text in input_texts:
+            result = []
+            for _text in input_text:
+                result.append(
+                    _split_sentences(
+                        _text,
+                        use_heuristic,
+                        use_quotes_brackets_processing,
+                        max_recover_step,
+                        max_recover_length,
+                        backend,
+                    )
+                )
+
+            result = list(itertools.chain(*result))
+            results.append(result)
+    else:
+        with Pool(max_workers=num_workers) as pool:
+            multiprocessing = True
+            mp_input_texts = []
+            mp_postprocessing = []
+            mp_temp = []
+
+            for input_text in input_texts:
+                if len(input_text) == 0:
+                    input_text.append("")
+
+                mp_temp.append(input_text)
+                mp_input_texts += input_text
+
+            for _input_for_pp in mp_temp:
+                mp_postprocessing.append("".join(_input_for_pp).replace(" ", ""))
+
+            results += pool.map(
+                partial(
+                    _split_sentences,
+                    use_heuristic=use_heuristic,
+                    use_quotes_brackets_processing=use_quotes_brackets_processing,
+                    max_recover_step=max_recover_step,
+                    max_recover_length=max_recover_length,
+                    backend=backend,
+                ),
+                mp_input_texts,
+            )
+
+            mp_output_final = []
+            mp_temp.clear()
+            results = clear_list_to_sentences(results)
+
+            for result in results:
+                mp_temp += result
+                if "".join(mp_temp).replace(" ", "") in mp_postprocessing:
+                    mp_output_final.append(mp_temp)
+                    mp_temp = []
+
+            results = mp_output_final
+
+    if not multiprocessing:
+        results = clear_list_to_sentences(results)
+
+    if disable_gc:
+        gc.enable()
+
+    if isinstance(text, str):
+        return results[0]
+    else:
+        return results
+
+
+def split_chunks(
+    text: Union[str, List[str], tuple],
+    max_length: int,
+    overlap=False,
+    **kwargs,
+) -> Union[List[str], List[List[str]]]:
+    """
+    Split chunks from input texts by max_length.
+
+    Args:
+        text (Union[str, List[str], tuple]): input texts
+        max_length (int): max length of ecah chunk
+        overlap (bool): whether allow duplicated sentence
+
+    Returns:
+        Union[List[str], List[List[str]]]: chunks of segmented sentences
+    """
+
+    assert (
+        isinstance(text, str) or isinstance(text, list) or isinstance(text, tuple)
+    ), "param `text` must be one of [str, List[str], Tuple[str]]."
+    assert isinstance(max_length, int), "param `max_length` must be `int` type."
+    assert isinstance(overlap, bool), "param `overlap` must be `bool` type."
+
+    if isinstance(text, str):
+        _text = [text]
+        _type = str
+    else:
+        _text = text
+        _type = list
+
+    chunks = [
+        _split_chunks(
+            _txt,
+            max_length,
+            overlap,
+            **kwargs,
+        )
+        for _txt in _text
+    ]
+
+    if _type == str:
+        return chunks[0]
+    else:
+        return chunks
 
 
 def _split_sentences(
     text: str,
     use_heuristic: bool,
+    use_quotes_brackets_processing: bool,
     max_recover_step: int,
     max_recover_length: int,
-    ignore_quotes_or_brackets: bool,
+    backend: str,
     recover_step: int = 0,
 ):
-    if len(text) > max_recover_length:
-        max_recover_step = 0
 
-    text = text.replace("\u200b", "")
-    backup_manager = BackupManager()
+    use_morpheme = backend != "none"
+    prep = Preprocessor(use_morpheme=use_morpheme)
+    post = Postprocessor()
+    text = prep.remove_zwsp(text)
+    text = prep.remove_useless_space(text)
 
-    double_quote_stack = []
-    single_quote_stack = []
-    bracket_stack = []
+    if not use_morpheme:
+        # but if you use morpheme feature, it is unnecessary.
+        text = prep.add_ec_cases_to_dict(text)
 
-    for i in range(0, len(text)):
-        if text[i] in ["다", "요", "죠", "함", "음"]:
-            if i != len(text) - 1:
-                if text[i + 1] not in endpoint:
-                    target_to_backup = text[i] + text[i + 1]
-                    backup_manager.add_item_to_dict(
-                        key=target_to_backup, val=str(abs(hash(target_to_backup)))
-                    )
-
-    text = backup_manager.backup(text)
-    for s in need_to_replace_zwsp:
+    text = prep.backup(text)
+    for s in Const.quotes_or_brackets:
         text = text.replace(s, f"\u200b{s}\u200b")
 
-    prev_1: str = ""
-    prev_2: str = ""
-    prev_3: str = ""
-    prev_4: str = ""
+    if use_morpheme:
+        eojeols = _morph.pos(text=text, backend=backend)
+    else:
+        eojeols = [Eojeol(t, "EF+ETN") for t in text]
 
-    cur_sentence: str = ""
-    results: List[str] = []
-    cur_stat: int = Stats.DEFAULT
+    double_stack, single_stack, bracket_stack = [], [], []
+    empty_stacks = lambda: empty([single_stack, double_stack, bracket_stack], dim=2)
+    DA = Stats.DA_MORPH if use_morpheme else Stats.DA_EOJEOL
 
-    last_single_quote_pos = 0
-    last_double_quote_pos = 0
-    last_bracket_pos = 0
+    results = []
+    cur_sentence = []
+    cur_stat = Stats.DEFAULT
+    prev = Eojeol("", "TEMP")
 
-    single_quote_pop = "'"
-    double_quote_pop = '"'
-    bracket_pop = " "
+    last_single_pos, single_quote_pop = 0, "'"
+    last_double_pos, double_quote_pop = 0, '"'
+    last_bracket_pos, bracket_pop = 0, " "
 
-    for i, ch in enumerate(text):
+    for i, eojeol in enumerate(eojeols):
         if cur_stat == Stats.DEFAULT:
-            if ch in Const.double_quotes:
-                if not ignore_quotes_or_brackets:
-                    if ch in Const.double_quotes_open_to_close.keys():
+            if eojeol.eojeol in Const.double_quotes:
+                if use_quotes_brackets_processing:
+                    if eojeol.eojeol in Const.double_quotes_open_to_close.keys():
                         double_quote_pop = do_push_pop_symbol(
-                            double_quote_stack,
-                            Const.double_quotes_open_to_close[ch],
-                            ch,
+                            double_stack,
+                            Const.double_quotes_open_to_close[eojeol.eojeol],
+                            eojeol.eojeol,
                         )
                     else:
                         double_quote_pop = do_push_pop_symbol(
-                            double_quote_stack,
-                            Const.double_quotes_close_to_open[ch],
-                            ch,
+                            double_stack,
+                            Const.double_quotes_close_to_open[eojeol.eojeol],
+                            eojeol.eojeol,
                         )
-                    last_double_quote_pos = i
+                    last_double_pos = i
 
-            elif ch in Const.single_quotes:
-                if not ignore_quotes_or_brackets:
-                    if ch in Const.single_quotes_open_to_close.keys():
+            elif eojeol.eojeol in Const.single_quotes:
+                if use_quotes_brackets_processing:
+                    if eojeol.eojeol in Const.single_quotes_open_to_close.keys():
                         single_quote_pop = do_push_pop_symbol(
-                            single_quote_stack,
-                            Const.single_quotes_open_to_close[ch],
-                            ch,
+                            single_stack,
+                            Const.single_quotes_open_to_close[eojeol.eojeol],
+                            eojeol.eojeol,
                         )
                     else:
                         single_quote_pop = do_push_pop_symbol(
-                            single_quote_stack,
-                            Const.single_quotes_close_to_open[ch],
-                            ch,
+                            single_stack,
+                            Const.single_quotes_close_to_open[eojeol.eojeol],
+                            eojeol.eojeol,
                         )
-                    last_single_quote_pos = i
+                    last_single_pos = i
 
-            elif ch in Const.bracket:
-                if not ignore_quotes_or_brackets:
-                    if ch in Const.bracket_open_to_close.keys():
+            elif eojeol.eojeol in Const.brackets:
+                if use_quotes_brackets_processing:
+                    if eojeol.eojeol in Const.bracket_open_to_close.keys():
                         bracket_pop = do_push_pop_symbol(
                             bracket_stack,
-                            Const.bracket_open_to_close[ch],
-                            ch,
+                            Const.bracket_open_to_close[eojeol.eojeol],
+                            eojeol.eojeol,
                         )
                     else:
                         bracket_pop = do_push_pop_symbol(
                             bracket_stack,
-                            Const.bracket_close_to_open[ch],
-                            ch,
+                            Const.bracket_close_to_open[eojeol.eojeol],
+                            eojeol.eojeol,
                         )
                     last_bracket_pos = i
 
-            elif ch in [".", "!", "?"]:
+            elif eojeol.eojeol in [".", "!", "?", "…"]:
                 if (
-                    empty(double_quote_stack)
-                    and empty(single_quote_stack)
-                    and empty(bracket_stack)
-                    and (Table[Stats.SB][prev_1] & ID.PREV)
+                    (Table[Stats.SB][prev.eojeol] & ID.PREV)
+                    and empty_stacks()
+                    # check if pos is SF(마침표, 물음표, 느낌표) or SE(줄임표)
                 ):
-                    cur_stat = Stats.SB
+                    if not use_morpheme:
+                        if i != len(eojeols) - 1:
+                            if eojeols[i + 1] in Const.endpoint:
+                                cur_stat = Stats.SB
+                    else:
+                        if i != 0:
+                            if check_pos(eojeols[i - 1], ["EF", "ETN"]):
+                                cur_stat = Stats.SB
 
             if use_heuristic is True:
-                if ch == "다":
+                if eojeol.eojeol in ["다"]:
                     if (
-                        empty(double_quote_stack)
-                        and empty(single_quote_stack)
-                        and empty(bracket_stack)
-                        and (Table[Stats.DA][prev_1] & ID.PREV)
+                        (Table[DA][prev.eojeol] & ID.PREV)
+                        and check_pos(eojeol, ["EF"])
+                        and empty_stacks()
+                        # check if pos is EF(종결어미)
                     ):
-                        cur_stat = Stats.DA
-                elif ch == "요":
-                    if (
-                        empty(double_quote_stack)
-                        and empty(single_quote_stack)
-                        and empty(bracket_stack)
-                        and (Table[Stats.YO][prev_1] & ID.PREV)
-                    ):
-                        cur_stat = Stats.YO
-                elif ch == "죠":
-                    if (
-                        empty(double_quote_stack)
-                        and empty(single_quote_stack)
-                        and empty(bracket_stack)
-                        and (Table[Stats.JYO][prev_1] & ID.PREV)
-                    ):
-                        cur_stat = Stats.JYO
-                elif ch == "함":
-                    if (
-                        empty(double_quote_stack)
-                        and empty(single_quote_stack)
-                        and empty(bracket_stack)
-                        and (Table[Stats.HAM][prev_1] & ID.PREV)
-                    ):
-                        cur_stat = Stats.HAM
-                elif ch == "음":
-                    if (
-                        empty(double_quote_stack)
-                        and empty(single_quote_stack)
-                        and empty(bracket_stack)
-                        and (Table[Stats.UM][prev_1] & ID.PREV)
-                    ):
-                        cur_stat = Stats.UM
+                        if not use_morpheme:
+                            if i != len(eojeols) - 1:
+                                if eojeols[i + 1].eojeol in Const.endpoint:
+                                    cur_stat = DA
+                        else:
+                            cur_stat = DA
 
-            if not ignore_quotes_or_brackets:
-                quote_exception.process(
-                    ch,
-                    prev_1,
-                    prev_2,
-                    prev_3,
-                    prev_4,
-                    single_quote_stack,
-                    double_quote_stack,
-                )
+                elif eojeol.eojeol in ["요"]:
+                    if (
+                        (Table[Stats.YO][prev.eojeol] & ID.PREV)
+                        and check_pos(eojeol, ["EF"])
+                        and empty_stacks()
+                        # check if pos is EF(종결어미)
+                    ):
+                        if not use_morpheme:
+                            if i != len(eojeols) - 1:
+                                if eojeols[i + 1].eojeol in Const.endpoint:
+                                    cur_stat = Stats.YO
+                        else:
+                            cur_stat = Stats.YO
+
+                elif eojeol.eojeol in ["죠", "쥬", "죵"]:
+                    if (
+                        (Table[Stats.JYO][prev.eojeol] & ID.PREV)
+                        and check_pos(eojeol, ["EF"])
+                        and empty_stacks()
+                        # check if pos is EF 종결어미
+                    ):
+                        if not use_morpheme:
+                            if i != len(eojeols) - 1:
+                                if eojeols[i + 1].eojeol in Const.endpoint:
+                                    cur_stat = Stats.JYO
+                        else:
+                            cur_stat = Stats.JYO
+
+                elif use_morpheme:
+                    # check if pos is ETN(명사형 전성어미) or EF(종결어미)
+                    if (
+                        empty_stacks()
+                        and i != len(eojeols) - 1
+                        and check_pos(eojeol, ["ETN", "EF"])
+                        and check_pos(eojeols[i + 1], ["SP", "SE", "SF"])
+                        and not check_pos(eojeol, ["J", "XS"])  # ETN+XSN 같은 케이스 막기위해
+                        and eojeol.eojeol != "기"  # ~ 하기 (명사파생 접미사가 전성어미로 오해되는 경우)
+                    ):
+                        cur_stat = Stats.EOMI
+                        # 일반적으로 적용할 수 있는 어미세트 NEXT 세트 적용.
 
         else:
-            if ch in Const.double_quotes:
-                last_double_quote_pos = i
+            if eojeol.eojeol in Const.double_quotes:
+                last_double_pos = i
 
-            elif ch in Const.single_quotes:
-                last_single_quote_pos = i
+            elif eojeol.eojeol in Const.single_quotes:
+                last_single_pos = i
 
-            elif ch in Const.bracket:
+            elif eojeol.eojeol in Const.brackets:
                 last_bracket_pos = i
 
             endif = False
             if not endif:
                 # Space
-                if ch == " " or Table[Stats.COMMON][ch] & ID.CONT:
-                    if Table[cur_stat][prev_1] & ID.NEXT1:
-                        cur_sentence = do_trim_sent_push_results(
-                            cur_sentence,
-                            results,
-                        )
-                        cur_sentence += prev_1
+                if eojeol.eojeol == " " or Table[Stats.COMMON][eojeol.eojeol] & ID.CONT:
+                    if Table[cur_stat][prev.eojeol] & ID.NEXT1:
+                        results.append(cur_sentence)
+                        cur_sentence = [prev]
                         cur_stat = Stats.DEFAULT
 
                     endif = True
 
             if not endif:
-                if Table[cur_stat][ch] & ID.NEXT:
-                    if Table[cur_stat][prev_1] & ID.NEXT1:
+                if Table[cur_stat][eojeol.eojeol] & ID.NEXT:
+                    if Table[cur_stat][prev.eojeol] & ID.NEXT1:
                         # NEXT1 + NEXT => 자르지 않는다.
-                        cur_sentence += prev_1
+                        cur_sentence.append(prev)
                     cur_stat = Stats.DEFAULT
                     endif = True
 
             if not endif:
-                if Table[cur_stat][ch] & ID.NEXT1:
-                    if Table[cur_stat][prev_1] & ID.NEXT1:
+                if Table[cur_stat][eojeol.eojeol] & ID.NEXT1:
+                    if Table[cur_stat][prev.eojeol] & ID.NEXT1:
                         # NEXT1 + NEXT1 => 자른다.
-                        cur_sentence = do_trim_sent_push_results(
-                            cur_sentence,
-                            results,
-                        )
-                        cur_sentence += prev_1
+                        results.append(cur_sentence)
+                        cur_sentence = [prev]
                         cur_stat = Stats.DEFAULT
                     endif = True
 
             if not endif:
-                if Table[cur_stat][ch] & ID.NEXT2:
-                    if Table[cur_stat][prev_1] & ID.NEXT1:
+                if Table[cur_stat][eojeol.eojeol] & ID.NEXT2:
+                    if Table[cur_stat][prev.eojeol] & ID.NEXT1:
                         # NEXT1 + NEXT2 => 자르지 않는다.
-                        cur_sentence += prev_1
+                        cur_sentence.append(prev)
                     else:
                         # NOT(NEXT1) + NEXT2 => 자른다.
-                        cur_sentence = do_trim_sent_push_results(cur_sentence, results)
+                        results.append(cur_sentence)
+                        cur_sentence = []
                     cur_stat = Stats.DEFAULT
                     endif = True
 
             if not endif:
                 if (
-                    not Table[cur_stat][ch] or Table[cur_stat][ch] & ID.PREV
+                    not Table[cur_stat][eojeol.eojeol]
+                    or Table[cur_stat][eojeol.eojeol] & ID.PREV
                 ):  # NOT exists
 
-                    cur_sentence = do_trim_sent_push_results(cur_sentence, results)
-                    if Table[cur_stat][prev_1] & ID.NEXT1:
-                        cur_sentence += prev_1
+                    results.append(cur_sentence)
+                    cur_sentence = []
+                    if Table[cur_stat][prev.eojeol] & ID.NEXT1:
+                        cur_sentence.append(prev)
                     cur_stat = Stats.DEFAULT
 
                     # It's not a good design we suppose, but it's the best unless we change the whole structure.
-                    if ch in Const.double_quotes:
-                        if not ignore_quotes_or_brackets:
-                            if ch in Const.double_quotes_open_to_close.keys():
+                    if eojeol.eojeol in Const.double_quotes:
+                        if use_quotes_brackets_processing:
+                            if (
+                                eojeol.eojeol
+                                in Const.double_quotes_open_to_close.keys()
+                            ):
                                 double_quote_pop = do_push_pop_symbol(
-                                    double_quote_stack,
-                                    Const.double_quotes_open_to_close[ch],
-                                    ch,
+                                    double_stack,
+                                    Const.double_quotes_open_to_close[eojeol.eojeol],
+                                    eojeol.eojeol,
                                 )
                             else:
                                 double_quote_pop = do_push_pop_symbol(
-                                    double_quote_stack,
-                                    Const.double_quotes_close_to_open[ch],
-                                    ch,
+                                    double_stack,
+                                    Const.double_quotes_close_to_open[eojeol.eojeol],
+                                    eojeol.eojeol,
                                 )
-                            last_double_quote_pos = i
+                            last_double_pos = i
 
-                    elif ch in Const.single_quotes:
-                        if not ignore_quotes_or_brackets:
-                            if ch in Const.single_quotes_open_to_close.keys():
+                    elif eojeol.eojeol in Const.single_quotes:
+                        if use_quotes_brackets_processing:
+                            if (
+                                eojeol.eojeol
+                                in Const.single_quotes_open_to_close.keys()
+                            ):
                                 single_quote_pop = do_push_pop_symbol(
-                                    single_quote_stack,
-                                    Const.single_quotes_open_to_close[ch],
-                                    ch,
+                                    single_stack,
+                                    Const.single_quotes_open_to_close[eojeol.eojeol],
+                                    eojeol.eojeol,
                                 )
                             else:
                                 single_quote_pop = do_push_pop_symbol(
-                                    single_quote_stack,
-                                    Const.single_quotes_close_to_open[ch],
-                                    ch,
+                                    single_stack,
+                                    Const.single_quotes_close_to_open[eojeol.eojeol],
+                                    eojeol.eojeol,
                                 )
-                            last_single_quote_pos = i
+                            last_single_pos = i
 
-                    elif ch in Const.bracket:
-                        if not ignore_quotes_or_brackets:
-                            if ch in Const.bracket_open_to_close.keys():
+                    elif eojeol.eojeol in Const.brackets:
+                        if use_quotes_brackets_processing:
+                            if eojeol.eojeol in Const.bracket_open_to_close.keys():
                                 bracket_pop = do_push_pop_symbol(
                                     bracket_stack,
-                                    Const.bracket_open_to_close[ch],
-                                    ch,
+                                    Const.bracket_open_to_close[eojeol.eojeol],
+                                    eojeol.eojeol,
                                 )
                             else:
                                 bracket_pop = do_push_pop_symbol(
                                     bracket_stack,
-                                    Const.bracket_close_to_open[ch],
-                                    ch,
+                                    Const.bracket_close_to_open[eojeol.eojeol],
+                                    eojeol.eojeol,
                                 )
                             last_bracket_pos = i
-                    endif = True
 
-        # endif:
-        if cur_stat == Stats.DEFAULT or not (Table[cur_stat][ch] & ID.NEXT1):
-            cur_sentence += ch
+        if cur_stat == Stats.DEFAULT or not (Table[cur_stat][eojeol.eojeol] & ID.NEXT1):
+            cur_sentence.append(eojeol)
 
-        prev_4 = prev_3
-        prev_3 = prev_2
-        prev_2 = prev_1
-        prev_1 = ch
+        prev = eojeol
 
-    if not empty(cur_sentence):
-        cur_sentence = do_trim_sent_push_results(cur_sentence, results)
+    if not empty(cur_sentence, dim=1):
+        results.append(cur_sentence)
+        cur_sentence = []
 
-    if Table[cur_stat][prev_1] & ID.NEXT1:
-        cur_sentence += prev_1
-        do_trim_sent_push_results(cur_sentence, results)
+    if Table[cur_stat][prev.eojeol] & ID.NEXT1:
+        cur_sentence.append(prev)
+        results.append(cur_sentence)
+
+    results = prep.tostring(results)
 
     if use_heuristic is True:
-        if "다 " in text:
-            results = post_processing(results, post_processing_da)
+        results = post.apply_heuristic(text, results, use_morpheme)
 
-        if "요 " in text:
-            results = post_processing(results, post_processing_yo)
+    kwargs = {
+        "use_heuristic": use_heuristic,
+        "use_quotes_brackets_processing": use_quotes_brackets_processing,
+        "max_recover_step": max_recover_step,
+        "max_recover_length": max_recover_length,
+        "backend": backend,
+        "recover_step": recover_step + 1,
+    }
 
-        if "죠 " in text:
-            results = post_processing(results, post_processing_jyo)
+    if recover_step < max_recover_step:
+        if len(single_stack) != 0:
+            results = _realign_by_quotes(
+                text,
+                last_single_pos,
+                single_quote_pop,
+                **kwargs,
+            )
+        if len(double_stack) != 0:
+            results = _realign_by_quotes(
+                text,
+                last_double_pos,
+                double_quote_pop,
+                **kwargs,
+            )
+        if len(bracket_stack) != 0:
+            results = _realign_by_quotes(
+                text,
+                last_bracket_pos,
+                bracket_pop,
+                **kwargs,
+            )
 
-        if "함 " in text:
-            results = post_processing(results, post_processing_ham)
+    outputs = [prep.restore(s).replace("\u200b", "") for s in results]
 
-        if "음 " in text:
-            results = post_processing(results, post_processing_um)
-
-    if len(single_quote_stack) != 0 and recover_step < max_recover_step:
-        results = realign_by_quote(
-            text,
-            last_single_quote_pos,
-            single_quote_pop,
-            use_heuristic,
-            max_recover_step,
-            max_recover_length,
-            ignore_quotes_or_brackets,
-            recover_step + 1,
-        )
-
-    if len(double_quote_stack) != 0 and recover_step < max_recover_step:
-        results = realign_by_quote(
-            text,
-            last_double_quote_pos,
-            double_quote_pop,
-            use_heuristic,
-            max_recover_step,
-            max_recover_length,
-            ignore_quotes_or_brackets,
-            recover_step + 1,
-        )
-
-    if len(bracket_stack) != 0 and recover_step < max_recover_step:
-        results = realign_by_quote(
-            text,
-            last_bracket_pos,
-            bracket_pop,
-            use_heuristic,
-            max_recover_step,
-            max_recover_length,
-            ignore_quotes_or_brackets,
-            recover_step + 1,
-        )
-
-    results = [backup_manager.restore(s).replace("\u200b", "").strip() for s in results]
-
-    return results
+    return outputs
 
 
-def split_sentences_index(text, **kwargs) -> List[SentenceIndex]:
+def _realign_by_quotes(text, last_quote_pos, quote_type, **kwargs):
+    before_quote = _split_sentences(text[:last_quote_pos], **kwargs)
+    before_last = before_quote[-1] if len(before_quote) > 0 else ""
+    before_quote = [] if len(before_quote) == 1 else before_quote[:-1]
+
+    after_quote = _split_sentences(text[last_quote_pos + 1 :], **kwargs)
+    after_first = after_quote[0] if len(after_quote) > 0 else ""
+    after_quote = [] if len(after_quote) == 1 else after_quote[1:]
+
+    middle_quote = [before_last + quote_type + after_first]
+    return before_quote + middle_quote + after_quote
+
+
+def _split_chunks(
+    text: str,
+    max_length: int,
+    overlap: bool = False,
+    **kwargs,
+) -> List[str]:
+
+    span, chunks = [], []
+
+    for index in _split_sentences_index(text, **kwargs):
+        if len(span) > 0:
+            if index[0] - span[0][1] > max_length:
+                chunks.append(get_chunk_with_index(text, span))
+                if overlap:
+                    span = span[math.trunc(len(span) / 2) :]
+                else:
+                    span = []
+
+        span.append(index)
+    chunks.append(get_chunk_with_index(text, span))
+    return chunks
+
+
+def _split_sentences_index(text, **kwargs) -> List[Tuple[int, int]]:
     sentences = split_sentences(text, **kwargs)
-    sentence_indexes = []
-    offset = 0
+    offset, sentence_indexes = 0, []
+    text = remove_useless_space(text)
 
     for sentence in sentences:
+        sentence = remove_useless_space(sentence)
+
         sentence_indexes.append(
-            SentenceIndex(
+            (
                 offset + text.index(sentence),
                 offset + text.index(sentence) + len(sentence),
             )
         )
         offset += text.index(sentence) + len(sentence)
         text = text[text.index(sentence) + len(sentence) :]
+
     return sentence_indexes
-
-
-def split_chunks(
-    text: str,
-    max_length=128,
-    overlap=False,
-    indexes=None,
-    **kwargs,
-) -> List[ChunkWithIndex]:
-    def get_chunk_with_index():
-        start = span[0].start
-        end = span[-1].end
-        return ChunkWithIndex(
-            span[0].start,
-            text[start:end],
-        )
-
-    if indexes is None:
-        indexes = split_sentences_index(text, **kwargs)
-
-    span = []
-    chunks = []
-    for index in indexes:
-        if len(span) > 0:
-            if index.end - span[0].start > max_length:  # len = last_end - first_start
-                chunks.append(get_chunk_with_index())
-                if overlap:
-                    span = span[math.trunc(len(span) / 2) :]  # cut half
-                else:
-                    span = []
-        span.append(index)
-    chunks.append(get_chunk_with_index())
-    return chunks

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+make clean
+rm -f Makefile config.status aclocal.m4 config.log matrix.def.org *.csv.org
+rm -rf autom4te.cache
+rm -f user-*.csv

@@ -1,0 +1,12 @@
+#
+# [ 동의어 사전 ]
+# 
+# - 사전 작성 규칙
+# - 한 라인에 콤마를 기준으로 동의어 단어 리스트 나열
+# - 맨 앞의 단어가 동의어 대표어로 정의됨
+
+파이썬,파이선,python
+인공지능,ai,aritificial intelligence
+자연어처리,nlp,natural language processing
+개발자,developer
+텍스트마이닝,텍스트 마이닝

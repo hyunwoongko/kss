@@ -14,7 +14,7 @@
 - Related test : `test_quote_misalignment` in `tests/test_kss.py`
 <br><br><br>
 
-## kss-official
+## kss 2.0
 - `python-kss` became the official version of kss.
 - you can upgrade using `pip install kss --upgrade`
 <br><br>
@@ -109,3 +109,40 @@
   - if you turn on `use_heuristc` to `True`, kss will split sentence using heuristics
   - if you turn off (`False`), kss only dependents punctuation points ('.', '?', '!')
 - Fix bugs reported in issue: https://github.com/hyunwoongko/kss/issues/16
+<br><br><br>
+
+## kss 3.0
+- Use morpheme features
+- Support multiprocessing and batch processing
+<br><br>
+
+#### kss 3.0.0
+- Use morpheme features
+  - Unlike 2.xx, unspecified eomi can also be segmented.
+  - e.g. ~소서(존댓말), ~세용(신조어), ~했음/임(전성어미) ~구나(미등록 어미), etc.
+    ```python
+    >>> split_sentences("부디 만수무강 하옵소서 천천히 가세용~ 너 밥을 먹는구나 응 맞아 난 근데 어제 이사했음 그랬구나 이제 마지막임 응응")
+    ['부디 만수무강 하옵소서', '천천히 가세용~', '너 밥을 먹는구나', '응 맞아 난 근데 어제 이사했음', '그랬구나 이제 마지막임', '응응']
+    ```
+  - Boost segmentation process via changing morpheme analyzer backend to `mecab`.
+    ```python
+    >>> split_sentences("부디 만수무강 하옵소서 천천히 가세용~ 너 밥을 먹는구나 응 맞아 난 근데 어제 이사했음 그랬구나 이제 마지막임 응응", backend="mecab")  # default is "pynori" 
+    ['부디 만수무강 하옵소서', '천천히 가세용~', '너 밥을 먹는구나', '응 맞아 난 근데 어제 이사했음', '그랬구나 이제 마지막임', '응응']  
+    ```
+  - You can turn off morpheme feature by setting use_morpheme to`False`
+    ```python
+    >>> split_sentences("부디 만수무강 하옵소서 천천히 가세용~ 너 밥을 먹는구나 응 맞아 난 근데 어제 이사했음 그랬구나 이제 마지막임 응응", use_morpheme=False)  # default is True 
+    ['부디 만수무강 하옵소서 천천히 가세용~ 너 밥을 먹는구나 응 맞아 난 근데 어제 이사했음 그랬구나 이제 마지막임 응응']
+    ```
+
+- Support multiprocessing and batch processing
+  - Yocan input `Tuple[str]` and `List[str]` as input text for batch processing.
+    ```python
+    >>> split_sentences(["안녕하세요 반가워요", "반갑습니다. 잘 지내시나요?"])
+    [['안녕하세요', '반가워요'], ['반갑습니다.', '잘 지내시나요?']]  
+    ```
+  - You can change the number of multiprocess worker. default is `-1` (max)
+    ```python
+    >>> split_sentences(["안녕하세요 반가워요", "반갑습니다. 잘 지내시나요?"], num_workers=4)
+    [['안녕하세요', '반가워요'], ['반갑습니다.', '잘 지내시나요?']]  
+    ```
