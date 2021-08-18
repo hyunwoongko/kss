@@ -290,6 +290,8 @@ And it also supports to chunk window level through the `overlap` option.
 Click the triangle button (►) for more detailed information and example code snippets of each paramter.
 
 ```python
+>>> from kss import split_chunks
+
 >>> def split_chunks(
 ...     text: Union[str, List[str], tuple],
 ...     max_length: int,
