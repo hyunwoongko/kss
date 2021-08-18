@@ -9,7 +9,7 @@ If you have a good idea about Korean sentence segmentation, please feel free to 
 <br>
 
 ### What's New:
-- August 18, 2021 [Released Kss 3.0.0]().
+- August 18, 2021 [Released Kss 3.0.0](https://github.com/hyunwoongko/kss/releases/tag/3.0.0).
 
 ## 1. Installation
 ### 1.1. Install from pip
@@ -20,7 +20,7 @@ pip install kss
 
 ### 1.2. Install from source codes
 You can also install Kss from source codes.
-This can be useful for the `Add words to user dictionary` described in [Section 3.2. Add words to user dictionary]().
+This can be useful for the `Add words to user dictionary` described in [Section 3.2. Add words to user dictionary](https://github.com/hyunwoongko/kss/blob/main/docs/USERDICT.md).
 ```console
 git clone https://github.com/hyunwoongko/kss
 cd kss
@@ -394,19 +394,15 @@ Therefore, all arguments of `split_sentences` can be used. Check the following e
 </ul>
 
 ## 3. Additional Documents
-### 3.1. Performance Analysis
-Refer to [ANALYSIS.md](https://github.com/hyunwoongko/kss/blob/main/docs/ANALYSIS.md)
-
-### 3.2. Add words to user dictionary
-Refer to [USERDICT.md](https://github.com/hyunwoongko/kss/blob/main/docs/USERDICT.md)
-
-### 3.3. Update Notes
-Refer to [UPDATES.md](https://github.com/hyunwoongko/kss/blob/main/docs/UPDATES.md)
+- [Performance Analysis](https://github.com/hyunwoongko/kss/blob/main/docs/ANALYSIS.md)
+- [Adding words to user dictionary](https://github.com/hyunwoongko/kss/blob/main/docs/USERDICT.md)
+- [Contributing Guide](https://github.com/hyunwoongko/kss/blob/main/docs/CONTRIBUTING.md)
+- [Update Note](https://github.com/hyunwoongko/kss/blob/main/docs/UPDATES.md)
 
 ## 4. References
-Kss is currently available in 3 programming languages.
+Kss is available in various programming languages.
 - [Python version (this repo, ver 3.0.0)](https://github.com/hyunwoongko/kss) contains the most recent changes to Kss.
-- [Java version (ver 2.5.1)](https://github.com/sangdee/kss-java) is based on [Python Kss 2.5.1](https://github.com/hyunwoongko/kss/blob/main/docs/UPDATES.md#kss-251) and will be updated to 3.xx in the future.
+- [Java version (ver 2.5.1)](https://github.com/sangdee/kss-java) is based on [Kss 2.5.1](https://github.com/hyunwoongko/kss/blob/main/docs/UPDATES.md#kss-251) and will be updated to 3.xx in the future.
 - [C++ version (ver 1.3.1)](https://github.com/likejazz/korean-sentence-splitter) has the original implementation of Kss and is deprecated now,
 
 ## 5. Citation

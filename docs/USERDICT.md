@@ -1,4 +1,4 @@
-# Add words to user dictionary
+# Adding words to user dictionary
 Kss 3.0 and later, you can add words to prevent segmentation errors.
 Follow the appropriate method for each morpheme backend.
 
@@ -31,4 +31,4 @@ Refer to [mecab-ko-dict](https://bitbucket.org/eunjeon/mecab-ko-dic/src/df15a487
 
 ## 3. Non-morpheme Backend
 
-Unfortunately, Kss only provides the user dictionary feature for the Morpheme backend. If you want to use the user dictionary feature, please use the Morpheme backend.
+Unfortunately, Kss only provides the user dictionary feature for the Morpheme backend. If you want to use this feature, please use the Morpheme backend.
