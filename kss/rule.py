@@ -10,7 +10,26 @@
 from collections import defaultdict
 from typing import Any
 
-from kss.classes import ID, Stats
+
+class Stats(object):
+    DEFAULT: int = 0
+    DA_EOJEOL: int = 1
+    DA_MORPH: int = 2
+    YO: int = 3
+    JYO: int = 4
+    SB: int = 5
+    COMMON: int = 6
+    EOMI: int = 7
+
+
+class ID(object):
+    NONE: int = 0
+    PREV: int = 1 << 0
+    CONT: int = 1 << 1
+    NEXT: int = 1 << 2
+    NEXT1: int = 1 << 3
+    NEXT2: int = 1 << 4
+
 
 da = [
     "간",

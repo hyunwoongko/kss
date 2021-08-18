@@ -29,10 +29,10 @@ class MorphExtractor(object):
         )
 
     def pos(self, text, backend):
-        from kss.classes import Eojeol
+        from kss.base import Eojeol
 
         if backend.lower() == "pynori":
-            _pos = self.pynori.do_analysis(text)
+            _pos = self.pynori.do_analysis(text, preprocessed=True)
 
             return [
                 Eojeol(eojeol, pos[1])
@@ -59,7 +59,7 @@ class MorphExtractor(object):
             ]
         else:
             raise AttributeError(
-                "Wrong backend ! currently, we only support `pynori`, `mecab` backend."
+                "Wrong backend ! currently, we only support `pynori`, `mecab`, `none` backend."
             )
 
 

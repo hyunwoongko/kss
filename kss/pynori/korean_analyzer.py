@@ -48,7 +48,7 @@ class KoreanAnalyzer(object):
                 mode_synonym=self.mode_synonym,
             )
 
-    def do_analysis(self, in_string):
+    def do_analysis(self, in_string, preprocessed: bool):
         """Analyze text input string and return tokens
 
         Filtering 순서에 유의. (POS -> SYNONYM)
@@ -57,7 +57,11 @@ class KoreanAnalyzer(object):
         if not isinstance(in_string, str):
             raise ValueError(f"the input type must be {type('')}")
 
-        self.kor_tokenizer.set_input(in_string)
+        self.kor_tokenizer.set_input(
+            in_string,
+            preprocessed=preprocessed,
+        )
+
         while self.kor_tokenizer.increment_token():
             pass
         tkn_attr_obj = self.kor_tokenizer.tkn_attr_obj

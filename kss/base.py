@@ -12,31 +12,14 @@
 
 import logging
 from copy import deepcopy
+from typing import List
 
+from kss.pynori.dict.character_definition import character_category_map, get_emoji
 from kss.morph import MorphExtractor
+from kss.rule import Table, Stats
 
-logger = logging.getLogger("Korean Sentence Splitter")
-logger.warning("[KSS]: Initializing Kss...")
-
-
-class Stats(object):
-    DEFAULT: int = 0
-    DA_EOJEOL: int = 1
-    DA_MORPH: int = 2
-    YO: int = 3
-    JYO: int = 4
-    SB: int = 5
-    COMMON: int = 6
-    EOMI: int = 7
-
-
-class ID(object):
-    NONE: int = 0
-    PREV: int = 1 << 0
-    CONT: int = 1 << 1
-    NEXT: int = 1 << 2
-    NEXT1: int = 1 << 3
-    NEXT2: int = 1 << 4
+logging.basicConfig(format='[Korean Sentence Splitter]: %(message)s', level=logging.WARNING)
+logging.warning("Initializing Kss...")
 
 
 class Const:
@@ -134,7 +117,9 @@ class Const:
     punctuation = [";", ".", ":", "?", "!", ",", "·"]
     special = punctuation + brackets
     quotes_or_brackets = single_quotes + double_quotes + brackets
-    endpoint = quotes_or_brackets + punctuation + [" "]
+    endpoint = (
+        quotes_or_brackets + punctuation + [" "] + list(Table[Stats.COMMON].keys())
+    )
 
     @staticmethod
     def exceptions():
@@ -263,17 +248,6 @@ class Preprocessor:
         return ["".join([j.eojeol for j in i]) for i in eojeols]
 
     @staticmethod
-    def remove_zwsp(text):
-        return text.replace("\u200b", "")
-
-    @staticmethod
-    def remove_useless_space(text):
-        while "  " in text:
-            text = text.replace("  ", " ")
-
-        return text
-
-    @staticmethod
     def _replace(text: str, purpose_dict: dict):
         for k, v in purpose_dict.items():
             text = text.replace(k, v)
@@ -289,7 +263,7 @@ class Preprocessor:
             purpose_dict={v: k for k, v in self.backup_dict.items()},
         )
 
-    def add_item_to_dict(self, key: str, val: str):
+    def _add_item_to_dict(self, key: str, val: str):
         self.backup_dict[key] = val
 
     def add_ec_cases_to_dict(self, text):
@@ -299,11 +273,19 @@ class Preprocessor:
             if cond1 and cond2:
                 if text[i + 1] not in Const.endpoint:
                     target_to_backup = text[i] + text[i + 1]
-                    self.add_item_to_dict(
+                    self._add_item_to_dict(
                         key=target_to_backup,
                         val=str(abs(hash(target_to_backup))),
                     )
 
+        return text
+
+    def add_emojis_to_dict(self, text):
+        for e in get_emoji(text):
+            self._add_item_to_dict(
+                key=e,
+                val=str(abs(hash(e))),
+            )
         return text
 
 
@@ -330,28 +312,6 @@ class Postprocessor(object):
                 return
             yield start + len(sub) - 1
             start += len(sub)
-
-    @staticmethod
-    def nt_post_process(results, prep):
-        n_outputs = []
-        for s in results:
-            s = prep.restore(s).replace("\u200b", "")
-            if "\n" in s:
-                segmented = s.split("\n")
-                for _s in segmented:
-                    n_outputs.append(_s)
-            else:
-                n_outputs.append(s)
-
-        t_outputs = []
-        for s in n_outputs:
-            if "\t" in s:
-                segmented = s.split("\t")
-                for _s in segmented:
-                    t_outputs.append(_s)
-            else:
-                t_outputs.append(s)
-        return t_outputs
 
     def _heuristic(self, results, post_processing_list):
         final_results = []
@@ -389,6 +349,150 @@ class Postprocessor(object):
             results = self._heuristic(results, post_processing_da)
 
         return results
+
+
+def empty(obj, dim=1) -> bool:
+    assert dim in [1, 2], "only 1 or 2 dimension iterable is supported."
+
+    if dim == 1:
+        return len(obj) == 0
+    else:
+        return all([empty(o) for o in obj])
+
+
+def top(stack: List[str], symbol: str) -> bool:
+    return stack[len(stack) - 1] == symbol
+
+
+def do_push_pop_symbol(stack: List[str], symbol: str, current_ch: str):
+    # call by assignment
+    if empty(stack):
+        stack.append(symbol)
+
+    else:
+        if top(stack, current_ch):
+            return stack.pop()
+        else:
+            stack.append(symbol)
+
+    return current_ch
+
+
+def check_pos(pos, pos_list):
+    for target in pos_list:
+        if target in pos.pos:
+            return True
+    return False
+
+
+def replace_quotes_or_brackets_to_zwsp(eojeols):
+    results = []
+    for eojeol in eojeols:
+        item = [eojeol]
+
+        for s in Const.quotes_or_brackets:
+            if eojeol.eojeol == s:
+                item = [
+                    Eojeol("\u200b", "TEMP"),
+                    eojeol,
+                    Eojeol("\u200b", "TEMP"),
+                ]
+
+        results += item
+
+    return results
+
+
+def length_constraints(
+    text,
+    max_recover_length,
+    max_recover_step,
+):
+    if len(text) > max_recover_length:
+        logger.warning("[KSS]: Too long text ! turn off quotes calibration !")
+        max_recover_step = 0
+
+    return max_recover_step
+
+
+def build_preprocessed_list(text):
+    input_texts = []
+    split_texts = text.split("\n")
+
+    for t in split_texts:
+        t = t.split("\t")
+        for s in t:
+            s = s.strip()
+            if len(s) > 0:
+                s = preprocess_text(s)
+                input_texts.append(s)
+
+    return input_texts
+
+
+def get_input_texts(text):
+    input_texts = []
+
+    if isinstance(text, str):
+        input_texts.append(build_preprocessed_list(text))
+
+    elif isinstance(text, list) or isinstance(text, tuple):
+        for txt in text:
+            if not isinstance(txt, str):
+                raise TypeError(
+                    "param `text` must be one of type [str, List[str], Tuple[str]]`. "
+                    f"but you inputted {type(text)}."
+                )
+
+            input_texts.append(build_preprocessed_list(txt))
+    else:
+        raise TypeError("param `text` must be one of type [str, List[str], Tuple[str]]")
+
+    return input_texts
+
+
+def clear_list_to_sentences(results):
+    return [
+        [sentence.strip() for sentence in result if len(sentence.strip()) > 0]
+        for result in results
+    ]
+
+
+def get_num_workers(num_workers):
+    if num_workers < 0:
+        num_workers = None
+
+    if num_workers == 0:
+        num_workers = 1
+
+    return num_workers
+
+
+def remove_useless_space(text):
+    text = text.replace("\n", "")
+    while "  " in text:
+        text = text.replace("  ", " ")
+
+    return text
+
+
+def get_chunk_with_index(text, span):
+    text = remove_useless_space(text)
+    start = span[0][0]
+    end = span[-1][1]
+    return text[start:end]
+
+
+def preprocess_text(text):
+    string = ""
+    for ch in text:
+        if character_category_map(ch) is not None:
+            string += ch
+
+    while "  " in string:
+        string = string.replace("  ", " ")
+
+    return string
 
 
 _morph = MorphExtractor()

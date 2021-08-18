@@ -3,8 +3,6 @@
 
 import unittest
 from time import time
-from tqdm import tqdm
-
 import kss
 
 
@@ -75,27 +73,22 @@ class KssTest(unittest.TestCase):
     def test_eomies(self):
         text = "부디 만수무강 하소서 그런데 어제 했던 이야기는 어찌됐소?"
         splitted = kss.split_sentences(text)
-        print(splitted)
         self.assertEqual(len(splitted), 2)
 
         text = "그러게나 말이에유 참말로 힘들구먼유 안그래유?"
         splitted = kss.split_sentences(text)
-        print(splitted)
         self.assertEqual(len(splitted), 3)
 
         text = "따뜻하게 입으니까 이렇게 좋잖아? 안그래?"
         splitted = kss.split_sentences(text)
-        print(splitted)
         self.assertEqual(len(splitted), 2)
 
         text = "어제 밥 먹었었음 그런데 너무 맛있었음 알겠삼?"
         splitted = kss.split_sentences(text)
-        print(splitted)
         self.assertEqual(len(splitted), 3)
 
         text = "그것이 참말로 거시기 했당께? 거 참 내가 두 눈으로 똑똑히 봤당께"
         splitted = kss.split_sentences(text)
-        print(splitted)
         self.assertEqual(len(splitted), 2)
 
     def test_quotes(self):
@@ -110,61 +103,6 @@ class KssTest(unittest.TestCase):
         text = """한 시민은 "코로나로 인해 '2020년'이란 시간은 멈춘 듯 하다"고 말했다."""
         splitted = kss.split_sentences(text)
         self.assertEqual(len(splitted), 1)
-
-    def test_from_uoneway(self):
-        cases = open("test_uoneway.txt", "r").read().splitlines()
-        nori_cnt, mecab_cnt, nm_cnt = 0, 0, 0
-        nori_results, mecab_results, nm_results = [], [], []
-
-        mecab_available = False
-        try:
-            from mecab import MeCab  # noqa
-
-            mecab_available = True
-        except ImportError:
-            pass
-
-        for case in tqdm(cases):
-            nori_result = kss.split_sentences(case, backend="pynori")
-            non_morpheme_results = kss.split_sentences(case, backend="none")
-
-            if len(nori_result) == 1:
-                nori_cnt += 1
-            else:
-                nori_results.append(nori_result)
-
-            if len(non_morpheme_results) == 1:
-                nm_cnt += 1
-            else:
-                nm_results.append(non_morpheme_results)
-
-            if mecab_available:
-                mecab_result = kss.split_sentences(case, backend="mecab")
-
-                if len(mecab_result) == 1:
-                    mecab_cnt += 1
-                else:
-                    mecab_results.append(mecab_result)
-
-        print(f"`pynori` error rate : {1 - (nori_cnt / len(cases))}")
-        print(f"`mecab` error rate : {1 - (mecab_cnt / len(cases))}")
-        print(f"`none` error rate : {1 - (nm_cnt / len(cases))}")
-        print()
-
-        print("pynori results:")
-        for i in nori_results:
-            print(i)
-        print()
-
-        print("mecab results:")
-        for i in mecab_results:
-            print(i)
-        print()
-
-        print("non-morpheme results:")
-        for i in nm_results:
-            print(i)
-        print()
 
     def test_from_jaehyeongan(self):
         text = open("code_example.txt", "r", encoding="utf-8").read()

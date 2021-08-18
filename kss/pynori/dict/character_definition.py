@@ -3,6 +3,23 @@ Character Definition
 
 Reference: `char.def` file.
 """
+import emoji
+import regex
+
+_emojis = {}
+for lang in ["pt", "it", "es", "en"]:
+    _emojis.update(emoji.UNICODE_EMOJI[lang])
+
+
+def get_emoji(text):
+    emoji_list = []
+    flags = regex.findall("[\U0001F1E6-\U0001F1FF]", text)
+
+    for grapheme in regex.findall(r"\X", text):
+        if any(char in _emojis for char in grapheme):
+            emoji_list.append(grapheme)
+
+    return emoji_list + flags
 
 
 def character_category_map(ch):
@@ -11,6 +28,10 @@ def character_category_map(ch):
     # SPACE
     if hex_ch in [0x0020, 0x000D, 0x0009, 0x000B, 0x000A]:
         return "SPACE"
+
+    # EMOJI
+    if len(get_emoji(ch)) != 0:
+        return "EMOJI"
 
     # ASCII
     elif hex_ch in range(0x0021, 0x002F + 1):

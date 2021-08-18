@@ -13,12 +13,15 @@
 import gc
 import itertools
 import math
-
 from concurrent.futures import ProcessPoolExecutor as Pool
 from functools import partial
 from typing import List, Union, Tuple
 
-from kss.functions import (
+from kss.base import (
+    Const,
+    Eojeol,
+    Postprocessor,
+    Preprocessor,
     check_pos,
     do_push_pop_symbol,
     empty,
@@ -27,18 +30,10 @@ from kss.functions import (
     get_input_texts,
     clear_list_to_sentences,
     get_chunk_with_index,
-    remove_useless_space,
+    preprocess_text,
+    _morph,
 )
-from kss.classes import (
-    ID,
-    Const,
-    Eojeol,
-    Postprocessor,
-    Preprocessor,
-    Stats,
-)
-from kss.classes import _morph
-from kss.rule import Table
+from kss.rule import Table, Stats, ID
 
 
 def split_sentences(
@@ -180,7 +175,7 @@ def split_sentences(
 def split_chunks(
     text: Union[str, List[str], tuple],
     max_length: int,
-    overlap=False,
+    overlap: bool = False,
     **kwargs,
 ) -> Union[List[str], List[List[str]]]:
     """
@@ -237,14 +232,14 @@ def _split_sentences(
     use_morpheme = backend != "none"
     prep = Preprocessor(use_morpheme=use_morpheme)
     post = Postprocessor()
-    text = prep.remove_zwsp(text)
-    text = prep.remove_useless_space(text)
 
     if not use_morpheme:
         # but if you use morpheme feature, it is unnecessary.
         text = prep.add_ec_cases_to_dict(text)
 
+    text = prep.add_emojis_to_dict(text)
     text = prep.backup(text)
+
     for s in Const.quotes_or_brackets:
         text = text.replace(s, f"\u200b{s}\u200b")
 
@@ -323,9 +318,7 @@ def _split_sentences(
                     # check if pos is SF(마침표, 물음표, 느낌표) or SE(줄임표)
                 ):
                     if not use_morpheme:
-                        if i != len(eojeols) - 1:
-                            if eojeols[i + 1] in Const.endpoint:
-                                cur_stat = Stats.SB
+                        cur_stat = Stats.SB
                     else:
                         if i != 0:
                             if check_pos(eojeols[i - 1], ["EF", "ETN"]):
@@ -580,6 +573,7 @@ def _split_chunks(
 ) -> List[str]:
 
     span, chunks = [], []
+    text = preprocess_text(text)
 
     for index in _split_sentences_index(text, **kwargs):
         if len(span) > 0:
@@ -598,11 +592,8 @@ def _split_chunks(
 def _split_sentences_index(text, **kwargs) -> List[Tuple[int, int]]:
     sentences = split_sentences(text, **kwargs)
     offset, sentence_indexes = 0, []
-    text = remove_useless_space(text)
 
     for sentence in sentences:
-        sentence = remove_useless_space(sentence)
-
         sentence_indexes.append(
             (
                 offset + text.index(sentence),

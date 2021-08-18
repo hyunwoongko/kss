@@ -127,14 +127,17 @@ class KoreanTokenizer(object):
         self.pending = []
         self.positions.get(0).add(0, 0, -1, -1, -1, -1, Type.KNOWN, None, None, None)
 
-    def set_input(self, in_string):
+    def set_input(self, in_string, preprocessed: bool = False):
         """Load input korean string to buffer."""
-        new_string = ""
-        for ch in in_string:
-            if character_category_map(ch) is None:
-                new_string += " "
-            else:
-                new_string += ch
+        if not preprocessed:
+            new_string = ""
+            for ch in in_string:
+                if character_category_map(ch) is None:
+                    new_string += " "
+                else:
+                    new_string += ch
+        else:
+            new_string = in_string
 
         self.buffer.set(new_string)
         self.reset_state()
