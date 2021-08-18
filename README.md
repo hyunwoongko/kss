@@ -160,7 +160,7 @@ Therefore, Kss provides the parameters to adjust the recursive algorithm.
 - `max_recover_length` determines the length of a sentence to which calibration is applied. Kss does not calibrate sentences longer than this value. Because calibrating long sentences takes a very long time.
 <br>
   
-P.S. From kss 3.0.2, [memoization with LRU cache]() was introduced. This can improve performance by saving duplicated segmentation results.
+P.S. From kss 3.0.2, [memoization with LRU cache](https://github.com/hyunwoongko/kss/blob/b4b2b21846b39d8e01da71d761b4033a030505f1/kss/kss.py#L233) was introduced. This can improve performance by saving duplicated segmentation results.
 
 
 - An example of `max_recover_step` 
