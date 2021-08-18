@@ -6,7 +6,7 @@ Follow the appropriate method for each morpheme backend.
 ### 1.1. Find path of dictionary
 If you are using the Pynori backend, you can add user words to `/kss/pynori/resources/userdict.txt` in the kss installation path.
 The Python library is installed in the `site-package` path when installed with pip. If it is difficult to access this path, 
-it may be helpful [to install it from the source code.](https://github.com/hyunwoongko/kss#12-install-from-source-codes).
+it can be helpful [to install from the source code.](https://github.com/hyunwoongko/kss#12-install-from-source-codes).
 
 ### 1.2. Syntax of user dictionary
 Please refer to following syntax to use user dictionary.
