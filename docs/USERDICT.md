@@ -27,7 +27,7 @@ Kss
 
 ## 2. Mecab Backend
 
-Refer to [mecab-ko-dict](https://bitbucket.org/eunjeon/mecab-ko-dic/src/df15a487444d88565ea18f8250330276497cc9b9/final/user-dic/README.md).
+Refer to [mecab-ko-dic](https://bitbucket.org/eunjeon/mecab-ko-dic/src/df15a487444d88565ea18f8250330276497cc9b9/final/user-dic/README.md).
 
 ## 3. Non-morpheme Backend
 
