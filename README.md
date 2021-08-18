@@ -217,7 +217,7 @@ However, since there is a lot of difference in speed, we strongly recommend usin
   >>> split_sentences(text, backend="pynori")
   ['부디 만수무강 하옵소서', '천천히 가세용~', '너 밥을 먹는구나', '응 맞아 난 근데 어제 이사했음', '그랬구나 이제 마지막임', '응응']
 
-  >>> split_sentences(text, backend="pynori")
+  >>> split_sentences(text, backend="mecab")
   ['부디 만수무강 하옵소서', '천천히 가세용~', '너 밥을 먹는구나', '응 맞아 난 근데 어제 이사했음', '그랬구나 이제 마지막임', '응응']
 
   >>> split_sentences(text, backend="none")
