@@ -14,11 +14,14 @@ import logging
 from copy import deepcopy
 from typing import List
 
+from kss.cache import LRUCache
 from kss.pynori.dict.character_definition import character_category_map, get_emoji
 from kss.morph import MorphExtractor
 from kss.rule import Table, Stats
 
-logging.basicConfig(format='[Korean Sentence Splitter]: %(message)s', level=logging.WARNING)
+logging.basicConfig(
+    format="[Korean Sentence Splitter]: %(message)s", level=logging.WARNING
+)
 logging.warning("Initializing Kss...")
 
 
@@ -409,7 +412,7 @@ def length_constraints(
     max_recover_step,
 ):
     if len(text) > max_recover_length:
-        logger.warning("[KSS]: Too long text ! turn off quotes calibration !")
+        logging.warning("Too long text! turn off quotes calibration!")
         max_recover_step = 0
 
     return max_recover_step
@@ -497,3 +500,4 @@ def preprocess_text(text):
 
 _morph = MorphExtractor()
 _exceptions = Const.exceptions()
+_cache = LRUCache(max_size=1000)

@@ -14,6 +14,7 @@ import gc
 import itertools
 import math
 from concurrent.futures import ProcessPoolExecutor as Pool
+from copy import deepcopy
 from functools import partial
 from typing import List, Union, Tuple
 
@@ -31,9 +32,10 @@ from kss.base import (
     clear_list_to_sentences,
     get_chunk_with_index,
     preprocess_text,
-    _morph,
+    _morph, _cache,
 )
 from kss.rule import Table, Stats, ID
+
 
 
 def split_sentences(
@@ -70,7 +72,7 @@ def split_sentences(
         "pynori",
         "mecab",
         "none",
-    ], "Wrong backend ! Currently, we support [`pynori`, `mecab`, `none`] backend."
+    ], "Wrong backend! Currently, we support [`pynori`, `mecab`, `none`] backend."
 
     assert (
         isinstance(text, str) or isinstance(text, list) or isinstance(text, tuple)
@@ -228,6 +230,10 @@ def _split_sentences(
     backend: str,
     recover_step: int = 0,
 ):
+    if text in _cache.dic:
+        return _cache.get(text)
+    else:
+        original_text = deepcopy(text)
 
     use_morpheme = backend != "none"
     prep = Preprocessor(use_morpheme=use_morpheme)
@@ -547,7 +553,13 @@ def _split_sentences(
                 **kwargs,
             )
 
-    outputs = [prep.restore(s).replace("\u200b", "") for s in results]
+    outputs = []
+    for s in results:
+        s = prep.restore(s)
+        s = s.replace("\u200b", "")
+        outputs.append(s)
+
+    _cache.put(original_text, outputs)
 
     return outputs
 
