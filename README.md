@@ -9,7 +9,7 @@ If you have a good idea about Korean sentence segmentation, please feel free to 
 <br>
 
 ### What's New:
-- August 18, 2021 [Released Kss 3.0.0](https://github.com/hyunwoongko/kss/releases/tag/3.0.0).
+- August 18, 2021 [Released Kss 3.0](https://github.com/hyunwoongko/kss/releases/tag/3.0.1).
 
 ## 1. Installation
 ### 1.1. Install from pip

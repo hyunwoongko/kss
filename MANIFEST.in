@@ -1,7 +1,5 @@
 include LICENSE
 include README.md
-include LICENSE
-include README.md
 include requirements.txt
 include kss/pynori/resources/synonyms.txt
 include kss/pynori/resources/userdict.txt
