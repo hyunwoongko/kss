@@ -136,7 +136,7 @@
     ```
 
 - Support multiprocessing and batch processing
-  - Yocan input `Tuple[str]` and `List[str]` as input text for batch processing.
+  - You can input `Tuple[str]` and `List[str]` as input text for batch processing.
     ```python
     >>> split_sentences(["안녕하세요 반가워요", "반갑습니다. 잘 지내시나요?"])
     [['안녕하세요', '반가워요'], ['반갑습니다.', '잘 지내시나요?']]  
