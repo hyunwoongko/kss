@@ -129,9 +129,9 @@
     >>> split_sentences("부디 만수무강 하옵소서 천천히 가세용~ 너 밥을 먹는구나 응 맞아 난 근데 어제 이사했음 그랬구나 이제 마지막임 응응", backend="mecab")  # default is "pynori" 
     ['부디 만수무강 하옵소서', '천천히 가세용~', '너 밥을 먹는구나', '응 맞아 난 근데 어제 이사했음', '그랬구나 이제 마지막임', '응응']  
     ```
-  - You can turn off morpheme feature by setting use_morpheme to`False`
+  - You can turn off this by hanging morpheme analyzer backend to `none`.
     ```python
-    >>> split_sentences("부디 만수무강 하옵소서 천천히 가세용~ 너 밥을 먹는구나 응 맞아 난 근데 어제 이사했음 그랬구나 이제 마지막임 응응", use_morpheme=False)  # default is True 
+    >>> split_sentences("부디 만수무강 하옵소서 천천히 가세용~ 너 밥을 먹는구나 응 맞아 난 근데 어제 이사했음 그랬구나 이제 마지막임 응응", backend="none")  # default is "pynori" 
     ['부디 만수무강 하옵소서 천천히 가세용~ 너 밥을 먹는구나 응 맞아 난 근데 어제 이사했음 그랬구나 이제 마지막임 응응']
     ```
 
