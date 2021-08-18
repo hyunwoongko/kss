@@ -262,7 +262,7 @@ def _split_sentences(
     cur_sentence = []
     cur_stat = Stats.DEFAULT
     prev = Eojeol("", "TEMP")
-    prev_non_space = Eojeol("", "TEMP")
+    prev_non_space = (Eojeol("", "TEMP"), 0)
 
     last_single_pos, single_quote_pop = 0, "'"
     last_double_pos, double_quote_pop = 0, '"'
@@ -412,11 +412,20 @@ def _split_sentences(
                         # NEXT1 + NEXT => 자르지 않는다.
                         cur_sentence.append(prev)
 
-                    if prev_non_space.eojeol in Const.endpoint:
+                    if prev_non_space[0].eojeol in Table[Stats.COMMON]:
                         # NEW RULE for KSS 3 to fix following issue.
                         # https://github.com/hyunwoongko/kss/issues/7
-                        results.append(cur_sentence)
-                        cur_sentence = [prev]
+                        last_quotes_or_bracket_pos = max(
+                            last_single_pos, last_double_pos
+                        )
+                        last_quotes_or_bracket_pos = max(
+                            last_quotes_or_bracket_pos, last_bracket_pos
+                        )
+
+                        if not (prev_non_space[1] <= last_quotes_or_bracket_pos < i):
+                            # 다 / .(prev_non_space) / "(last_quotes_or_bracket_pos) / i (며)
+                            results.append(cur_sentence)
+                            cur_sentence = [prev]
 
                     cur_stat = Stats.DEFAULT
                     endif = True
@@ -514,7 +523,7 @@ def _split_sentences(
         prev = eojeol
 
         if eojeol.eojeol != " ":
-            prev_non_space = eojeol
+            prev_non_space = (eojeol, i)
 
     if not empty(cur_sentence, dim=1):
         results.append(cur_sentence)
