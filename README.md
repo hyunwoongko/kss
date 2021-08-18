@@ -412,7 +412,7 @@ Therefore, all arguments of `split_sentences` can be used. Check the following e
 ## 3. Additional Documents
 - [Performance Analysis](https://github.com/hyunwoongko/kss/blob/main/docs/ANALYSIS.md)
 - [Adding words to user dictionary](https://github.com/hyunwoongko/kss/blob/main/docs/USERDICT.md)
-- [Update Note](https://github.com/hyunwoongko/kss/blob/main/docs/UPDATES.md)
+- [Update Note](https://github.com/hyunwoongko/kss/blob/main/docs/UPDATE.md)
 - [Contributing Guide](https://github.com/hyunwoongko/kss/blob/main/docs/CONTRIBUTING.md)
 
 ## 4. References
