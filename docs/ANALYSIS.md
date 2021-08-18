@@ -342,7 +342,7 @@ The article used in sentence segmentation is referenced [here](http://semantics.
 I also compared the speed with a combination of morpheme backend and multiprocessing. For the experiment, I used Macbook M1 silicon (8 processes).
 If you use different CPUs and number of cores, there may be a difference in the results.
 
-![](assets/performance-of-mp.png)
+![](../assets/performance-of-mp.png)
 
 |Backend             |Multiprocessing | 5 sample  | 10 samples | 50 samples | 100 samples|
 |:-------------------|:--------------:|:---------:|:----------:|:----------:|:----------:|

@@ -17,7 +17,7 @@ class KoreanAnalyzer(object):
     def __init__(
         self,
         verbose=False,
-        path_userdict="/resources/userdict_ko.txt",
+        path_userdict="/resources/userdict.txt",
         decompound_mode="NONE",
         infl_decompound_mode="NONE",
         output_unknown_unigrams=False,

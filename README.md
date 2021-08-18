@@ -5,7 +5,11 @@
 
 This repository contains the source code of Kss, a representative Korean sentence segmentation toolkit. I also conduct ongoing research about Korean sentence segmentation algorithms and report the results to this repository.
 If you have a good idea about Korean sentence segmentation, please feel free to talk through the [issue](https://github.com/hyunwoongko/kss/issues).
-<br><br>
+
+<br>
+
+### What's New:
+- August 18, 2021 [Released Kss 3.0.0]().
 
 ## 1. Installation
 ### 1.1. Install from pip
@@ -16,7 +20,7 @@ pip install kss
 
 ### 1.2. Install from source codes
 You can also install Kss from source codes.
-This can be useful for the `Add words to user dictionary` described in [Section 4.1. Add words to user dictionary]().
+This can be useful for the `Add words to user dictionary` described in [Section 3.2. Add words to user dictionary]().
 ```console
 git clone https://github.com/hyunwoongko/kss
 cd kss
@@ -99,24 +103,19 @@ However, it does mean Kss will be less sensitive. If your input texts have relat
 Kss can't split most of the sentences.
 Therefore, it must be adjusted according to the type of the input texts.
 
-- An example of using heuristic algorithms (can segment without punctuations)
+- An example of `use_heuristic`
 
   ```python
   >>> from kss import split_sentences
     
   >>> text = "원어민도 흔하게 틀리는 문법오류는 아포스트로피(apostrophe)를 잘못된 사용하는거예요 질문: 아포스트로피(apostrophe)를 왜 쓰나요? 대답: 두 가지 목적으로 사용해요 예를 들어서 do not = don't not의 o를 생략한걸 apostrophe가 보여주는거예요 또 다른 예를 들면 we are = we're are의 a를 생략했죠 생략된 표현에 아포스트로피를 자주 사용해요. 이제 아시겠죠?"
-  >>> split_sentences(text, use_heuristic=True)
+  >>> split_sentences(text, use_heuristic=True)  # can segment without punctuations
   ['원어민도 흔하게 틀리는 문법오류는 아포스트로피(apostrophe)를 잘못된 사용하는거예요', '질문: 아포스트로피(apostrophe)를 왜 쓰나요?', '대답: 두 가지 목적으로 사용해요', "예를 들어서 do not = don't not의 o를 생략한걸 apostrophe가 보여주는거예요", "또 다른 예를 들면 we are = we're are의 a를 생략했죠", '생략된 표현에 아포스트로피를 자주 사용해요.', '이제 아시겠죠?']
-  ```
 
-- An example of not using heuristic algorithms (can't segment without punctuations)
-  ```python
-  >>> from kss import split_sentences
-    
-  >>> text = "원어민도 흔하게 틀리는 문법오류는 아포스트로피(apostrophe)를 잘못된 사용하는거예요 질문: 아포스트로피(apostrophe)를 왜 쓰나요? 대답: 두 가지 목적으로 사용해요 예를 들어서 do not = don't not의 o를 생략한걸 apostrophe가 보여주는거예요 또 다른 예를 들면 we are = we're are의 a를 생략했죠 생략된 표현에 아포스트로피를 자주 사용해요. 이제 아시겠죠?"
-  >>> split_sentences(text, use_morpheme=False)
+  >>> split_sentences(text, use_morpheme=False)  # can't segment without punctuations
   ['원어민도 흔하게 틀리는 문법오류는 아포스트로피(apostrophe)를 잘못된 사용하는거예요 질문: 아포스트로피(apostrophe)를 왜 쓰나요?', "대답: 두 가지 목적으로 사용해요 예를 들어서 do not = don't not의 o를 생략한걸 apostrophe가 보여주는거예요 또 다른 예를 들면 we are = we're are의 a를 생략했죠 생략된 표현에 아포스트로피를 자주 사용해요.", '이제 아시겠죠?']
   ```
+
 </details>
 </li>
 
@@ -129,7 +128,7 @@ Kss has the feature that prevents to segment the parts enclosed in brackets (괄
 This parameter indicates whether to segment the parts enclosed in brackets or quotations marks. 
 If you set it `True`, Kss does not segment these parts, If you set it `False`, Kss segments the even in the parts that are enclosed in brackets and quotations marks.
 
-- An example of using quotes brackets processing
+- An example of `use_quotes_brackets_processing`
 
   ```python
   >>> from kss import split_sentences
@@ -137,16 +136,11 @@ If you set it `True`, Kss does not segment these parts, If you set it `False`, K
   >>> text = '"나는 이제 더는 못 먹겠다. 너무 배불러." 그리고 곧장 자리를 떴다. 아마도 화장실에 간 모양이다.'
   >>> split_sentences(text, use_quotes_brackets_processing=True)
   ['"나는 이제 더는 못 먹겠다. 너무 배불러." 그리고 곧장 자리를 떴다.', '아마도 화장실에 간 모양이다.']
-  ```
 
-- An example of not using quotes brackets processing
-  ```python
-  >>> from kss import split_sentences
-    
   >>> text = '"나는 이제 더는 못 먹겠다. 너무 배불러." 그리고 곧장 자리를 떴다. 아마도 화장실에 간 모양이다.'
   >>> split_sentences(text, use_quotes_brackets_processing=False)
-  ['"나는 이제 더는 못 먹겠다.', '너무 배불러.', '" 그리고 곧장 자리를 떴다.', '아마도 화장실에 간 모양이다.']
   ```
+
 </details>
 </li>
 <li>
@@ -165,7 +159,7 @@ Therefore, Kss provides the parameters to adjust the recursive algorithm.
 
 Adjusting the above two options can save your precious time.
 
-- An example of using max recover step
+- An example of `max_recover_step` 
 
   ```python
   >>> from kss import split_sentences
@@ -174,7 +168,7 @@ Adjusting the above two options can save your precious time.
   >>> split_sentences(text, max_recover_step=5)
   ```
 
-- An example of using max recover length
+- An example of `max_recover_length` 
   ```python
   >>> from kss import split_sentences
     
@@ -207,7 +201,7 @@ Kss use the [Pynori](https://github.com/gritmind/python-nori), the pure python m
 However, since there is a lot of difference in speed, we strongly recommend using mecab backend if you can install mecab-ko in your environment.
 (I didn't set Mecab-Ko as the default because I value compatibility over speed.)
 
-- An example of using morpheme features via `backend` option
+- An example of `backend`
 
   ```python
   >>> from kss import split_sentences
@@ -238,7 +232,7 @@ If a different value is entered, the number you entered of workers is allocated.
 As shown in the performance evaluation, multiprocessing can lead a very large effect on speed. 
 Multiprocessing makes segmentation much faster, especially when using the Pynori backend.
 
-- An example of using a num_workers option
+- An example of `num_workers`
 
   ```python
   >>> from kss import split_sentences
@@ -260,7 +254,7 @@ This parameter indicates whether to enable the garbage collection during the sen
 However, since this uses recursive algorithm, it often wastes a lot of memory, which leads to frequent garbage collection. If you set it to `True`, segmentation speed can be improved by disabling garbage collection. 
 Of course, when the segmentation process ends, garbage collection will be reactivated.
 
-- An example of using a num_workers option
+- An example of `disable_gc`
 
   ```python
   >>> from kss import split_sentences
@@ -273,7 +267,6 @@ Of course, when the segmentation process ends, garbage collection will be reacti
 </li>
 
 </ul>
-<br>
 
 ### 2.2. `split_chunks`
 
@@ -300,6 +293,7 @@ Click the triangle button (►) for more detailed information and example code s
 <li>
 <details>
 <summary>text (<code>Union[str, tuple, List[str]]</code>)</summary>
+<br>
 
 This parameter indicates input texts. you can also input list or tuple for batch processing not only string.
 
@@ -332,6 +326,7 @@ This parameter indicates input texts. you can also input list or tuple for batch
 
 <details>
 <summary>max_length (<code>int</code>)</summary>
+<br>
 
 This parameter indicates the maximum length of each chunk. The `split_chunks` function creates chunks by concatenating sentences while traversing the list of segmented sentences. 
 If the concatenated string is longer than the maximum length, Kss make it into a chunk (paragraph) including previous sentences.
@@ -341,10 +336,10 @@ If the concatenated string is longer than the maximum length, Kss make it into a
 ```python
 >>> from kss import split_chunks
 >>> text = """주말에 가족여행으로 오션월드 다녀왔어요!!! 오션월드는 처음가보는거여서 설렘설렘~~!! 날씨도 끝내주고~! 하늘,구름 너무 이뻤습니다~! 가평휴게소까지 가는데 차가 엄~~~청 막혔습니다(3시간넘게걸림) 와 정말 토나오는줄 알았네요 하필 또 저희가족 늦게 일어나서 늦게 출발했거든요 ㅋㅋㅋ 가평휴게소 사람들이 엄청 많았어요! 호두과자랑 군것질좀 해주구요 ㅋ_ㅋ 오션월드 도착!! 주차장이 다 꽉차서.. 주차할곳이 없더라구요 계속 주차장 돌다가 겨우 한자리 있어서 주차했습니다..ㅠㅠㅠ 그런데 또 주차장에 주차하고 언덕길을 올라가야 하더라구요!?헐~ 오션월드 ..이게뭐람.. 큐알코드로 찍고 간편하게 입장했습니다 오션월드 코인도 넉넉하게 10만원 충전했어요 ㅋㅋㅋ 다들 너무 잘먹기때문에... 넉넉하게..ㅋㅋㅋ 여자 락커실에 에어컨이 얼마나 빵빵한지 오들오들 추웠습니다 캐리비안베이는 습하고 축축한데 오션월드는 완전 정반대 ㅋㅋㅋ 제가 방수팩을 준비못해서 각자 3개 살려고 했는데 헐! 한개에 19000원이에요! 그래서 한개만 샀어요 ㅠㅠ 제 핸드폰은 락커에.. 방수팩 꼭 미리 준비하세요 ㅠ 넘비싸요 ㅠ 오션월드 정말 엉망진창이었어요 ㅠㅠ 사람이 너~~~무많아서 유수풀도 줄서서들어가구요 다른 놀이기구는 엄두도 못났습니다 파도풀도 사람이 너무 많은지 안전상 관리를 빡세게 해서 재미가 없었어요.. 처음으로 먹어본 소떡소떡 물놀이하다가 먹은 간식이어서 그런지 참 맛있게 먹었습니다! 그렇지만 위생은 정말 안좋았어요.. 오션월드 처음이라 기대 많이 했는데 첨부터 끝까지 다 맘에 안들었어요 물론 사람이 너~무 많아서 일수도 있습니다. 캐리비안베이는 위생도 괜찮아 보이고 음식이 비싸지만 다 맛있었거든요! 근데 오션월드 위생도 별로고 비싸고 맛없고!!! 주차장도 좁고 주차장에서 입구까지 걸어서 올라가고.. 캐리비안베이보다 나았던건 락커시설과 유수풀 두개 정도! 오션월드 정말 아쉬웠습니다 개인적으루 캐리비안베이가 훨씬 나은듯!"""
->>> split_chunks(text, backend="mecab", max_length=24)
+>>> split_chunks(text, max_length=24)
 ['주말에 가족여행으로 오션월드 다녀왔어요!!! 오션월드는 처음가보는거여서 설렘설렘~~!! 날씨도 끝내주고~! 하늘,구름 너무 이뻤습니다~! 가평휴게소까지 가는데 차가 엄~~~청 막혔습니다', '(3시간넘게걸림) 와 정말 토나오는줄 알았네요 하필 또 저희가족 늦게 일어나서 늦게 출발했거든요 ㅋㅋㅋ', '가평휴게소 사람들이 엄청 많았어요! 호두과자랑 군것질좀 해주구요 ㅋ_ㅋ 오션월드 도착!! 주차장이 다 꽉차서.. 주차할곳이 없더라구요', '계속 주차장 돌다가 겨우 한자리 있어서 주차했습니다..ㅠㅠㅠ 그런데 또 주차장에 주차하고 언덕길을 올라가야 하더라구요!?', '헐~ 오션월드 ..이게뭐람.. 큐알코드로 찍고 간편하게 입장했습니다 오션월드 코인도 넉넉하게 10만원 충전했어요 ㅋㅋㅋ', '다들 너무 잘먹기때문에... 넉넉하게..ㅋㅋㅋ 여자 락커실에 에어컨이 얼마나 빵빵한지 오들오들 추웠습니다 캐리비안베이는 습하고 축축한데 오션월드는 완전 정반대 ㅋㅋㅋ', '제가 방수팩을 준비못해서 각자 3개 살려고 했는데 헐! 한개에 19000원이에요! 그래서 한개만 샀어요 ㅠㅠ 제 핸드폰은 락커에.. 방수팩 꼭 미리 준비하세요 ㅠ', '넘비싸요 ㅠ 오션월드 정말 엉망진창이었어요 ㅠㅠ 사람이 너~~~무많아서 유수풀도 줄서서들어가구요', '다른 놀이기구는 엄두도 못났습니다 파도풀도 사람이 너무 많은지 안전상 관리를 빡세게 해서 재미가 없었어요..', '처음으로 먹어본 소떡소떡물놀이하다가 먹은 간식이어서 그런지 참 맛있게 먹었습니다! 그렇지만 위생은 정말 안좋았어요.. 오션월드 처음이라 기대 많이 했는데 첨부터 끝까지 다 맘에 안들었어요', '물론 사람이 너~무 많아서 일수도 있습니다. 캐리비안베이는 위생도 괜찮아 보이고 음식이 비싸지만 다 맛있었거든요!', '근데 오션월드 위생도 별로고 비싸고 맛없고!!! 주차장도 좁고 주차장에서 입구까지 걸어서 올라가고.. 캐리비안베이보다 나았던건 락커시설과 유수풀 두개 정도! 오션월드 정말 아쉬웠습니다 개인적으루 캐리비안베이가 훨씬 나은듯!']
 
->>> split_chunks(text, backend="mecab", max_length=128)
+>>> split_chunks(text, max_length=128)
 ['주말에 가족여행으로 오션월드 다녀왔어요!!! 오션월드는 처음가보는거여서 설렘설렘~~!! 날씨도 끝내주고~! 하늘,구름 너무 이뻤습니다~! 가평휴게소까지 가는데 차가 엄~~~청 막혔습니다(3시간넘게걸림) 와 정말 토나오는줄 알았네요 하필 또 저희가족 늦게 일어나서 늦게 출발했거든요 ㅋㅋㅋ', '가평휴게소 사람들이 엄청 많았어요! 호두과자랑 군것질좀 해주구요 ㅋ_ㅋ 오션월드 도착!! 주차장이 다 꽉차서.. 주차할곳이 없더라구요 계속 주차장 돌다가 겨우 한자리 있어서 주차했습니다..ㅠㅠㅠ 그런데 또 주차장에 주차하고 언덕길을 올라가야 하더라구요!?헐~ 오션월드 ..이게뭐람..', '큐알코드로 찍고 간편하게 입장했습니다 오션월드 코인도 넉넉하게 10만원 충전했어요 ㅋㅋㅋ 다들 너무 잘먹기때문에... 넉넉하게..ㅋㅋㅋ 여자 락커실에 에어컨이 얼마나 빵빵한지 오들오들 추웠습니다 캐리비안베이는 습하고 축축한데 오션월드는 완전 정반대 ㅋㅋㅋ 제가 방수팩을 준비못해서 각자 3개 살려고 했는데 헐! 한개에 19000원이에요!', '그래서 한개만 샀어요 ㅠㅠ 제 핸드폰은 락커에.. 방수팩 꼭 미리 준비하세요 ㅠ 넘비싸요 ㅠ 오션월드 정말 엉망진창이었어요 ㅠㅠ 사람이 너~~~무많아서 유수풀도 줄서서들어가구요 다른 놀이기구는 엄두도 못났습니다 파도풀도 사람이 너무 많은지 안전상 관리를 빡세게 해서 재미가 없었어요..', '처음으로 먹어본 소떡소떡물놀이하다가 먹은 간식이어서 그런지 참 맛있게 먹었습니다! 그렇지만 위생은 정말 안좋았어요.. 오션월드 처음이라 기대 많이 했는데 첨부터 끝까지 다 맘에 안들었어요 물론 사람이 너~무 많아서 일수도 있습니다. 캐리비안베이는 위생도 괜찮아 보이고 음식이 비싸지만 다 맛있었거든요! 근데 오션월드 위생도 별로고 비싸고 맛없고!!! 주차장도 좁고 주차장에서 입구까지 걸어서 올라가고.. 캐리비안베이보다 나았던건 락커시설과 유수풀 두개 정도! 오션월드 정말 아쉬웠습니다', '개인적으루 캐리비안베이가 훨씬 나은듯!']
 ```
 
@@ -354,11 +349,35 @@ If the concatenated string is longer than the maximum length, Kss make it into a
 
 <details>
 <summary>overlap (<code>bool</code>)</summary>
+<br>
 
-This parameter indicates the maximum length of each chunk. The `split_chunks` function creates chunks by concatenating sentences while traversing the list of segmented sentences.
-If the concatenated string is longer than the maximum length, Kss make it into a chunk (paragraph) including previous sentences.
+This parameter indicates whether the sentences can be duplicated across the chunks. 
+If you set it to `True`, sentences can be duplicated across the chunks like sliding window.
+If you set it to `False`, each sentence is going to unique.
 
-- An example of `max_length`
+- An example of `overlap`
+
+```python
+>>> from kss import split_chunks
+>>> text = """주말에 가족여행으로 오션월드 다녀왔어요!!! 오션월드는 처음가보는거여서 설렘설렘~~!! 날씨도 끝내주고~! 하늘,구름 너무 이뻤습니다~! 가평휴게소까지 가는데 차가 엄~~~청 막혔습니다(3시간넘게걸림) 와 정말 토나오는줄 알았네요 하필 또 저희가족 늦게 일어나서 늦게 출발했거든요 ㅋㅋㅋ 가평휴게소 사람들이 엄청 많았어요! 호두과자랑 군것질좀 해주구요 ㅋ_ㅋ 오션월드 도착!! 주차장이 다 꽉차서.. 주차할곳이 없더라구요 계속 주차장 돌다가 겨우 한자리 있어서 주차했습니다..ㅠㅠㅠ 그런데 또 주차장에 주차하고 언덕길을 올라가야 하더라구요!?헐~ 오션월드 ..이게뭐람.. 큐알코드로 찍고 간편하게 입장했습니다 오션월드 코인도 넉넉하게 10만원 충전했어요 ㅋㅋㅋ 다들 너무 잘먹기때문에... 넉넉하게..ㅋㅋㅋ 여자 락커실에 에어컨이 얼마나 빵빵한지 오들오들 추웠습니다 캐리비안베이는 습하고 축축한데 오션월드는 완전 정반대 ㅋㅋㅋ 제가 방수팩을 준비못해서 각자 3개 살려고 했는데 헐! 한개에 19000원이에요! 그래서 한개만 샀어요 ㅠㅠ 제 핸드폰은 락커에.. 방수팩 꼭 미리 준비하세요 ㅠ 넘비싸요 ㅠ 오션월드 정말 엉망진창이었어요 ㅠㅠ 사람이 너~~~무많아서 유수풀도 줄서서들어가구요 다른 놀이기구는 엄두도 못났습니다 파도풀도 사람이 너무 많은지 안전상 관리를 빡세게 해서 재미가 없었어요.. 처음으로 먹어본 소떡소떡 물놀이하다가 먹은 간식이어서 그런지 참 맛있게 먹었습니다! 그렇지만 위생은 정말 안좋았어요.. 오션월드 처음이라 기대 많이 했는데 첨부터 끝까지 다 맘에 안들었어요 물론 사람이 너~무 많아서 일수도 있습니다. 캐리비안베이는 위생도 괜찮아 보이고 음식이 비싸지만 다 맛있었거든요! 근데 오션월드 위생도 별로고 비싸고 맛없고!!! 주차장도 좁고 주차장에서 입구까지 걸어서 올라가고.. 캐리비안베이보다 나았던건 락커시설과 유수풀 두개 정도! 오션월드 정말 아쉬웠습니다 개인적으루 캐리비안베이가 훨씬 나은듯!"""
+>>> split_chunks(text, max_length=24, overlap=False)
+['주말에 가족여행으로 오션월드 다녀왔어요!!! 오션월드는 처음가보는거여서 설렘설렘~~!! 날씨도 끝내주고~! 하늘,구름 너무 이뻤습니다~! 가평휴게소까지 가는데 차가 엄~~~청 막혔습니다', '(3시간넘게걸림) 와 정말 토나오는줄 알았네요 하필 또 저희가족 늦게 일어나서 늦게 출발했거든요 ㅋㅋㅋ', '가평휴게소 사람들이 엄청 많았어요! 호두과자랑 군것질좀 해주구요 ㅋ_ㅋ 오션월드 도착!! 주차장이 다 꽉차서.. 주차할곳이 없더라구요', '계속 주차장 돌다가 겨우 한자리 있어서 주차했습니다..ㅠㅠㅠ 그런데 또 주차장에 주차하고 언덕길을 올라가야 하더라구요!?', '헐~ 오션월드 ..이게뭐람.. 큐알코드로 찍고 간편하게 입장했습니다 오션월드 코인도 넉넉하게 10만원 충전했어요 ㅋㅋㅋ', '다들 너무 잘먹기때문에... 넉넉하게..ㅋㅋㅋ 여자 락커실에 에어컨이 얼마나 빵빵한지 오들오들 추웠습니다 캐리비안베이는 습하고 축축한데 오션월드는 완전 정반대 ㅋㅋㅋ', '제가 방수팩을 준비못해서 각자 3개 살려고 했는데 헐! 한개에 19000원이에요! 그래서 한개만 샀어요 ㅠㅠ 제 핸드폰은 락커에.. 방수팩 꼭 미리 준비하세요 ㅠ', '넘비싸요 ㅠ 오션월드 정말 엉망진창이었어요 ㅠㅠ 사람이 너~~~무많아서 유수풀도 줄서서들어가구요', '다른 놀이기구는 엄두도 못났습니다 파도풀도 사람이 너무 많은지 안전상 관리를 빡세게 해서 재미가 없었어요..', '처음으로 먹어본 소떡소떡물놀이하다가 먹은 간식이어서 그런지 참 맛있게 먹었습니다! 그렇지만 위생은 정말 안좋았어요.. 오션월드 처음이라 기대 많이 했는데 첨부터 끝까지 다 맘에 안들었어요', '물론 사람이 너~무 많아서 일수도 있습니다. 캐리비안베이는 위생도 괜찮아 보이고 음식이 비싸지만 다 맛있었거든요!', '근데 오션월드 위생도 별로고 비싸고 맛없고!!! 주차장도 좁고 주차장에서 입구까지 걸어서 올라가고.. 캐리비안베이보다 나았던건 락커시설과 유수풀 두개 정도! 오션월드 정말 아쉬웠습니다 개인적으루 캐리비안베이가 훨씬 나은듯!']
+
+>>> split_chunks(text, max_length=24, overlap=True)
+['주말에 가족여행으로 오션월드 다녀왔어요!!! 오션월드는 처음가보는거여서 설렘설렘~~!! 날씨도 끝내주고~! 하늘,구름 너무 이뻤습니다~! 가평휴게소까지 가는데 차가 엄~~~청 막혔습니다', '오션월드는 처음가보는거여서 설렘설렘~~!! 날씨도 끝내주고~! 하늘,구름 너무 이뻤습니다~! 가평휴게소까지 가는데 차가 엄~~~청 막혔습니다(3시간넘게걸림) 와 정말 토나오는줄 알았네요', '(3시간넘게걸림) 와 정말 토나오는줄 알았네요 하필 또 저희가족 늦게 일어나서 늦게 출발했거든요 ㅋㅋㅋ', '하필 또 저희가족 늦게 일어나서 늦게 출발했거든요 ㅋㅋㅋ 가평휴게소 사람들이 엄청 많았어요! 호두과자랑 군것질좀 해주구요 ㅋ', '가평휴게소 사람들이 엄청 많았어요! 호두과자랑 군것질좀 해주구요 ㅋ_ㅋ 오션월드 도착!! 주차장이 다 꽉차서.. 주차할곳이 없더라구요', '호두과자랑 군것질좀 해주구요 ㅋ_ㅋ 오션월드 도착!! 주차장이 다 꽉차서.. 주차할곳이 없더라구요 계속 주차장 돌다가 겨우 한자리 있어서 주차했습니다..ㅠㅠㅠ', '_ㅋ 오션월드 도착!! 주차장이 다 꽉차서.. 주차할곳이 없더라구요 계속 주차장 돌다가 겨우 한자리 있어서 주차했습니다..ㅠㅠㅠ 그런데 또 주차장에 주차하고 언덕길을 올라가야 하더라구요!?', '계속 주차장 돌다가 겨우 한자리 있어서 주차했습니다..ㅠㅠㅠ 그런데 또 주차장에 주차하고 언덕길을 올라가야 하더라구요!?헐~ 오션월드 ..이게뭐람..', '그런데 또 주차장에 주차하고 언덕길을 올라가야 하더라구요!?헐~ 오션월드 ..이게뭐람.. 큐알코드로 찍고 간편하게 입장했습니다', '헐~ 오션월드 ..이게뭐람.. 큐알코드로 찍고 간편하게 입장했습니다 오션월드 코인도 넉넉하게 10만원 충전했어요 ㅋㅋㅋ', '큐알코드로 찍고 간편하게 입장했습니다 오션월드 코인도 넉넉하게 10만원 충전했어요 ㅋㅋㅋ 다들 너무 잘먹기때문에... 넉넉하게..ㅋㅋㅋ 여자 락커실에 에어컨이 얼마나 빵빵한지 오들오들 추웠습니다', '오션월드 코인도 넉넉하게 10만원 충전했어요 ㅋㅋㅋ 다들 너무 잘먹기때문에... 넉넉하게..ㅋㅋㅋ 여자 락커실에 에어컨이 얼마나 빵빵한지 오들오들 추웠습니다 캐리비안베이는 습하고 축축한데 오션월드는 완전 정반대 ㅋㅋㅋ', '다들 너무 잘먹기때문에... 넉넉하게..ㅋㅋㅋ 여자 락커실에 에어컨이 얼마나 빵빵한지 오들오들 추웠습니다 캐리비안베이는 습하고 축축한데 오션월드는 완전 정반대 ㅋㅋㅋ 제가 방수팩을 준비못해서 각자 3개 살려고 했는데 헐! 한개에 19000원이에요!', '캐리비안베이는 습하고 축축한데 오션월드는 완전 정반대 ㅋㅋㅋ 제가 방수팩을 준비못해서 각자 3개 살려고 했는데 헐! 한개에 19000원이에요! 그래서 한개만 샀어요 ㅠㅠ', '제가 방수팩을 준비못해서 각자 3개 살려고 했는데 헐! 한개에 19000원이에요! 그래서 한개만 샀어요 ㅠㅠ 제 핸드폰은 락커에.. 방수팩 꼭 미리 준비하세요 ㅠ', '그래서 한개만 샀어요 ㅠㅠ 제 핸드폰은 락커에.. 방수팩 꼭 미리 준비하세요 ㅠ 넘비싸요 ㅠ 오션월드 정말 엉망진창이었어요 ㅠㅠ', '제 핸드폰은 락커에.. 방수팩 꼭 미리 준비하세요 ㅠ 넘비싸요 ㅠ 오션월드 정말 엉망진창이었어요 ㅠㅠ 사람이 너~~~무많아서 유수풀도 줄서서들어가구요', '넘비싸요 ㅠ 오션월드 정말 엉망진창이었어요 ㅠㅠ 사람이 너~~~무많아서 유수풀도 줄서서들어가구요 다른 놀이기구는 엄두도 못났습니다', '사람이 너~~~무많아서 유수풀도 줄서서들어가구요 다른 놀이기구는 엄두도 못났습니다 파도풀도 사람이 너무 많은지 안전상 관리를 빡세게 해서 재미가 없었어요..', '다른 놀이기구는 엄두도 못났습니다 파도풀도 사람이 너무 많은지 안전상 관리를 빡세게 해서 재미가 없었어요.. 처음으로 먹어본 소떡소떡물놀이하다가 먹은 간식이어서 그런지 참 맛있게 먹었습니다!', '파도풀도 사람이 너무 많은지 안전상 관리를 빡세게 해서 재미가 없었어요.. 처음으로 먹어본 소떡소떡물놀이하다가 먹은 간식이어서 그런지 참 맛있게 먹었습니다! 그렇지만 위생은 정말 안좋았어요..', '처음으로 먹어본 소떡소떡물놀이하다가 먹은 간식이어서 그런지 참 맛있게 먹었습니다! 그렇지만 위생은 정말 안좋았어요.. 오션월드 처음이라 기대 많이 했는데 첨부터 끝까지 다 맘에 안들었어요', '그렇지만 위생은 정말 안좋았어요.. 오션월드 처음이라 기대 많이 했는데 첨부터 끝까지 다 맘에 안들었어요 물론 사람이 너~무 많아서 일수도 있습니다.', '오션월드 처음이라 기대 많이 했는데 첨부터 끝까지 다 맘에 안들었어요 물론 사람이 너~무 많아서 일수도 있습니다. 캐리비안베이는 위생도 괜찮아 보이고 음식이 비싸지만 다 맛있었거든요!', '물론 사람이 너~무 많아서 일수도 있습니다. 캐리비안베이는 위생도 괜찮아 보이고 음식이 비싸지만 다 맛있었거든요! 근데 오션월드 위생도 별로고 비싸고 맛없고!!! 주차장도 좁고 주차장에서 입구까지 걸어서 올라가고.. 캐리비안베이보다 나았던건 락커시설과 유수풀 두개 정도! 오션월드 정말 아쉬웠습니다', '캐리비안베이는 위생도 괜찮아 보이고 음식이 비싸지만 다 맛있었거든요! 근데 오션월드 위생도 별로고 비싸고 맛없고!!! 주차장도 좁고 주차장에서 입구까지 걸어서 올라가고.. 캐리비안베이보다 나았던건 락커시설과 유수풀 두개 정도! 오션월드 정말 아쉬웠습니다 개인적으루 캐리비안베이가 훨씬 나은듯!']
+```
+
+</details>
+</li>
+<li>
+<details>
+<summary>kwargs (<code>**dict</code>)</summary>
+<br>
+
+`split_chunks` is based on `split_sentences`. 
+Therefore, all arguments of `split_sentences` can be used. Check the following examples.
+
+- An example of `kwargs`
 
 ```python
 >>> from kss import split_chunks
@@ -366,19 +385,37 @@ If the concatenated string is longer than the maximum length, Kss make it into a
 >>> split_chunks(text, backend="mecab", max_length=24)
 ['주말에 가족여행으로 오션월드 다녀왔어요!!! 오션월드는 처음가보는거여서 설렘설렘~~!! 날씨도 끝내주고~! 하늘,구름 너무 이뻤습니다~! 가평휴게소까지 가는데 차가 엄~~~청 막혔습니다', '(3시간넘게걸림) 와 정말 토나오는줄 알았네요 하필 또 저희가족 늦게 일어나서 늦게 출발했거든요 ㅋㅋㅋ', '가평휴게소 사람들이 엄청 많았어요! 호두과자랑 군것질좀 해주구요 ㅋ_ㅋ 오션월드 도착!! 주차장이 다 꽉차서.. 주차할곳이 없더라구요', '계속 주차장 돌다가 겨우 한자리 있어서 주차했습니다..ㅠㅠㅠ 그런데 또 주차장에 주차하고 언덕길을 올라가야 하더라구요!?', '헐~ 오션월드 ..이게뭐람.. 큐알코드로 찍고 간편하게 입장했습니다 오션월드 코인도 넉넉하게 10만원 충전했어요 ㅋㅋㅋ', '다들 너무 잘먹기때문에... 넉넉하게..ㅋㅋㅋ 여자 락커실에 에어컨이 얼마나 빵빵한지 오들오들 추웠습니다 캐리비안베이는 습하고 축축한데 오션월드는 완전 정반대 ㅋㅋㅋ', '제가 방수팩을 준비못해서 각자 3개 살려고 했는데 헐! 한개에 19000원이에요! 그래서 한개만 샀어요 ㅠㅠ 제 핸드폰은 락커에.. 방수팩 꼭 미리 준비하세요 ㅠ', '넘비싸요 ㅠ 오션월드 정말 엉망진창이었어요 ㅠㅠ 사람이 너~~~무많아서 유수풀도 줄서서들어가구요', '다른 놀이기구는 엄두도 못났습니다 파도풀도 사람이 너무 많은지 안전상 관리를 빡세게 해서 재미가 없었어요..', '처음으로 먹어본 소떡소떡물놀이하다가 먹은 간식이어서 그런지 참 맛있게 먹었습니다! 그렇지만 위생은 정말 안좋았어요.. 오션월드 처음이라 기대 많이 했는데 첨부터 끝까지 다 맘에 안들었어요', '물론 사람이 너~무 많아서 일수도 있습니다. 캐리비안베이는 위생도 괜찮아 보이고 음식이 비싸지만 다 맛있었거든요!', '근데 오션월드 위생도 별로고 비싸고 맛없고!!! 주차장도 좁고 주차장에서 입구까지 걸어서 올라가고.. 캐리비안베이보다 나았던건 락커시설과 유수풀 두개 정도! 오션월드 정말 아쉬웠습니다 개인적으루 캐리비안베이가 훨씬 나은듯!']
 
->>> split_chunks(text, backend="mecab", max_length=128)
-['주말에 가족여행으로 오션월드 다녀왔어요!!! 오션월드는 처음가보는거여서 설렘설렘~~!! 날씨도 끝내주고~! 하늘,구름 너무 이뻤습니다~! 가평휴게소까지 가는데 차가 엄~~~청 막혔습니다(3시간넘게걸림) 와 정말 토나오는줄 알았네요 하필 또 저희가족 늦게 일어나서 늦게 출발했거든요 ㅋㅋㅋ', '가평휴게소 사람들이 엄청 많았어요! 호두과자랑 군것질좀 해주구요 ㅋ_ㅋ 오션월드 도착!! 주차장이 다 꽉차서.. 주차할곳이 없더라구요 계속 주차장 돌다가 겨우 한자리 있어서 주차했습니다..ㅠㅠㅠ 그런데 또 주차장에 주차하고 언덕길을 올라가야 하더라구요!?헐~ 오션월드 ..이게뭐람..', '큐알코드로 찍고 간편하게 입장했습니다 오션월드 코인도 넉넉하게 10만원 충전했어요 ㅋㅋㅋ 다들 너무 잘먹기때문에... 넉넉하게..ㅋㅋㅋ 여자 락커실에 에어컨이 얼마나 빵빵한지 오들오들 추웠습니다 캐리비안베이는 습하고 축축한데 오션월드는 완전 정반대 ㅋㅋㅋ 제가 방수팩을 준비못해서 각자 3개 살려고 했는데 헐! 한개에 19000원이에요!', '그래서 한개만 샀어요 ㅠㅠ 제 핸드폰은 락커에.. 방수팩 꼭 미리 준비하세요 ㅠ 넘비싸요 ㅠ 오션월드 정말 엉망진창이었어요 ㅠㅠ 사람이 너~~~무많아서 유수풀도 줄서서들어가구요 다른 놀이기구는 엄두도 못났습니다 파도풀도 사람이 너무 많은지 안전상 관리를 빡세게 해서 재미가 없었어요..', '처음으로 먹어본 소떡소떡물놀이하다가 먹은 간식이어서 그런지 참 맛있게 먹었습니다! 그렇지만 위생은 정말 안좋았어요.. 오션월드 처음이라 기대 많이 했는데 첨부터 끝까지 다 맘에 안들었어요 물론 사람이 너~무 많아서 일수도 있습니다. 캐리비안베이는 위생도 괜찮아 보이고 음식이 비싸지만 다 맛있었거든요! 근데 오션월드 위생도 별로고 비싸고 맛없고!!! 주차장도 좁고 주차장에서 입구까지 걸어서 올라가고.. 캐리비안베이보다 나았던건 락커시설과 유수풀 두개 정도! 오션월드 정말 아쉬웠습니다', '개인적으루 캐리비안베이가 훨씬 나은듯!']
+>>> split_chunks(text, backend="none", use_heuristic=False, max_length=24)
+['주말에 가족여행으로 오션월드 다녀왔어요!!! 오션월드는 처음가보는거여서 설렘설렘~~!! 날씨도 끝내주고~! 하늘,구름 너무 이뻤습니다~! 가평휴게소까지 가는데 차가 엄~~~청 막혔습니다(3시간넘게걸림) 와 정말 토나오는줄 알았네요 하필 또 저희가족 늦게 일어나서 늦게 출발했거든요 ㅋㅋㅋ 가평휴게소 사람들이 엄청 많았어요!', '호두과자랑 군것질좀 해주구요 ㅋ_ㅋ 오션월드 도착!! 주차장이 다 꽉차서.. 주차할곳이 없더라구요 계속 주차장 돌다가 겨우 한자리 있어서 주차했습니다..ㅠㅠㅠ', '그런데 또 주차장에 주차하고 언덕길을 올라가야 하더라구요!?헐~ 오션월드 ..이게뭐람.. 큐알코드로 찍고 간편하게 입장했습니다 오션월드 코인도 넉넉하게 10만원 충전했어요 ㅋㅋㅋ 다들 너무 잘먹기때문에... 넉넉하게..ㅋㅋㅋ 여자 락커실에 에어컨이 얼마나 빵빵한지 오들오들 추웠습니다 캐리비안베이는 습하고 축축한데 오션월드는 완전 정반대 ㅋㅋㅋ 제가 방수팩을 준비못해서 각자 3개 살려고 했는데 헐! 한개에 19000원이에요!', '그래서 한개만 샀어요 ㅠㅠ 제 핸드폰은 락커에.. 방수팩 꼭 미리 준비하세요 ㅠ 넘비싸요 ㅠ 오션월드 정말 엉망진창이었어요 ㅠㅠ 사람이 너~~~무많아서 유수풀도 줄서서들어가구요 다른 놀이기구는 엄두도 못났습니다 파도풀도 사람이 너무 많은지 안전상 관리를 빡세게 해서 재미가 없었어요.. 처음으로 먹어본 소떡소떡물놀이하다가 먹은 간식이어서 그런지 참 맛있게 먹었습니다!', '그렇지만 위생은 정말 안좋았어요.. 오션월드 처음이라 기대 많이 했는데 첨부터 끝까지 다 맘에 안들었어요 물론 사람이 너~무 많아서 일수도 있습니다.', '캐리비안베이는 위생도 괜찮아 보이고 음식이 비싸지만 다 맛있었거든요! 근데 오션월드 위생도 별로고 비싸고 맛없고!!! 주차장도 좁고 주차장에서 입구까지 걸어서 올라가고.. 캐리비안베이보다 나았던건 락커시설과 유수풀 두개 정도! 오션월드 정말 아쉬웠습니다 개인적으루 캐리비안베이가 훨씬 나은듯!']
 ```
 
 </details>
 </li>
-<li>
-</li>
 </ul>
 
-## 3. Performance Analysis
-Refer to [ANALYSIS.md](ANALYSIS.md)
+## 3. Additional Documents
+### 3.1. Performance Analysis
+Refer to [ANALYSIS.md](https://github.com/hyunwoongko/kss/blob/main/docs/ANALYSIS.md)
 
-## 4. Advanced Usage
-Refer to [USER_DICT.md](USER_DICT.md)
+### 3.2. Add words to user dictionary
+Refer to [USERDICT.md](https://github.com/hyunwoongko/kss/blob/main/docs/USERDICT.md)
 
+### 3.3. Update Notes
+Refer to [UPDATES.md](https://github.com/hyunwoongko/kss/blob/main/docs/UPDATES.md)
+
+## 4. References
+Kss is currently available in 3 programming languages.
+- [Python version (this repo, ver 3.0.0)](https://github.com/hyunwoongko/kss) contains the most recent changes to Kss.
+- [Java version (ver 2.5.1)](https://github.com/sangdee/kss-java) is based on [Python Kss 2.5.1](https://github.com/hyunwoongko/kss/blob/main/docs/UPDATES.md#kss-251) and will be updated to 3.xx in the future.
+- [C++ version (ver 1.3.1)](https://github.com/likejazz/korean-sentence-splitter) has the original implementation of Kss and is deprecated now,
+
+## 5. Citation
+If you find this toolkit useful, please consider citing:
+```
+@misc{kss,
+  author       = {Park, Sang-kil and Ko, Hyunwoong},
+  title        = {Korean sentence splitter},
+  howpublished = {\url{https://github.com/hyunwoongko/kss}},
+  year         = {2020},
+}
+```
