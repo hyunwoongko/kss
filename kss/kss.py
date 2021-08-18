@@ -262,6 +262,7 @@ def _split_sentences(
     cur_sentence = []
     cur_stat = Stats.DEFAULT
     prev = Eojeol("", "TEMP")
+    prev_non_space = Eojeol("", "TEMP")
 
     last_single_pos, single_quote_pop = 0, "'"
     last_double_pos, double_quote_pop = 0, '"'
@@ -385,7 +386,6 @@ def _split_sentences(
                     ):
                         cur_stat = Stats.EOMI
                         # 일반적으로 적용할 수 있는 어미세트 NEXT 세트 적용.
-
         else:
             if eojeol.eojeol in Const.double_quotes:
                 last_double_pos = i
@@ -404,7 +404,6 @@ def _split_sentences(
                         results.append(cur_sentence)
                         cur_sentence = [prev]
                         cur_stat = Stats.DEFAULT
-
                     endif = True
 
             if not endif:
@@ -412,6 +411,13 @@ def _split_sentences(
                     if Table[cur_stat][prev.eojeol] & ID.NEXT1:
                         # NEXT1 + NEXT => 자르지 않는다.
                         cur_sentence.append(prev)
+
+                    if prev_non_space.eojeol in Const.endpoint:
+                        # NEW RULE for KSS 3 to fix following issue.
+                        # https://github.com/hyunwoongko/kss/issues/7
+                        results.append(cur_sentence)
+                        cur_sentence = [prev]
+
                     cur_stat = Stats.DEFAULT
                     endif = True
 
@@ -441,7 +447,7 @@ def _split_sentences(
                     not Table[cur_stat][eojeol.eojeol]
                     or Table[cur_stat][eojeol.eojeol] & ID.PREV
                 ):  # NOT exists
-
+                    print('5', eojeol, cur_stat)
                     results.append(cur_sentence)
                     cur_sentence = []
                     if Table[cur_stat][prev.eojeol] & ID.NEXT1:
@@ -507,6 +513,9 @@ def _split_sentences(
             cur_sentence.append(eojeol)
 
         prev = eojeol
+
+        if eojeol.eojeol != " ":
+            prev_non_space = eojeol
 
     if not empty(cur_sentence, dim=1):
         results.append(cur_sentence)
