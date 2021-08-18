@@ -426,7 +426,7 @@ If you find this toolkit useful, please consider citing:
 ```
 @misc{kss,
   author       = {Park, Sang-kil and Ko, Hyunwoong},
-  title        = {Korean sentence splitter},
+  title        = {Kss: A Toolkit for Korean sentence segmentation},
   howpublished = {\url{https://github.com/hyunwoongko/kss}},
   year         = {2020},
 }
