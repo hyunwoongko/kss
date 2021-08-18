@@ -12,7 +12,7 @@ it may be helpful [to install it from the source code.](https://github.com/hyunw
 Please refer to following syntax to use user dictionary.
 
 - You can use comment line by `#` like Python language.
-- [The single word (단일어)]([https://ko.wikipedia.org/wiki/%EB%8B%A8%EC%9D%BC%EC%96%B4]) must be written one per line.
+- [The single word (단일어)](https://ko.wikipedia.org/wiki/%EB%8B%A8%EC%9D%BC%EC%96%B4]) must be written one per line.
 - [The compound words (복합어)](https://namu.wiki/w/%EB%B3%B5%ED%95%A9%EC%96%B4) must be listed the original word and sub-words by whitespace.
 ```
 # 1. EXAMPLE OF SINGLE WORDS
