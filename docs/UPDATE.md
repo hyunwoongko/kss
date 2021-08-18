@@ -152,3 +152,6 @@
 - Add Memoization with LRU Cache for quote calibration.
   - Quote calibration algorithm has time complexity of O(2^N).
   - It is very poor. So I apply memoization techniques with caching.
+  
+#### Kss 3.0.3
+- Fix bug reported in https://github.com/hyunwoongko/kss/issues/7
