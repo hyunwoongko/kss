@@ -158,8 +158,9 @@ Therefore, Kss provides the parameters to adjust the recursive algorithm.
 
 - `max_recover_step` determines the depth of recursion. Kss never go deeper than this when resolving quotes and brackets mismatch.
 - `max_recover_length` determines the length of a sentence to which calibration is applied. Kss does not calibrate sentences longer than this value. Because calibrating long sentences takes a very long time.
-
-P.S. From kss 3.0.2, memoization with LRU cache was introduced. This can improve performance by saving duplicated segmentation results.
+<br>
+  
+P.S. From kss 3.0.2, [memoization with LRU cache]() was introduced. This can improve performance by saving duplicated segmentation results.
 
 
 - An example of `max_recover_step` 

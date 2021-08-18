@@ -32,10 +32,10 @@ from kss.base import (
     clear_list_to_sentences,
     get_chunk_with_index,
     preprocess_text,
-    _morph, _cache,
+    _morph,
+    _cache,
 )
 from kss.rule import Table, Stats, ID
-
 
 
 def split_sentences(
