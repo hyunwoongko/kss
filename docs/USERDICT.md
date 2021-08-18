@@ -15,12 +15,15 @@ Please refer to following syntax to use user dictionary.
 - [The single word (단일어)](https://namu.wiki/w/%EB%8B%A8%EC%9D%BC%EC%96%B4) must be written one per line.
 - [The compound words (복합어)](https://namu.wiki/w/%EB%B3%B5%ED%95%A9%EC%96%B4) must be listed the original word and sub-words by whitespace.
 ```
-# 1. EXAMPLE OF SINGLE WORDS
+# You can use comment line by `#` like Python language.
+# For more detailed information, refer to https://github.com/hyunwoongko/kss/blob/main/docs/USERDICT.md
+
+# 1. Single words (단일어) must be written one per line.
 대한민국
 라이브러리
 Kss
 
-# 2. EXAMPLE OF COMPOUND WORDS
+# 2. Compound words (복합어) must be listed the original word and sub-words by whitespace.
 자연어처리 자연어 처리
 서울시 서울 시
 ```

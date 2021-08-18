@@ -1,12 +1,11 @@
-# 
-# [ 사용자 사전 ]
-#
-# - 사전 작성 규칙
-# - 단어는 단일어와 복합어로 구성되고 한 라인에 하나의 단어를 작성
-# - 복합어는 원형과 서브 단어들을 공백을 기준으로 나열
+# You can use comment line by `#` like Python language.
+# For more detailed information, refer to https://github.com/hyunwoongko/kss/blob/main/docs/USERDICT.md
 
+# 1. Single words (단일어) must be written one per line.
 대한민국
-자연어처리 자연어 처리
-서울시 서울 시
 라이브러리
 Kss
+
+# 2. Compound words (복합어) must be listed the original word and sub-words by whitespace.
+자연어처리 자연어 처리
+서울시 서울 시
