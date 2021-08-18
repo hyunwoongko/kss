@@ -447,7 +447,6 @@ def _split_sentences(
                     not Table[cur_stat][eojeol.eojeol]
                     or Table[cur_stat][eojeol.eojeol] & ID.PREV
                 ):  # NOT exists
-                    print('5', eojeol, cur_stat)
                     results.append(cur_sentence)
                     cur_sentence = []
                     if Table[cur_stat][prev.eojeol] & ID.NEXT1:
