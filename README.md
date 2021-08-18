@@ -140,8 +140,8 @@ If you set it `True`, Kss does not segment these parts, If you set it `False`, K
   >>> split_sentences(text, use_quotes_brackets_processing=True)
   ['"나는 이제 더는 못 먹겠다. 너무 배불러." 그리고 곧장 자리를 떴다.', '아마도 화장실에 간 모양이다.']
 
-  >>> text = '"나는 이제 더는 못 먹겠다. 너무 배불러." 그리고 곧장 자리를 떴다. 아마도 화장실에 간 모양이다.'
   >>> split_sentences(text, use_quotes_brackets_processing=False)
+  ['"나는 이제 더는 못 먹겠다.', '너무 배불러.', '" 그리고 곧장 자리를 떴다.', '아마도 화장실에 간 모양이다.']
   ```
 
 <br>
@@ -196,14 +196,14 @@ If you set it `none`, segmentation only can be performed about [final eomi (어�
 
 The followings are summary of the three possible options.
 
-- `pynori` Use Pynori analyzer. It works fine even without C++ installed, but is very slow.
-- `mecab` Use Mecab analyzer. It only works in the environment that C++ is installed. However, it is much faster than Pynori.
+- `pynori`: Use Pynori analyzer. It works fine even without C++ installed, but is very slow.
+- `mecab`: Use Mecab analyzer. It only works in the environment that C++ is installed. However, it is much faster than Pynori.
 - `none`: Do not use morpheme analyzer. Kss segments sentences by relying only on final eomi. (`다`, `요`, `죠`)
 
 <br>
 
 Kss use the [Pynori](https://github.com/gritmind/python-nori), the pure python morpheme anlyzer by default. However, you can change it to [Mecab-Ko](https://github.com/jonghwanhyeon/python-mecab-ko), the super-fast morpheme analyzer based on C++.
-[The performance](https://github.com/hyunwoongko/kss/blob/main/UPDATES.md#kss-300) of two analyzers is almost similar because they were developed based on the same dictionary, [mecab-ko-dic](https://bitbucket.org/eunjeon/mecab-ko-dic). 
+[The performance](https://github.com/hyunwoongko/kss/blob/main/docs/ANALYSIS.md#11-open-ended-segmentation) of two analyzers is almost similar because they were developed based on the same dictionary, [mecab-ko-dic](https://bitbucket.org/eunjeon/mecab-ko-dic). 
 However, since there is a lot of difference in speed, we strongly recommend using mecab backend if you can install mecab-ko in your environment.
 (I didn't set Mecab-Ko as the default because I value compatibility over speed.)
 
@@ -217,7 +217,7 @@ However, since there is a lot of difference in speed, we strongly recommend usin
   >>> split_sentences(text, backend="pynori")
   ['부디 만수무강 하옵소서', '천천히 가세용~', '너 밥을 먹는구나', '응 맞아 난 근데 어제 이사했음', '그랬구나 이제 마지막임', '응응']
 
-  >>> split_sentences(text, backend="pynori")
+  >>> split_sentences(text, backend="mecab")
   ['부디 만수무강 하옵소서', '천천히 가세용~', '너 밥을 먹는구나', '응 맞아 난 근데 어제 이사했음', '그랬구나 이제 마지막임', '응응']
 
   >>> split_sentences(text, backend="none")
@@ -412,14 +412,14 @@ Therefore, all arguments of `split_sentences` can be used. Check the following e
 ## 3. Additional Documents
 - [Performance Analysis](https://github.com/hyunwoongko/kss/blob/main/docs/ANALYSIS.md)
 - [Adding words to user dictionary](https://github.com/hyunwoongko/kss/blob/main/docs/USERDICT.md)
-- [Update Note](https://github.com/hyunwoongko/kss/blob/main/docs/UPDATES.md)
+- [Update Note](https://github.com/hyunwoongko/kss/blob/main/docs/UPDATE.md)
 - [Contributing Guide](https://github.com/hyunwoongko/kss/blob/main/docs/CONTRIBUTING.md)
 
 ## 4. References
 Kss is available in various programming languages.
 - [Python version (this repo, ver 3.0.0)](https://github.com/hyunwoongko/kss) contains the most recent changes to Kss.
 - [Java version (ver 2.5.1)](https://github.com/sangdee/kss-java) is based on [Kss 2.5.1](https://github.com/hyunwoongko/kss/blob/main/docs/UPDATES.md#kss-251) and will be updated to 3.xx in the future.
-- [C++ version (ver 1.3.1)](https://github.com/likejazz/korean-sentence-splitter) has the original implementation of Kss and is deprecated now,
+- [C++ version (ver 1.3.1)](https://github.com/likejazz/korean-sentence-splitter) has the original implementation of Kss but is deprecated now.
 
 ## 5. Citation
 If you find this toolkit useful, please consider citing:

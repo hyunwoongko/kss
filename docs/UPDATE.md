@@ -1,4 +1,4 @@
-# Updates Note
+# Update Note
 ## python-kss (DEPRECATED)
 - `python-kss` is merged with kss-official (likejazz)
 - `python-kss` is removed from PyPI (use `kss` not `python-kss` )
