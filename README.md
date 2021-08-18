@@ -292,7 +292,7 @@ Click the triangle button (►) for more detailed information and example code s
 ```python
 >>> from kss import split_chunks
 
->>> def split_chunks(
+>>> split_chunks(
 ...     text: Union[str, List[str], tuple],
 ...     max_length: int,
 ...     overlap: bool = False,
