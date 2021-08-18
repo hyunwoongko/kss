@@ -196,14 +196,14 @@ If you set it `none`, segmentation only can be performed about [final eomi (어�
 
 The followings are summary of the three possible options.
 
-- `pynori` Use Pynori analyzer. It works fine even without C++ installed, but is very slow.
-- `mecab` Use Mecab analyzer. It only works in the environment that C++ is installed. However, it is much faster than Pynori.
+- `pynori`: Use Pynori analyzer. It works fine even without C++ installed, but is very slow.
+- `mecab`: Use Mecab analyzer. It only works in the environment that C++ is installed. However, it is much faster than Pynori.
 - `none`: Do not use morpheme analyzer. Kss segments sentences by relying only on final eomi. (`다`, `요`, `죠`)
 
 <br>
 
 Kss use the [Pynori](https://github.com/gritmind/python-nori), the pure python morpheme anlyzer by default. However, you can change it to [Mecab-Ko](https://github.com/jonghwanhyeon/python-mecab-ko), the super-fast morpheme analyzer based on C++.
-[The performance](https://github.com/hyunwoongko/kss/blob/main/UPDATES.md#kss-300) of two analyzers is almost similar because they were developed based on the same dictionary, [mecab-ko-dic](https://bitbucket.org/eunjeon/mecab-ko-dic). 
+[The performance](https://github.com/hyunwoongko/kss/blob/main/docs/ANALYSIS.md#11-open-ended-segmentation) of two analyzers is almost similar because they were developed based on the same dictionary, [mecab-ko-dic](https://bitbucket.org/eunjeon/mecab-ko-dic). 
 However, since there is a lot of difference in speed, we strongly recommend using mecab backend if you can install mecab-ko in your environment.
 (I didn't set Mecab-Ko as the default because I value compatibility over speed.)
 
