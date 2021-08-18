@@ -140,8 +140,8 @@ If you set it `True`, Kss does not segment these parts, If you set it `False`, K
   >>> split_sentences(text, use_quotes_brackets_processing=True)
   ['"나는 이제 더는 못 먹겠다. 너무 배불러." 그리고 곧장 자리를 떴다.', '아마도 화장실에 간 모양이다.']
 
-  >>> text = '"나는 이제 더는 못 먹겠다. 너무 배불러." 그리고 곧장 자리를 떴다. 아마도 화장실에 간 모양이다.'
   >>> split_sentences(text, use_quotes_brackets_processing=False)
+  ['"나는 이제 더는 못 먹겠다.', '너무 배불러.', '" 그리고 곧장 자리를 떴다.', '아마도 화장실에 간 모양이다.']
   ```
 
 <br>
