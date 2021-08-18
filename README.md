@@ -20,7 +20,7 @@ pip install kss
 
 ### 1.2. Install from source codes
 You can also install Kss from source codes.
-This can be useful for the `Add words to user dictionary` described in [Section 3.2. Adding words to user dictionary](https://github.com/hyunwoongko/kss/blob/main/docs/USERDICT.md).
+This can be useful for the `Adding words to user dictionary` described in [here](https://github.com/hyunwoongko/kss/blob/main/docs/USERDICT.md).
 ```console
 git clone https://github.com/hyunwoongko/kss
 cd kss
