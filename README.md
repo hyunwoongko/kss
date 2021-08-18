@@ -153,15 +153,14 @@ If you set it `True`, Kss does not segment these parts, If you set it `False`, K
 <br>
 
 Kss 2.0 or later can segment sentences even if the pair of brackets and quotation marks do not match. This was a chronic problem in previous Kss C++ (1.0) ([#4](https://github.com/likejazz/korean-sentence-splitter/issues/4), [#8](https://github.com/likejazz/korean-sentence-splitter/issues/8)). 
-But it was fixed in 2.0 by calibration feature about quotation marks and brackets mismatch. However, this feature uses the recursive algorithm that has poor time complexity of O(2^n), so it can be very slow in some cases. 
+But it was fixed in 2.0 by calibration feature about quotation marks and brackets mismatch. However, this feature uses the recursive algorithm that has poor time complexity of O(2^n), so it can be very slow in some cases.
 Therefore, Kss provides the parameters to adjust the recursive algorithm.
 
 - `max_recover_step` determines the depth of recursion. Kss never go deeper than this when resolving quotes and brackets mismatch.
 - `max_recover_length` determines the length of a sentence to which calibration is applied. Kss does not calibrate sentences longer than this value. Because calibrating long sentences takes a very long time.
 
-<br>
+P.S. From kss 3.0.2, memoization with LRU cache was introduced. This can improve performance by saving duplicated segmentation results.
 
-Adjusting the above two options can save your precious time.
 
 - An example of `max_recover_step` 
 

@@ -116,7 +116,7 @@
 - Support multiprocessing and batch processing
 <br><br>
 
-#### kss 3.0.0
+#### kss 3.0.1
 - Use morpheme features
   - Unlike 2.xx, unspecified eomi can also be segmented.
   - e.g. ~소서(존댓말), ~세용(신조어), ~했음/임(전성어미) ~구나(미등록 어미), etc.
@@ -146,4 +146,9 @@
     >>> split_sentences(["안녕하세요 반가워요", "반갑습니다. 잘 지내시나요?"], num_workers=4)
     [['안녕하세요', '반가워요'], ['반갑습니다.', '잘 지내시나요?']]  
     ```
-       
+
+#### kss 3.0.2
+- Hot fix of logging bugs for longer text.
+- Add Memoization with LRU Cache for quote calibration.
+  - Quote calibration algorithm has time complexity of O(2^N).
+  - It is very poor. So I apply memoization techniques with caching.
