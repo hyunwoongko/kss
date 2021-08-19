@@ -138,6 +138,7 @@ def split_sentences(
                 out = "".join(_input_for_pp).replace(" ", "")
                 for special in Const.quotes_or_brackets:
                     out = out.replace(special, "")
+
                 mp_postprocessing.append(out)
 
             results += pool.map(
@@ -153,18 +154,19 @@ def split_sentences(
             )
 
             mp_output_final = []
-            mp_temp = []
+            mp_temp.clear()
             _results = clear_list_to_sentences(results)
 
             for i, result in enumerate(_results):
                 mp_temp += result
+
                 out = "".join(mp_temp).replace(" ", "")
                 for special in Const.quotes_or_brackets:
                     out = out.replace(special, "")
+
                 if out in mp_postprocessing:
                     mp_output_final.append(mp_temp)
-
-                mp_temp = []
+                    mp_temp = []
 
             results = mp_output_final
             assert len(results) == len(_results), (
