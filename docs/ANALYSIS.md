@@ -17,7 +17,7 @@ Unfortunately, among the existing Korean sentence segmentation library, Kss is t
 |Kss 1.3.1 (C++ version)        |60.3174%  |
 
 This result shows that more accurate and safe sentence segmentation is possible by using morpheme features. 
-As shown in the table, the error rate is reduced than Non-morpheme backend.
+As shown in the table, the error rate is reduced than previous versions.
 
 - Comparison with Punctuation-only segmentation toolkits
 
