@@ -21,7 +21,7 @@ As shown in the table, the error rate is reduced than previous versions.
 
 - Comparison with Punctuation-only segmentation toolkits
 
-You can check the result of Punctuation-only segmentation in the next section. Surprisingly, Kss 1.0 has a lower error rate than Punctuation-only segmentation toolkits (e.g. OKT, Hannanum). 
+You can check the result of Punctuation-only segmentation in the next section. Surprisingly, Kss 3 has a lower error rate than Punctuation-only segmentation toolkits (e.g. OKT, Hannanum). 
 This means that Kss 3 is a toolkit that can segment everywhere in the input text, but is safer than existing Punctuation-only segmentation toolkit which have limited their own performance for segmentation safety. If you want to reproduce this, run `/tests/eval_open_ended.py`.
 
 ### 1.2. Punctuation-only segmentation
