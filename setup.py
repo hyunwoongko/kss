@@ -1,6 +1,10 @@
 import codecs
 from setuptools import setup, find_packages
 
+required = [
+    "emoji",
+]
+
 
 def read_file(filename, cb):
     with codecs.open(filename, "r", "utf8") as f:
@@ -12,7 +16,7 @@ with open("README.md", encoding="utf-8") as f:
 
 setup(
     name="kss",
-    version="3.1.0.2",
+    version="3.1.0.3",
     author="Hyunwoong Ko",
     author_email="kevin.ko@tunib.ai",
     url="https://github.com/hyunwoongko/kss",
@@ -20,6 +24,7 @@ setup(
     description="A Toolkit for Korean sentence segmentation",
     long_description_content_type="text/markdown",
     platforms=["any"],
+    install_requires=required,
     long_description=long_description,
     packages=find_packages(exclude=["tests"]),
     python_requires=">=3",
