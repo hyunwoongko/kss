@@ -5,6 +5,7 @@
 - (2) Download [mecab](https://github.com/Pusnow/mecab-ko-msvc/releases/tag/release-0.9.2-msvc-3) zip file. (64bit: x64 / 32bit: x86) 
 - (3) Download [mecab-ko-dic](https://github.com/Pusnow/mecab-ko-dic-msvc/releases/tag/mecab-ko-dic-2.1.1-20180720-msvc) zip file.
 - (4) Unzip these files into `C:\\mecab`.
+  - ![](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FGq82j%2FbtqFXKj3WN7%2FfrhQjX2LQNrZMGUFLzQGYK%2Fimg.png)
 - (5) Download wheel file [here](https://github.com/Pusnow/mecab-python-msvc/releases/tag/mecab_python-0.996_ko_0.9.2_msvc-2).
   - Match your python version. (python 3.6: cp36, python 2.7: cp27)
   - Match your winodws version. (64bit: win_amd64 / 32bit: win32)
