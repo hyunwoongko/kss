@@ -27,7 +27,6 @@ pip install -e .
 ```
 
 
-
 ## 2. Usage
 ### 2.1. `split_sentences`
 Kss is the sentence segmentation toolkit based on morpheme-aware heuristic algorithms. And `split_sentences` is a key function of this toolkit. 
@@ -202,7 +201,7 @@ The followings are summary of the three possible options.
 Kss use the [Pynori](https://github.com/gritmind/python-nori), the pure python morpheme anlyzer by default. However, you can change it to [Mecab-Ko](https://github.com/jonghwanhyeon/python-mecab-ko), the super-fast morpheme analyzer based on C++.
 [The performance](https://github.com/hyunwoongko/kss/blob/main/docs/ANALYSIS.md#11-open-ended-segmentation) of two analyzers is almost similar because they were developed based on the same dictionary, [mecab-ko-dic](https://bitbucket.org/eunjeon/mecab-ko-dic). 
 However, since there is a lot of difference in speed, we strongly recommend using mecab backend if you can install mecab-ko in your environment.
-(I didn't set Mecab-Ko as the default because I value compatibility over speed.)
+(I didn't set Mecab-Ko as the default because I value compatibility over speed. If installing mecab is difficult, use [this script](https://github.com/hyunwoongko/kss/blob/main/scripts/install_mecab.sh)) 
 
 - An example of `backend`
 
