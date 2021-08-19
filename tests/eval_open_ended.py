@@ -4,8 +4,8 @@ import kss
 
 def eval_open_ended_kss3():
     cases = open("test_uoneway.txt", "r").read().splitlines()
-    nori_cnt, mecab_cnt, nm_cnt = 0, 0, 0
-    nori_results, mecab_results, nm_results = [], [], []
+    nori_cnt, mecab_cnt = 0, 0
+    nori_results, mecab_results = [], []
 
     mecab_available = False
     try:
@@ -15,31 +15,19 @@ def eval_open_ended_kss3():
     except ImportError:
         pass
 
-    for case in tqdm(cases):
-        nori_result = kss.split_sentences(case, backend="pynori")
-        non_morpheme_results = kss.split_sentences(case, backend="none")
-
-        if len(nori_result) == 1:
+    for result in kss.split_sentences(cases, backend="pynori"):
+        if len(result) != 1:
             nori_cnt += 1
-        else:
-            nori_results.append(nori_result)
+            nori_results.append(result)
 
-        if len(non_morpheme_results) == 1:
-            nm_cnt += 1
-        else:
-            nm_results.append(non_morpheme_results)
-
-        if mecab_available:
-            mecab_result = kss.split_sentences(case, backend="mecab")
-
-            if len(mecab_result) == 1:
+    if mecab_available:
+        for result in kss.split_sentences(cases, backend="mecab"):
+            if len(result) != 1:
                 mecab_cnt += 1
-            else:
-                mecab_results.append(mecab_result)
+                mecab_results.append(result)
 
-    print(f"`pynori` error rate : {1 - (nori_cnt / len(cases))}")
-    print(f"`mecab` error rate : {1 - (mecab_cnt / len(cases))}")
-    print(f"`none` error rate : {1 - (nm_cnt / len(cases))}")
+    print(f"`pynori` error rate : {(nori_cnt / len(cases))}")
+    print(f"`mecab` error rate : {(mecab_cnt / len(cases))}")
     print()
 
     print("pynori wrong segmentation:")
@@ -49,11 +37,6 @@ def eval_open_ended_kss3():
 
     print("mecab wrong segmentation:")
     for i in mecab_results:
-        print(i)
-    print()
-
-    print("non-morpheme wrong segmentation:")
-    for i in nm_results:
         print(i)
     print()
 

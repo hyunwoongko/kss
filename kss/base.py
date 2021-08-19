@@ -123,6 +123,7 @@ class Const:
     endpoint = (
         quotes_or_brackets + punctuation + [" "] + list(Table[Stats.COMMON].keys())
     )
+    not_endpoint = [",", ":", "\u200b"] + quotes_or_brackets + ["<", ">"]
 
     @staticmethod
     def exceptions():
@@ -157,74 +158,12 @@ class Const:
 
         return faces + apostrophe + year_s + time + inch
 
-    @staticmethod
-    def ec_cases():
-        return [
-            "쌓이다",
-            "보이다",
-            "먹이다",
-            "죽이다",
-            "끼이다",
-            "트이다",
-            "까이다",
-            "꼬이다",
-            "데이다",
-            "치이다",
-            "쬐이다",
-            "꺾이다",
-            "낚이다",
-            "녹이다",
-            "벌이다",
-            "다 적발",
-            "다 말하",
-            "다 말한",
-            "다 말했",
-            "다 밝혀",
-            "다 밝혔",
-            "다 밝히",
-            "다 밝힌",
-            "다 주장",
-            "요 라고",
-            "요. 라고",
-            "죠 라고",
-            "죠. 라고",
-            "다 라고",
-            "다. 라고",
-            "다 하여",
-            "다 거나",
-            "다. 거나",
-            "다 시피",
-            "다. 시피",
-            "다 응답",
-            "다 로 응답",
-            "다. 로 응답",
-            "요 로 응답",
-            "요. 로 응답",
-            "죠 로 응답",
-            "죠. 로 응답",
-            "다 에서",
-            "다. 에서",
-            "요 에서",
-            "요. 에서",
-            "죠 에서",
-            "죠. 에서",
-            "타다 금지법",
-            "다 온 사실",
-            "다 온 것",
-            "다 온 사람",
-            "다 왔다",
-            "다 왔더",
-            "다 와보",
-            "우간다",
-            "사이다",
-        ]
-
 
 class Eojeol:
     eojeol: str
     pos: str
 
-    def __init__(self, eojeol: str, pos: str):
+    def __init__(self, eojeol: str = "", pos: str = "TEMP"):
         self.eojeol = eojeol
         self.pos = pos
 
@@ -236,14 +175,9 @@ class Eojeol:
 
 
 class Preprocessor:
-    def __init__(self, use_morpheme: bool):
+    def __init__(self):
         global _exceptions
         exceptions = deepcopy(_exceptions)
-
-        # drop ec cases if morpheme features are not available
-        if not use_morpheme:
-            exceptions += Const.ec_cases()
-
         self.backup_dict = {k: str(abs(hash(k))) for k in exceptions}
 
     @staticmethod
@@ -268,20 +202,6 @@ class Preprocessor:
 
     def _add_item_to_dict(self, key: str, val: str):
         self.backup_dict[key] = val
-
-    def add_ec_cases_to_dict(self, text):
-        for i in range(0, len(text)):
-            cond1 = text[i] in ["다", "요", "죠"]
-            cond2 = i != len(text) - 1
-            if cond1 and cond2:
-                if text[i + 1] not in Const.endpoint:
-                    target_to_backup = text[i] + text[i + 1]
-                    self._add_item_to_dict(
-                        key=target_to_backup,
-                        val=str(abs(hash(target_to_backup))),
-                    )
-
-        return text
 
     def add_emojis_to_dict(self, text):
         for e in get_emoji(text):
@@ -337,19 +257,13 @@ class Postprocessor(object):
 
         return final_results
 
-    def apply_heuristic(self, text, results, use_morpheme):
-        from kss.rule import (
-            post_processing_da,
-            post_processing_jyo,
-            post_processing_yo,
-        )
+    def apply_heuristic(self, text, results):
+        from kss.rule import post_processing_jyo, post_processing_yo
 
         if self._contains(["요"], text):
             results = self._heuristic(results, post_processing_yo)
         if self._contains(["죠"], text):
             results = self._heuristic(results, post_processing_jyo)
-        if not use_morpheme and self._contains(["다"], text):
-            results = self._heuristic(results, post_processing_da)
 
         return results
 
@@ -455,10 +369,16 @@ def get_input_texts(text):
 
 
 def clear_list_to_sentences(results):
-    return [
-        [sentence.strip() for sentence in result if len(sentence.strip()) > 0]
-        for result in results
-    ]
+    total_result = []
+    for result in results:
+        temp = []
+        for sent in result:
+            sent = sent.strip()
+            if len(sent) > 0:
+                temp.append(sent)
+        total_result.append(temp)
+
+    return total_result
 
 
 def get_num_workers(num_workers):

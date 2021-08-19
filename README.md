@@ -192,13 +192,11 @@ P.S. From kss 3.0.2, [memoization with LRU cache](https://github.com/hyunwoongko
 Kss 3.0 or later supports morpheme analysis. This parameter indicates which morpheme anlyzer will be used during segmentation. 
 If you set it `pynori` or `mecab`, sentence segmentation is possible even at the unspecified [eomi (어미)](https://ko.wikipedia.org/wiki/%EC%96%B4%EB%AF%B8). 
 In this case, Kss can segment sentences that use honorifics (경어), dialects (방언), neologisms (신조어) and [eomi transferred from noun (명사형 전성어미)](https://ko.wiktionary.org/wiki/%EC%A0%84%EC%84%B1%EC%96%B4%EB%AF%B8), and can grasped well the parts that are difficult to grasp without morpheme information. 
-If you set it `none`, segmentation only can be performed about [final eomi (어말어미)](http://encykorea.aks.ac.kr/Contents/Item/E0066610) `다`, `요`, `죠` that are frequently used in Korean.
 
 The followings are summary of the three possible options.
 
 - `pynori`: Use Pynori analyzer. It works fine even without C++ installed, but is very slow.
 - `mecab`: Use Mecab analyzer. It only works in the environment that C++ is installed. However, it is much faster than Pynori.
-- `none`: Do not use morpheme analyzer. Kss segments sentences by relying only on final eomi. (`다`, `요`, `죠`)
 
 <br>
 
@@ -219,9 +217,6 @@ However, since there is a lot of difference in speed, we strongly recommend usin
 
   >>> split_sentences(text, backend="mecab")
   ['부디 만수무강 하옵소서', '천천히 가세용~', '너 밥을 먹는구나', '응 맞아 난 근데 어제 이사했음', '그랬구나 이제 마지막임', '응응']
-
-  >>> split_sentences(text, backend="none")
-  ['부디 만수무강 하옵소서 천천히 가세용~ 너 밥을 먹는구나 응 맞아 난 근데 어제 이사했음 그랬구나 이제 마지막임 응응']
   ```
 
 <br>
@@ -400,7 +395,7 @@ Therefore, all arguments of `split_sentences` can be used. Check the following e
 >>> split_chunks(text, backend="mecab", max_length=24)
 ['주말에 가족여행으로 오션월드 다녀왔어요!!! 오션월드는 처음가보는거여서 설렘설렘~~!! 날씨도 끝내주고~! 하늘,구름 너무 이뻤습니다~! 가평휴게소까지 가는데 차가 엄~~~청 막혔습니다', '(3시간넘게걸림) 와 정말 토나오는줄 알았네요 하필 또 저희가족 늦게 일어나서 늦게 출발했거든요 ㅋㅋㅋ', '가평휴게소 사람들이 엄청 많았어요! 호두과자랑 군것질좀 해주구요 ㅋ_ㅋ 오션월드 도착!! 주차장이 다 꽉차서.. 주차할곳이 없더라구요', '계속 주차장 돌다가 겨우 한자리 있어서 주차했습니다..ㅠㅠㅠ 그런데 또 주차장에 주차하고 언덕길을 올라가야 하더라구요!?', '헐~ 오션월드 ..이게뭐람.. 큐알코드로 찍고 간편하게 입장했습니다 오션월드 코인도 넉넉하게 10만원 충전했어요 ㅋㅋㅋ', '다들 너무 잘먹기때문에... 넉넉하게..ㅋㅋㅋ 여자 락커실에 에어컨이 얼마나 빵빵한지 오들오들 추웠습니다 캐리비안베이는 습하고 축축한데 오션월드는 완전 정반대 ㅋㅋㅋ', '제가 방수팩을 준비못해서 각자 3개 살려고 했는데 헐! 한개에 19000원이에요! 그래서 한개만 샀어요 ㅠㅠ 제 핸드폰은 락커에.. 방수팩 꼭 미리 준비하세요 ㅠ', '넘비싸요 ㅠ 오션월드 정말 엉망진창이었어요 ㅠㅠ 사람이 너~~~무많아서 유수풀도 줄서서들어가구요', '다른 놀이기구는 엄두도 못났습니다 파도풀도 사람이 너무 많은지 안전상 관리를 빡세게 해서 재미가 없었어요..', '처음으로 먹어본 소떡소떡물놀이하다가 먹은 간식이어서 그런지 참 맛있게 먹었습니다! 그렇지만 위생은 정말 안좋았어요.. 오션월드 처음이라 기대 많이 했는데 첨부터 끝까지 다 맘에 안들었어요', '물론 사람이 너~무 많아서 일수도 있습니다. 캐리비안베이는 위생도 괜찮아 보이고 음식이 비싸지만 다 맛있었거든요!', '근데 오션월드 위생도 별로고 비싸고 맛없고!!! 주차장도 좁고 주차장에서 입구까지 걸어서 올라가고.. 캐리비안베이보다 나았던건 락커시설과 유수풀 두개 정도! 오션월드 정말 아쉬웠습니다 개인적으루 캐리비안베이가 훨씬 나은듯!']
 
->>> split_chunks(text, backend="none", use_heuristic=False, max_length=24)
+>>> split_chunks(text, use_heuristic=False, max_length=24)
 ['주말에 가족여행으로 오션월드 다녀왔어요!!! 오션월드는 처음가보는거여서 설렘설렘~~!! 날씨도 끝내주고~! 하늘,구름 너무 이뻤습니다~! 가평휴게소까지 가는데 차가 엄~~~청 막혔습니다(3시간넘게걸림) 와 정말 토나오는줄 알았네요 하필 또 저희가족 늦게 일어나서 늦게 출발했거든요 ㅋㅋㅋ 가평휴게소 사람들이 엄청 많았어요!', '호두과자랑 군것질좀 해주구요 ㅋ_ㅋ 오션월드 도착!! 주차장이 다 꽉차서.. 주차할곳이 없더라구요 계속 주차장 돌다가 겨우 한자리 있어서 주차했습니다..ㅠㅠㅠ', '그런데 또 주차장에 주차하고 언덕길을 올라가야 하더라구요!?헐~ 오션월드 ..이게뭐람.. 큐알코드로 찍고 간편하게 입장했습니다 오션월드 코인도 넉넉하게 10만원 충전했어요 ㅋㅋㅋ 다들 너무 잘먹기때문에... 넉넉하게..ㅋㅋㅋ 여자 락커실에 에어컨이 얼마나 빵빵한지 오들오들 추웠습니다 캐리비안베이는 습하고 축축한데 오션월드는 완전 정반대 ㅋㅋㅋ 제가 방수팩을 준비못해서 각자 3개 살려고 했는데 헐! 한개에 19000원이에요!', '그래서 한개만 샀어요 ㅠㅠ 제 핸드폰은 락커에.. 방수팩 꼭 미리 준비하세요 ㅠ 넘비싸요 ㅠ 오션월드 정말 엉망진창이었어요 ㅠㅠ 사람이 너~~~무많아서 유수풀도 줄서서들어가구요 다른 놀이기구는 엄두도 못났습니다 파도풀도 사람이 너무 많은지 안전상 관리를 빡세게 해서 재미가 없었어요.. 처음으로 먹어본 소떡소떡물놀이하다가 먹은 간식이어서 그런지 참 맛있게 먹었습니다!', '그렇지만 위생은 정말 안좋았어요.. 오션월드 처음이라 기대 많이 했는데 첨부터 끝까지 다 맘에 안들었어요 물론 사람이 너~무 많아서 일수도 있습니다.', '캐리비안베이는 위생도 괜찮아 보이고 음식이 비싸지만 다 맛있었거든요! 근데 오션월드 위생도 별로고 비싸고 맛없고!!! 주차장도 좁고 주차장에서 입구까지 걸어서 올라가고.. 캐리비안베이보다 나았던건 락커시설과 유수풀 두개 정도! 오션월드 정말 아쉬웠습니다 개인적으루 캐리비안베이가 훨씬 나은듯!']
 ```
 
