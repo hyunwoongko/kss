@@ -13,7 +13,8 @@
   - e.g. `pip install mecab_python-0.996_ko_0.9.2_msvc-cp35-cp35m-win_amd64.whl`
 
 ## Linux
-Run the following script.
+- Run the following script.
+- I cheked it is work well in Google Cloud Platform.
 ```bash
 cd
 mkdir mecab
@@ -33,6 +34,6 @@ cd mecab-ko-dic-1.6.1-20140814
 make
 sudo make install
 sudo ln -s /usr/local/bin/mecab-config /usr/bin/mecab-config
-sudo python3 -m pip install python-mecab-ko —upgrade
+sudo python3 -m pip install python-mecab-ko
 
 ```
