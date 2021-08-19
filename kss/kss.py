@@ -159,6 +159,7 @@ def split_sentences(
 
             for result in _results:
                 mp_temp += result
+                print(mp_temp)
 
                 out = "".join(mp_temp).replace(" ", "")
                 for special in Const.quotes_or_brackets:
@@ -402,7 +403,7 @@ def _split_sentences(
                             # "말했다. 고한다." => 고(EC): not segment
                             # "말했다. 고구려는" => 고(NNG): segment
                             results.append(cur_sentence)
-                            cur_sentence = [prev]
+                            cur_sentence = []
 
                     cur_stat = Stats.DEFAULT
                     endif = True
