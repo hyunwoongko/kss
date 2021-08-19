@@ -100,10 +100,11 @@ def split_sentences(
 
     input_texts = get_input_texts(text)
     num_workers = get_num_workers(num_workers)
+    total_len = len(list(itertools.chain(*input_texts)))
     multiprocessing = False
 
     results = []
-    if num_workers == 1:
+    if num_workers == 1 or total_len == 1:
         for input_text in input_texts:
             result = []
             for _text in input_text:
@@ -159,7 +160,6 @@ def split_sentences(
 
             for result in _results:
                 mp_temp += result
-
                 out = "".join(mp_temp).replace(" ", "")
                 for special in Const.quotes_or_brackets:
                     out = out.replace(special, "")
@@ -169,10 +169,6 @@ def split_sentences(
                     mp_temp = []
 
             results = mp_output_final
-            assert len(results) == len(_results), (
-                f"length of multiprocessing output is wrong !!, "
-                f"input: {len(results)}, output: {len(_results)}"
-            )
 
     if not multiprocessing:
         results = clear_list_to_sentences(results)
