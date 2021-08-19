@@ -407,6 +407,7 @@ Therefore, all arguments of `split_sentences` can be used. Check the following e
 - [Adding words to user dictionary](https://github.com/hyunwoongko/kss/blob/main/docs/USERDICT.md)
 - [Update Note](https://github.com/hyunwoongko/kss/blob/main/docs/UPDATE.md)
 - [Contributing Guide](https://github.com/hyunwoongko/kss/blob/main/docs/CONTRIBUTING.md)
+- [Mecab-Ko Installation Guide](https://github.com/hyunwoongko/kss/blob/main/docs/MECAB.md)
 
 ## 4. References
 Kss is available in various programming languages.
