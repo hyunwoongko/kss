@@ -159,7 +159,6 @@ def split_sentences(
 
             for result in _results:
                 mp_temp += result
-                print(mp_temp)
 
                 out = "".join(mp_temp).replace(" ", "")
                 for special in Const.quotes_or_brackets:
