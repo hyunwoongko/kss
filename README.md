@@ -99,7 +99,7 @@ I recommend to you set it `False` if input texts follow the punctuation rules re
 
 <br>
 
-As shown in the [performance analysis](https://github.com/hyunwoongko/kss/blob/main/docs/ANALYSIS.md#1-segmentation-error-rate), if this option is set to `False`, the segmentation error rate will be downed (3 → 0%).
+As shown in the [performance analysis](https://github.com/hyunwoongko/kss/blob/main/docs/ANALYSIS.md#1-segmentation-error-rate), if this option is set to `False`, the segmentation error rate will be downed.
 However, it does mean Kss will be less sensitive. If your input texts have relatively few punctuation marks, such as messages or blog articles, 
 Kss can't split most of the sentences.
 Therefore, it must be adjusted according to the type of the input texts.
