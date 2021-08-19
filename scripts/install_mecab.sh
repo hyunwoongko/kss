@@ -16,4 +16,4 @@ cd mecab-ko-dic-1.6.1-20140814
 make
 sudo make install
 sudo ln -s /usr/local/bin/mecab-config /usr/bin/mecab-config
-sudo python3 -m pip install python-mecab-ko —upgrade
+sudo python3 -m pip install python-mecab-ko
