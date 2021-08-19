@@ -117,7 +117,7 @@ class Const:
     double_quotes_close_to_open = {v: k for k, v in double_quotes_open_to_close.items()}
     single_quotes_close_to_open = {v: k for k, v in single_quotes_open_to_close.items()}
 
-    punctuation = [";", ".", ":", "?", "!", ",", "·"]
+    punctuation = [";", ".", "?", "!", "~", "…"]
     special = punctuation + brackets
     quotes_or_brackets = single_quotes + double_quotes + brackets
     endpoint = (
