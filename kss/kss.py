@@ -157,7 +157,7 @@ def split_sentences(
             mp_temp.clear()
             _results = clear_list_to_sentences(results)
 
-            for i, result in enumerate(_results):
+            for result in _results:
                 mp_temp += result
 
                 out = "".join(mp_temp).replace(" ", "")
@@ -363,7 +363,8 @@ def _split_sentences(
                     and check_pos(eojeol, ["ETN", "EF"])
                     and check_pos(eojeols[i + 1], ["SP", "SE", "SF"])
                     and not check_pos(eojeol, ["J", "XS"])  # ETN+XSN 같은 케이스 막기위해
-                    and eojeol.eojeol not in ["다", "요", "죠", "기"]  # ~ 하기 (명사파생 접미사가 전성어미로 오해되는 경우)
+                    and eojeol.eojeol
+                    not in ["다", "요", "죠", "기"]  # ~ 하기 (명사파생 접미사가 전성어미로 오해되는 경우)
                 ):
                     cur_stat = Stats.EOMI
                     # 일반적으로 적용할 수 있는 어미세트 NEXT 세트 적용.
