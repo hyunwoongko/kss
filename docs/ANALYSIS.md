@@ -11,18 +11,18 @@ Unfortunately, among the existing Korean sentence segmentation library, Kss is t
 
 |Backend                        |Error rate|
 |:------------------------------|:--------:|
-|Kss 3.0 (Mecab backend)        |1.3262%   |
-|Kss 3.0 (Pynori backend)       |2.3872%   |
+|Kss 3.1 (Mecab backend)        |1.3262%   |
+|Kss 3.1 (Pynori backend)       |2.3872%   |
 |Kss 2.5.1 (`safe`=`False`)     |9.0476%   |
 |Kss 1.3.1 (C++ version)        |60.3174%  |
 
 This result shows that more accurate and safe sentence segmentation is possible by using morpheme features. 
-As shown in the table, the error rate is reduced than Non-morpheme backend.
+As shown in the table, the error rate is reduced than previous versions.
 
 - Comparison with Punctuation-only segmentation toolkits
 
-You can check the result of Punctuation-only segmentation in the next section. Surprisingly, Kss 3.0 has a similar error rate than Punctuation-only segmentation toolkits (e.g. OKT, Hannanum). 
-This means that Kss 3.0 is a toolkit that can segment everywhere in the input text, but is safer than existing Punctuation-only segmentation toolkit which have limited their own performance for segmentation safety. If you want to reproduce this, run `/tests/eval_open_ended.py`.
+You can check the result of Punctuation-only segmentation in the next section. Surprisingly, Kss 3 has a lower error rate than Punctuation-only segmentation toolkits (e.g. OKT, Hannanum). 
+This means that Kss 3 is a toolkit that can segment everywhere in the input text, but is safer than existing Punctuation-only segmentation toolkit which have limited their own performance for segmentation safety. If you want to reproduce this, run `/tests/eval_open_ended.py`.
 
 ### 1.2. Punctuation-only segmentation
 
@@ -32,14 +32,14 @@ Kss also supports this setting using the option named `use_heuristic`.
 
 |Backend                        |Error rate|
 |:------------------------------|:--------:|
-|Kss 3.0 (Mecab backend)        |0.0000%   |
-|Kss 3.0 (Pynori backend)       |0.0000%   |
+|Kss 3.1 (Mecab backend)        |0.0000%   |
+|Kss 3.1 (Pynori backend)       |0.0000%   |
 |Kss 2.5.1 (`safe`=`True`)      |2.3809%   |
 |OKT 2.1.3 (powered by KoalaNLP)|4.2440%   |
 |Hannanum (powered by KoalaNLP) |4.5092%   |
 
-Surprisingly, Kss 3.0 (morpheme backend) never made any mistake on our test dataset. 
-If so, someone may ask if the Punctuation-only setting in Kss 3.0 isn't working very well. 
+Surprisingly, Kss 3 (morpheme backend) never made any mistake on our test dataset. 
+If so, someone may ask if the Punctuation-only setting in Kss 3 isn't working very well. 
 Unfortunately, we have not yet built a dataset to measure this. 
 Therefore, we present the qualitative evaluation results in the next section.
 If you want to reproduce this, run `/tests/eval_punct_only.py`.
@@ -54,7 +54,7 @@ The article used in sentence segmentation is referenced [here](http://semantics.
 ### 2.1. Open-ended segmentation
 
 <details>
-    <summary>Kss 3.0 (Mecab backend)</summary>
+    <summary>Kss 3.1 (Mecab backend)</summary>
 
 ```
 강남역 맛집으로 소문난 강남 토끼정에 다녀왔습니다.
@@ -93,7 +93,7 @@ The article used in sentence segmentation is referenced [here](http://semantics.
 </details>
 
 <details>
-<summary>Kss 3.0 (Pynori backend)</summary>
+<summary>Kss 3.1 (Pynori backend)</summary>
 
 ```
 강남역 맛집으로 소문난 강남 토끼정에 다녀왔습니다.
@@ -135,7 +135,7 @@ The article used in sentence segmentation is referenced [here](http://semantics.
 ### 2.2. Punctuation-only segmentation
 
 <details>
-<summary>Kss 3.0 (Mecab backend)</summary>
+<summary>Kss 3.1 (Mecab backend)</summary>
 
 ```
 강남역 맛집으로 소문난 강남 토끼정에 다녀왔습니다.
@@ -164,7 +164,7 @@ The article used in sentence segmentation is referenced [here](http://semantics.
 </details>
 
 <details>
-<summary>Kss 3.0 (Pynori backend)</summary>
+<summary>Kss 3.1 (Pynori backend)</summary>
 
 ```
 강남역 맛집으로 소문난 강남 토끼정에 다녀왔습니다.
