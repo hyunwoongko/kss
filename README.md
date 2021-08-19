@@ -1,5 +1,4 @@
 # Kss: A Toolkit for Korean sentence segmentation
-<a href="https://github.com/hyunwoongko/kss/releases"><img alt="GitHub release" src="https://img.shields.io/github/release/hyunwoongko/kss.svg" /></a>
 <a href="https://github.com/hyunwoongko/kss/blob/master/LICENSE"><img alt="BSD 3-Clause" src="https://img.shields.io/badge/license-BSD%203%20Clause-blue.svg"/></a>
 <a href="https://github.com/hyunwoongko/kss/issues"><img alt="Issues" src="https://img.shields.io/github/issues/hyunwoongko/kss"/></a>
 
@@ -412,7 +411,7 @@ Therefore, all arguments of `split_sentences` can be used. Check the following e
 
 ## 4. References
 Kss is available in various programming languages.
-- [Python version (this repo, ver 3.1.0)](https://github.com/hyunwoongko/kss) contains the most recent changes to Kss.
+- [Python version (this repo, ver 3.1.0.1)](https://github.com/hyunwoongko/kss) contains the most recent changes to Kss.
 - [Java version (ver 2.5.1)](https://github.com/sangdee/kss-java) is based on [Kss 2.5.1](https://github.com/hyunwoongko/kss/blob/main/docs/UPDATE.md#kss-251) and will be updated to 3.xx in the future.
 - [C++ version (ver 1.3.1)](https://github.com/likejazz/korean-sentence-splitter) has the original implementation of Kss but is deprecated now.
 
