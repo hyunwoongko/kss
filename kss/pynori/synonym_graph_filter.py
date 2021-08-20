@@ -69,9 +69,7 @@ class SynonymGraphFilter(object):
                 trie_result = [tkn_attr_obj_list[0]]
 
             for tkn_attr_obj in tkn_attr_obj_list:
-                self.syn_trie.insert(
-                    self.SEP_CHAR.join(tkn_attr_obj.termAtt), trie_result
-                )
+                self.syn_trie[self.SEP_CHAR.join(tkn_attr_obj.termAtt)] = trie_result
 
     def _set_token_attribute(self, source, target, idx):
         for name, _ in target.__dict__.items():
@@ -89,7 +87,9 @@ class SynonymGraphFilter(object):
 
             token = token_list[step]
             for n in range(m, len(token_list)):
-                tkn, node = self.syn_trie.search(token)
+                node = self.syn_trie[token]
+                tkn = node is None
+
                 if tkn is False and node is None:  # [A]
                     if len(token.split(self.SEP_CHAR)) == 1:
                         new_tkn_attrs = self._set_token_attribute(

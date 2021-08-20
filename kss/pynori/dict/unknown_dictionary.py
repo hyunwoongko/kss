@@ -38,4 +38,4 @@ class UnknownDictionary(Dictionary):
             morph_inf["POS"] = splits[4]
             morph_inf["POS_type"] = POS.Type.MORPHEME
             morph_inf["morphemes"] = None
-            self.unkTrie.insert(splits[0], morph_inf)
+            self.unkTrie[splits[0]] = morph_inf

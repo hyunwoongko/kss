@@ -1,7 +1,9 @@
 import gzip
 import pickle
-from kss.pynori.dict.dictionary import Dictionary
+
 from kss.pynori.dict.trie import Trie
+
+from kss.pynori.dict.dictionary import Dictionary
 
 
 class KnownDictionary(Dictionary):
@@ -36,4 +38,4 @@ class KnownDictionary(Dictionary):
                         )
                     )
                 morph_inf["morphemes"] = morphemes_list
-            self.sysTrie.insert(token, morph_inf)
+            self.sysTrie[token] = morph_inf

@@ -1,3 +1,5 @@
+from time import time
+
 from kss.pynori.korean_posstop_filter import KoreanPOSStopFilter
 from kss.pynori.korean_tokenizer import KoreanTokenizer
 from kss.pynori.korean_tokenizer import Type
@@ -16,7 +18,6 @@ class KoreanAnalyzer(object):
 
     def __init__(
         self,
-        verbose=False,
         path_userdict="/resources/userdict.txt",
         decompound_mode="NONE",
         infl_decompound_mode="NONE",
@@ -29,7 +30,6 @@ class KoreanAnalyzer(object):
     ):
         self.post_processor = PostProcessing()
         self.kor_tokenizer = KoreanTokenizer(
-            verbose,
             path_userdict,
             decompound_mode,
             infl_decompound_mode,
@@ -40,9 +40,10 @@ class KoreanAnalyzer(object):
         self.kor_pos_filter = KoreanPOSStopFilter(stop_tags=stop_tags)
         self.synonym_filter = synonym_filter
         self.mode_synonym = mode_synonym
-
         self.syn_graph_filter = None
-        if self.synonym_filter:  # SynonymGraphFilter 초기화 처리 지연 시간으로 True일 때만 활성.
+
+        # SynonymGraphFilter 초기화 처리 지연 시간으로 True일 때만 활성.
+        if self.synonym_filter:
             self.syn_graph_filter = SynonymGraphFilter(
                 kor_tokenizer=self.kor_tokenizer,
                 mode_synonym=self.mode_synonym,
@@ -53,7 +54,6 @@ class KoreanAnalyzer(object):
 
         Filtering 순서에 유의. (POS -> SYNONYM)
         """
-
         if not isinstance(in_string, str):
             raise ValueError(f"the input type must be {type('')}")
 

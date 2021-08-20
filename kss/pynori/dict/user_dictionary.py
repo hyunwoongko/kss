@@ -74,7 +74,7 @@ class UserDictionary(Dictionary):
             if len(splits) == 1:
                 morph_inf["POS_type"] = POS.Type.MORPHEME
                 morph_inf["morphemes"] = None
-                self.userTrie.insert(token, morph_inf)
+                self.userTrie[token] = morph_inf
             else:
                 morph_inf["POS_type"] = POS.Type.COMPOUND
                 morphemes_list = []
@@ -83,6 +83,6 @@ class UserDictionary(Dictionary):
                         Dictionary.Morpheme(posTag=self.USER_POS, surfaceForm=subword)
                     )
                 morph_inf["morphemes"] = morphemes_list
-                self.userTrie.insert(token, morph_inf)
+                self.userTrie[token] = morph_inf
 
             last_token = token

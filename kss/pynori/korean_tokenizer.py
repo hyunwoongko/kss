@@ -85,7 +85,6 @@ class KoreanTokenizer(object):
 
     def __init__(
         self,
-        verbose,
         path_userdict,
         decompound_mode,
         infl_decompound_mode,
@@ -96,7 +95,6 @@ class KoreanTokenizer(object):
         self.infl_mode = infl_decompound_mode
         self.output_unknown_unigrams = output_unknown_unigrams
         self.discard_punctuation = discard_punctuation
-        self.verbose = verbose
 
         gc.disable()
         self.buffer = KoreanTokenizer.Buffer()
@@ -324,51 +322,11 @@ class KoreanTokenizer(object):
                 + self.compute_space_penalty(leftPOS, numSpaces)
             )
 
-            if self.verbose:
-                print(
-                    "      fromIDX="
-                    + str(idx)
-                    + ": cost="
-                    + str(cost)
-                    + " (prevCost="
-                    + str(fromPosData.costs[idx])
-                    + " wordCost="
-                    + str(wordCost)
-                    + " bgCost="
-                    + str(self.conn_costs.get(fromPosData.lastRightID[idx], leftID))
-                    + " spacePenalty="
-                    + str(self.compute_space_penalty(leftPOS, numSpaces))
-                    + ") leftID="
-                    + str(leftID)
-                    + " leftPOS="
-                    + leftPOS
-                    + ")"
-                )
-
             if cost < leastCost:
                 leastCost = cost
                 leastIDX = idx
-                if self.verbose:
-                    print("        **")
 
         leastCost += wordCost
-
-        if self.verbose:
-            print(
-                "      + cost="
-                + str(leastCost)
-                + " wordID="
-                + str(wordID)
-                + " leftID="
-                + str(leftID)
-                + " leastIDX="
-                + str(leastIDX)
-                + " toPos="
-                + str(endPos)
-                + " toPos.idx="
-                + str(self.positions.get(endPos).count)
-            )
-
         self.positions.get(endPos).add(
             cost=leastCost,
             lastRightID=rightID,
@@ -409,10 +367,6 @@ class KoreanTokenizer(object):
         self.tkn_attr_obj.posTypeAtt.append(token.getPOSType())
         self.tkn_attr_obj.posTagAtt.append(token.getPOSTag())
         self.tkn_attr_obj.dictTypeAtt.append(token.getDictType())
-
-        if self.verbose:
-            print(":    incToken: return token= " + token.getSurfaceFormString())
-
         return True
 
     def parse(self):
@@ -427,9 +381,6 @@ class KoreanTokenizer(object):
         the pending tokens, and return
         """
 
-        if self.verbose:
-            print("\nPARSE")
-
         unknownWordEndIndex = -1
         userWordMaxPosAhead = -1
         while True:
@@ -440,9 +391,6 @@ class KoreanTokenizer(object):
             isFrontier = self.positions.get_nextpos() == self.pos + 1
 
             if posData.count == 0:
-                if self.verbose:
-                    print("    no arcs in; skip pos=" + str(self.pos))
-
                 self.pos += 1
                 continue
 
@@ -452,17 +400,6 @@ class KoreanTokenizer(object):
                 posData.costs[0] = 0
                 if len(self.pending) > 0:
                     return
-
-            if self.verbose:
-                print(
-                    "\n  extend @ pos="
-                    + str(self.pos)
-                    + " char="
-                    + self.buffer.get(self.pos)
-                )
-
-            if self.verbose:
-                print("    " + str(posData.count) + " arcs in")
 
             if ord(self.buffer.get(self.pos)) in SPACE_SEPARATOR:
                 self.pos += 1
@@ -483,58 +420,37 @@ class KoreanTokenizer(object):
 
                 while True:
                     ch = self.buffer.get(posAhead)
-
                     if ch == -1:
                         break
-
-                    _, userIdRef = self.user_dict.userTrie.search(
+                    userIdRef = self.user_dict.userTrie[
                         self.buffer.slice_get(self.pos, posAhead + 1)
-                    )
-
+                    ]
                     if userIdRef is not None:
                         maxPosAhead = posAhead
                         lastResult = userIdRef.result[0]
                         anyMatches = True
-
                     posAhead += 1
 
                 if anyMatches and maxPosAhead > userWordMaxPosAhead:
-                    if self.verbose:
-                        print(
-                            "    USER word "
-                            + self.buffer.slice_get(self.pos, maxPosAhead + 1)
-                            + " toPos="
-                            + str(maxPosAhead + 1)
-                        )
-
                     self.add(
                         lastResult, posData, self.pos, maxPosAhead + 1, None, Type.USER
                     )
                     userWordMaxPosAhead = max(userWordMaxPosAhead, maxPosAhead)
+
             if not anyMatches:
                 posAhead = self.pos
 
+                a = 1
                 while True:
                     ch = self.buffer.get(posAhead)
                     if ch == -1:
                         break
-
-                    _, wordIdRef = self.kn_dict.sysTrie.search(
+                    a += 1
+                    wordIdRef = self.kn_dict.sysTrie[
                         self.buffer.slice_get(self.pos, posAhead + 1)
-                    )
+                    ]
+
                     if wordIdRef is not None:
-                        if self.verbose:
-                            print(
-                                "    KNOWN word "
-                                + self.buffer.slice_get(
-                                    self.pos, posAhead - self.pos + 1
-                                )
-                                + " toPos="
-                                + str(posAhead + 1)
-                                + " "
-                                + str(len(wordIdRef))
-                                + " wordIDs"
-                            )
                         for each in wordIdRef.result:
                             self.add(
                                 each, posData, self.pos, posAhead + 1, None, Type.KNOWN
@@ -542,7 +458,6 @@ class KoreanTokenizer(object):
                             anyMatches = True
 
                     posAhead += 1
-
             if unknownWordEndIndex > posData.pos:
                 self.pos += 1
                 continue
@@ -588,16 +503,8 @@ class KoreanTokenizer(object):
 
                         posAhead += 1
 
-                _, wordIdRef = self.unk_dict.unkTrie.search(characterId)
+                wordIdRef = self.unk_dict.unkTrie[characterId]
                 wordIdRef = wordIdRef.result[0]
-                if self.verbose:
-                    print(
-                        "    UNKNOWN word len="
-                        + str(unknownWordLength)
-                        + " "
-                        + str(len(wordIdRef))
-                        + " wordIDs"
-                    )
                 self.add(
                     wordIdRef,
                     posData,
@@ -614,8 +521,6 @@ class KoreanTokenizer(object):
             endPosData = self.positions.get(self.pos)
             leastCost = sys.maxsize
             leastIDX = -1
-            if self.verbose:
-                print("  end: " + str(endPosData.count) + " nodes")
 
             for idx in range(0, endPosData.count):
                 cost = endPosData.costs[idx] + self.conn_costs.get(
@@ -636,21 +541,6 @@ class KoreanTokenizer(object):
         """
 
         endPos = endPosData.pos
-
-        if self.verbose:
-            print(
-                "\n  backtrace: endPos="
-                + str(endPos)
-                + " pos="
-                + str(self.pos)
-                + "; "
-                + str(self.pos - self.last_backtrace_pos)
-                + " characters; last="
-                + str(self.last_backtrace_pos)
-                + " cost="
-                + str(endPosData.costs[fromIDX])
-            )
-
         pos = endPos
         bestIDX = fromIDX
 
@@ -692,9 +582,6 @@ class KoreanTokenizer(object):
                         posTag=backPosTag,
                     )
                     self.pending.append(token)
-                    if self.verbose:
-                        print(" (1)    add token=")
-
             else:
                 token = DictionaryToken(
                     dictType=backDictType,
@@ -724,8 +611,6 @@ class KoreanTokenizer(object):
 
                     if not self.should_filter_token(token):
                         self.pending.append(token)
-                        if self.verbose:
-                            print(" (2)    add token = ", token.getSurfaceFormString())
 
                 if (
                     token.getPOSType() != POS.Type.MORPHEME
@@ -742,8 +627,6 @@ class KoreanTokenizer(object):
                     morphemes = token.getMorphemes()
                     if morphemes is None:
                         self.pending.append(token)
-                        if self.verbose:
-                            print(" (3)    add token = ", token.getSurfaceFormString())
 
                     else:
                         endOffset = backWordPos + length
@@ -781,11 +664,6 @@ class KoreanTokenizer(object):
                             posLen += 1
                             endOffset -= len(morpheme.surfaceForm)
                             self.pending.append(compoundToken)
-                            if self.verbose:
-                                print(
-                                    " (4)   add token = ",
-                                    compoundToken.getSurfaceFormString(),
-                                )
 
                         if (
                             token.getPOSType() != POS.Type.INFLECT
@@ -796,15 +674,11 @@ class KoreanTokenizer(object):
                         ):
                             token.setPositionLength(max(1, posLen))
                             self.pending.append(token)
-                            if self.verbose:
-                                print(
-                                    " (5)   add token = ", token.getSurfaceFormString()
-                                )
 
             if self.discard_punctuation is False and backWordPos != backPos:
                 offset = backPos - self.last_backtrace_pos
                 len_ = backWordPos - backPos
-                _, wordIdRef = self.unk_dict.unkTrie.search("SPACE")
+                wordIdRef = self.unk_dict.unkTrie["SPACE"]
                 wordIdRef = wordIdRef.result[0]
                 spaceToken = DictionaryToken(
                     dictType=Type.UNKNOWN,
