@@ -38,7 +38,7 @@ You can segment input texts to the sentences using this function. Click the tria
 >>> split_sentences(
 ...     text: Union[str, tuple, List[str]],  
 ...     use_heuristic: bool = True,
-...     use_quotes_brackets_processing: bool = True,                             
+...     use_quotes_brackets_processing: bool = False,                             
 ...     max_recover_step: int = 5,
 ...     max_recover_length: int = 20000,
 ...     backend: str = "pynori",
