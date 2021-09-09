@@ -104,7 +104,12 @@ def split_sentences(
         mp_postprocessing = []
         mp_temp = []
 
-        for input_text in pool.map(build_preprocessed_list, text):
+        if isinstance(text, str):
+            _text = [text]
+        else:
+            _text = text
+
+        for input_text in pool.map(build_preprocessed_list, _text):
             if len(input_text) == 0:
                 input_text.append("")
 
