@@ -47,8 +47,6 @@ You can segment input texts to the sentences using this function. Click the tria
 ... )
 ```
 
-<ul>
-<li>
 <details>
 <summary>text (<code>Union[str, tuple, List[str]]</code>) </summary>
 <br>
@@ -79,8 +77,7 @@ This parameter indicates input texts. you can also input list or tuple for batch
 
 <br>
 </details>
-</li>
-<li>    
+
 <details>
 <summary>use_heuristic (<code>bool</code>)</summary>
 <br>
@@ -118,9 +115,7 @@ Therefore, it must be adjusted according to the type of the input texts.
 
 <br>
 </details>
-</li>
 
-<li>
 <details>
 <summary>use_quotes_brackets_processing (<code>bool</code>)</summary>
 <br>
@@ -145,8 +140,7 @@ default is `False`.
 
 <br>
 </details>
-</li>
-<li>
+
 <details>
 <summary>max_recover_step & max_recover_length (<code>int</code>)</summary>
 <br>
@@ -181,9 +175,7 @@ P.S. From kss 3.0.2, [memoization with LRU cache](https://github.com/hyunwoongko
 
 <br>
 </details>
-</li>
 
-<li>    
 <details>
 <summary>backend (<code>str</code>)</summary>
 <br>
@@ -220,9 +212,7 @@ However, since there is a lot of difference in speed, we strongly recommend usin
 
 <br>
 </details>    
-</li>
 
-<li>    
 <details>
 <summary>num_workers (<code>int</code>)</summary>
 <br>
@@ -245,9 +235,7 @@ Multiprocessing makes segmentation much faster, especially when using the Pynori
 
 <br>
 </details>
-</li>
 
-<li>
 <details>
 <summary>disable_gc (<code>bool</code>)</summary>
 <br>
@@ -267,9 +255,6 @@ Of course, when the segmentation process ends, garbage collection will be reacti
 
 <br>
 </details>
-</li>
-
-</ul>
 
 ### 2.2. `split_chunks`
 
@@ -294,8 +279,6 @@ Click the triangle button (►) for more detailed information and example code s
 ... )
 ```
 
-<ul>
-<li>
 <details>
 <summary>text (<code>Union[str, tuple, List[str]]</code>)</summary>
 <br>
@@ -327,8 +310,6 @@ This parameter indicates input texts. you can also input list or tuple for batch
 
 <br>
 </details>
-</li>
-<li>
 
 <details>
 <summary>max_length (<code>int</code>)</summary>
@@ -351,8 +332,6 @@ If the concatenated string is longer than the maximum length, Kss make it into a
 
 <br>
 </details>
-</li>
-<li>
 
 <details>
 <summary>overlap (<code>bool</code>)</summary>
@@ -376,9 +355,7 @@ If you set it to `False`, each sentence is going to unique.
 
 <br>
 </details>
-</li>
 
-<li>
 <details>
 <summary>kwargs (<code>**dict</code>)</summary>
 <br>
@@ -400,8 +377,6 @@ Therefore, all arguments of `split_sentences` can be used. Check the following e
 
 <br>
 </details>
-</li>
-</ul>
 
 ## 3. Additional Documents
 - [Performance Analysis](https://github.com/hyunwoongko/kss/blob/main/docs/ANALYSIS.md)
@@ -413,7 +388,7 @@ Therefore, all arguments of `split_sentences` can be used. Check the following e
 ## 4. References
 Kss is available in various programming languages.
 - [Python version (this repo, ver 3.1.0.4)](https://github.com/hyunwoongko/kss) contains the most recent changes to Kss.
-- [Java version (ver 2.6.0)](https://github.com/sangdee/kss-java) is based on [Kss 2.6.0](https://github.com/hyunwoongko/kss/blob/main/docs/UPDATE.md#kss-260) and will be updated to 3.xx in the future.
+- [Java version (ver 2.6.1)](https://github.com/sangdee/kss-java) is based on [Kss 2.6.0](https://github.com/hyunwoongko/kss/blob/main/docs/UPDATE.md#kss-260) and will be updated to 3.xx in the future.
 - [C++ version (ver 1.3.1)](https://github.com/likejazz/korean-sentence-splitter) has the original implementation of Kss but is deprecated now.
 
 ## 5. Citation
