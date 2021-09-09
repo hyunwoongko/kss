@@ -1,4 +1,5 @@
 cd
+apt install mecab-ko
 mkdir mecab
 cd mecab
 wget https://bitbucket.org/eunjeon/mecab-ko/downloads/mecab-0.996-ko-0.9.1.tar.gz
