@@ -155,3 +155,8 @@
   
 #### Kss 3.0.3
 - Fix bug reported in https://github.com/hyunwoongko/kss/issues/7
+
+#### Kss 3.2.0
+- change default value of `use_quotes_brackets_processing` to `False`
+  - it is for speed. if you want to use this option, set to `True`.
+- make preprocessing part parallelizable.
