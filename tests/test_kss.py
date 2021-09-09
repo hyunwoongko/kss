@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
+import json
 import unittest
 from time import time
 import kss
@@ -132,20 +132,13 @@ class KssTest(unittest.TestCase):
         print(out)
         print(time() - start)
 
-    def test_nori_versus_mecab(self):
-        text = open("test_sooftware.txt", "r", encoding="utf-8").read()
+    def test_fightnyy(self):
+        text = open("test_sooftware.txt", "r", encoding="utf-8").read().splitlines()
 
         start = time()
-        kss.split_sentences(text, backend="pynori")
-        print(time() - start)  # 1.012695074081421
-
-        start = time()
-        kss.split_sentences(text, backend="none")
-        print(time() - start)  # 0.28556394577026367
-
-        start = time()
-        kss.split_sentences(text, backend="mecab")
-        print(time() - start)  # 0.30152297019958496
+        out = kss.split_sentences(text, backend="pynori")
+        print(out)
+        print(time() - start)
 
     def test_chunks(self):
         data = [

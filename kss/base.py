@@ -14,8 +14,14 @@ import logging
 from copy import deepcopy
 from typing import List
 
+import regex
+
 from kss.cache import LRUCache
-from kss.pynori.dict.character_definition import character_category_map, get_emoji
+from kss.pynori.dict.character_definition import (
+    character_category_map,
+    get_emoji,
+    categories,
+)
 from kss.morph import MorphExtractor
 from kss.rule import Table, Stats
 
@@ -347,27 +353,6 @@ def build_preprocessed_list(text):
     return input_texts
 
 
-def get_input_texts(text):
-    input_texts = []
-
-    if isinstance(text, str):
-        input_texts.append(build_preprocessed_list(text))
-
-    elif isinstance(text, list) or isinstance(text, tuple):
-        for txt in text:
-            if not isinstance(txt, str):
-                raise TypeError(
-                    "param `text` must be one of type [str, List[str], Tuple[str]]`. "
-                    f"but you inputted {type(text)}."
-                )
-
-            input_texts.append(build_preprocessed_list(txt))
-    else:
-        raise TypeError("param `text` must be one of type [str, List[str], Tuple[str]]")
-
-    return input_texts
-
-
 def clear_list_to_sentences(results):
     total_result = []
     for result in results:
@@ -407,17 +392,15 @@ def get_chunk_with_index(text, span):
 
 
 def preprocess_text(text):
-    string = ""
-    for ch in text:
-        if character_category_map(ch) is not None:
-            string += ch
+    text = "".join(filter(lambda x: x in _posix, text))
 
-    while "  " in string:
-        string = string.replace("  ", " ")
+    while "  " in text:
+        text = text.replace("  ", " ")
 
-    return string
+    return text
 
 
+_posix = list(chr(x) for x in categories.keys())
 _morph = MorphExtractor()
 _exceptions = Const.exceptions()
 _cache = LRUCache(max_size=1000)

@@ -11,7 +11,6 @@
 # of the BSD license.  See the LICENSE file for details.
 
 import gc
-import itertools
 import math
 from concurrent.futures import ProcessPoolExecutor as Pool
 from copy import deepcopy
@@ -28,12 +27,11 @@ from kss.base import (
     empty,
     length_constraints,
     get_num_workers,
-    get_input_texts,
     clear_list_to_sentences,
     get_chunk_with_index,
     preprocess_text,
     _morph,
-    _cache,
+    _cache, build_preprocessed_list,
 )
 from kss.rule import Table, Stats, ID
 
@@ -92,86 +90,61 @@ def split_sentences(
     if disable_gc:
         gc.disable()
 
-    max_recover_step = length_constraints(
-        text,
-        max_recover_length,
-        max_recover_step,
-    )
-
-    input_texts = get_input_texts(text)
     num_workers = get_num_workers(num_workers)
-    total_len = len(list(itertools.chain(*input_texts)))
-    multiprocessing = False
-
     results = []
-    if num_workers == 1 or total_len == 1:
-        for input_text in input_texts:
-            result = []
-            for _text in input_text:
-                result.append(
-                    _split_sentences(
-                        _text,
-                        use_heuristic,
-                        use_quotes_brackets_processing,
-                        max_recover_step,
-                        max_recover_length,
-                        backend,
-                    )
-                )
 
-            result = list(itertools.chain(*result))
-            results.append(result)
-    else:
-        with Pool(max_workers=num_workers) as pool:
-            multiprocessing = True
-            mp_input_texts = []
-            mp_postprocessing = []
-            mp_temp = []
+    with Pool(max_workers=num_workers) as pool:
+        max_recover_step = length_constraints(
+            text,
+            max_recover_length,
+            max_recover_step,
+        )
 
-            for input_text in input_texts:
-                if len(input_text) == 0:
-                    input_text.append("")
+        mp_input_texts = []
+        mp_postprocessing = []
+        mp_temp = []
 
-                mp_temp.append(input_text)
-                mp_input_texts += input_text
+        for input_text in pool.map(build_preprocessed_list, text):
+            if len(input_text) == 0:
+                input_text.append("")
 
-            for _input_for_pp in mp_temp:
-                out = "".join(_input_for_pp).replace(" ", "")
-                for special in Const.quotes_or_brackets:
-                    out = out.replace(special, "")
+            mp_temp.append(input_text)
+            mp_input_texts += input_text
 
-                mp_postprocessing.append(out)
+        for _input_for_pp in mp_temp:
+            out = "".join(_input_for_pp).replace(" ", "")
+            for special in Const.quotes_or_brackets:
+                out = out.replace(special, "")
 
-            results += pool.map(
-                partial(
-                    _split_sentences,
-                    use_heuristic=use_heuristic,
-                    use_quotes_brackets_processing=use_quotes_brackets_processing,
-                    max_recover_step=max_recover_step,
-                    max_recover_length=max_recover_length,
-                    backend=backend,
-                ),
-                mp_input_texts,
-            )
+            mp_postprocessing.append(out)
 
-            mp_output_final = []
-            mp_temp.clear()
-            _results = clear_list_to_sentences(results)
+        results += pool.map(
+            partial(
+                _split_sentences,
+                use_heuristic=use_heuristic,
+                use_quotes_brackets_processing=use_quotes_brackets_processing,
+                max_recover_step=max_recover_step,
+                max_recover_length=max_recover_length,
+                backend=backend,
+            ),
+            mp_input_texts,
+        )
 
-            for result in _results:
-                mp_temp += result
-                out = "".join(mp_temp).replace(" ", "")
-                for special in Const.quotes_or_brackets:
-                    out = out.replace(special, "")
+        mp_output_final = []
+        mp_temp.clear()
+        _results = clear_list_to_sentences(results)
 
-                if out in mp_postprocessing:
-                    mp_output_final.append(mp_temp)
-                    mp_temp = []
+        for result in _results:
+            mp_temp += result
+            out = "".join(mp_temp).replace(" ", "")
+            for special in Const.quotes_or_brackets:
+                out = out.replace(special, "")
 
-            results = mp_output_final
+            if out in mp_postprocessing:
+                mp_output_final.append(mp_temp)
+                mp_temp = []
 
-    if not multiprocessing:
-        results = clear_list_to_sentences(results)
+        results = mp_output_final
 
     if disable_gc:
         gc.enable()
