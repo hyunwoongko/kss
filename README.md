@@ -128,6 +128,7 @@ Therefore, it must be adjusted according to the type of the input texts.
 Kss has the feature that prevents to segment the parts enclosed in brackets (괄호) and quotation marks (따옴표). 
 This parameter indicates whether to segment the parts enclosed in brackets or quotations marks. 
 If you set it `True`, Kss does not segment these parts, If you set it `False`, Kss segments the even in the parts that are enclosed in brackets and quotations marks.
+default is `False`.
 
 - An example of `use_quotes_brackets_processing`
 
