@@ -7,6 +7,6 @@
 # This software may be modified and distributed under the terms
 # of the BSD license.  See the LICENSE file for details.
 
-from kss.kss import split_chunks, split_sentences
+from kss.kss import Splitter
 
-__ALL__ = [split_sentences, split_chunks]
+# __ALL__ = [split_sentences, split_chunks]
