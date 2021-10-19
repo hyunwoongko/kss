@@ -26,7 +26,7 @@ Don't use pip install
 You can also install Kss from source codes.
 This can be useful for adding words to user dictionary described in [here](https://github.com/hyunwoongko/kss/blob/main/docs/USERDICT.md).
 ```console
-git clone https://github.com/hyunwoongko/kss
+git clone -branch 3.3.0-keyog --single-branch https://github.com/Keunyoung-Jung/kss.git
 cd kss
 pip install -e .
 ```
