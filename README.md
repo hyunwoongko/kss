@@ -5,9 +5,6 @@
 This repository contains the source code of Kss, a representative Korean sentence segmentation toolkit. I also conduct ongoing research about Korean sentence segmentation algorithms and report the results to this repository.
 If you have a good idea about Korean sentence segmentation, please feel free to talk through the [issue](https://github.com/hyunwoongko/kss/issues).
 
-# Custom 
-**The branch(3.3.0-keyog) is `kss` created using objects.**
-----
 <br>
 
 ### What's New:
@@ -15,18 +12,18 @@ If you have a good idea about Korean sentence segmentation, please feel free to 
 - August 18, 2021 [Released Kss 3.0](https://github.com/hyunwoongko/kss/releases/tag/3.0.1).
 
 ## 1. Installation
-### ~~1.1. Install from pip~~
-~~Kss can be easily installed using the pip package manager.~~
+### 1.1. Install from pip
+Kss can be easily installed using the pip package manager.
 Don't use pip install
 ```python
-# pip install kss
+pip install kss
 ```
 
 ### 1.2. Install from source codes
 You can also install Kss from source codes.
 This can be useful for adding words to user dictionary described in [here](https://github.com/hyunwoongko/kss/blob/main/docs/USERDICT.md).
 ```console
-git clone -branch 3.3.0-keyog --single-branch https://github.com/Keunyoung-Jung/kss.git
+git clone https://github.com/hyunwoongko/kss.git
 cd kss
 pip install -e .
 ```
@@ -421,6 +418,34 @@ Therefore, all arguments of `split_sentences` can be used. Check the following e
 
 <br>
 </details>
+
+### 2-3.use original method kss
+We changed the initialization way of kss. but if you want to use method style kss, you can use the original method.    
+This method is perfectly equivalent to `kss==3.2.0`.
+```python
+>>> from kss.origin import split_sentences
+
+>>> split_sentences(
+...     text: Union[str, tuple, List[str]],  
+...     use_heuristic: bool = True,
+...     use_quotes_brackets_processing: bool = False,                             
+...     max_recover_step: int = 5,
+...     max_recover_length: int = 20000,
+...     backend: str = "pynori",
+...     num_workers: int = -1,                       
+...     disable_gc: bool = True,                           
+... )
+```
+```python
+>>> from kss.origin import split_chunks
+
+>>> split_chunks(
+...     text: Union[str, List[str], tuple],
+...     max_length: int,
+...     overlap: bool = False,
+...     **kwargs,
+... )
+```
 
 ## 3. Additional Documents
 - [Performance Analysis](https://github.com/hyunwoongko/kss/blob/main/docs/ANALYSIS.md)
