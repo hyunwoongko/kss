@@ -162,9 +162,9 @@
 - make preprocessing part parallelizable.
 
 #### Kss 3.3.0
-- Fix emoji bug reported in https://github.com/hyunwoongko/kss/issues/23
-- Add improvements reported in https://github.com/hyunwoongko/kss/pull/24
-  - Lazy initialization of Pynori
+- Fix emoji bug reported in https://github.com/hyunwoongko/kss/issues/23.
+- Add improvements reported in https://github.com/hyunwoongko/kss/pull/24.
+  - Lazy initialization of Pynori.
   - Do not access `multiprocessing` module when `num_workers` was 0 or 1.
 - Add `none` backend for users that want to fast segmentation without mecab.
   - `none` backend works like kss 2.5.1 (do not use morpheme analyzer)
