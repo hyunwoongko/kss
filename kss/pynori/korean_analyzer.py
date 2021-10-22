@@ -1,5 +1,3 @@
-from time import time
-
 from kss.pynori.korean_posstop_filter import KoreanPOSStopFilter
 from kss.pynori.korean_tokenizer import KoreanTokenizer
 from kss.pynori.korean_tokenizer import Type

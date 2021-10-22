@@ -13,12 +13,13 @@ from typing import Any
 
 class Stats(object):
     DEFAULT: int = 0
-    DA: int = 1
-    YO: int = 2
-    JYO: int = 3
-    SB: int = 4
-    COMMON: int = 5
-    EOMI: int = 6
+    DA_EOJEOL: int = 1
+    DA_MORPH: int = 2
+    YO: int = 3
+    JYO: int = 4
+    SB: int = 5
+    COMMON: int = 6
+    EOMI: int = 7
 
 
 class ID(object):
@@ -597,7 +598,87 @@ def create_dict(d, default: Any = 0):
 
 Table = create_dict(
     {
-        Stats.DA:
+        Stats.DA_EOJEOL:
+        # EC, EF 주의 !!
+        create_dict(
+            {
+                "갔": ID.PREV,
+                "간": ID.PREV,
+                "겠": ID.PREV,
+                "겼": ID.PREV,
+                "같": ID.PREV,
+                "놨": ID.PREV,
+                "녔": ID.PREV,
+                "니": ID.PREV,
+                "논": ID.PREV,
+                "낸": ID.PREV,
+                "냈": ID.PREV,
+                "뒀": ID.PREV,
+                "때": ID.PREV,
+                "랐": ID.PREV,
+                "럽": ID.PREV,
+                "렵": ID.PREV,
+                "렸": ID.PREV,
+                "뤘": ID.PREV,
+                "몄": ID.PREV,
+                "밌": ID.PREV,
+                "볐": ID.PREV,
+                "볍": ID.PREV,
+                "봤": ID.PREV,
+                "섰": ID.PREV,
+                "샜": ID.PREV,
+                "셨": ID.PREV,
+                "싼": ID.PREV,
+                "싸": ID.PREV,
+                "않": ID.PREV,
+                "았": ID.PREV,
+                "없": ID.PREV,
+                "었": ID.PREV,
+                "였": ID.PREV,
+                "온": ID.PREV,
+                "웠": ID.PREV,
+                "이": ID.PREV,
+                "인": ID.PREV,
+                "있": ID.PREV,
+                "진": ID.PREV,
+                "졌": ID.PREV,
+                "쳤": ID.PREV,
+                "췄": ID.PREV,
+                "챘": ID.PREV,
+                "켰": ID.PREV,
+                "켠": ID.PREV,
+                "팠": ID.PREV,
+                "펐": ID.PREV,
+                "폈": ID.PREV,
+                "했": ID.PREV,
+                "혔": ID.PREV,
+                "한": ID.NEXT,
+                "가": ID.NEXT,
+                "고": ID.NEXT | ID.NEXT2,
+                "는": ID.NEXT | ID.NEXT2,
+                "라": ID.NEXT,
+                "시": ID.NEXT,
+                "등": ID.NEXT,
+                "던": ID.NEXT,
+                "든": ID.NEXT,
+                "지": ID.NEXT2,
+                "를": ID.NEXT,
+                "운": ID.NEXT,  # ~ 다운
+                "만": ID.NEXT,  # ~ 하다만
+                "며": ID.NEXT | ID.NEXT2,
+                "면": ID.NEXT | ID.NEXT1 | ID.NEXT2,
+                "서": ID.NEXT2,
+                "싶": ID.PREV | ID.NEXT,
+                "죠": ID.NEXT,
+                "죵": ID.NEXT,
+                "쥬": ID.NEXT,
+                "하": ID.NEXT1,
+                "해": ID.NEXT1,
+                "도": ID.NEXT2,
+                "": ID.NONE,
+            }
+        ),
+        Stats.DA_MORPH:
         # EC, EF 주의 !!
         create_dict(
             {
@@ -1227,6 +1308,9 @@ Table = create_dict(
     default=create_dict({}),
 )
 
+post_processing_da = list(
+    set([f"{x} {_}{y} " for y in ["다"] for _ in yo for x in before])
+)
 post_processing_yo = list(
     set([f"{x} {_}{y} " for y in ["요"] for _ in yo for x in before])
 )

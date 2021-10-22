@@ -44749,6 +44749,8 @@ categories = defaultdict(
 
 
 def character_category_map(ch):
+    if len(get_emoji(ch)) != 0:
+        return "EMOJI"
     return categories[ord(ch)]
 
 

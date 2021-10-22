@@ -10,29 +10,43 @@
 # This software may be modified and distributed under the terms
 # of the BSD license.  See the LICENSE file for details.
 
+import logging
 from typing import List, Tuple
 from kss.pynori.korean_analyzer import KoreanAnalyzer
+
+logging.basicConfig(
+    format="[Korean Sentence Splitter]: %(message)s", level=logging.WARNING
+)
 
 
 class MorphExtractor(object):
     def __init__(self):
         self.mecab = None
-        self.pynori = KoreanAnalyzer(
-            decompound_mode="NONE",
-            infl_decompound_mode="NONE",
-            discard_punctuation=False,
-            output_unknown_unigrams=False,
-            pos_filter=False,
-            stop_tags=False,
-            synonym_filter=False,
-            mode_synonym=False,
-        )
+        self.pynori = None
+
+    def create_pynori(self):
+        if self.pynori is None:
+            logging.warning("Initializing Pynori...")
+
+            self.pynori = KoreanAnalyzer(
+                decompound_mode="NONE",
+                infl_decompound_mode="NONE",
+                discard_punctuation=False,
+                output_unknown_unigrams=False,
+                pos_filter=False,
+                stop_tags=False,
+                synonym_filter=False,
+                mode_synonym=False,
+            )
 
     def pos(self, text, backend):
         from kss.base import Eojeol
 
         if backend.lower() == "pynori":
-            _pos = self.pynori.do_analysis(text, preprocessed=True)
+            _pos = self.pynori.do_analysis(
+                text,
+                preprocessed=True,
+            )
 
             return [
                 Eojeol(eojeol, pos[1])

@@ -31,7 +31,8 @@ from kss.base import (
     get_chunk_with_index,
     preprocess_text,
     _morph,
-    _cache, build_preprocessed_list,
+    _cache,
+    build_preprocessed_list,
 )
 from kss.rule import Table, Stats, ID
 
@@ -66,10 +67,14 @@ def split_sentences(
 
     backend = backend.lower()
 
-    assert backend.lower() in [
+    assert backend in [
         "pynori",
         "mecab",
-    ], "Wrong backend! Currently, we support [`pynori`, `mecab`] backend."
+        "none",
+    ], "Wrong backend! Currently, we support [`pynori`, `mecab`, `none`] backend."
+
+    if backend == "pynori":
+        _morph.create_pynori()
 
     assert (
         isinstance(text, str) or isinstance(text, list) or isinstance(text, tuple)
@@ -93,36 +98,46 @@ def split_sentences(
     num_workers = get_num_workers(num_workers)
     results = []
 
-    with Pool(max_workers=num_workers) as pool:
-        max_recover_step = length_constraints(
-            text,
-            max_recover_length,
-            max_recover_step,
-        )
+    if num_workers in [0, 1]:
+        pool = None
+    else:
+        pool = Pool(max_workers=num_workers)
 
-        mp_input_texts = []
-        mp_postprocessing = []
-        mp_temp = []
+    max_recover_step = length_constraints(
+        text,
+        max_recover_length,
+        max_recover_step,
+    )
 
-        if isinstance(text, str):
-            _text = [text]
-        else:
-            _text = text
+    mp_input_texts = []
+    mp_postprocessing = []
+    mp_temp = []
 
-        for input_text in pool.map(build_preprocessed_list, _text):
-            if len(input_text) == 0:
-                input_text.append("")
+    if isinstance(text, str):
+        _text = [text]
+    else:
+        _text = text
 
-            mp_temp.append(input_text)
-            mp_input_texts += input_text
+    if pool:
+        preprocessed_list = pool.map(build_preprocessed_list, _text)
+    else:
+        preprocessed_list = [build_preprocessed_list(t) for t in _text]
 
-        for _input_for_pp in mp_temp:
-            out = "".join(_input_for_pp).replace(" ", "")
-            for special in Const.quotes_or_brackets:
-                out = out.replace(special, "")
+    for input_text in preprocessed_list:
+        if len(input_text) == 0:
+            input_text.append("")
 
-            mp_postprocessing.append(out)
+        mp_temp.append(input_text)
+        mp_input_texts += input_text
 
+    for _input_for_pp in mp_temp:
+        out = "".join(_input_for_pp).replace(" ", "")
+        for special in Const.quotes_or_brackets:
+            out = out.replace(special, "")
+
+        mp_postprocessing.append(out)
+
+    if pool:
         results += pool.map(
             partial(
                 _split_sentences,
@@ -134,22 +149,34 @@ def split_sentences(
             ),
             mp_input_texts,
         )
+    else:
+        results += [
+            _split_sentences(
+                text=t,
+                use_heuristic=use_heuristic,
+                use_quotes_brackets_processing=use_quotes_brackets_processing,
+                max_recover_step=max_recover_step,
+                max_recover_length=max_recover_length,
+                backend=backend,
+            )
+            for t in mp_input_texts
+        ]
 
-        mp_output_final = []
-        mp_temp.clear()
-        _results = clear_list_to_sentences(results)
+    mp_output_final = []
+    mp_temp.clear()
+    _results = clear_list_to_sentences(results)
 
-        for result in _results:
-            mp_temp += result
-            out = "".join(mp_temp).replace(" ", "")
-            for special in Const.quotes_or_brackets:
-                out = out.replace(special, "")
+    for result in _results:
+        mp_temp += result
+        out = "".join(mp_temp).replace(" ", "")
+        for special in Const.quotes_or_brackets:
+            out = out.replace(special, "")
 
-            if out in mp_postprocessing:
-                mp_output_final.append(mp_temp)
-                mp_temp = []
+        if out in mp_postprocessing:
+            mp_output_final.append(mp_temp)
+            mp_temp = []
 
-        results = mp_output_final
+    results = mp_output_final
 
     if disable_gc:
         gc.enable()
@@ -221,8 +248,13 @@ def _split_sentences(
     else:
         original_text = deepcopy(text)
 
-    prep = Preprocessor()
+    use_morpheme = backend != "none"
+    prep = Preprocessor(use_morpheme=use_morpheme)
     post = Postprocessor()
+
+    if not use_morpheme:
+        # but if you use morpheme feature, it is unnecessary.
+        text = prep.add_ec_cases_to_dict(text)
 
     text = prep.add_emojis_to_dict(text)
     text = prep.backup(text)
@@ -230,9 +262,14 @@ def _split_sentences(
     for s in Const.quotes_or_brackets:
         text = text.replace(s, f"\u200b{s}\u200b")
 
-    eojeols = _morph.pos(text, backend)
+    if use_morpheme:
+        eojeols = _morph.pos(text=text, backend=backend)
+    else:
+        eojeols = [Eojeol(t, "EF+ETN") for t in text]
+
     double_stack, single_stack, bracket_stack = [], [], []
     empty_stacks = lambda: empty([single_stack, double_stack, bracket_stack], dim=2)
+    DA = Stats.DA_MORPH if use_morpheme else Stats.DA_EOJEOL
 
     results = []
     cur_sentence = []
@@ -297,21 +334,30 @@ def _split_sentences(
             elif eojeol.eojeol in [".", "!", "?", "…", "~"]:
                 if (
                     (Table[Stats.SB][prev.eojeol] & ID.PREV)
-                    and check_pos(prev, ["EF", "ETN"])
                     and empty_stacks()
                     # check if pos is SF(마침표, 물음표, 느낌표) or SE(줄임표)
                 ):
-                    cur_stat = Stats.SB
+                    if not use_morpheme:
+                        cur_stat = Stats.SB
+                    else:
+                        if i != 0:
+                            if check_pos(eojeols[i - 1], ["EF", "ETN"]):
+                                cur_stat = Stats.SB
 
             if use_heuristic is True:
                 if eojeol.eojeol in ["다"]:
                     if (
-                        (Table[Stats.DA][prev.eojeol] & ID.PREV)
+                        (Table[DA][prev.eojeol] & ID.PREV)
                         and check_pos(eojeol, ["EF"])
                         and empty_stacks()
                         # check if pos is EF(종결어미)
                     ):
-                        cur_stat = Stats.DA
+                        if not use_morpheme:
+                            if i != len(eojeols) - 1:
+                                if eojeols[i + 1].eojeol in Const.endpoint:
+                                    cur_stat = DA
+                        else:
+                            cur_stat = DA
 
                 elif eojeol.eojeol in ["요"]:
                     if (
@@ -320,7 +366,12 @@ def _split_sentences(
                         and empty_stacks()
                         # check if pos is EF(종결어미)
                     ):
-                        cur_stat = Stats.YO
+                        if not use_morpheme:
+                            if i != len(eojeols) - 1:
+                                if eojeols[i + 1].eojeol in Const.endpoint:
+                                    cur_stat = Stats.YO
+                        else:
+                            cur_stat = Stats.YO
 
                 elif eojeol.eojeol in ["죠", "쥬", "죵"]:
                     if (
@@ -329,19 +380,24 @@ def _split_sentences(
                         and empty_stacks()
                         # check if pos is EF 종결어미
                     ):
-                        cur_stat = Stats.JYO
-
-                if (
-                    empty_stacks()
-                    and i != len(eojeols) - 1
-                    and check_pos(eojeol, ["ETN", "EF"])
-                    and check_pos(eojeols[i + 1], ["SP", "SE", "SF"])
-                    and not check_pos(eojeol, ["J", "XS"])  # ETN+XSN 같은 케이스 막기위해
-                    and eojeol.eojeol
-                    not in ["다", "요", "죠", "기"]  # ~ 하기 (명사파생 접미사가 전성어미로 오해되는 경우)
-                ):
-                    cur_stat = Stats.EOMI
-                    # 일반적으로 적용할 수 있는 어미세트 NEXT 세트 적용.
+                        if not use_morpheme:
+                            if i != len(eojeols) - 1:
+                                if eojeols[i + 1].eojeol in Const.endpoint:
+                                    cur_stat = Stats.JYO
+                        else:
+                            cur_stat = Stats.JYO
+                elif use_morpheme:
+                    if (
+                        empty_stacks()
+                        and i != len(eojeols) - 1
+                        and check_pos(eojeol, ["ETN", "EF"])
+                        and check_pos(eojeols[i + 1], ["SP", "SE", "SF"])
+                        and not check_pos(eojeol, ["J", "XS"])  # ETN+XSN 같은 케이스 막기위해
+                        and eojeol.eojeol
+                        not in ["다", "요", "죠", "기"]  # ~ 하기 (명사파생 접미사가 전성어미로 오해되는 경우)
+                    ):
+                        cur_stat = Stats.EOMI
+                        # 일반적으로 적용할 수 있는 어미세트 NEXT 세트 적용.
         else:
             if eojeol.eojeol in Const.double_quotes:
                 last_double_pos = i
@@ -490,7 +546,7 @@ def _split_sentences(
     results = prep.tostring(results)
 
     if use_heuristic is True:
-        results = post.apply_heuristic(text, results)
+        results = post.apply_heuristic(text, results, use_morpheme)
 
     kwargs = {
         "use_heuristic": use_heuristic,

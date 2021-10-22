@@ -160,3 +160,23 @@
 - change default value of `use_quotes_brackets_processing` to `False`
   - it is for speed. if you want to use this option, set to `True`.
 - make preprocessing part parallelizable.
+
+#### Kss 3.3.0
+- Fix emoji bug reported in https://github.com/hyunwoongko/kss/issues/23
+- Add improvements reported in https://github.com/hyunwoongko/kss/pull/24
+  - Lazy initialization of Pynori
+  - Do not access `multiprocessing` module when `num_workers` was 0 or 1.
+- Add `none` backend for users that want to fast segmentation without mecab.
+  - `none` backend works like kss 2.5.1 (do not use morpheme analyzer)
+  - But if you use `none` backend, performance will be decreased.
+
+```python
+  >>> split_sentences(text, backend="pynori")
+  ['부디 만수무강 하옵소서', '천천히 가세용~', '너 밥을 먹는구나', '응 맞아 난 근데 어제 이사했음', '그랬구나 이제 마지막임', '응응']
+
+  >>> split_sentences(text, backend="mecab")
+  ['부디 만수무강 하옵소서', '천천히 가세용~', '너 밥을 먹는구나', '응 맞아 난 근데 어제 이사했음', '그랬구나 이제 마지막임', '응응']
+
+  >>> split_sentences(text, backend="none")
+  ['부디 만수무강 하옵소서 천천히 가세용~', '너 밥을 먹는구나 응 맞아 난 근데 어제 이사했음 그랬구나 이제 마지막임 응응'
+```  
