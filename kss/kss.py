@@ -98,11 +98,6 @@ def split_sentences(
     num_workers = get_num_workers(num_workers)
     results = []
 
-    if num_workers in [0, 1]:
-        pool = None
-    else:
-        pool = Pool(max_workers=num_workers)
-
     max_recover_step = length_constraints(
         text,
         max_recover_length,
@@ -117,6 +112,11 @@ def split_sentences(
         _text = [text]
     else:
         _text = text
+
+    if num_workers in [0, 1]:
+        pool = None
+    else:
+        pool = Pool(max_workers=num_workers)
 
     if pool:
         preprocessed_list = pool.map(build_preprocessed_list, _text)
@@ -137,7 +137,8 @@ def split_sentences(
 
         mp_postprocessing.append(out)
 
-    if pool:
+    print(mp_input_texts)
+    if pool and len(mp_input_texts) >= 2:
         results += pool.map(
             partial(
                 _split_sentences,

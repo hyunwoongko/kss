@@ -1,5 +1,5 @@
 # Kss: A Toolkit for Korean sentence segmentation
-<img alt="latest version" src="https://img.shields.io/badge/latest%20version-3.3.0-blue.svg"/> <a href="https://github.com/hyunwoongko/kss/blob/master/LICENSE"><img alt="BSD 3-Clause" src="https://img.shields.io/badge/license-BSD%203%20Clause-blue.svg"/></a>
+<img alt="latest version" src="https://img.shields.io/badge/latest%20version-3.3.1-blue.svg"/> <a href="https://github.com/hyunwoongko/kss/blob/master/LICENSE"><img alt="BSD 3-Clause" src="https://img.shields.io/badge/license-BSD%203%20Clause-blue.svg"/></a>
 <a href="https://github.com/hyunwoongko/kss/issues"><img alt="Issues" src="https://img.shields.io/github/issues/hyunwoongko/kss"/></a>
 
 This repository contains the source code of Kss, a representative Korean sentence segmentation toolkit. I also conduct ongoing research about Korean sentence segmentation algorithms and report the results to this repository.
