@@ -391,9 +391,9 @@ Therefore, all arguments of `split_sentences` can be used. Check the following e
 
 ## 4. References
 Kss is available in various programming languages.
-- [Python version (this repo, ver 3.1.0.4)](https://github.com/hyunwoongko/kss) contains the most recent changes to Kss.
-- [Java version (ver 2.6.1)](https://github.com/sangdee/kss-java) is based on [Kss 2.6.0](https://github.com/hyunwoongko/kss/blob/main/docs/UPDATE.md#kss-260) and will be updated to 3.xx in the future.
-- [C++ version (ver 1.3.1)](https://github.com/likejazz/korean-sentence-splitter) has the original implementation of Kss but is deprecated now.
+- [Python version (this repo)](https://github.com/hyunwoongko/kss) contains the most recent changes to Kss.
+- [Java version](https://github.com/sangdee/kss-java) is based on [Kss 2.6.0](https://github.com/hyunwoongko/kss/blob/main/docs/UPDATE.md#kss-260) and will be updated to 3.xx in the future.
+- [C++ version](https://github.com/likejazz/korean-sentence-splitter) has the original implementation of Kss but is deprecated now.
 
 ## 5. Citation
 If you find this toolkit useful, please consider citing:
