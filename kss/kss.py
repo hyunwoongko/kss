@@ -137,7 +137,6 @@ def split_sentences(
 
         mp_postprocessing.append(out)
 
-    print(mp_input_texts)
     if pool and len(mp_input_texts) >= 2:
         results += pool.map(
             partial(
