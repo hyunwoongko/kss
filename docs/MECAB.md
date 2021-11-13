@@ -1,6 +1,6 @@
 # Mecab Installation Guide
 
-## Winodws
+## Windows
 - (1) Make folder named `mecab` in C drive. (`C:\\mecab`)
 - (2) Download [mecab](https://github.com/Pusnow/mecab-ko-msvc/releases/tag/release-0.9.2-msvc-3) zip file. (64bit: x64 / 32bit: x86) 
 - (3) Download [mecab-ko-dic](https://github.com/Pusnow/mecab-ko-dic-msvc/releases/tag/mecab-ko-dic-2.1.1-20180720-msvc) zip file.
@@ -14,7 +14,7 @@
 
 ## Linux
 - Run the following script.
-- I cheked it is work well in Google Cloud Platform.
+- I checked it is work well in Google Cloud Platform.
 ```bash
 cd
 mkdir mecab

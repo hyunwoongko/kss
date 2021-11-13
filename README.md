@@ -52,7 +52,7 @@ You can segment input texts to the sentences using this function. Click the tria
 <summary>text (<code>Union[str, tuple, List[str]]</code>) </summary>
 <br>
 
-This parameter indicates input texts. you can also input list or tuple for batch processing not only string.
+This parameter indicates input texts. You can also input list or tuple for batch processing not only string.
 
 - An example of single text segmentation
 
@@ -87,7 +87,7 @@ Kss is an open-ended sentence segmentation toolkit, that can segment everywhere 
 
 This parameter indicates whether to use the heuristic algorithm for the open-ended sentence segmentation. 
 If you set it `True`, Kss conduct open-ended segmentation. 
-If you set it `False`, Kss conduct punctuation-only segmentation..
+If you set it `False`, Kss conduct punctuation-only segmentation.
 I recommend to you set it `False` if input texts follow the punctuation rules relatively well, because Kss can make mistakes sometimes in the parts without punctuation mark.
 
 
@@ -180,7 +180,7 @@ P.S. From kss 3.0.2, [memoization with LRU cache](https://github.com/hyunwoongko
 <summary>backend (<code>str</code>)</summary>
 <br>
 
-Kss 3.0 or later supports morpheme analysis. This parameter indicates which morpheme anlyzer will be used during segmentation. 
+Kss 3.0 or later supports morpheme analysis. This parameter indicates which morpheme analyzer will be used during segmentation. 
 If you set it `pynori` or `mecab`, sentence segmentation is possible even at the unspecified [eomi (어미)](https://ko.wikipedia.org/wiki/%EC%96%B4%EB%AF%B8). 
 In this case, Kss can segment sentences that use honorifics (경어), dialects (방언), neologisms (신조어) and [eomi transferred from noun (명사형 전성어미)](https://ko.wiktionary.org/wiki/%EC%A0%84%EC%84%B1%EC%96%B4%EB%AF%B8), and can grasped well the parts that are difficult to grasp without morpheme information. 
 
@@ -192,7 +192,7 @@ The followings are summary of the three possible options.
 
 <br>
 
-Kss use the [Pynori](https://github.com/gritmind/python-nori), the pure python morpheme anlyzer by default. However, you can change it to [Mecab-Ko](https://github.com/jonghwanhyeon/python-mecab-ko), the super-fast morpheme analyzer based on C++.
+Kss use the [Pynori](https://github.com/gritmind/python-nori), the pure python morpheme analyzer by default. However, you can change it to [Mecab-Ko](https://github.com/jonghwanhyeon/python-mecab-ko), the super-fast morpheme analyzer based on C++.
 [The performance](https://github.com/hyunwoongko/kss/blob/main/docs/ANALYSIS.md#11-open-ended-segmentation) of two analyzers is almost similar because they were developed based on the same dictionary, [mecab-ko-dic](https://bitbucket.org/eunjeon/mecab-ko-dic). 
 However, since there is a lot of difference in speed, we strongly recommend using mecab backend if you can install mecab-ko in your environment.
 (I didn't set Mecab-Ko as the default because I value compatibility over speed. If installing mecab is difficult, check [this guide](https://github.com/hyunwoongko/kss/blob/main/docs/MECAB.md)) 
@@ -287,7 +287,7 @@ Click the triangle button (►) for more detailed information and example code s
 <summary>text (<code>Union[str, tuple, List[str]]</code>)</summary>
 <br>
 
-This parameter indicates input texts. you can also input list or tuple for batch processing not only string.
+This parameter indicates input texts. You can also input list or tuple for batch processing not only string.
 
 - An example of single text segmentation
 
