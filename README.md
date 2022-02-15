@@ -195,7 +195,7 @@ The followings are summary of the three possible options.
 Kss use the [Pynori](https://github.com/gritmind/python-nori), the pure python morpheme analyzer by default. However, you can change it to [Mecab-Ko](https://github.com/jonghwanhyeon/python-mecab-ko), the super-fast morpheme analyzer based on C++.
 [The performance](https://github.com/hyunwoongko/kss/blob/main/docs/ANALYSIS.md#11-open-ended-segmentation) of two analyzers is almost similar because they were developed based on the same dictionary, [mecab-ko-dic](https://bitbucket.org/eunjeon/mecab-ko-dic). 
 However, since there is a lot of difference in speed, we strongly recommend using mecab backend if you can install mecab-ko in your environment.
-(I didn't set Mecab-Ko as the default because I value compatibility over speed. If installing mecab is difficult, check [this guide](https://github.com/hyunwoongko/kss/blob/main/docs/MECAB.md)) 
+(I didn't set Mecab-Ko as the default because I value compatibility over speed.
 
 - An example of `backend`
 
