@@ -17,7 +17,7 @@ with open("README.md", encoding="utf-8") as f:
 
 setup(
     name="kss",
-    version="3.3.1.1",
+    version="3.4",
     author="Hyunwoong Ko",
     author_email="kevin.ko@tunib.ai",
     url="https://github.com/hyunwoongko/kss",

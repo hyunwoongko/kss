@@ -160,3 +160,26 @@ class KssTest(unittest.TestCase):
             "전하 아니되옵니다. 부디 용서하옵소서. 소인이 큰 죄를 저질렀사옵니다.\n", max_length=6, overlap=True
         )
         print(out)
+
+    def test_yjy2026(self):
+        output = kss.split_sentences("1'1″")
+        print(output)
+
+    def test_hannabros(self):
+        output = kss.split_sentences('분리 할 수 ​​있다.')
+        print(output)
+
+    def test_lifelongeek(self):
+        text = "우리가 타이라는 단어는 원래 동사로 묶다 엮다라는 표현이고요 그다음에 명사로 하게 되면 묶음이라는 표현이죠 그런데"
+        output_1 = kss.split_sentences(text)
+        for i in range(500):
+            output = kss.split_sentences("안녕")
+        text = "우리가 타이라는 단어는 원래 동사로 묶다 엮다라는 표현이고요 그다음에 명사로 하게 되면 묶음이라는 표현이죠 그런데"
+        output_2 = kss.split_sentences(text)
+        print(output_1, output_2)
+        # 음.. 뭘까 잘 되는데
+
+    def test_newdboy(self):
+        tst = '그것이 잘 적혀 있는지 확인해야 한다고 했기 때문이다. EBS 미래교육연구소 최홍규 박사도 그렇게 말했다'
+        output = kss.split_sentences(text=tst, backend='mecab', use_heuristic=True)
+        print(output)

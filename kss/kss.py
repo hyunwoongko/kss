@@ -132,8 +132,9 @@ def split_sentences(
 
     for _input_for_pp in mp_temp:
         out = "".join(_input_for_pp).replace(" ", "")
-        for special in Const.quotes_or_brackets:
-            out = out.replace(special, "")
+        if use_quotes_brackets_processing:
+            for special in Const.quotes_or_brackets:
+                out = out.replace(special, "")
 
         mp_postprocessing.append(out)
 
@@ -169,8 +170,10 @@ def split_sentences(
     for result in _results:
         mp_temp += result
         out = "".join(mp_temp).replace(" ", "")
-        for special in Const.quotes_or_brackets:
-            out = out.replace(special, "")
+        if use_quotes_brackets_processing:
+            for special in Const.quotes_or_brackets:
+                out = out.replace(special, "")
+            mp_postprocessing = [m.replace("\u200b", "") for m in mp_postprocessing]
 
         if out in mp_postprocessing:
             mp_output_final.append(mp_temp)
@@ -243,8 +246,20 @@ def _split_sentences(
     backend: str,
     recover_step: int = 0,
 ):
-    if text in _cache.dic:
-        return _cache.get(text)
+    if use_quotes_brackets_processing:
+        text = text.replace("\u200b", "")
+
+    cache_key = (
+        text,
+        use_heuristic,
+        use_quotes_brackets_processing,
+        max_recover_step,
+        max_recover_length,
+        backend,
+    )
+
+    if cache_key in _cache.dic:
+        return _cache.get(cache_key)
     else:
         original_text = deepcopy(text)
 
@@ -259,8 +274,9 @@ def _split_sentences(
     text = prep.add_emojis_to_dict(text)
     text = prep.backup(text)
 
-    for s in Const.quotes_or_brackets:
-        text = text.replace(s, f"\u200b{s}\u200b")
+    if use_quotes_brackets_processing:
+        for s in Const.quotes_or_brackets:
+            text = text.replace(s, f"\u200b{s}\u200b")
 
     if use_morpheme:
         eojeols = _morph.pos(text=text, backend=backend)
@@ -583,10 +599,21 @@ def _split_sentences(
     outputs = []
     for s in results:
         s = prep.restore(s)
-        s = s.replace("\u200b", "")
+        if use_quotes_brackets_processing:
+            s = s.replace("\u200b", "")
         outputs.append(s)
 
-    _cache.put(original_text, outputs)
+    _cache.put(
+        (
+            original_text,
+            use_heuristic,
+            use_quotes_brackets_processing,
+            max_recover_step,
+            max_recover_length,
+            backend,
+        ),
+        outputs,
+    )
 
     return outputs
 

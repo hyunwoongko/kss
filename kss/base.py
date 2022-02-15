@@ -144,21 +144,7 @@ class Const:
                 year_s.append(f"{i}{j}s")
                 year_s.append(f"{i}{j}S")
 
-        time = []
-        for i in Const.numbers:
-            for j in Const.numbers:
-                for k in Const.single_quotes:
-                    time.append(f"{i}{k}{j}")
-                    time.append(f"{i}{k}{j}")
-                    time.append(f"{i}{k}{j}")
-
-        inch = []
-        for i in Const.numbers + ["."]:
-            for j in Const.numbers:
-                for k in Const.double_quotes:
-                    inch.append(f"{i}{j}{k}")
-
-        return faces + apostrophe + year_s + time + inch
+        return faces + apostrophe + year_s
 
     @staticmethod
     def ec_cases():
