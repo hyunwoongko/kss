@@ -183,3 +183,12 @@
 
 #### Kss 3.3.1
 - Disable multiprocessing if length of input list is 1.
+
+#### Kss 3.4
+- Fix bracket processing related bugs
+  - https://github.com/hyunwoongko/kss/issues/28
+  - https://github.com/hyunwoongko/kss/issues/29
+
+- Modify caching key
+  - https://github.com/hyunwoongko/kss/issues/30
+  - https://github.com/hyunwoongko/kss/issues/33
