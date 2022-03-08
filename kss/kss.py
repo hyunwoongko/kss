@@ -9,13 +9,16 @@
 #
 # This software may be modified and distributed under the terms
 # of the BSD license.  See the LICENSE file for details.
-
+import functools
 import gc
 import math
 from concurrent.futures import ProcessPoolExecutor as Pool
 from copy import deepcopy
 from functools import partial
+import re
 from typing import List, Union, Tuple
+
+import more_itertools
 
 from kss.base import (
     Const,
@@ -31,7 +34,6 @@ from kss.base import (
     get_chunk_with_index,
     preprocess_text,
     _morph,
-    _cache,
     build_preprocessed_list,
 )
 from kss.rule import Table, Stats, ID
@@ -46,6 +48,7 @@ def split_sentences(
     backend: str = "pynori",
     num_workers: int = -1,
     disable_gc: bool = True,
+    disable_mp_post_process: bool = False,
 ) -> Union[List[str], List[List[str]]]:
     """
     Split document to sentences.
@@ -59,6 +62,7 @@ def split_sentences(
         backend (str): max length of text to use morpheme feature
         num_workers (int): number of multiprocessing workers ('-1' means maximum processes)
         disable_gc (bool): disable garbage collecting (It helps to improve speed)
+        disable_mp_post_process (bool): disable multiprocessing post processing
 
     Returns:
         Union[List[str], List[List[str]]]: list of segmented sentences
@@ -104,10 +108,6 @@ def split_sentences(
         max_recover_step,
     )
 
-    mp_input_texts = []
-    mp_postprocessing = []
-    mp_temp = []
-
     if isinstance(text, str):
         _text = [text]
     else:
@@ -127,16 +127,16 @@ def split_sentences(
         if len(input_text) == 0:
             input_text.append("")
 
-        mp_temp.append(input_text)
-        mp_input_texts += input_text
+    mp_temp = preprocessed_list
+    mp_input_texts = more_itertools.flatten(preprocessed_list)
 
-    for _input_for_pp in mp_temp:
-        out = "".join(_input_for_pp).replace(" ", "")
-        if use_quotes_brackets_processing:
-            for special in Const.quotes_or_brackets:
-                out = out.replace(special, "")
+    if use_quotes_brackets_processing:
+        pattern = re.compile(f"[{''.join(Const.quotes_or_brackets)}]+")
+    else:
+        pattern = re.compile("[ ]+")
 
-        mp_postprocessing.append(out)
+    if not disable_mp_post_process:
+        mp_postprocessing = list(map(lambda x: pattern.sub("", "".join(x)), mp_temp))
 
     if pool and len(mp_input_texts) >= 2:
         results += pool.map(
@@ -167,19 +167,21 @@ def split_sentences(
     mp_temp.clear()
     _results = clear_list_to_sentences(results)
 
-    for result in _results:
-        mp_temp += result
-        out = "".join(mp_temp).replace(" ", "")
+    if not disable_mp_post_process:
         if use_quotes_brackets_processing:
-            for special in Const.quotes_or_brackets:
-                out = out.replace(special, "")
-            mp_postprocessing = [m.replace("\u200b", "") for m in mp_postprocessing]
+            pattern = re.compile("[\u200b]+")
+            mp_postprocessing = list(map(lambda x: pattern.sub("", x), mp_postprocessing))
 
-        if out in mp_postprocessing:
-            mp_output_final.append(mp_temp)
-            mp_temp = []
+        for result in _results:
+            mp_temp += result
+            out = pattern.sub("", "".join(mp_temp))
 
-    results = mp_output_final
+            if out in mp_postprocessing:
+                mp_output_final.append(mp_temp)
+                mp_temp = []
+        results = mp_output_final
+    else:
+        results = _results
 
     if disable_gc:
         gc.enable()
@@ -237,6 +239,7 @@ def split_chunks(
         return chunks
 
 
+@functools.lru_cache(maxsize=500)
 def _split_sentences(
     text: str,
     use_heuristic: bool,
@@ -248,20 +251,6 @@ def _split_sentences(
 ):
     if use_quotes_brackets_processing:
         text = text.replace("\u200b", "")
-
-    cache_key = (
-        text,
-        use_heuristic,
-        use_quotes_brackets_processing,
-        max_recover_step,
-        max_recover_length,
-        backend,
-    )
-
-    if cache_key in _cache.dic:
-        return _cache.get(cache_key)
-    else:
-        original_text = deepcopy(text)
 
     use_morpheme = backend != "none"
     prep = Preprocessor(use_morpheme=use_morpheme)
@@ -602,18 +591,6 @@ def _split_sentences(
         if use_quotes_brackets_processing:
             s = s.replace("\u200b", "")
         outputs.append(s)
-
-    _cache.put(
-        (
-            original_text,
-            use_heuristic,
-            use_quotes_brackets_processing,
-            max_recover_step,
-            max_recover_length,
-            backend,
-        ),
-        outputs,
-    )
 
     return outputs
 

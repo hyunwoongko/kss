@@ -9,12 +9,11 @@
 #
 # This software may be modified and distributed under the terms
 # of the BSD license.  See the LICENSE file for details.
-
+import functools
+import re
 import logging
-from copy import deepcopy
 from typing import List
 
-from kss.cache import LRUCache
 from kss.morph import MorphExtractor
 from kss.pynori.dict.character_definition import (
     get_emoji,
@@ -208,6 +207,8 @@ class Const:
             "사이다",
         ]
 
+    pattern_space = re.compile(r"\s+")
+
 
 class Eojeol:
     eojeol: str
@@ -224,16 +225,24 @@ class Eojeol:
         return f"('{self.eojeol}', {self.pos})"
 
 
+
+@functools.lru_cache(maxsize=2)
+def get_exceptions(use_morpheme):
+    _exceptions = Const.exceptions()
+    if not use_morpheme:
+        _exceptions += Const.ec_cases()
+
+    return _exceptions
+
+
+@functools.lru_cache(maxsize=2)
+def get_default_backup_dict(use_morpheme):
+    return {k: str(abs(hash(k))) for k in get_exceptions(use_morpheme)}
+
+
 class Preprocessor:
     def __init__(self, use_morpheme: bool):
-        global _exceptions
-        exceptions = deepcopy(_exceptions)
-
-        # drop ec cases if morpheme features are not available
-        if not use_morpheme:
-            exceptions += Const.ec_cases()
-
-        self.backup_dict = {k: str(abs(hash(k))) for k in exceptions}
+        self.backup_dict = get_default_backup_dict(use_morpheme)
 
     @staticmethod
     def tostring(eojeols):
@@ -273,11 +282,8 @@ class Preprocessor:
         return text
 
     def add_emojis_to_dict(self, text):
-        for e in get_emoji(text):
-            self._add_item_to_dict(
-                key=e,
-                val=str(abs(hash(e))),
-            )
+        emoji_dict = {e: str(abs(hash(e))) for e in get_emoji(text)}
+        self.backup_dict.update(emoji_dict)
         return text
 
 
@@ -341,7 +347,6 @@ class Postprocessor(object):
             results = self._heuristic(results, post_processing_da)
 
         return results
-
 
 
 def empty(obj, dim=1) -> bool:
@@ -447,11 +452,7 @@ def get_num_workers(num_workers):
 
 
 def remove_useless_space(text):
-    text = text.replace("\n", "")
-    while "  " in text:
-        text = text.replace("  ", " ")
-
-    return text
+    return Const.pattern_space.sub(" ", text.replace("\n", ""))
 
 
 def get_chunk_with_index(text, span):
@@ -462,20 +463,10 @@ def get_chunk_with_index(text, span):
 
 
 def preprocess_text(text):
-    total_text = ""
-    for t in text:
-        if t in _posix:
-            total_text += t
-        elif len(get_emoji(t)) != 0:
-            total_text += t
+    total_text = "".join([c for c in text if c in _posix or len(get_emoji(c)) != 0])
 
-    while "  " in total_text:
-        total_text = total_text.replace("  ", " ")
-
-    return total_text
+    return Const.pattern_space.sub(" ", total_text)
 
 
 _posix = list(chr(x) for x in categories.keys())
 _morph = MorphExtractor()
-_exceptions = Const.exceptions()
-_cache = LRUCache(max_size=1000)

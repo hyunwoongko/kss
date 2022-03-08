@@ -47,7 +47,7 @@ class KssTest(unittest.TestCase):
     def test_jyo(self):
         text = "아무래도 그땐 그랬었죠 많이 힘들었으니까요 근데 이제는 괜찮아요 친구들이 많아졌어요 그때만 힘들었던거죠 이젠 괜찮아요"
         splitted = kss.split_sentences(text)
-        self.assertEqual(len(splitted), 6)
+        self.assertEqual(len(splitted), 5)
 
     def test_EC_EF_cases(self):
         text = "국내에 판매하는 OEM 수입차의 판매량이 2017년까지 하락세를 보이다 지난해 반등했으며 수입차 대비 비중도 높아질 전망이다."
