@@ -27,6 +27,11 @@ cd kss
 pip install -e .
 ```
 
+### 1.3. Install mecab
+To use mecab backend, please install mecab using the following command:
+```
+pip install -v python-mecab-ko==1.0.9
+```
 
 ## 2. Usage
 ### 2.1. `split_sentences`
