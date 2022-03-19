@@ -4,6 +4,7 @@ from setuptools import setup, find_packages
 required = [
     "emoji",
     "regex",
+    "more_itertools",
 ]
 
 
