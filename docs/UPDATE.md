@@ -192,3 +192,6 @@
 - Modify caching key
   - https://github.com/hyunwoongko/kss/issues/30
   - https://github.com/hyunwoongko/kss/issues/33
+
+#### Kss 3.4.1
+- Apply improvements from https://github.com/hyunwoongko/kss/pull/39.
