@@ -119,7 +119,7 @@ def split_sentences(
         pool = Pool(max_workers=num_workers)
 
     if pool:
-        preprocessed_list = pool.map(build_preprocessed_list, _text)
+        preprocessed_list = list(pool.map(build_preprocessed_list, _text))
     else:
         preprocessed_list = [build_preprocessed_list(t) for t in _text]
 
@@ -128,7 +128,7 @@ def split_sentences(
             input_text.append("")
 
     mp_temp = preprocessed_list
-    mp_input_texts = more_itertools.flatten(preprocessed_list)
+    mp_input_texts = list(more_itertools.flatten(preprocessed_list))
 
     if use_quotes_brackets_processing:
         pattern = re.compile(f"[{''.join(Const.quotes_or_brackets)}]+")

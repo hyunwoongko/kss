@@ -195,3 +195,6 @@
 
 #### Kss 3.4.1
 - Apply improvements from https://github.com/hyunwoongko/kss/pull/39.
+
+#### Kss 3.4.2
+- Quick fix for 3.4.1.
