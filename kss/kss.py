@@ -131,7 +131,7 @@ def split_sentences(
     mp_input_texts = list(more_itertools.flatten(preprocessed_list))
 
     if use_quotes_brackets_processing:
-        pattern = re.compile(f"[{''.join(Const.quotes_or_brackets)}]+")
+        pattern = re.compile(f"[{re.escape(''.join(Const.quotes_or_brackets))}]+")
     else:
         pattern = re.compile("[ ]+")
 
@@ -167,7 +167,7 @@ def split_sentences(
     mp_temp.clear()
     _results = clear_list_to_sentences(results)
 
-    if not disable_mp_post_process:
+    if pool and not disable_mp_post_process:
         if use_quotes_brackets_processing:
             pattern = re.compile("[\u200b]+")
             mp_postprocessing = list(map(lambda x: pattern.sub("", x), mp_postprocessing))
