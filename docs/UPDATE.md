@@ -198,3 +198,6 @@
 
 #### Kss 3.4.2
 - Quick fix for 3.4.1.
+
+#### Kss 3.4.3
+- Fix bracket processing related bugs

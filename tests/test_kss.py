@@ -185,6 +185,8 @@ class KssTest(unittest.TestCase):
         print(output)
 
     def test_use_quotes_brackets_processing(self):
-        result = kss.split_sentences("서울에는 유명한 맛집이 정말 많습니다. 가장 인기 있는 것 중 하나인 빙수 미식가를 말씀드릴 수 있습니다.", use_quotes_brackets_processing=True)
-        print(result)
+        result = kss.split_sentences("'서울에는 유명한 맛집이 정말 많습니다. 가장 인기 있는 것 중 하나인 빙수 미식가를 말씀드릴 수 있습니다.' 그의 말은 정말 맞았다.", use_quotes_brackets_processing=False)
         assert len(result) == 2
+        result = kss.split_sentences("'서울에는 유명한 맛집이 정말 많습니다. 가장 인기 있는 것 중 하나인 빙수 미식가를 말씀드릴 수 있습니다.' 그의 말은 정말 맞았다.", use_quotes_brackets_processing=True)
+        print(result)
+        assert len(result) == 1
