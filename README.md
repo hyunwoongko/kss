@@ -18,7 +18,7 @@ Kss can be easily installed using the pip package manager.
 pip install kss
 ```
 
-### 1.2. Install from source codes
+### 1.2. Install from source code
 You can also install Kss from source codes.
 This can be useful for adding words to user dictionary described in [here](https://github.com/hyunwoongko/kss/blob/main/docs/USERDICT.md).
 ```console
