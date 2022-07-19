@@ -2,7 +2,7 @@ import codecs
 from setuptools import setup, find_packages
 
 required = [
-    "emoji",
+    "emoji==1.2.0",
     "regex",
     "more_itertools",
 ]
