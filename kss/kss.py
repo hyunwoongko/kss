@@ -46,7 +46,7 @@ def split_sentences(
     max_recover_step: int = 5,
     max_recover_length: int = 20000,
     backend: str = "auto",
-    num_workers: int = 1,
+    num_workers: int = -1,
     disable_gc: bool = True,
     disable_mp_post_process: bool = False,
 ) -> Union[List[str], List[List[str]]]:
@@ -107,6 +107,9 @@ def split_sentences(
     if disable_gc:
         gc.disable()
 
+    if isinstance(text, str) and num_workers > 1:
+        num_workers = 1
+        
     num_workers = get_num_workers(num_workers)
     results = []
 
