@@ -109,7 +109,7 @@ def split_sentences(
 
     if isinstance(text, str) and num_workers > 1:
         num_workers = 1
-        
+
     num_workers = get_num_workers(num_workers)
     results = []
 
