@@ -1,4 +1,5 @@
 import codecs
+import platform
 from setuptools import setup, find_packages
 
 required = [
@@ -6,6 +7,9 @@ required = [
     "regex",
     "more_itertools",
 ]
+
+if platform.uname().system in ["Linux", "Darwin"]:
+    required.append("python-mecab-kor")
 
 
 def read_file(filename, cb):
@@ -18,7 +22,7 @@ with open("README.md", encoding="utf-8") as f:
 
 setup(
     name="kss",
-    version="3.4.3",
+    version="3.5",
     author="Hyunwoong Ko",
     author_email="kevin.ko@tunib.ai",
     url="https://github.com/hyunwoongko/kss",

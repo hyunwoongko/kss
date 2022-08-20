@@ -18,6 +18,7 @@ Kss can be easily installed using the pip package manager.
 pip install kss
 ```
 
+
 ### 1.2. Install from source codes
 You can also install Kss from source codes.
 This can be useful for adding words to user dictionary described in [here](https://github.com/hyunwoongko/kss/blob/main/docs/USERDICT.md).
@@ -27,11 +28,6 @@ cd kss
 pip install -e .
 ```
 
-### 1.3. Install mecab
-To use mecab backend, please install mecab using the following command:
-```
-pip install -v python-mecab-ko==1.0.9
-```
 
 ## 2. Usage
 ### 2.1. `split_sentences`
@@ -47,8 +43,8 @@ You can segment input texts to the sentences using this function. Click the tria
 ...     use_quotes_brackets_processing: bool = False,                             
 ...     max_recover_step: int = 5,
 ...     max_recover_length: int = 20000,
-...     backend: str = "pynori",
-...     num_workers: int = -1,                       
+...     backend: str = "auto",
+...     num_workers: int = 1,                       
 ...     disable_gc: bool = True,                           
 ... )
 ```
@@ -191,6 +187,7 @@ In this case, Kss can segment sentences that use honorifics (경어), dialects (
 
 The followings are summary of the three possible options.
 
+- `auto`: Use mecab backend if mecab can be used else use pynori backend
 - `pynori`: Use Pynori analyzer. It works fine even without C++ installed, but is very slow.
 - `mecab`: Use Mecab analyzer. It only works in the environment that C++ is installed. However, it is much faster than Pynori.
 - `none`: Do not use morpheme analyzer. performance will be decrease.
@@ -200,7 +197,6 @@ The followings are summary of the three possible options.
 Kss use the [Pynori](https://github.com/gritmind/python-nori), the pure python morpheme analyzer by default. However, you can change it to [Mecab-Ko](https://github.com/jonghwanhyeon/python-mecab-ko), the super-fast morpheme analyzer based on C++.
 [The performance](https://github.com/hyunwoongko/kss/blob/main/docs/ANALYSIS.md#11-open-ended-segmentation) of two analyzers is almost similar because they were developed based on the same dictionary, [mecab-ko-dic](https://bitbucket.org/eunjeon/mecab-ko-dic). 
 However, since there is a lot of difference in speed, we strongly recommend using mecab backend if you can install mecab-ko in your environment.
-(I didn't set Mecab-Ko as the default because I value compatibility over speed.
 
 - An example of `backend`
 

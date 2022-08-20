@@ -61,9 +61,9 @@ class MorphExtractor(object):
                 except ImportError:
                     raise ImportError(
                         "\n"
-                        "You must install `python-mecab-ko` if you want to use `mecab` backend.\n"
-                        "Please install using `pip install python-mecab-ko`.\n"
-                        "Refer https://github.com/jonghwanhyeon/python-mecab-ko for more details.\n"
+                        "You must install `python-mecab-kor` if you want to use `mecab` backend.\n"
+                        "Please install using `pip install python-mecab-kor`.\n"
+                        "Refer https://github.com/hyuwoongko/python-mecab-kor for more details.\n"
                     )
 
             return [

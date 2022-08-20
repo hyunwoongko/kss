@@ -45,8 +45,8 @@ def split_sentences(
     use_quotes_brackets_processing: bool = False,
     max_recover_step: int = 5,
     max_recover_length: int = 20000,
-    backend: str = "pynori",
-    num_workers: int = -1,
+    backend: str = "auto",
+    num_workers: int = 1,
     disable_gc: bool = True,
     disable_mp_post_process: bool = False,
 ) -> Union[List[str], List[List[str]]]:
@@ -75,7 +75,15 @@ def split_sentences(
         "pynori",
         "mecab",
         "none",
-    ], "Wrong backend! Currently, we support [`pynori`, `mecab`, `none`] backend."
+        "auto",
+    ], "Wrong backend! Currently, we support [`pynori`, `mecab`, `none`, `auto`] backend."
+
+    if backend == "auto":
+        try:
+            import mecab
+            backend = "mecab"
+        except ImportError:
+            backend = "pynori"
 
     if backend == "pynori":
         _morph.create_pynori()
