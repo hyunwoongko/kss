@@ -197,7 +197,7 @@ Kss use the [Pynori](https://github.com/gritmind/python-nori), the pure python m
 [The performance](https://github.com/hyunwoongko/kss/blob/main/docs/ANALYSIS.md#11-open-ended-segmentation) of two analyzers is almost similar because they were developed based on the same dictionary, [mecab-ko-dic](https://bitbucket.org/eunjeon/mecab-ko-dic). 
 However, since there is a lot of difference in speed, we strongly recommend using mecab backend if you can install mecab-ko in your environment.
 
-From kss 3.5.3, `mecab` backend uses `python-mecab-kor` instead of `python-mecab-ko`. 
+From kss 3.5.4, `mecab` backend uses `python-mecab-kor` instead of `python-mecab-ko`. 
 and `auto` backend added, this backend will select best backend according to your environment
 
 - An example of `backend`
@@ -237,6 +237,8 @@ If a different value is entered, the number you entered of workers is allocated.
 
 As shown in the performance evaluation, multiprocessing can lead a very large effect on speed. 
 Multiprocessing makes segmentation much faster, especially when using the Pynori backend.
+
+From kss 3.5.4, `auto` is added. this can select the best number of workers for your inference.
 
 - An example of `num_workers`
 
@@ -397,7 +399,6 @@ Therefore, all arguments of `split_sentences` can be used. Check the following e
 - [Performance Analysis](https://github.com/hyunwoongko/kss/blob/main/docs/ANALYSIS.md)
 - [Adding words to user dictionary](https://github.com/hyunwoongko/kss/blob/main/docs/USERDICT.md)
 - [Update Note](https://github.com/hyunwoongko/kss/blob/main/docs/UPDATE.md)
-- [Mecab-Ko Installation Guide](https://github.com/hyunwoongko/kss/blob/main/docs/MECAB.md)
 - [Contributing Guide](https://github.com/hyunwoongko/kss/blob/main/docs/CONTRIBUTING.md)
 
 ## 4. References

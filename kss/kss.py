@@ -103,6 +103,9 @@ def split_sentences(
         else:
             num_workers = -1
 
+    if isinstance(text, str) and "\n" not in text:
+        num_workers = 1
+
     if backend == "pynori":
         _morph.create_pynori()
 
@@ -124,9 +127,6 @@ def split_sentences(
 
     if disable_gc:
         gc.disable()
-
-    if isinstance(text, str) and "\n" not in text:
-        num_workers = 1
 
     num_workers = get_num_workers(num_workers)
     results = []
