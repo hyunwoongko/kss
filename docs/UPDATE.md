@@ -201,3 +201,7 @@
 
 #### Kss 3.4.3
 - Fix bracket processing related bugs
+
+#### Kss 3.5.2
+- Add `auto` backend
+- Modify default value of `num_workers`
