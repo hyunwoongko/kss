@@ -197,12 +197,18 @@ Kss use the [Pynori](https://github.com/gritmind/python-nori), the pure python m
 [The performance](https://github.com/hyunwoongko/kss/blob/main/docs/ANALYSIS.md#11-open-ended-segmentation) of two analyzers is almost similar because they were developed based on the same dictionary, [mecab-ko-dic](https://bitbucket.org/eunjeon/mecab-ko-dic). 
 However, since there is a lot of difference in speed, we strongly recommend using mecab backend if you can install mecab-ko in your environment.
 
+From kss 3.5.3, `mecab` backend uses `python-mecab-kor` instead of `python-mecab-ko`. 
+and `auto` backend added, this backend will select best backend according to your environment
+
 - An example of `backend`
 
   ```python
   >>> from kss import split_sentences
     
   >>> text = "부디 만수무강 하옵소서 천천히 가세용~ 너 밥을 먹는구나 응 맞아 난 근데 어제 이사했음 그랬구나 이제 마지막임 응응"
+
+   >>> split_sentences(text, backend="auto")
+  ['부디 만수무강 하옵소서', '천천히 가세용~', '너 밥을 먹는구나', '응 맞아 난 근데 어제 이사했음', '그랬구나 이제 마지막임', '응응']
 
   >>> split_sentences(text, backend="pynori")
   ['부디 만수무강 하옵소서', '천천히 가세용~', '너 밥을 먹는구나', '응 맞아 난 근데 어제 이사했음', '그랬구나 이제 마지막임', '응응']
@@ -216,7 +222,7 @@ However, since there is a lot of difference in speed, we strongly recommend usin
 
 - How to install mecab?  
   ```
-  pip install -v python-mecab-ko==1.0.9
+  pip install -v python-mecab-kor
   ```
 
 <br>
