@@ -1,6 +1,7 @@
 import codecs
 import shutil
 import subprocess
+import sys
 from contextlib import suppress
 
 from setuptools import setup, find_packages
@@ -19,11 +20,8 @@ class InstallCommand(install):
             import mecab
         except:
             with suppress():
-                pip_executable = "pip3"
-                if not shutil.which(pip_executable):
-                    pip_executable = "pip"
                 subprocess.call(
-                    [pip_executable, "install", "python-mecab-kor"],
+                    [sys.executable, "-m", "pip", "install", "python-mecab-kor"],
                     stderr=subprocess.DEVNULL,
                 )
 
@@ -40,7 +38,7 @@ with open("README.md", encoding="utf-8") as f:
 
 setup(
     name="kss",
-    version="3.5.4",
+    version="3.5.5",
     author="Hyunwoong Ko",
     author_email="kevin.ko@tunib.ai",
     url="https://github.com/hyunwoongko/kss",
