@@ -13,10 +13,9 @@ import functools
 import gc
 import logging
 import math
-from concurrent.futures import ProcessPoolExecutor as Pool
-from copy import deepcopy
-from functools import partial
 import re
+from concurrent.futures import ProcessPoolExecutor as Pool
+from functools import partial
 from typing import List, Union, Tuple
 
 import more_itertools
@@ -49,7 +48,7 @@ def split_sentences(
     max_recover_step: int = 5,
     max_recover_length: int = 20000,
     backend: str = "auto",
-    num_workers: int = 1,
+    num_workers: int = "auto",
     disable_gc: bool = True,
     disable_mp_post_process: bool = False,
 ) -> Union[List[str], List[List[str]]]:
@@ -98,6 +97,12 @@ def split_sentences(
 
             backend = "pynori"
 
+    if num_workers == "auto":
+        if isinstance(text, str):
+            num_workers = 1
+        else:
+            num_workers = -1
+
     if backend == "pynori":
         _morph.create_pynori()
 
@@ -120,7 +125,7 @@ def split_sentences(
     if disable_gc:
         gc.disable()
 
-    if isinstance(text, str) and "\n" not in text and (-1 < num_workers < 2):
+    if isinstance(text, str) and "\n" not in text:
         num_workers = 1
 
     num_workers = get_num_workers(num_workers)
