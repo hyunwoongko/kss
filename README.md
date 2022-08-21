@@ -43,7 +43,7 @@ You can segment input texts to the sentences using this function. Click the tria
 ...     max_recover_step: int = 5,
 ...     max_recover_length: int = 20000,
 ...     backend: str = "auto",
-...     num_workers: int = 1,                       
+...     num_workers: int = "auto",                       
 ...     disable_gc: bool = True,                           
 ... )
 ```
