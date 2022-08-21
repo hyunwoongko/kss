@@ -11,6 +11,7 @@
 # of the BSD license.  See the LICENSE file for details.
 import functools
 import gc
+import logging
 import math
 from concurrent.futures import ProcessPoolExecutor as Pool
 from copy import deepcopy
@@ -37,6 +38,8 @@ from kss.base import (
     build_preprocessed_list,
 )
 from kss.rule import Table, Stats, ID
+
+NOTICE_MECAB = False
 
 
 def split_sentences(
@@ -68,7 +71,6 @@ def split_sentences(
         Union[List[str], List[List[str]]]: list of segmented sentences
     """
     assert isinstance(backend, str), "param `backend` must be `str` type"
-
     backend = backend.lower()
 
     assert backend in [
@@ -84,6 +86,16 @@ def split_sentences(
 
             backend = "mecab"
         except ImportError:
+            import platform
+
+            global NOTICE_MECAB
+            if platform.uname().system in ["Darwin", "Linux"]:
+                logging.warning(
+                    "You can install `python-mecab-kor` for faster kss execution. "
+                    "Try to install it using `pip install python-mecab-kor`."
+                )
+                NOTICE_MECAB = True
+
             backend = "pynori"
 
     if backend == "pynori":

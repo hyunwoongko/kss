@@ -1,6 +1,10 @@
 import codecs
-import platform
+import shutil
+import subprocess
+from contextlib import suppress
+
 from setuptools import setup, find_packages
+from setuptools.command.install import install
 
 required = [
     "emoji==1.2.0",
@@ -8,8 +12,22 @@ required = [
     "more_itertools",
 ]
 
-if platform.uname().system in ["Linux", "Darwin"]:
-    required.append("python-mecab-kor")
+
+class InstallCommand(install):
+    def run(self):
+        try:
+            import mecab
+        except:
+            with suppress():
+                pip_executable = "pip3"
+                if not shutil.which(pip_executable):
+                    pip_executable = "pip"
+                subprocess.call(
+                    [pip_executable, "install", "python-mecab-kor"],
+                    stderr=subprocess.DEVNULL,
+                )
+
+        super().run()
 
 
 def read_file(filename, cb):
@@ -22,7 +40,7 @@ with open("README.md", encoding="utf-8") as f:
 
 setup(
     name="kss",
-    version="3.5.2",
+    version="3.5.3",
     author="Hyunwoong Ko",
     author_email="kevin.ko@tunib.ai",
     url="https://github.com/hyunwoongko/kss",
@@ -47,4 +65,5 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
     ],
+    cmdclass={"install": InstallCommand},
 )
