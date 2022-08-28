@@ -88,7 +88,7 @@ def split_sentences(
             import platform
 
             global NOTICE_MECAB
-            if platform.uname().system in ["Darwin", "Linux"]:
+            if platform.uname().system in ["Darwin", "Linux"] and NOTICE_MECAB is False:
                 logging.warning(
                     "You can install `python-mecab-kor` for faster kss execution.\n"
                     "Try to install it using `pip install python-mecab-kor`.\n"
