@@ -19,6 +19,25 @@ logging.basicConfig(
 )
 
 
+def get_mecab():
+    try:
+        from mecab import MeCab
+
+        return MeCab()
+    except:
+        try:
+            from konlpy.tag import Mecab
+
+            return Mecab()
+        except:
+            raise ImportError(
+                "\n"
+                "You must install `python-mecab-kor` if you want to use `mecab` backend.\n"
+                "Please install using `pip install python-mecab-kor`.\n"
+                "Refer https://github.com/hyuwoongko/python-mecab-kor for more details.\n"
+            )
+
+
 class MorphExtractor(object):
     def __init__(self):
         self.mecab = None
@@ -85,22 +104,7 @@ class MecabTokenizer:
     """
 
     def __init__(self):
-        try:
-            from mecab import MeCab
-
-            self.mecab = MeCab()
-        except:
-            try:
-                from konlpy.tag import Mecab
-
-                self.mecab = Mecab()
-            except:
-                raise ImportError(
-                    "\n"
-                    "You must install `python-mecab-kor` if you want to use `mecab` backend.\n"
-                    "Please install using `pip install python-mecab-kor`.\n"
-                    "Refer https://github.com/hyuwoongko/python-mecab-kor for more details.\n"
-                )
+        self.mecab = get_mecab()
 
     def pos(
         self,

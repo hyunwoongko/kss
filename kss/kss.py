@@ -36,6 +36,7 @@ from kss.base import (
     _morph,
     build_preprocessed_list,
 )
+from kss.morph import get_mecab
 from kss.rule import Table, Stats, ID
 
 NOTICE_MECAB = False
@@ -81,17 +82,17 @@ def split_sentences(
 
     if backend == "auto":
         try:
-            import mecab
-
+            _ = get_mecab()
             backend = "mecab"
-        except ImportError:
+        except:
             import platform
 
             global NOTICE_MECAB
             if platform.uname().system in ["Darwin", "Linux"]:
                 logging.warning(
-                    "You can install `python-mecab-kor` for faster kss execution. "
-                    "Try to install it using `pip install python-mecab-kor`."
+                    "You can install `python-mecab-kor` for faster kss execution.\n"
+                    "Try to install it using `pip install python-mecab-kor`.\n"
+                    "Refer https://github.com/hyuwoongko/python-mecab-kor for more details.\n"
                 )
                 NOTICE_MECAB = True
 
