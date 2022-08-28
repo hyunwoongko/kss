@@ -73,7 +73,7 @@ class MorphExtractor(object):
             ]
         else:
             raise AttributeError(
-                "Wrong backend ! currently, we only support `pynori`, `mecab`, `none` backend."
+                "Wrong backend ! currently, we only support `pynori`, `mecab`, `none`, `auto` backend."
             )
 
 
@@ -85,9 +85,22 @@ class MecabTokenizer:
     """
 
     def __init__(self):
-        from mecab import MeCab
+        try:
+            from mecab import MeCab
 
-        self.mecab = MeCab()
+            self.mecab = MeCab()
+        except:
+            try:
+                from konlpy.tag import Mecab
+
+                self.mecab = Mecab()
+            except:
+                raise ImportError(
+                    "\n"
+                    "You must install `python-mecab-kor` if you want to use `mecab` backend.\n"
+                    "Please install using `pip install python-mecab-kor`.\n"
+                    "Refer https://github.com/hyuwoongko/python-mecab-kor for more details.\n"
+                )
 
     def pos(
         self,
