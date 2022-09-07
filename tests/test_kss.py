@@ -166,7 +166,7 @@ class KssTest(unittest.TestCase):
         print(output)
 
     def test_hannabros(self):
-        output = kss.split_sentences('분리 할 수 ​​있다.')
+        output = kss.split_sentences("분리 할 수 ​​있다.")
         print(output)
 
     def test_lifelongeek(self):
@@ -180,13 +180,19 @@ class KssTest(unittest.TestCase):
         # 음.. 뭘까 잘 되는데
 
     def test_newdboy(self):
-        tst = '그것이 잘 적혀 있는지 확인해야 한다고 했기 때문이다. EBS 미래교육연구소 최홍규 박사도 그렇게 말했다'
-        output = kss.split_sentences(text=tst, backend='mecab', use_heuristic=True)
+        tst = "그것이 잘 적혀 있는지 확인해야 한다고 했기 때문이다. EBS 미래교육연구소 최홍규 박사도 그렇게 말했다"
+        output = kss.split_sentences(text=tst, backend="mecab", use_heuristic=True)
         print(output)
 
     def test_use_quotes_brackets_processing(self):
-        result = kss.split_sentences("'서울에는 유명한 맛집이 정말 많습니다. 가장 인기 있는 것 중 하나인 빙수 미식가를 말씀드릴 수 있습니다.' 그의 말은 정말 맞았다.", use_quotes_brackets_processing=False)
+        result = kss.split_sentences(
+            "'서울에는 유명한 맛집이 정말 많습니다. 가장 인기 있는 것 중 하나인 빙수 미식가를 말씀드릴 수 있습니다.' 그의 말은 정말 맞았다.",
+            use_quotes_brackets_processing=False,
+        )
         assert len(result) == 2
-        result = kss.split_sentences("'서울에는 유명한 맛집이 정말 많습니다. 가장 인기 있는 것 중 하나인 빙수 미식가를 말씀드릴 수 있습니다.' 그의 말은 정말 맞았다.", use_quotes_brackets_processing=True)
+        result = kss.split_sentences(
+            "'서울에는 유명한 맛집이 정말 많습니다. 가장 인기 있는 것 중 하나인 빙수 미식가를 말씀드릴 수 있습니다.' 그의 말은 정말 맞았다.",
+            use_quotes_brackets_processing=True,
+        )
         print(result)
         assert len(result) == 1

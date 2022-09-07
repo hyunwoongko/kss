@@ -274,7 +274,7 @@ def _split_sentences(
     if use_quotes_brackets_processing:
         text = text.replace("\u200b", "")
 
-    use_morpheme = backend != "none"
+    use_morpheme = backend.lower() != "none"
     prep = Preprocessor(use_morpheme=use_morpheme)
     post = Postprocessor()
 
@@ -282,7 +282,6 @@ def _split_sentences(
         # but if you use morpheme feature, it is unnecessary.
         text = prep.add_ec_cases_to_dict(text)
 
-    text = prep.add_emojis_to_dict(text)
     text = prep.backup(text)
 
     if use_quotes_brackets_processing:
@@ -405,7 +404,7 @@ def _split_sentences(
                         (Table[Stats.JYO][prev.eojeol] & ID.PREV)
                         and check_pos(eojeol, ["EF"])
                         and empty_stacks()
-                        # check if pos is EF 종결어미
+                        # check if pos is EF(종결어미)
                     ):
                         if not use_morpheme:
                             if i != len(eojeols) - 1:
