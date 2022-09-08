@@ -1306,6 +1306,7 @@ common_dict = create_dict(
         "!": ID.CONT,
         "~": ID.CONT,
         "…": ID.CONT,
+        "‍": ID.CONT,
         "": ID.NONE,
     }
 )
