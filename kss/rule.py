@@ -1268,6 +1268,10 @@ eomi_dict = create_dict(
     }
 )
 
+unicodes = []
+unicodes += ["‍"] # zero width joiner
+unicodes += ["︀", "︁", "︂", "︃", "︄", "︅", "︆", "︇", "︈", "︉", "︊", "︋", "︌", "︍", "︎", "️"] # variation_selectors 1~16
+
 common_dict = create_dict(
     {
         "ㄱ": ID.CONT,
@@ -1306,12 +1310,12 @@ common_dict = create_dict(
         "!": ID.CONT,
         "~": ID.CONT,
         "…": ID.CONT,
-        "‍": ID.CONT,
         "": ID.NONE,
     }
 )
 
 common_dict.update({e: ID.CONT for e in _emojis.keys()})
+common_dict.update({e: ID.CONT for e in unicodes})
 
 Table = create_dict(
     {

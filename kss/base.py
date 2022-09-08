@@ -19,7 +19,7 @@ from kss.pynori.dict.character_definition import (
     get_emoji,
     categories,
 )
-from kss.rule import Table, Stats
+from kss.rule import Table, Stats, unicodes
 import emoji
 
 
@@ -443,7 +443,9 @@ def get_chunk_with_index(text, span):
 
 
 def preprocess_text(text):
-    total_text = "".join([c for c in text if c in _posix or len(get_emoji(c)) != 0])
+    total_text = "".join(
+        [c for c in text if c in _posix or len(get_emoji(c)) != 0 or c in unicodes]
+    )
 
     return Const.pattern_space.sub(" ", total_text)
 
