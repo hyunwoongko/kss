@@ -417,7 +417,7 @@ def _split_sentences(
                         empty_stacks()
                         and i != len(eojeols) - 1
                         and check_pos(eojeol, ["ETN", "EF"])
-                        and check_pos(eojeols[i + 1], ["SP", "SE", "SF"])
+                        and check_pos(eojeols[i + 1], ["SP", "SE", "SF", "SY"])
                         and not check_pos(eojeol, ["J", "XS"])  # ETN+XSN 같은 케이스 막기위해
                         and eojeol.eojeol
                         not in ["다", "요", "죠", "기"]  # ~ 하기 (명사파생 접미사가 전성어미로 오해되는 경우)
@@ -439,6 +439,7 @@ def _split_sentences(
                 # Space
                 if eojeol.eojeol == " " or Table[Stats.COMMON][eojeol.eojeol] & ID.CONT:
                     if Table[cur_stat][prev.eojeol] & ID.NEXT1:
+                        print(1, i, Table[cur_stat][eojeol.eojeol])
                         results.append(cur_sentence)
                         cur_sentence = [prev]
                         cur_stat = Stats.DEFAULT
@@ -455,6 +456,7 @@ def _split_sentences(
                         # https://github.com/hyunwoongko/kss/issues/7
 
                         if not check_pos(eojeol, ["EC", "VC"]):
+                            print(2, i, Table[cur_stat][eojeol.eojeol])
                             # "말했다. 고한다." => 고(EC): not segment
                             # "말했다. 고구려는" => 고(NNG): segment
                             results.append(cur_sentence)
@@ -466,6 +468,7 @@ def _split_sentences(
             if not endif:
                 if Table[cur_stat][eojeol.eojeol] & ID.NEXT1:
                     if Table[cur_stat][prev.eojeol] & ID.NEXT1:
+                        print(3, i, Table[cur_stat][eojeol.eojeol])
                         # NEXT1 + NEXT1 => 자른다.
                         results.append(cur_sentence)
                         cur_sentence = [prev]
@@ -474,6 +477,7 @@ def _split_sentences(
 
             if not endif:
                 if Table[cur_stat][eojeol.eojeol] & ID.NEXT2:
+                    print(4, i, Table[cur_stat][eojeol.eojeol])
                     if Table[cur_stat][prev.eojeol] & ID.NEXT1:
                         # NEXT1 + NEXT2 => 자르지 않는다.
                         cur_sentence.append(prev)

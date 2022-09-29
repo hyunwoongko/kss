@@ -505,7 +505,6 @@ um = {
     "겠",
     "찮",
     "났",
-    "좁",
     "작",
     "싶",
     "셨",
@@ -1263,14 +1262,30 @@ eomi_dict = create_dict(
         "죵": ID.NEXT,
         "쥬": ID.NEXT,
         "하": ID.NEXT1,
-        "해": ID.NEXT1,
         "도": ID.NEXT | ID.NEXT2,
     }
 )
 
 unicodes = []
-unicodes += ["‍"] # zero width joiner
-unicodes += ["︀", "︁", "︂", "︃", "︄", "︅", "︆", "︇", "︈", "︉", "︊", "︋", "︌", "︍", "︎", "️"] # variation_selectors 1~16
+unicodes += ["‍"]  # zero width joiner
+unicodes += [
+    "︀",
+    "︁",
+    "︂",
+    "︃",
+    "︄",
+    "︅",
+    "︆",
+    "︇",
+    "︈",
+    "︉",
+    "︊",
+    "︋",
+    "︌",
+    "︍",
+    "︎",
+    "️",
+]  # variation_selectors 1~16
 
 common_dict = create_dict(
     {
