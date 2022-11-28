@@ -288,7 +288,7 @@ def _split_sentences(
         # but if you use morpheme feature, it is unnecessary.
         text = prep.add_ec_cases_to_dict(text)
 
-    if backend != "mecab":
+    if backend == "pynori":
         # pynori can't process emoji
         text = prep.add_emojis_to_dict(text)
 
