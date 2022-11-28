@@ -34,15 +34,15 @@ def read_file(filename, cb):
 
 version = {}
 
+with open("kss/__init__.py", "r") as version_file:
+    exec(version_file.read(), version)
+
 with open("README.md", encoding="utf-8") as f:
     long_description = f.read()
 
-with open("kss/__version__.py", "r") as version_file:
-    exec(version_file.read(), version)
-
 setup(
     name="kss",
-    version=version["version"],
+    version=version["__version__"],
     author="Hyunwoong Ko",
     author_email="kevin.ko@tunib.ai",
     url="https://github.com/hyunwoongko/kss",

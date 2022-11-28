@@ -15,4 +15,3 @@ def get_emoji(text):
             emoji_list.append(grapheme)
 
     return emoji_list + flags
-

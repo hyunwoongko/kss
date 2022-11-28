@@ -8,8 +8,11 @@ If you have a good idea about Korean sentence segmentation, please feel free to 
 <br>
 
 ### What's New:
+- May 5, 2022 [Released Kss Fluter](https://github.com/khjde1207/kss_dart).
 - August 25, 2021 [Released Kss Java](https://github.com/sangdee/kss-java).
-- August 18, 2021 [Released Kss 3.0](https://github.com/hyunwoongko/kss/releases/tag/3.0.1).
+- August 18, 2021 [Released Kss 3.0 Python](https://github.com/hyunwoongko/kss/releases/tag/3.0.1).
+- December 21, 2020 [Released Kss 2.0 Python](https://github.com/hyunwoongko/kss/releases/tag/3.0.1).
+- August 16, 2019 [Released Kss 1.0 C++](https://github.com/hyunwoongko/kss/releases/tag/3.0.1).
 
 ## 1. Installation
 ### 1.1. Install from pip
@@ -37,14 +40,14 @@ You can segment input texts to the sentences using this function. Click the tria
 >>> from kss import split_sentences
 
 >>> split_sentences(
-...     text: Union[str, tuple, List[str]],  
+...     text: Union[str, Tuple[str], List[str]],  
 ...     use_heuristic: bool = True,
 ...     use_quotes_brackets_processing: bool = False,                             
 ...     max_recover_step: int = 5,
 ...     max_recover_length: int = 20000,
 ...     backend: str = "auto",
-...     num_workers: int = "auto",                       
-...     disable_gc: bool = True,                           
+...     num_workers: Union[str, int] = "auto",                       
+...     disable_gc: Union[str, bool] = "auto",                           
 ... )
 ```
 
@@ -238,13 +241,15 @@ If a different value is entered, the number you entered of workers is allocated.
 As shown in the performance evaluation, multiprocessing can lead a very large effect on speed. 
 Multiprocessing makes segmentation much faster, especially when using the Pynori backend.
 
-From kss 3.5.4, `auto` is added. this can select the best number of workers for your inference.
+From kss 3.5.4, `auto` is added. this can select the best number of workers for your environment.
 
 - An example of `num_workers`
 
   ```python
   >>> from kss import split_sentences
 
+  >>> split_sentences(some_text, num_workers="auto")  # kss will select best option for you
+  >>> split_sentences(some_text, num_workers=0)  # disable multiprocessing
   >>> split_sentences(some_text, num_workers=1)  # disable multiprocessing
   >>> split_sentences(some_text, num_workers=-1)  # use maximum workers as many as possible
   >>> split_sentences(some_text, num_workers=4)  # use 4 workers
@@ -257,15 +262,20 @@ From kss 3.5.4, `auto` is added. this can select the best number of workers for 
 <summary>disable_gc (<code>bool</code>)</summary>
 <br>
 
-This parameter indicates whether to enable the garbage collection during the sentence segmentation. The Pynori analyzer is implemented based on the data structure called [Trie](https://en.wikipedia.org/wiki/Trie). 
-However, since this uses recursive algorithm, it often wastes a lot of memory, which leads to frequent garbage collection. If you set it to `True`, segmentation speed can be improved by disabling garbage collection. 
+This parameter indicates whether to enable the garbage collection during the sentence segmentation. 
+The Pynori analyzer is implemented based on the data structure called [Trie](https://en.wikipedia.org/wiki/Trie). 
+However, since this uses recursive algorithm, it often wastes a lot of memory, which leads to frequent garbage collection. 
+If you set it to `True`, segmentation speed can be improved by disabling garbage collection. 
 Of course, when the segmentation process ends, garbage collection will be reactivated.
+
+From kss 3.7.0, `auto` was introduced as a default value. if you set this as `auto`, kss will select best option for you.
 
 - An example of `disable_gc`
 
   ```python
   >>> from kss import split_sentences
 
+  >>> split_sentences(some_text, disable_gc="auto")  # kss will select best option for you
   >>> split_sentences(some_text, disable_gc=True)  # disable garbage collection
   >>> split_sentences(some_text, disable_gc=False)  # enable garbage collection
   ```
@@ -397,9 +407,8 @@ Therefore, all arguments of `split_sentences` can be used. Check the following e
 
 ## 3. Additional Documents
 - [Performance Analysis](https://github.com/hyunwoongko/kss/blob/main/docs/ANALYSIS.md)
-- [Adding words to user dictionary](https://github.com/hyunwoongko/kss/blob/main/docs/USERDICT.md)
-- [Update Note](https://github.com/hyunwoongko/kss/blob/main/docs/UPDATE.md)
 - [Contributing Guide](https://github.com/hyunwoongko/kss/blob/main/docs/CONTRIBUTING.md)
+- [Adding words to user dictionary](https://github.com/hyunwoongko/kss/blob/main/docs/USERDICT.md)
 
 ## 4. References
 Kss is available in various programming languages.

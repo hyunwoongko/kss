@@ -10,3 +10,4 @@
 from kss.kss import split_chunks, split_sentences
 
 __ALL__ = [split_sentences, split_chunks]
+__version__ = "3.7.0"

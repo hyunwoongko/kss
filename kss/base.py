@@ -20,8 +20,6 @@ from kss.pynori.dict.character_definition import (
     categories,
 )
 from kss.rule import Table, Stats, unicodes
-import emoji
-
 
 logging.basicConfig(
     format="[Korean Sentence Splitter]: %(message)s", level=logging.WARNING
@@ -165,6 +163,7 @@ class Const:
             "낚이다",
             "녹이다",
             "벌이다",
+            "요 라고",
             "요. 라고",
             "죠 라고",
             "죠. 라고",
@@ -264,6 +263,13 @@ class Preprocessor:
                         val=str(abs(hash(target_to_backup))),
                     )
 
+        return text
+
+    def add_emojis_to_dict(self, text):
+        emoji_dict = {e: str(abs(hash(e))) for e in get_emoji(text)}
+        unicode_dict = {u: str(abs(hash(u))) for u in unicodes}
+        self.backup_dict.update(emoji_dict)
+        self.backup_dict.update(unicode_dict)
         return text
 
 

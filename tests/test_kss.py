@@ -196,3 +196,10 @@ class KssTest(unittest.TestCase):
         )
         print(result)
         assert len(result) == 1
+
+    def test_emoji(self):
+        test = "이모지가 어떻게 되나 테스트해봅시다. ❤️❤️하트입니다. 두 번째는 😊😊웃는얼굴입니다. 세 번째는 👍👍엄지입니다."
+        print(f"input: {test}")
+        print(f"mecab: {kss.split_sentences(test, backend='mecab')}")
+        print(f"none: {kss.split_sentences(test, backend='none')}")
+        print(f"pynori: {kss.split_sentences(test, backend='pynori')}")

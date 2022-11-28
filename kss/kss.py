@@ -49,8 +49,8 @@ def split_sentences(
     max_recover_step: int = 5,
     max_recover_length: int = 20000,
     backend: str = "auto",
-    num_workers: int = "auto",
-    disable_gc: bool = True,
+    num_workers: Union[str, int] = "auto",
+    disable_gc: Union[str, bool] = "auto",
     disable_mp_post_process: bool = False,
 ) -> Union[List[str], List[List[str]]]:
     """
@@ -63,9 +63,9 @@ def split_sentences(
         max_recover_step (int): maximum step for quote and bracket misalignment recovering
         max_recover_length (int): maximum text length to recover when quote and bracket misaligned
         backend (str): max length of text to use morpheme feature
-        num_workers (int): number of multiprocessing workers ('-1' means maximum processes)
-        disable_gc (bool): disable garbage collecting (It helps to improve speed)
-        disable_mp_post_process (bool): disable multiprocessing post processing
+        num_workers (Union[str, int]): number of multiprocessing workers ('-1' means maximum processes)
+        disable_gc (Union[str, bool]): disable garbage collecting (It helps to improve speed)
+        disable_mp_post_process (bool): disable multiprocessing postprocessing
 
     Returns:
         Union[List[str], List[List[str]]]: list of segmented sentences
@@ -126,7 +126,10 @@ def split_sentences(
     ), "param `max_recover_length` must be `int` type"
     assert isinstance(num_workers, int), "param `num_workers` must be `int` type"
 
-    if disable_gc:
+    if disable_gc == "auto":
+        if backend == "pynori":
+            gc.disable()
+    elif disable_gc is True:
         gc.disable()
 
     num_workers = get_num_workers(num_workers)
@@ -205,7 +208,10 @@ def split_sentences(
     else:
         results = _results
 
-    if disable_gc:
+    if disable_gc == "auto":
+        if backend == "pynori":
+            gc.enable()
+    elif disable_gc is True:
         gc.enable()
 
     if isinstance(text, str):
@@ -274,13 +280,17 @@ def _split_sentences(
     if use_quotes_brackets_processing:
         text = text.replace("\u200b", "")
 
-    use_morpheme = backend.lower() != "none"
+    use_morpheme = backend != "none"
     prep = Preprocessor(use_morpheme=use_morpheme)
     post = Postprocessor()
 
     if not use_morpheme:
         # but if you use morpheme feature, it is unnecessary.
         text = prep.add_ec_cases_to_dict(text)
+
+    if backend != "mecab":
+        # pynori can't process emoji
+        text = prep.add_emojis_to_dict(text)
 
     text = prep.backup(text)
 
@@ -418,7 +428,7 @@ def _split_sentences(
                         and i != len(eojeols) - 1
                         and check_pos(eojeol, ["ETN", "EF"])
                         and check_pos(eojeols[i + 1], ["SP", "SE", "SF", "SY"])
-                        and not check_pos(eojeol, ["J", "XS"])  # ETN+XSN 같은 케이스 막기위해
+                        and not check_pos(eojeol, ["J", "XSN"])  # ETN+XSN 같은 케이스 막기위해
                         and eojeol.eojeol
                         not in ["다", "요", "죠", "기"]  # ~ 하기 (명사파생 접미사가 전성어미로 오해되는 경우)
                     ):
