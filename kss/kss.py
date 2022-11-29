@@ -428,11 +428,23 @@ def _split_sentences(
                         and i != len(eojeols) - 1
                         and check_pos(eojeol, ["ETN", "EF"])
                         and check_pos(eojeols[i + 1], ["SP", "SE", "SF", "SY"])
+                        and not check_pos(eojeols[i + 1], ["J", "XSN"])  # 조사나 명사파생 접미사가 아니여야 함.
                         and not check_pos(eojeol, ["J", "XSN"])  # ETN+XSN 같은 케이스 막기위해
                         and eojeol.eojeol
                         not in ["다", "요", "죠", "기"]  # ~ 하기 (명사파생 접미사가 전성어미로 오해되는 경우)
                     ):
-                        cur_stat = Stats.EOMI
+                        next_eojeol_wo_sp = None
+                        for _e in eojeols[i + 1:]:
+                            if check_pos(_e, ["SP", "SE", "SF", "SY"]):
+                                continue
+                            next_eojeol_wo_sp = _e
+                            break
+
+                        if (
+                            next_eojeol_wo_sp is not None
+                            and not check_pos(next_eojeol_wo_sp, ["J", "XSN"])
+                        ):
+                            cur_stat = Stats.EOMI
                         # 일반적으로 적용할 수 있는 어미세트 NEXT 세트 적용.
         else:
             if eojeol.eojeol in Const.double_quotes:
