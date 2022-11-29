@@ -1,4 +1,5 @@
 import codecs
+import os
 import subprocess
 import sys
 from contextlib import suppress
@@ -32,17 +33,18 @@ def read_file(filename, cb):
         return cb(f)
 
 
-version = {}
-
-with open("kss/__init__.py", "r") as version_file:
-    exec(version_file.read(), version)
+version = None
+with open(os.path.join('kss', '__init__.py'), encoding='utf-8') as f:
+    for line in f:
+        if line.strip().startswith('__version__'):
+            version = line.split('=')[1].strip().replace('"', '').replace("'", '')
 
 with open("README.md", encoding="utf-8") as f:
     long_description = f.read()
 
 setup(
     name="kss",
-    version=version["__version__"],
+    version=version,
     author="Hyunwoong Ko",
     author_email="kevin.ko@tunib.ai",
     url="https://github.com/hyunwoongko/kss",
