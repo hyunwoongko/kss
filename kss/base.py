@@ -443,9 +443,13 @@ def remove_useless_space(text):
 
 def get_chunk_with_index(text, span):
     text = remove_useless_space(text)
-    start = span[0][0]
-    end = span[-1][1]
-    return text[start:end]
+
+    if len(span) == 0:
+        return None
+    else:
+        start = span[0][0]
+        end = span[-1][1]
+        return text[start:end]
 
 
 def preprocess_text(text):

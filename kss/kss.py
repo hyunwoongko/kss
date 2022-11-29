@@ -652,14 +652,18 @@ def _split_chunks(
     for index in _split_sentences_index(text, **kwargs):
         if len(span) > 0:
             if index[0] - span[0][1] > max_length:
-                chunks.append(get_chunk_with_index(text, span))
+                chunk = get_chunk_with_index(text, span)
+                if chunk is not None:
+                    chunks.append(chunk)
                 if overlap:
                     span = span[math.trunc(len(span) / 2) :]
                 else:
                     span = []
 
         span.append(index)
-    chunks.append(get_chunk_with_index(text, span))
+    chunk = get_chunk_with_index(text, span)
+    if chunk is not None:
+        chunks.append(chunk)
     return chunks
 
 
