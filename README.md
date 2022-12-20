@@ -330,7 +330,7 @@ Kss (mecab):
 The result of Kss is same with gold label. Especially it separates between `가깝답니다😉` and `메뉴판을`.
 In fact, that part is the final eomi (종결어미), but many morpheme analyzers confuse the final eomi (종결어미) with the connecting eomi (연결어미). 
 Kss has a feature to recognize wrongly recognized connecting eomi (연결어미). Thus, it was able to separate that domain effectively.
-Next, Kss doesn't split between `좋아하는데...` and `진정하고` becuase `좋아하는데...` is not a independent sentence, but a clause (절). This means Kss doesn't split sentences simply because `. ` appears like baseline.
+Next, Kss doesn't split between `좋아하는데...` and `진정하고` becuase `좋아하는데...` is not an independent sentence, but an embraced sentence (안긴문장). This means Kss doesn't split sentences simply because `. ` appears like baseline.
 In most cases, `. ` could be the delimiter of sentences, 
 but in fact there are many exceptions about this.
 
@@ -438,7 +438,7 @@ Baseline:
 ```
 
 Baseline separates input text into 13 sentences because it is split when `.!?` (final symbols) appears.
-You can see it can't distinguish final eomi(종결어미) and connecting eomi(연결어미), for example it splits between `이런게 중독이 되나?` and `싶었는데`, but, in this case, `되나?` was connecting eomi (연결어미). And here's one more problem. It doesn't recognize embracing sentences (안긴문장), for example it splits between `못해 빠지지 않았을까?` and `라는 생각을 하게 됐다.`.
+You can see it can't distinguish final eomi(종결어미) and connecting eomi(연결어미), for example it splits between `이런게 중독이 되나?` and `싶었는데`, but, in this case, `되나?` was connecting eomi (연결어미). And here's one more problem. It doesn't recognize embraced sentences (안긴문장), for example it splits between `못해 빠지지 않았을까?` and `라는 생각을 하게 됐다.`.
 ```
 Koalanlp (KKMA)
 
@@ -477,7 +477,7 @@ Kiwi
 그리고 이런 상상을 할 수 있게 만들어줘서 이 책이 더 재밌게 다가왔다.
 일상에 지루함을 느껴 도박같은 삶을 살고싶다면 도박하지말고 차라리 이 책을 보길^^ㅋ
 ```
-The two problems are also shown in result of Kiwi. And it additionally splits between `실제인가` and `라는`, but `이건 소설인가 실제인가` is not an independent sentence, but embracing sentence (안긴문장).
+The two problems are also shown in result of Kiwi. And it additionally splits between `실제인가` and `라는`, but `이건 소설인가 실제인가` is not an independent sentence, but an embraced sentence (안긴문장).
 
 ```
 Kss (Mecab)
@@ -493,7 +493,7 @@ Kss (Mecab)
 그리고 이런 상상을 할 수 있게 만들어줘서 이 책이 더 재밌게 다가왔다.
 일상에 지루함을 느껴 도박같은 삶을 살고싶다면 도박하지말고 차라리 이 책을 보길^^ㅋ
 ```
-The result of Kss is same with gold label. This means that Kss considers the two problems. Of course, it's not easy to detect that parts, so Kss has one more step after splitting sentences. It's postprocessing step which corrects some problems in segemenration results. For example, Korean sentence doesn't start from josa (조사). Therefore if one of the segmented result started from josa (조사), Kss recognizes this is embracing sentence (안긴문장), and attaches this to previous sentence. For your information, Kss has many powerful postprocessing algorithms to correct wrong segementation results than this. 
+The result of Kss is same with gold label. This means that Kss considers the two problems. Of course, it's not easy to detect that parts, so Kss has one more step after splitting sentences. It's postprocessing step which corrects some problems in segemenration results. For example, Korean sentence doesn't start from josa (조사). Therefore if one of the segmented result started from josa (조사), Kss recognizes this as embraced sentence (안긴문장), and attaches this to previous sentence. For your information, Kss has many powerful postprocessing algorithms to correct wrong segementation results than this. 
 
 In conclusion, Kss consider a lot of things in Korean sentences. And these considerations led to difference in performance.
 
