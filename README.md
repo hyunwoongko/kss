@@ -109,7 +109,7 @@ Note that the `Baseline` is regex based segmentation like `re.split(r"(?<=[.!?])
 
 #### 2) Evaluation datasets:
 
-I tested it using the following 6 evaluation datasets. Thanks to [Minchul Lee](https://github.com/bab2min) for creating various sentence segmentation datasets.
+I used the following 6 evaluation datasets for analyses. Thanks to [Minchul Lee](https://github.com/bab2min) for creating various sentence segmentation datasets.
 
 | Name                                                                                  | Descriptions                                                                              | The number of sentences | Creator                                                                                                                                                                                                                                                            |
 |---------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|-------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
