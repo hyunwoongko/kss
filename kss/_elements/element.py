@@ -93,7 +93,6 @@ class Element(object):
 
         return _next
 
-    @lru_cache(maxsize=1000)
     def check_pos(self, *poses, exclude: Optional[Tuple] = None) -> bool:
         """
         Check pos of given syllable.
@@ -114,7 +113,6 @@ class Element(object):
                 return True
         return False
 
-    @lru_cache(maxsize=1000)
     def check_text(self, *texts, exclude: Optional[Tuple] = None) -> bool:
         """
         Check text of given syllable.
@@ -135,7 +133,6 @@ class Element(object):
                 return True
         return False
 
-    @lru_cache(maxsize=1000)
     def check_pos_and_text(
         self,
         poses: Union[str, Tuple],
@@ -164,7 +161,6 @@ class Element(object):
             *texts, exclude=exclude_texts
         )
 
-    @lru_cache(maxsize=1000)
     def check_texts(self, text: str) -> bool:
         """
         Check texts of current and next syllables

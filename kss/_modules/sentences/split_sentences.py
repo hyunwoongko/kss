@@ -143,7 +143,9 @@ def _split_sentences(
 
     # 5. postprocess
     if postprocess is True:
-        output_sentences = postprocessor.postprocess(output_sentences)
+        output_sentences = postprocessor._convert_syllables_to_sentences_with_cleaning(
+            output_sentences
+        )
         output_sentences = [postprocessor.restore(s) for s in output_sentences]
 
     return output_sentences

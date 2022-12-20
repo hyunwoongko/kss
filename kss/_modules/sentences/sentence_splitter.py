@@ -6,7 +6,6 @@ from typing import Tuple
 
 from kss._elements.subclasses import Syllable
 from kss._modules.sentences.sentence_processor import SentenceProcessor
-from kss._utils.const import jamo
 
 
 class SentenceSplitter(SentenceProcessor):
@@ -24,7 +23,7 @@ class SentenceSplitter(SentenceProcessor):
         {"라" + add for add in ["서", "는", "도 ", "던", "지만", "고", "건", "거나", "며", "면서"]}
     )
     unavailable_next.update(
-        {"하" + add for add in ["여서", "여도", "였", "고는 ", "고서 ", "곤 ", "다는", "며 ", "는데.", "며"]}
+        {"하" + add for add in ["여서", "여도", "였", "고는 ", "고서 ", "곤 ", "다는", "는데.", "며"]}
     )
     unavailable_next.update({"할" + add for add in ["텐데"]})
 
@@ -87,7 +86,7 @@ class SentenceSplitter(SentenceProcessor):
             or (self._check_text(",") and self._check_prev_text(","))
         )
 
-        end_split = end_split and self.syllable.text not in jamo
+        end_split = end_split and not self.syllable.check_pos("JAMO")
         end_split = end_split and not self.check_split_start()
         end_split_exception = False
 
@@ -121,7 +120,7 @@ class SentenceSplitter(SentenceProcessor):
 
         Notes:
             종결부호 분할 규칙:
-                종결부호(SF) 뒤에 공백(SP) 혹은 기타 부호(SY), 열린 괄호(SSO)가 존재하면 분할한다.
+                종결부호(SF) 뒤에 공백(SP) 혹은 기타 부호(SY), 열린 괄호(SSO), 이모지(EMOJI), 한글 자모가 존재하면 분할한다.
 
             예외:
                 1. 현재 문자 앞의 공백(SP)과 종결부호(SP)을 제외한 이전 문자가 숫자이면 분할하지 않는다.
@@ -138,7 +137,14 @@ class SentenceSplitter(SentenceProcessor):
 
         # 종결부호 분할 규칙
         if self._check_pos("SF") and (
-            self._check_next_pos("SP") or self._check_next_skip_sp_pos(("SY", "SSO"))
+            self._check_next_pos("SP")
+            or self._check_next_skip_sp_pos(
+                (
+                    "SY",
+                    "SSO",
+                    "EMOJI",
+                )
+            )
         ):
             # 예외 1
             available = not self._prev_skip(("SP", "SF")).text.isnumeric()
@@ -150,7 +156,7 @@ class SentenceSplitter(SentenceProcessor):
 
             # 예외 3
             available = available and not (
-                self._check_prev_skip_spsf_pos("J", exclude=("EMOJI", "+J"))
+                self._check_prev_skip_spsf_pos("J", exclude=("EMOJI", "JAMO", "+J"))
                 and self._check_text(".")
                 and self._check_prev_text(".")
             )
@@ -228,7 +234,8 @@ class SentenceSplitter(SentenceProcessor):
             # 예외 2
             available = available and not (
                 self._check_next_skip_sp_pos(
-                    ("EC", "J", "VX"), exclude=("MAJ", "EMOJI", "+VX", "+EC", "+J")
+                    ("EC", "J", "VX"),
+                    exclude=("MAJ", "EMOJI", "JAMO", "+VX", "+EC", "+J", "VX+"),
                 )
             )
 
@@ -238,7 +245,8 @@ class SentenceSplitter(SentenceProcessor):
 
             # 예외 4
             available = available and not (
-                self._check_prev_text(" ") and self.syllable.prev.check_pos("VX")
+                self._check_prev_text(" ")
+                and self.syllable.prev.check_pos("VX", exclude="VX+")
             )
 
             # 예외 5
@@ -283,7 +291,8 @@ class SentenceSplitter(SentenceProcessor):
 
             # 예외 2
             available = available and not self._check_next_skip_sp_pos(
-                ("VCP", "J", "VX"), exclude=("MAJ", "EMOJI", "+J", "+VCP", "+VX")
+                ("VCP", "J", "VX"),
+                exclude=("MAJ", "JAMO", "EMOJI", "+J", "+VCP", "+VX"),
             )
 
             # 예외 3
@@ -342,14 +351,13 @@ class SentenceSplitter(SentenceProcessor):
 
             # 예외 2
             available = available and (
-                self._check_next_pos(("SP", "SF", "SY", "SSO", "QTO", "EMOJI"))
-                or self._check_next_text(tuple(jamo))
+                self._check_next_pos(("SP", "SF", "SY", "SSO", "QTO", "EMOJI", "JAMO"))
             )
 
             # 예외 3
             available = available and not self._check_next_skip_sp_pos(
                 ("J", "VV", "VA", "VX"),
-                exclude=("MAJ", "EMOJI", "+J"),
+                exclude=("MAJ", "EMOJI", "JAMO", "+J"),
             )
 
             # 예외 4
@@ -406,7 +414,7 @@ class SentenceSplitter(SentenceProcessor):
 
             # 예외 3
             available = available and not self._check_next_skip_sp_pos(
-                "J", exclude=("MAJ", "EMOJI", "+J")
+                "J", exclude=("MAJ", "EMOJI", "JAMO", "+J")
             )
 
             # 예외 4
@@ -442,12 +450,12 @@ class SentenceSplitter(SentenceProcessor):
             self._check_text("듯")
             and self._check_pos("NNB")
             and (
-                self._check_next_skip_spsf_text(tuple(jamo))
+                self._check_next_skip_spsf_pos("EMOJI", "JAMO")
                 or self._check_next_skip_spsf_text("…")
             )
         ):
             _next = self.syllable.next_skip("SP")
-            while _next.text in jamo:
+            while not _next.check_pos("JAMO", "EMOJI"):
                 _next = _next.next_skip("SP")
             if not _next.check_pos("VV"):
                 return True
@@ -761,18 +769,20 @@ class SentenceSplitter(SentenceProcessor):
 
     @lru_cache(30)
     def _check_next_skip_all_s_texts(self, texts=None):
-        return self.syllable.next_skip(
+        return self.syllable.next_skip_from_current(
             *self._all_s_poses,
             exclude=self._all_s_exclude,
         ).check_texts(*self._tuple(texts))
 
     @lru_cache(30)
     def _check_next_skip_all_s_multiple_texts(self, *texts):
+        next_skip_all_s = self.syllable.next_skip(
+            *self._all_s_poses,
+            exclude=self._all_s_exclude,
+        )
+
         for text in texts:
-            if self.syllable.next_skip(
-                *self._all_s_poses,
-                exclude=self._all_s_exclude,
-            ).check_texts(*self._tuple(text)):
+            if next_skip_all_s.check_texts(*self._tuple(text)):
                 return True
 
         return False

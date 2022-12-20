@@ -12,8 +12,8 @@ from kss._utils.const import (
 
 class SentenceProcessor:
     _all_s_exclude = ("QTO",)
-    _all_s_poses = ("SP", "SF", "SY", "SE", "SSC", "QTC", "QTN", "EMOJI")
-    _all_s_poses_wo_qtn = ("SP", "SF", "SY", "SE", "SSC", "QTC", "EMOJI")
+    _all_s_poses = ("SP", "SF", "SY", "SE", "SSC", "QTC", "QTN", "EMOJI", "JAMO")
+    _all_s_poses_wo_qtn = ("SP", "SF", "SY", "SE", "SSC", "QTC", "EMOJI", "JAMO")
 
     _backup_strings = set()
     _backup_strings.update(faces)

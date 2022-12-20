@@ -11,6 +11,7 @@ from kss._utils.const import (
     quotes_open_to_close,
     quotes_close_to_open,
     special_symbols_for_split,
+    jamo,
 )
 from kss._utils.emojis import _emojis
 
@@ -24,6 +25,7 @@ class SentencePreprocessor(SentenceProcessor):
         lambda c, p: c in "`'\"″": "QTN",
         lambda c, p: c in "".join(quotes_open_to_close): "QTO",
         lambda c, p: c in "".join(quotes_close_to_open): "QTC",
+        lambda c, p: c in jamo: "JAMO",
         lambda c, p: c == "요" and ("EC" in p or "JX" == p): "EF",
         lambda c, p: c in special_symbols_for_split: "PS",
         lambda c, p: (c == "^" or c in _emojis): "EMOJI",
@@ -101,6 +103,11 @@ class SentencePreprocessor(SentenceProcessor):
                 self._change_poses(syllable, "EF", "EF")
 
             if syllable.check_pos_and_text(
+                "EC", "구"
+            ) and syllable.next.check_pos_and_text("NNG", "용"):
+                self._change_poses(syllable, "EF", "EF")
+
+            if syllable.check_pos_and_text(
                 "EF", "엇"
             ) and syllable.next.check_pos_and_text("IC", "음"):
                 self._change_poses(syllable, "EP", "ETN")
@@ -112,6 +119,9 @@ class SentencePreprocessor(SentenceProcessor):
                 "EC", "어"
             ) and syllable.next.check_pos_and_text("EC", "용"):
                 self._change_poses(syllable, "EF", "EF")
+
+            if syllable.check_pos_and_text("UNKNOWN", "떄"):
+                self._change_poses(syllable, "NNG")
 
         return syllables
 
