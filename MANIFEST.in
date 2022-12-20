@@ -1,9 +1,0 @@
-include LICENSE
-include README.md
-include requirements.txt
-include kss/pynori/resources/synonyms.txt
-include kss/pynori/resources/userdict.txt
-include kss/pynori/resources/pkl_mecab_matrix/matrix_def.pkl
-include kss/pynori/resources/pkl_mecab_csv/mecab_csv.pkl
-include kss/pynori/resources/mecab-ko-dic-2.1.1-20180720/*
-include kss/pynori/resources/mecab-ko-dic-2.1.1-20180720/tools/*

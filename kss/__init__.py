@@ -1,12 +1,9 @@
-# Korean Sentence Splitter
-# Split Korean text into sentences using heuristic algorithm.
-#
-# Copyright (C) 2021 Hyun-Woong Ko <kevin.ko@tunib.ai> and Sang-Kil Park <skpark1224@hyundai.com>
+# Copyright (C) 2021 Hyunwoong Ko <kevin.ko@tunib.ai> and Sang-Kil Park <skpark1224@hyundai.com>
 # All rights reserved.
-#
-# This software may be modified and distributed under the terms
-# of the BSD license.  See the LICENSE file for details.
 
-from kss.kss import split_chunks, split_sentences
+from kss._modules.sentences.split_sentences import split_sentences
+from kss._modules.morphemes.split_morphemes import split_morphemes
 
-__ALL__ = [split_sentences, split_chunks]
+__ALL__ = [split_sentences, split_morphemes]
+__version__ = "4.0.0"
+

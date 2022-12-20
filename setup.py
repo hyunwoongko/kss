@@ -1,16 +1,11 @@
 import codecs
+import os
 import subprocess
 import sys
 from contextlib import suppress
 
 from setuptools import setup, find_packages
 from setuptools.command.install import install
-
-required = [
-    "emoji==1.2.0",
-    "regex",
-    "more_itertools",
-]
 
 
 class InstallCommand(install):
@@ -32,17 +27,18 @@ def read_file(filename, cb):
         return cb(f)
 
 
-version = {}
+version = None
+with open(os.path.join("kss", "__init__.py"), encoding="utf-8") as f:
+    for line in f:
+        if line.strip().startswith("__version__"):
+            version = line.split("=")[1].strip().replace('"', "").replace("'", "")
 
 with open("README.md", encoding="utf-8") as f:
     long_description = f.read()
 
-with open("kss/__version__.py", "r") as version_file:
-    exec(version_file.read(), version)
-
 setup(
     name="kss",
-    version=version["version"],
+    version=version,
     author="Hyunwoong Ko",
     author_email="kevin.ko@tunib.ai",
     url="https://github.com/hyunwoongko/kss",
@@ -50,7 +46,7 @@ setup(
     description="A Toolkit for Korean sentence segmentation",
     long_description_content_type="text/markdown",
     platforms=["any"],
-    install_requires=required,
+    install_requires=["emoji==1.2.0", "regex", "pecab"],
     long_description=long_description,
     packages=find_packages(exclude=["tests"]),
     python_requires=">=3",

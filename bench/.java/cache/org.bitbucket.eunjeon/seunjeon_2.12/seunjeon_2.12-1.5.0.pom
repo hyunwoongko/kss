@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.bitbucket.eunjeon</groupId>
+    <artifactId>seunjeon_2.12</artifactId>
+    <packaging>jar</packaging>
+    <description>seunjeon</description>
+    <version>1.5.0</version>
+    <name>seunjeon</name>
+    <organization>
+        <name>org.bitbucket.eunjeon</name>
+    </organization>
+    <url>http://eunjeon.blogspot.kr/</url>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <scm>
+        <url>https://bitbucket.org/eunjeon/seunjeon.git</url>
+        <connection>scm:git:https://bitbucket.org/eunjeon/seunjeon.git</connection>
+    </scm>
+    <developers>
+        <developer>
+            <id>budditao</id>
+            <name>yungho yu</name>
+            <url>https://www.facebook.com/yungho.yu</url>
+        </developer>
+        <developer>
+            <id>bibreen</id>
+            <name>Yong-woon Lee</name>
+            <url>https://twitter.com/bibreen</url>
+        </developer>
+    </developers>
+    <issueManagement>
+        <url>https://groups.google.com/forum/#!forum/eunjeon</url>
+        <system>Google Groups</system>
+    </issueManagement>
+    <properties>
+        <extraDependencyAttributes xml:space="preserve">+e:sbtVersion:#@#:+1.0:#@#:+module:#@#:+sbt-pgp:#@#:+e:scalaVersion:#@#:+2.12:#@#:+organisation:#@#:+com.jsuereth:#@#:+branch:#@#:+@#:NULL:#@:#@#:+revision:#@#:+1.1.0:#@#:</extraDependencyAttributes>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>2.12.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>1.7.12</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.typesafe.scala-logging</groupId>
+            <artifactId>scala-logging_2.12</artifactId>
+            <version>3.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.scalatest</groupId>
+            <artifactId>scalatest_2.12</artifactId>
+            <version>3.0.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.novocode</groupId>
+            <artifactId>junit-interface</artifactId>
+            <version>0.11</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.jsuereth</groupId>
+            <artifactId>sbt-pgp</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+    </dependencies>
+</project>

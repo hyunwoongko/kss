@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.github.shineware</groupId>
+  <artifactId>aho-corasick</artifactId>
+  <version>1.1.0</version>
+  <name>shineware/aho-corasick</name>
+  <url>https://github.com/shineware/aho-corasick</url>
+  <inceptionYear>2016</inceptionYear>
+  <licenses>
+    <license>
+      <name>Apache License 2.0</name>
+      <url>https://api.github.com/licenses/apache-2.0</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>shineware</id>
+      <name>SHINEWARE</name>
+      <email></email>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git://github.com/shineware/aho-corasick.git</connection>
+    <developerConnection>scm:git://github.com/shineware/aho-corasick.git</developerConnection>
+    <url>git://github.com/shineware/aho-corasick.git</url>
+  </scm>
+  <dependencies>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.13</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>
