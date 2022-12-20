@@ -493,7 +493,7 @@ Kss (Mecab)
 그리고 이런 상상을 할 수 있게 만들어줘서 이 책이 더 재밌게 다가왔다.
 일상에 지루함을 느껴 도박같은 삶을 살고싶다면 도박하지말고 차라리 이 책을 보길^^ㅋ
 ```
-The result of Kss is same with gold label. This means that Kss considers the two problems. Of course, it's not easy to detect that parts, so Kss has one more step after splitting sentences. It's postprocessing which method to correct that problems. For example, Korean sentence doesn't start from josa (조사), so if one of the segmented result started from josa (조사), Kss attaches this to previous sentence. Besides, Kss has much more powerful postprocessing algorithms to correct wrong segementation results.
+The result of Kss is same with gold label. This means that Kss considers the two problems. Of course, it's not easy to detect that parts, so Kss has one more step after splitting sentences. It's postprocessing step which corrects some problems in segemenration results. For example, Korean sentence doesn't start from josa (조사), so if one of the segmented result started from josa (조사), Kss attaches this to previous sentence. Besides, Kss has much more powerful postprocessing algorithms to correct wrong segementation results.
 
 #### 6) Speed analysis
 I also measured speed of tools to compare their computation efficiency. The following table shows computation time of each tool when it splits `sample.txt` (41 sentences).
