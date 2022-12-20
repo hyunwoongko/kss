@@ -113,11 +113,6 @@ class SentencePreprocessor(SentenceProcessor):
             ) and syllable.next.check_pos_and_text("EC", "용"):
                 self._change_poses(syllable, "EF", "EF")
 
-            # if syllable.check_pos_and_text(
-            #     "EC", "봣"
-            # ) and syllable.next.check_pos_and_text("EC", "음"):
-            #     self._change_poses(syllable, "EF", "EF")
-
         return syllables
 
     @staticmethod
