@@ -323,7 +323,7 @@ Kss (mecab):
 다음에 가면 강낭콩이랑 밤 꼭 먹어봐야겠어요😙
 ```
 The result of Kss is same with gold label. Especially it succesfully separates `가깝답니다😉` and `메뉴판을`.
-In fact, this part is the final eomi (종결어미), but many morpheme analyzers confuse the final eomi (종결어미) with the connecting eomi (연결어미). For this reason, Kss has a feature to recognize wrongly recognized connecting eomi (연결어미) and to correct those eomis. Thus, it is able to separate that domain effectively. Next, Kss doesn't split `좋아하는데...` and `진정하고` becuase `좋아하는데...` is not an independent sentence, but an embraced sentence (안긴문장). This means Kss doesn't split sentences simply because `. ` appears, unlike baseline.
+In fact, this part is the final eomi (종결어미), but many morpheme analyzers confuse the final eomi (종결어미) with the connecting eomi (연결어미). Actually, mecab and pecab morpheme analyzers which are backend of Kss also recognizes that part as a connecting eomi (연결어미). For this reason, Kss has a feature to recognize wrongly recognized connecting eomi (연결어미) and to correct those eomis. Thus, it is able to separate that domain effectively. Next, Kss doesn't split `좋아하는데...` and `진정하고` becuase `좋아하는데...` is not an independent sentence, but an embraced sentence (안긴문장). This means Kss doesn't split sentences simply because `. ` appears, unlike baseline.
 In most cases, `. ` could be the delimiter of sentences, actually there are many exceptions about this.
 
 #### Example 2
