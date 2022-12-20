@@ -451,7 +451,7 @@ class SentenceSplitter(SentenceProcessor):
             self._check_text("듯")
             and self._check_pos("NNB")
             and (
-                self._check_next_skip_spsf_pos("EMOJI", "JAMO")
+                self._check_next_skip_spsf_pos(("EMOJI", "JAMO"))
                 or self._check_next_skip_spsf_text("…")
             )
         ):
