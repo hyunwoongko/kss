@@ -513,7 +513,7 @@ You can also compare the speed of faster tools the following graphs (under 100 m
 
 ![](https://github.com/hyunwoongko/kss/blob/main/assets/average_computation_time_under_100.png)
 
-The baseline was fastest (because it's a just regex function), and Koalanlp (OKT backend), Kiwi, Kss (mecab backend) were followed.
+The baseline was fastest (because it's a just regex function), and Koalanlp (OKT backend), Kiwi, Kss (mecab backend) followed.
 The slowest library was Kss (pecab backend) and it was about 160 times slower than its mecab backend.
 Mecab and Kiwi were written in C++, All Koalanlp backends were written in Java and Pecab was written in pure python.
 I think this difference was caused by speed of each language. Therefore, if you can install mecab, it makes most sense to use Kss Mecab backend.
