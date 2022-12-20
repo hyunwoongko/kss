@@ -515,6 +515,8 @@ Note that the parameters of `split_morpehems` are exactly same with `split_sente
 
 </details>
 
+<br>
+
 ## 3. References
 Kss is available in various programming languages.
 - [Python version](https://github.com/hyunwoongko/kss)
