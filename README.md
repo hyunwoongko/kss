@@ -488,7 +488,7 @@ Kss (Mecab)
 그리고 이런 상상을 할 수 있게 만들어줘서 이 책이 더 재밌게 다가왔다.
 일상에 지루함을 느껴 도박같은 삶을 살고싶다면 도박하지말고 차라리 이 책을 보길^^ㅋ
 ```
-The result of Kss is same with gold label. This means that Kss considers the two problems. Of course, it's not easy to detect that parts while splitting sentences, so Kss has one more step after splitting sentences. It's postprocessing step which corrects some problems in segemenration results. For example, Korean sentence doesn't start from josa (조사). Therefore if one of the segmented result started from josa (조사), Kss recognizes this as embraced sentence (안긴문장), and attaches this to previous sentence. For your information, Kss has many more powerful postprocessing algorithms to correct wrong segementation results than this. 
+The result of Kss is same with gold label. This means that Kss considers the two problems. Of course, it's not easy to detect that parts while splitting sentences, so Kss has one more step after splitting sentences. It's postprocessing step which corrects some problems in segemenration results. For example, Korean sentence doesn't start from josa (조사) in general. Therefore if one of the segmented result (sentence) started from josa (조사), Kss recognizes this as embraced sentence (안긴문장), and attaches this to previous sentence. For your information, Kss has many more powerful postprocessing algorithms which correct wrong segementation results.
 
 In conclusion, Kss considers more than other libraries in Korean sentences. And these considerations led to difference in performance.
 
