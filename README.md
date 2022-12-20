@@ -166,7 +166,7 @@ You can also compare the performances with the following graphs.
 #### 4) Why don't I upload F1 score based results?
 The evaluation source code which I copied from [kiwipiepy](https://github.com/bab2min/kiwipiepy/tree/main/benchmark/sentence_split) also provides F1 score  (dice similarity), and F1 scores of Kss are also best among the segmentation tools. but I don't believe this is proper metric to measure sentence segmentation performance. For example, EM score of `text.split(" ")` on `tweets.txt` is 0.06742. This means it's terrible sentence segmentation method on tweeter style text. However, F1 score of it on `tweets.txt` is 0.54083, and it is similar with the F1 score of Koalanlp KKMA backend (0.56832).
 
-What I want to say is the F1 scores were similar but the actual performances of segmentation could be vastly different.
+What I want to say is the actual performances of segmentation could be vastly different even if the F1 scores were similar.
 You can reproduce this with `python3 ./bench/test_word_split.py ./bench/testset/tweets.txt`, and here is one of the segmentation example of both method.
 
 ```
