@@ -477,8 +477,7 @@ Kiwi
 그리고 이런 상상을 할 수 있게 만들어줘서 이 책이 더 재밌게 다가왔다.
 일상에 지루함을 느껴 도박같은 삶을 살고싶다면 도박하지말고 차라리 이 책을 보길^^ㅋ
 ```
-The two problems are shown in result of Kiwi. It doesn't resolve the two problems.
-and it additionally splits between `실제인가` and `라는`, but it's wrong separation.
+The two problems are also shown in result of Kiwi. And it additionally splits between `실제인가` and `라는`, but it's wrong.
 ```
 Kss (Mecab)
 
