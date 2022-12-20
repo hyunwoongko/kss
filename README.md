@@ -131,7 +131,7 @@ But Issac's labels were:
 
 <img width=500px src="https://github.com/hyunwoongko/kss/blob/main/assets/issac.png">
 
-In fact, `사실 전 고기를 안 먹어서 무슨 맛인지 모르겠지만..` and `(물론 전 안 먹었지만` are adverb clauses (부사절), not independent sentences (문장).
+In fact, `사실 전 고기를 안 먹어서 무슨 맛인지 모르겠지만..` and `(물론 전 안 먹었지만` are embraced sentences (안긴문장), not independent sentences.
 So I corrected labels of the two sentences.
 
 <br>
