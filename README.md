@@ -226,7 +226,7 @@ Output:
 가.
 ```
 
-This means that the F1 score has the advantages for method that cut too finely.
+This means that the F1 score has the huge advantages for method that cut sentences too finely.
 Of course, measuring the performance of the sentence segmentation algorithm is difficult, and we need to think more about metrics. 
 However, the character level F1 score may cause **users to misunderstand the tool's real performance**. 
 So I have more confidence in the EM score, which is a somewhat clunky but safe metric.
