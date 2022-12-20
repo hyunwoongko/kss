@@ -23,7 +23,7 @@ pip install kss
 ```
 
 ### Install Mecab (Optional)
-Please install one of mecab, konlpy.tag.Mecab to use Kss much faster.
+Please install mecab or konlpy.tag.Mecab to use Kss much faster.
 - mecab (Linux/MacOS): https://github.com/hyunwoongko/python-mecab-kor
 - mecab (Windows): https://cleancode-ws.tistory.com/97
 - konlpy.tag.Mecab (Linux/MacOS): https://konlpy.org/en/latest/api/konlpy.tag/#mecab-class
@@ -95,21 +95,21 @@ split_sentences(
 <summary>Performance Analysis</summary>
 
 #### 1) Test Commands
-You can reproduce this experiment using source code and datasets in `./bench/` directory and the source code was copied from [here](https://github.com/bab2min/kiwipiepy/tree/main/benchmark/sentence_split).
-Note that the `Baseline` is regex based segmentation like `re.split(r"(?<=[.!?])\s", text)`.
+You can reproduce all the following analyses using source code and datasets in `./bench/` directory and the source code was copied from [here](https://github.com/bab2min/kiwipiepy/tree/main/benchmark/sentence_split).
+Note that the `Baseline` is regex based segmentation method (`re.split(r"(?<=[.!?])\s", text)`).
 
 | Name                                             | Command (in root directory)                                                                               |
 |--------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
 | Baseline                                         | `python3 ./bench/test_baseline.py ./bench/testset/*.txt`                                                  |
 | [Kiwi](https://github.com/bab2min/kiwipiepy)     | `python3 ./bench/test_kiwi.py ./bench/testset/*.txt`                                                      |
-| [Koalanlp](https://github.com/koalanlp/koalanlp) | `python3 ./bench/test_koalanlp.py ./bench/testset/*.txt --backend=OKT/HNN/KMR/RHINO/EUNJEON/ARIRANG/KAMA` |
+| [Koalanlp](https://github.com/koalanlp/koalanlp) | `python3 ./bench/test_koalanlp.py ./bench/testset/*.txt --backend=OKT/HNN/KMR/RHINO/EUNJEON/ARIRANG/KKMA` |
 | [Kss](https://github.com/hyunwoongko/kss) (ours) | `python3 ./bench/test_kss.py ./bench/testset/*.txt --backend=mecab/pecab`                                 |
 
 <br>
 
 #### 2) Evaluation datasets:
 
-I tested it using the following 6 evaluation datasets. Thanks to [Minchul Lee](https://github.com/bab2min) for creating various sentence segmentation datasets.
+I used the following 6 evaluation datasets for analyses. Thanks to [Minchul Lee](https://github.com/bab2min) for creating various sentence segmentation datasets.
 
 | Name                                                                                  | Descriptions                                                                              | The number of sentences | Creator                                                                                                                                                                                                                                                            |
 |---------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|-------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -131,14 +131,14 @@ But Issac's labels were:
 
 <img width=500px src="https://github.com/hyunwoongko/kss/blob/main/assets/issac.png">
 
-In fact, `사실 전 고기를 안 먹어서 무슨 맛인지 모르겠지만..` and `(물론 전 안 먹었지만` are adverb clauses (부사절), not independent sentences (문장).
-So I corrected labels of the two sentences.
-
+In fact, `사실 전 고기를 안 먹어서 무슨 맛인지 모르겠지만..` and `(물론 전 안 먹었지만` are embraced sentences (안긴문장), not independent sentences. So sentence segmentation tools should do not split that parts.
+    
 <br>
 
 #### 3) Sentence segmentation performance (Quantitative Analysis)
  
-The following table shows the segmentation performance based on **exact match method**.
+The following table shows the segmentation performance based on **exact match (EM)**.
+If you are unfamilar with EM score and F1 score, please refer to [this](https://qa.fastforwardlabs.com/no%20answer/null%20threshold/bert/distilbert/exact%20match/f1/robust%20predictions/2020/06/09/Evaluating_BERT_on_SQuAD.html#Metrics-for-QA).
 Kss performed best in most cases, and Kiwi performed well. Both baseline and koalanlp performed poorly.
 
 | Name           | Library version | Backend | blogs_lee   | blogs_ko    | tweets      | nested      | v_ending    | sample      | Average     |
@@ -163,13 +163,10 @@ You can also compare the performances with the following graphs.
 
 <br>
 
-#### 4) Why don't I trust F1 score?
-The evaluation source code which I copied from [kiwipiepy](https://github.com/bab2min/kiwipiepy/tree/main/benchmark/sentence_split) also provides F1 score  (dice similarity), 
-but I don't believe this is proper metric to measure sentence segmentation performance.
-For example, EM score of `text.split(" ")` on `tweets.txt` is 0.06742. This means it's terrible sentence segmentation method on tweeter style text.
-However, F1 score of it on `tweets.txt` is 0.54083, and it is similar with the F1 score of Koalanlp KKMA backend (0.56832).
+#### 4) Why don't I upload F1 score based results?
+The evaluation source code which I copied from [kiwipiepy](https://github.com/bab2min/kiwipiepy/tree/main/benchmark/sentence_split) also provides F1 score  (dice similarity), and F1 scores of Kss are also best among the segmentation tools. but I don't believe this is proper metric to measure sentence segmentation performance. For example, EM score of `text.split(" ")` on `tweets.txt` is 0.06742. This means it's terrible sentence segmentation method on tweeter style text. However, F1 score of it on `tweets.txt` is 0.54083, and it is similar with the F1 score of Koalanlp KKMA backend (0.56832).
 
-What I want to say is the F1 scores were similar but the performances of segmentation are hugely different.
+What I want to say is the actual performances of segmentation could be vastly different even if the F1 scores were similar.
 You can reproduce this with `python3 ./bench/test_word_split.py ./bench/testset/tweets.txt`, and here is one of the segmentation example of both method.
 
 ```
@@ -229,7 +226,7 @@ Output:
 가.
 ```
 
-This means that the F1 score has the advantages for method that cut too finely.
+This means that the F1 score has the huge advantages for method that cut sentences too finely.
 Of course, measuring the performance of the sentence segmentation algorithm is difficult, and we need to think more about metrics. 
 However, the character level F1 score may cause **users to misunderstand the tool's real performance**. 
 So I have more confidence in the EM score, which is a somewhat clunky but safe metric.
@@ -257,9 +254,9 @@ For this, I will take the best backend of each library (Kss=mecab, Koalanlp=KKMA
 다음에 가면 강낭콩이랑 밤 꼭 먹어봐야겠어요😙
 ```
 - Source
-```
-https://hi-e2e2.tistory.com/193
-```
+
+[https://hi-e2e2.tistory.com/193](https://hi-e2e2.tistory.com/193)
+
 - Output texts
 ```
 Baseline:
@@ -271,8 +268,7 @@ Baseline:
 다음에 가면 강낭콩이랑 밤 꼭 먹어봐야겠어요😙
 ```
 
-Baseline separated input text into five sentences because it is split when `.!?` (final symbols) appears.
-First of all, the first sentence was well separated because the finish symbol appeared. However, since these symbols didn't appear well from the second sentence, you can see that they didn't separated.
+Baseline separates input text into 5 sentences. First of all, the first sentence was separated well because it has final symbols. However, since these final symbols don't appear from the second sentence, you can see that these sentences were not separated well.
 
 ```
 Koalanlp (KKMA):
@@ -287,13 +283,12 @@ Koalanlp (KKMA):
 다음에 가면 강낭콩이랑 밤 꼭 먹어봐야겠어요😙
 ```
 
-Koalanlp separates them better than baseline because it uses morphological information. It divided input text into 8 sentences in total.
-The first thing that catches your eye is the immature emoji handling. 
-People usually put some emojis at the end of a sentence, and in this case, the emojis should be included in the sentence.
+Koalanlp splits sentences better than baseline because it uses morphological information. It splits input text into 8 sentences in total.
+But many mispartitions still exist. The first thing that catches your eye is the immature emoji handling.
+People usually put emojis at the end of a sentence, and in this case, the emojis should be included in the sentence.
 The second thing is the mispartition between `생겼나` and `보더라구요!?`. 
-Probably because the KKMA morpheme analyzer recognized that point as a final eomi (종결어미). 
-This is because the performance of the morpheme analyzer. 
-Rather, the baseline is a little safer in this area.
+Probably this is because the KKMA morpheme analyzer recognized `생겼나` as a final eomi (종결어미). but it's a connecting eomi (연결어미).
+This is because the performance of the morpheme analyzer. Rather, the baseline is a little safer in this area.
 
 ```
 Kiwi:
@@ -306,11 +301,11 @@ Kiwi:
 진정하고 소미미 단팥빵 하나, 옥수수 치즈빵 하나, 구리볼 하나 골랐습니다!
 다음에 가면 강낭콩이랑 밤 꼭 먹어봐야겠어요😙
 ```
-Kiwi shows better performance than Koalanlp. It divided input text into 7 sentences. 
-Most sentences are pretty good, but it didn't separate between `가깝답니다😉` and `메뉴판을`.
-The second thing is it separates between `좋아하는데...` and `진정하고`.
+Kiwi shows better performance than Koalanlp. It splits input text into 7 sentences. 
+Most sentences are pretty good, but it doesn't split `가깝답니다😉` and `메뉴판을`.
+The second thing is it separates `좋아하는데...` and `진정하고`.
 This part may be recognized as an independent sentence depending on the viewer, 
-but the author of the original article did not write this as a sentence.
+but the author of the original article didn't write this as an independent sentence, but an embraced sentence (안긴문장).
 
 The [original article](https://hi-e2e2.tistory.com/193) was written like:
     
@@ -327,12 +322,7 @@ Kss (mecab):
 이런거 하나하나 맛보는거 너무 좋아하는데... 진정하고 소미미 단팥빵 하나, 옥수수 치즈빵 하나, 구리볼 하나 골랐습니다!
 다음에 가면 강낭콩이랑 밤 꼭 먹어봐야겠어요😙
 ```
-The result of Kss is same with gold label. Especially it separates between `가깝답니다😉` and `메뉴판을`.
-In fact, that part is the final eomi (종결어미), but many morpheme analyzers confuse the final eomi (종결어미) with the connecting eomi (연결어미). 
-Kss has a feature to recognize wrongly recognized connected eomi (연결어미). Thus, it was able to separate that domain effectively.
-Next, Kss doesn't split between `좋아하는데...` and `진정하고`. it doesn't split sentences simply because `. ` appears. 
-In most cases, `. ` could be the delimiter of sentences, 
-but in fact there are many exceptions about this.
+The result of Kss is same with gold label. Especially it succesfully separates `가깝답니다😉` and `메뉴판을`. In fact, this part is the final eomi (종결어미), but many morpheme analyzers confuse the final eomi (종결어미) with the connecting eomi (연결어미). Actually, mecab and pecab morpheme analyzers which are backend of Kss also recognizes that part as a connecting eomi (연결어미). For this reason, Kss has a feature to recognize wrongly recognized connecting eomi (연결어미) and to correct those eomis. Thus, it is able to separate this part effectively. Next, Kss doesn't split `좋아하는데...` and `진정하고` becuase `좋아하는데...` is not an independent sentence, but an embraced sentence (안긴문장). This means Kss doesn't split sentences simply because `. ` appears, unlike baseline. In most cases, `. ` could be the delimiter of sentences, actually there are many exceptions about this.
 
 #### Example 2
 - Input text
@@ -351,9 +341,9 @@ but in fact there are many exceptions about this.
 들을라고 들은게 아니라 귀는 열려있으니 듣게된 대사.
 ```
 - Source
-```
-https://mrsign92.tistory.com/6099371
-```
+
+[https://mrsign92.tistory.com/6099371](https://mrsign92.tistory.com/6099371)
+
 - Output texts
 ```
 Baseline:
@@ -370,7 +360,7 @@ Koalanlp (KKMA)
 들은 게 아니라 귀는 열려 있으니 듣게 된 대사.
 ```
 
-Koalanlp separates between `들을라고` and `들은` but it is not correct split point.
+Koalanlp separates `들을라고` and `들은` but it is not correct split point.
 And I think it doesn't consider predicative use of eomi transferred from noun (명사형 전성어미의 서술적 용법).
 
 ```
@@ -378,7 +368,7 @@ Kiwi
 
 어느화창한날 출근전에 너무일찍일어나 버렸음 (출근시간 19시) 할꺼도없고해서 카페를 찾아 시내로 나갔음 새로생긴곳에 사장님이 커피선수인지 커피박사라고 해서 갔음 오픈한지 얼마안되서 그런지 손님이 얼마없었음 조용하고 좋다며 좋아하는걸시켜서 테라스에 앉음 근데 조용하던 카페가 산만해짐 소리의 출처는 카운터였음(테라스가 카운터 바로옆) 들을라고 들은게 아니라 귀는 열려있으니 듣게된 대사.
 ```
-Kiwi couldn't separate any sentences like baseline.
+Kiwi doesn't separate any sentence, similar with baseline.
 Similarly, it doesn't consider predicative use of eomi transferred from noun (명사형 전성어미의 서술적 용법).
 
 ```
@@ -392,9 +382,108 @@ Kss (Mecab)
 근데 조용하던 카페가 산만해짐 소리의 출처는 카운터였음(테라스가 카운터 바로옆)
 들을라고 들은게 아니라 귀는 열려있으니 듣게된 대사.
 ```
-The result of Kss is very similar with gold label, Kss considers predicative use of eomi transferred from noun (명사형 전성어미의 서술적 용법),
-and has many exceptions to prevent mistakes. But Kss couldn't split sentences between `산만해짐` and `소리의`.
-That part is correct split point, but it blocked by one of the exceptions which I built to prevent wrong segmentation.
+The result of Kss is very similar with gold label, Kss considers predicative use of eomi transferred from noun (명사형 전성어미의 서술적 용법).
+But Kss couldn't split `산만해짐` and `소리의`. That part is a correct split point, but it was blocked by one of the exceptions which I built to prevent wrong segmentation. Splitting eomi transferred from noun (명사형 전성어미) is one of the unsafe and difficult tasks, so Kss has many exceptions to prevent wrong segmentation.
+
+#### Example 3
+- Input text
+```
+책소개에 이건 소설인가 실제인가라는 문구를 보고 재밌겠다 싶어 보게 되었다. '바카라'라는 도박은 2장의 카드 합이 높은 사람이 이기는 게임으로 아주 단순한 게임이다. 이런게 중독이 되나? 싶었는데 이 책이 바카라와 비슷한 매력이 있다 생각들었다. 내용이 스피드하게 진행되고 막히는 구간없이 읽히는게 나도 모르게 페이지를 슥슥 넘기고 있었다. 물론 읽음으로써 큰 돈을 벌진 않지만 이런 스피드함에 나도 모르게 계속 게임에 참여하게 되고 나오는 타이밍을 잡지 못해 빠지지 않았을까? 라는 생각을 하게 됐다. 이 책에서 현지의 꿈은 가격표를 보지 않는 삶이라 한다. 이 부분을 읽고 나돈데! 라는 생각하면서 순간 도박이라는걸로라도 돈을 많이 벌었던 현지가 부러웠다. 그러면서 내가 도박을 했다면?라는 상상을 해봤다. 그리고 이런 상상을 할 수 있게 만들어줘서 이 책이 더 재밌게 다가왔다. 일상에 지루함을 느껴 도박같은 삶을 살고싶다면 도박하지말고 차라리 이 책을 보길^^ㅋ 
+```
+- Label
+```
+책소개에 이건 소설인가 실제인가라는 문구를 보고 재밌겠다 싶어 보게 되었다.
+'바카라'라는 도박은 2장의 카드 합이 높은 사람이 이기는 게임으로 아주 단순한 게임이다.
+이런게 중독이 되나? 싶었는데 이 책이 바카라와 비슷한 매력이 있다 생각들었다.
+내용이 스피드하게 진행되고 막히는 구간없이 읽히는게 나도 모르게 페이지를 슥슥 넘기고 있었다.
+물론 읽음으로써 큰 돈을 벌진 않지만 이런 스피드함에 나도 모르게 계속 게임에 참여하게 되고 나오는 타이밍을 잡지 못해 빠지지 않았을까? 라는 생각을 하게 됐다.
+이 책에서 현지의 꿈은 가격표를 보지 않는 삶이라 한다.
+이 부분을 읽고 나돈데! 라는 생각하면서 순간 도박이라는걸로라도 돈을 많이 벌었던 현지가 부러웠다.
+그러면서 내가 도박을 했다면?라는 상상을 해봤다.
+그리고 이런 상상을 할 수 있게 만들어줘서 이 책이 더 재밌게 다가왔다.
+일상에 지루함을 느껴 도박같은 삶을 살고싶다면 도박하지말고 차라리 이 책을 보길^^ㅋ 
+```
+- Source
+
+[https://hi-e2e2.tistory.com/63](https://hi-e2e2.tistory.com/63)
+
+- Output texts
+```
+Baseline:
+
+책소개에 이건 소설인가 실제인가라는 문구를 보고 재밌겠다 싶어 보게 되었다.
+'바카라'라는 도박은 2장의 카드 합이 높은 사람이 이기는 게임으로 아주 단순한 게임이다.
+이런게 중독이 되나?
+싶었는데 이 책이 바카라와 비슷한 매력이 있다 생각들었다.
+내용이 스피드하게 진행되고 막히는 구간없이 읽히는게 나도 모르게 페이지를 슥슥 넘기고 있었다.
+물론 읽음으로써 큰 돈을 벌진 않지만 이런 스피드함에 나도 모르게 계속 게임에 참여하게 되고 나오는 타이밍을 잡지 못해 빠지지 않았을까?
+라는 생각을 하게 됐다.
+이 책에서 현지의 꿈은 가격표를 보지 않는 삶이라 한다.
+이 부분을 읽고 나돈데!
+라는 생각하면서 순간 도박이라는걸로라도 돈을 많이 벌었던 현지가 부러웠다.
+그러면서 내가 도박을 했다면?라는 상상을 해봤다.
+그리고 이런 상상을 할 수 있게 만들어줘서 이 책이 더 재밌게 다가왔다.
+일상에 지루함을 느껴 도박같은 삶을 살고싶다면 도박하지말고 차라리 이 책을 보길^^ㅋ 
+```
+
+Baseline separates input text into 13 sentences. You can see it can't distinguish final eomi(종결어미) and connecting eomi(연결어미), for example it splits `이런게 중독이 되나?` and `싶었는데`. But `되나?` is connecting eomi (연결어미). And here's one more problem. It doesn't recognize embraced sentences (안긴문장). For example it splits `못해 빠지지 않았을까?` and `라는 생각을 하게 됐다.`.
+```
+Koalanlp (KKMA)
+
+책 소개에 이건 소설인가 실제 인가라는 문구를 보고 재밌겠다 싶어 보게 되었다.
+' 바카라' 라는 도박은 2 장의 카드 합이 높은 사람이 이기는 게임으로 아주 단순한 게임이다.
+이런 게 중독이 되나?
+싶었는데 이 책이 바카라와 비슷한 매력이 있다 생각 들었다.
+내용이 스피드하게 진행되고 막히는 구간 없이 읽히는 게 나도 모르게 페이지를 슥슥 넘기고 있었다.
+물론 읽음으로써 큰 돈을 벌진 않지만 이런 스피드함에 나도 모르게 계속 게임에 참여하게 되고 나오는 타이밍을 잡지 못해 빠지지 않았을까?
+라는 생각을 하게 됐다.
+이 책에서 현지의 꿈은 가격표를 보지 않는 삶이라 한다.
+이 부분을 읽고 나돈데!
+라는 생각하면서 순간 도박이라는 걸로라도 돈을 많이 벌었던 현지가 부러웠다.
+그러면서 내가 도박을 했다면? 라는 상상을 해봤다.
+그리고 이런 상상을 할 수 있게 만들어 줘서 이 책이 더 재밌게 다가왔다.
+일상에 지루함을 느껴 도박 같은 삶을 살고 싶다면 도박하지 말고 차라리 이 책을 보길 ^^ ㅋ
+```
+
+The result of Koalanlp was really similar with baseline, the two problems (final-connecting eomi distinction, embracing sentences recognization) still exist.
+```
+Kiwi
+
+책소개에 이건 소설인가 실제인가
+라는 문구를 보고 재밌겠다 싶어 보게 되었다.
+'바카라'라는 도박은 2장의 카드 합이 높은 사람이 이기는 게임으로 아주 단순한 게임이다.
+이런게 중독이 되나?
+싶었는데 이 책이 바카라와 비슷한 매력이 있다 생각들었다.
+내용이 스피드하게 진행되고 막히는 구간없이 읽히는게 나도 모르게 페이지를 슥슥 넘기고 있었다.
+물론 읽음으로써 큰 돈을 벌진 않지만 이런 스피드함에 나도 모르게 계속 게임에 참여하게 되고 나오는 타이밍을 잡지 못해 빠지지 않았을까?
+라는 생각을 하게 됐다.
+이 책에서 현지의 꿈은 가격표를 보지 않는 삶이라 한다.
+이 부분을 읽고 나돈데!
+라는 생각하면서 순간 도박이라는걸로라도 돈을 많이 벌었던 현지가 부러웠다.
+그러면서 내가 도박을 했다면?
+라는 상상을 해봤다.
+그리고 이런 상상을 할 수 있게 만들어줘서 이 책이 더 재밌게 다가왔다.
+일상에 지루함을 느껴 도박같은 삶을 살고싶다면 도박하지말고 차라리 이 책을 보길^^ㅋ
+```
+The two problems are also shown in result of Kiwi. And it additionally splits `실제인가` and `라는`, but `이건 소설인가 실제인가` is not an independent sentence, but an embraced sentence (안긴문장).
+
+```
+Kss (Mecab)
+
+책소개에 이건 소설인가 실제인가라는 문구를 보고 재밌겠다 싶어 보게 되었다.
+'바카라'라는 도박은 2장의 카드 합이 높은 사람이 이기는 게임으로 아주 단순한 게임이다.
+이런게 중독이 되나? 싶었는데 이 책이 바카라와 비슷한 매력이 있다 생각들었다.
+내용이 스피드하게 진행되고 막히는 구간없이 읽히는게 나도 모르게 페이지를 슥슥 넘기고 있었다.
+물론 읽음으로써 큰 돈을 벌진 않지만 이런 스피드함에 나도 모르게 계속 게임에 참여하게 되고 나오는 타이밍을 잡지 못해 빠지지 않았을까? 라는 생각을 하게 됐다.
+이 책에서 현지의 꿈은 가격표를 보지 않는 삶이라 한다.
+이 부분을 읽고 나돈데! 라는 생각하면서 순간 도박이라는걸로라도 돈을 많이 벌었던 현지가 부러웠다.
+그러면서 내가 도박을 했다면?라는 상상을 해봤다.
+그리고 이런 상상을 할 수 있게 만들어줘서 이 책이 더 재밌게 다가왔다.
+일상에 지루함을 느껴 도박같은 삶을 살고싶다면 도박하지말고 차라리 이 책을 보길^^ㅋ
+```
+The result of Kss is same with gold label. This means that Kss considers the two problems. Of course, it's not easy to detect that parts while splitting sentences, so Kss has one more step after splitting sentences. It's postprocessing step which corrects some problems in segmenration results. For example, Korean sentence doesn't start from josa (조사) in general. Therefore if segmented results (sentences) started from josa (조사), Kss recognizes them as embraced sentences (안긴문장), and attaches them to their previous sentence. For your information, Kss has many more powerful postprocessing algorithms which correct wrong segmentation results like this.
+
+In conclusion, Kss considers more than other libraries in Korean sentences. And these considerations led to difference in performance.
 
 #### 6) Speed analysis
 I also measured speed of tools to compare their computation efficiency. The following table shows computation time of each tool when it splits `sample.txt` (41 sentences).
@@ -411,7 +500,7 @@ Note that every experiment was conducted on single thread / process environment 
 | koalanlp       | 2.1.7           | RHINO   | 978.53              |
 | koalanlp       | 2.1.7           | EUNJEON | 881.24              |
 | koalanlp       | 2.1.7           | ARIRANG | 1415.53             |
-| koalanlp       | 2.1.7           | KAMA    | 1971.31             |
+| koalanlp       | 2.1.7           | KKMA    | 1971.31             |
 | Kiwi           | 0.14.0          | N/A     | 36.41               |
 | **Kss (ours)** | 4.0.0           | pecab   | 6929.27             |
 | **Kss (ours)** | 4.0.0           | mecab   | 43.80               |
@@ -424,7 +513,7 @@ You can also compare the speed of faster tools the following graphs (under 100 m
 
 ![](https://github.com/hyunwoongko/kss/blob/main/assets/average_computation_time_under_100.png)
 
-The baseline was fastest (because it's a just regex function), and Koalanlp (OKT backend), Kiwi, Kss (mecab backend) were followed.
+The baseline was fastest (because it's a just regex function), and Koalanlp (OKT backend), Kiwi, Kss (mecab backend) followed.
 The slowest library was Kss (pecab backend) and it was about 160 times slower than its mecab backend.
 Mecab and Kiwi were written in C++, All Koalanlp backends were written in Java and Pecab was written in pure python.
 I think this difference was caused by speed of each language. Therefore, if you can install mecab, it makes most sense to use Kss Mecab backend.
@@ -446,10 +535,7 @@ I've measured the performance of Kss and other libraries using 6 evaluation data
 In terms of segmentation performance, Kss performed best on most datasets. In terms of speed, baseline was the fastest, and Koalanlp (OKT backend) and Kiwi followed. 
 but Kss (mecab backend) also showed a speed that could compete with others.
 
-However, there are still many difficulties and limitations in Korean sentence separation libraries, including Kss. 
-In fact, it's also because very few people attack this task. 
-If anyone wants to discuss Korean sentence segmentation algorithms with me or contribute to my work, 
-feel free to send an email to kevin.ko@tunib.ai or let me know on the Github [issue](https://github.com/hyunwoongko/kss/issues) page.
+Although much progress has been made by Kiwi and Kss, there are still many difficulties and limitations in Korean sentence segmentation libraries. In fact, it's also because very few people attack this task. If anyone wants to discuss Korean sentence segmentation algorithms with me or contribute to my work, feel free to send an email to kevin.ko@tunib.ai or let me know on the Github [issue](https://github.com/hyunwoongko/kss/issues) page.
 
 </details>
 
