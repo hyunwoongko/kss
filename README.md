@@ -310,7 +310,7 @@ Kiwi shows better performance than Koalanlp. It divided input text into 7 senten
 Most sentences are pretty good, but it didn't separate between `가깝답니다😉` and `메뉴판을`.
 The second thing is it separates between `좋아하는데...` and `진정하고`.
 This part may be recognized as an independent sentence depending on the viewer, 
-but the original author of the article did not write this as a sentence.
+but the author of the original article did not write this as a sentence.
 
 ![](https://github.com/hyunwoongko/kss/blob/main/assets/example_1_1.png)
 
