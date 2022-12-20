@@ -256,7 +256,7 @@ For this, I will take the best backend of each library (Kss=mecab, Koalanlp=KKMA
 이런거 하나하나 맛보는거 너무 좋아하는데... 진정하고 소미미 단팥빵 하나, 옥수수 치즈빵 하나, 구리볼 하나 골랐습니다!
 다음에 가면 강낭콩이랑 밤 꼭 먹어봐야겠어요😙
 ```
-- Source: 
+- Source
 ```
 https://hi-e2e2.tistory.com/193
 ```
@@ -348,7 +348,7 @@ but in fact there are many exceptions about this.
 소리의 출처는 카운터였음(테라스가 카운터 바로옆)
 들을라고 들은게 아니라 귀는 열려있으니 듣게된 대사.
 ```
-- Source:
+- Source
 ```
 https://mrsign92.tistory.com/6099371
 ```
