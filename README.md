@@ -138,7 +138,7 @@ So I corrected labels of the two sentences.
 
 #### 3) Sentence segmentation performance (Quantitative Analysis)
  
-The following table shows the segmentation performance based on exact match.
+The following table shows the segmentation performance based on **exact match method**.
 Kss performed best in most cases, and Kiwi performed well. Both baseline and koalanlp performed poorly.
 
 | Name           | Library version | Backend | blogs_lee   | blogs_ko    | tweets      | nested      | v_ending    | sample      | Average     |
