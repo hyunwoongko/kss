@@ -162,7 +162,7 @@ quotes_or_brackets_close_to_open.update(bracket_close_to_open)
 
 # special symbols
 special_symbols_for_split = (
-    """§※○●◎◇◆□■△▲▽▼→←↑↓↔◁◀▷▶♤♠♧♣⊙◈▣◐◑▒▤▥▨▧▦▩♨☏☎☜☞¶†‡↕↗↙↖↘㉿	㈜№㏇㏂㏘℡ª*"""
+    """§※○●◎◇◆□■△▲▽▼→←↑↓↔◁◀▷▶♤♠♧♣⊙◈▣◐◑▒▤▥▨▧▦▩♨☏☎☜☞¶†‡↕↗↙↖↘㉿㈜№㏇㏂㏘℡ª*"""
 )
 faces = {":)", ":(", ":'(", "O:)", "&)", ">:(", "3:)", '<(")', ":-)", ":-(", "◡̈"}
 number_with_quotes = {f"{num}'" for num in range(0, 9)}
