@@ -474,8 +474,8 @@ Note that the parameters of `split_morpehems` are exactly same with `split_sente
     - string: single text segmentation
     - list/tuple of strings: batch texts segmentation
 - **backend: Morpheme analyzer backend.**
-    - `backend='auto'`: find `mecab` → `konlpy.tag` → `pecab` and use first found analyzer (default)
-    - `backend='mecab'`: find `mecab` → `konlpy.tag` and use first found analyzer
+    - `backend='auto'`: find `mecab` → `konlpy.tag.Mecab` → `pecab` and use first found analyzer (default)
+    - `backend='mecab'`: find `mecab` → `konlpy.tag.Mecab` and use first found analyzer
     - `backend='pecab'`: use `pecab` analyzer
 - **num_workers: The number of multiprocessing workers.**
     - `num_workers='auto'`: use multiprocessing with the maximum number of workers if possible (default)
