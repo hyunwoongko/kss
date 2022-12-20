@@ -31,7 +31,7 @@ class SentencePostprocessor(SentenceProcessor):
         output_sentences = self._move_unexpected_split_sentences_to_previous(
             output_sentences
         )
-        # output_sentences = self._move_footnote_to_previous(output_sentences)
+        output_sentences = self._move_footnote_to_previous(output_sentences)
 
         return self._convert_syllables_to_sentences_with_cleaning(output_sentences)
 
