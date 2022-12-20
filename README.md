@@ -447,7 +447,7 @@ Koalanlp (KKMA)
 일상에 지루함을 느껴 도박 같은 삶을 살고 싶다면 도박하지 말고 차라리 이 책을 보길 ^^ ㅋ
 ```
 
-The result of Koalanlp was really similar with baseline, the two problems (final-connecting eomi distinction, embracing sentences recognization).
+The result of Koalanlp was really similar with baseline, the two problems (final-connecting eomi distinction, embracing sentences recognization) still exist.
 ```
 Kiwi
 
