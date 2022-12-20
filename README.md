@@ -330,7 +330,7 @@ Kss (mecab):
 The result of Kss is same with gold label. Especially it separates between `가깝답니다😉` and `메뉴판을`.
 In fact, that part is the final eomi (종결어미), but many morpheme analyzers confuse the final eomi (종결어미) with the connecting eomi (연결어미). 
 Kss has a feature to recognize wrongly recognized connecting eomi (연결어미). Thus, it was able to separate that domain effectively.
-Next, Kss doesn't split between `좋아하는데...` and `진정하고`. it doesn't split sentences simply because `. ` appears. 
+Next, Kss doesn't split between `좋아하는데...` and `진정하고` becuase `좋아하는데...` is not a independent sentence, but a clause (절). This means Kss doesn't split sentences simply because `. ` appears. 
 In most cases, `. ` could be the delimiter of sentences, 
 but in fact there are many exceptions about this.
 
