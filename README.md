@@ -383,7 +383,7 @@ Kss (Mecab)
 들을라고 들은게 아니라 귀는 열려있으니 듣게된 대사.
 ```
 The result of Kss is very similar with gold label, Kss considers predicative use of eomi transferred from noun (명사형 전성어미의 서술적 용법).
-But Kss couldn't split `산만해짐` and `소리의`. That part is a correct split point, but it was blocked by one of the exceptions which I built to prevent wrong segmentation. Splitting eomi transferred from noun (명사형 전성어미) is unsafe and difficult task, so Kss has many exceptions to prevent wrong segmentation.
+But Kss couldn't split `산만해짐` and `소리의`. That part is a correct split point, but it was blocked by one of the exceptions which I built to prevent wrong segmentation. Splitting eomi transferred from noun (명사형 전성어미) is one of the unsafe and difficult tasks, so Kss has many exceptions to prevent wrong segmentation.
 
 #### Example 3
 - Input text
