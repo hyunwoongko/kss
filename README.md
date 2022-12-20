@@ -271,8 +271,7 @@ Baseline:
 다음에 가면 강낭콩이랑 밤 꼭 먹어봐야겠어요😙
 ```
 
-Baseline separates input text into five sentences because it is split when `.!?` (final symbols) appears.
-First of all, the first sentence was well separated because it has final symbols. However, since these symbols don't appear well from the second sentence, you can see that these sentences were not separated well.
+Baseline separates input text into 5 sentences. First of all, the first sentence was separated well because it has final symbols. However, since these final symbols don't appear from the second sentence, you can see that these sentences were not separated well.
 
 ```
 Koalanlp (KKMA):
@@ -287,13 +286,12 @@ Koalanlp (KKMA):
 다음에 가면 강낭콩이랑 밤 꼭 먹어봐야겠어요😙
 ```
 
-Koalanlp separates them better than baseline because it uses morphological information. It divided input text into 8 sentences in total.
-The first thing that catches your eye is the immature emoji handling. 
-People usually put some emojis at the end of a sentence, and in this case, the emojis should be included in the sentence.
+Koalanlp splits sentences better than baseline because it uses morphological information. It splits input text into 8 sentences in total.
+The first thing that catches your eye is the immature emoji handling.
+People usually put emojis at the end of a sentence, and in this case, the emojis should be included in the sentence.
 The second thing is the mispartition between `생겼나` and `보더라구요!?`. 
-Probably because the KKMA morpheme analyzer recognized that point as a final eomi (종결어미). 
-This is because the performance of the morpheme analyzer. 
-Rather, the baseline is a little safer in this area.
+Probably this is because the KKMA morpheme analyzer recognized `생겼나` as a final eomi (종결어미) but it's a connecting eomi (연결어미).
+This is because the performance of the morpheme analyzer. Rather, the baseline is a little safer in this area.
 
 ```
 Kiwi:
@@ -306,11 +304,11 @@ Kiwi:
 진정하고 소미미 단팥빵 하나, 옥수수 치즈빵 하나, 구리볼 하나 골랐습니다!
 다음에 가면 강낭콩이랑 밤 꼭 먹어봐야겠어요😙
 ```
-Kiwi shows better performance than Koalanlp. It divided input text into 7 sentences. 
-Most sentences are pretty good, but it doesn't separates between `가깝답니다😉` and `메뉴판을`.
-The second thing is it separates between `좋아하는데...` and `진정하고`.
+Kiwi shows better performance than Koalanlp. It splits input text into 7 sentences. 
+Most sentences are pretty good, but it doesn't split `가깝답니다😉` and `메뉴판을`.
+The second thing is it separates `좋아하는데...` and `진정하고`.
 This part may be recognized as an independent sentence depending on the viewer, 
-but the author of the original article did not write this as a sentence.
+but the author of the original article didn't write this as an independent sentence, but an embraced sentence (안긴문장).
 
 The [original article](https://hi-e2e2.tistory.com/193) was written like:
     
@@ -327,12 +325,9 @@ Kss (mecab):
 이런거 하나하나 맛보는거 너무 좋아하는데... 진정하고 소미미 단팥빵 하나, 옥수수 치즈빵 하나, 구리볼 하나 골랐습니다!
 다음에 가면 강낭콩이랑 밤 꼭 먹어봐야겠어요😙
 ```
-The result of Kss is same with gold label. Especially it separates between `가깝답니다😉` and `메뉴판을`.
-In fact, that part is the final eomi (종결어미), but many morpheme analyzers confuse the final eomi (종결어미) with the connecting eomi (연결어미). 
-Kss has a feature to recognize wrongly recognized connecting eomi (연결어미). Thus, it was able to separate that domain effectively.
-Next, Kss doesn't split between `좋아하는데...` and `진정하고` becuase `좋아하는데...` is not an independent sentence, but an embraced sentence (안긴문장). This means Kss doesn't split sentences simply because `. ` appears like baseline.
-In most cases, `. ` could be the delimiter of sentences, 
-but in fact there are many exceptions about this.
+The result of Kss is same with gold label. Especially it succesfully separates `가깝답니다😉` and `메뉴판을`.
+In fact, that part is the final eomi (종결어미), but many morpheme analyzers confuse the final eomi (종결어미) with the connecting eomi (연결어미). For this reason, Kss has a feature to recognize wrongly recognized connecting eomi (연결어미) and to correct those eomis. Thus, it is able to separate that domain effectively. Next, Kss doesn't split `좋아하는데...` and `진정하고` becuase `좋아하는데...` is not an independent sentence, but an embraced sentence (안긴문장). This means Kss doesn't split sentences simply because `. ` appears like baseline.
+In most cases, `. ` could be the delimiter of sentences, actually there are many exceptions about this.
 
 #### Example 2
 - Input text
@@ -370,7 +365,7 @@ Koalanlp (KKMA)
 들은 게 아니라 귀는 열려 있으니 듣게 된 대사.
 ```
 
-Koalanlp separates between `들을라고` and `들은` but it is not correct split point.
+Koalanlp separates `들을라고` and `들은` but it is not correct split point.
 And I think it doesn't consider predicative use of eomi transferred from noun (명사형 전성어미의 서술적 용법).
 
 ```
@@ -393,8 +388,8 @@ Kss (Mecab)
 들을라고 들은게 아니라 귀는 열려있으니 듣게된 대사.
 ```
 The result of Kss is very similar with gold label, Kss considers predicative use of eomi transferred from noun (명사형 전성어미의 서술적 용법),
-and has many exceptions to prevent mistakes. But Kss couldn't split sentences between `산만해짐` and `소리의`.
-That part is correct split point, but it blocked by one of the exceptions which I built to prevent wrong segmentation.
+and has many exceptions to prevent mistakes. But Kss couldn't split `산만해짐` and `소리의`.
+That part is correct split point, but it was blocked by one of the exceptions which I built to prevent wrong segmentation.
 
 #### Example 3
 - Input text
@@ -438,7 +433,7 @@ Baseline:
 ```
 
 Baseline separates input text into 13 sentences because it is split when `.!?` (final symbols) appears.
-You can see it can't distinguish final eomi(종결어미) and connecting eomi(연결어미), for example it splits between `이런게 중독이 되나?` and `싶었는데`, but, in this case, `되나?` was connecting eomi (연결어미). And here's one more problem. It doesn't recognize embraced sentences (안긴문장), for example it splits between `못해 빠지지 않았을까?` and `라는 생각을 하게 됐다.`.
+You can see it can't distinguish final eomi(종결어미) and connecting eomi(연결어미), for example it splits `이런게 중독이 되나?` and `싶었는데`, but, in this case, `되나?` was connecting eomi (연결어미). And here's one more problem. It doesn't recognize embraced sentences (안긴문장), for example it splits `못해 빠지지 않았을까?` and `라는 생각을 하게 됐다.`.
 ```
 Koalanlp (KKMA)
 
@@ -477,7 +472,7 @@ Kiwi
 그리고 이런 상상을 할 수 있게 만들어줘서 이 책이 더 재밌게 다가왔다.
 일상에 지루함을 느껴 도박같은 삶을 살고싶다면 도박하지말고 차라리 이 책을 보길^^ㅋ
 ```
-The two problems are also shown in result of Kiwi. And it additionally splits between `실제인가` and `라는`, but `이건 소설인가 실제인가` is not an independent sentence, but an embraced sentence (안긴문장).
+The two problems are also shown in result of Kiwi. And it additionally splits `실제인가` and `라는`, but `이건 소설인가 실제인가` is not an independent sentence, but an embraced sentence (안긴문장).
 
 ```
 Kss (Mecab)
@@ -495,7 +490,7 @@ Kss (Mecab)
 ```
 The result of Kss is same with gold label. This means that Kss considers the two problems. Of course, it's not easy to detect that parts while splitting sentences, so Kss has one more step after splitting sentences. It's postprocessing step which corrects some problems in segemenration results. For example, Korean sentence doesn't start from josa (조사). Therefore if one of the segmented result started from josa (조사), Kss recognizes this as embraced sentence (안긴문장), and attaches this to previous sentence. For your information, Kss has many powerful postprocessing algorithms to correct wrong segementation results than this. 
 
-In conclusion, Kss consider a lot of things in Korean sentences. And these considerations led to difference in performance.
+In conclusion, Kss considers more than other libraries in Korean sentences. And these considerations led to difference in performance.
 
 #### 6) Speed analysis
 I also measured speed of tools to compare their computation efficiency. The following table shows computation time of each tool when it splits `sample.txt` (41 sentences).
