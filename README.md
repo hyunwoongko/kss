@@ -443,8 +443,8 @@ There are much information about mecab installing on Windows machine in internet
 
 #### 7) Conclusion
 I've measured the performance of Kss and other libraries using 6 evaluation datasets, and also measured their speed.
-In terms of segmentation performance, Kss performed best for most datasets. In terms of speed, baseline was the fastest, and Koalanlp (OKT backend) and Kiwi followed. 
-but Kss (mecab backend) also showed a speed that could compete with it.
+In terms of segmentation performance, Kss performed best on most datasets. In terms of speed, baseline was the fastest, and Koalanlp (OKT backend) and Kiwi followed. 
+but Kss (mecab backend) also showed a speed that could compete with others.
 
 However, there are still many difficulties and limitations in Korean sentence separation libraries, including Kss. 
 In fact, it's also because very few people attack this task. 
