@@ -271,8 +271,8 @@ Baseline:
 다음에 가면 강낭콩이랑 밤 꼭 먹어봐야겠어요😙
 ```
 
-Baseline separated input text into five sentences because it is split when `.!?` (final symbols) appears.
-First of all, the first sentence was well separated because the finish symbol appeared. However, since these symbols didn't appear well from the second sentence, you can see that they didn't separated.
+Baseline separates input text into five sentences because it is split when `.!?` (final symbols) appears.
+First of all, the first sentence was well separates because the finish symbol appeared. However, since these symbols didn't appear well from the second sentence, you can see that they didn't separates.
 
 ```
 Koalanlp (KKMA):
@@ -307,7 +307,7 @@ Kiwi:
 다음에 가면 강낭콩이랑 밤 꼭 먹어봐야겠어요😙
 ```
 Kiwi shows better performance than Koalanlp. It divided input text into 7 sentences. 
-Most sentences are pretty good, but it didn't separate between `가깝답니다😉` and `메뉴판을`.
+Most sentences are pretty good, but it doesn't separates between `가깝답니다😉` and `메뉴판을`.
 The second thing is it separates between `좋아하는데...` and `진정하고`.
 This part may be recognized as an independent sentence depending on the viewer, 
 but the author of the original article did not write this as a sentence.
@@ -446,7 +446,7 @@ I've measured the performance of Kss and other libraries using 6 evaluation data
 In terms of segmentation performance, Kss performed best on most datasets. In terms of speed, baseline was the fastest, and Koalanlp (OKT backend) and Kiwi followed. 
 but Kss (mecab backend) also showed a speed that could compete with others.
 
-However, there are still many difficulties and limitations in Korean sentence separation libraries, including Kss. 
+However, there are still many difficulties and limitations in Korean sentence segmentation libraries, including Kss. 
 In fact, it's also because very few people attack this task. 
 If anyone wants to discuss Korean sentence segmentation algorithms with me or contribute to my work, 
 feel free to send an email to kevin.ko@tunib.ai or let me know on the Github [issue](https://github.com/hyunwoongko/kss/issues) page.
