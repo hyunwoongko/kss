@@ -420,7 +420,7 @@ You can also compare the speed of tools with the following graphs.
 
 ![](https://github.com/hyunwoongko/kss/blob/main/assets/average_computation_time.png)
 
-You can also compare the speed with of faster tools the following graphs (under 100 msec).
+You can also compare the speed of faster tools the following graphs (under 100 msec).
 
 ![](https://github.com/hyunwoongko/kss/blob/main/assets/average_computation_time_under_100.png)
 
