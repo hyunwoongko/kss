@@ -31,6 +31,8 @@ class SentencePostprocessor(SentenceProcessor):
         output_sentences = self._move_unexpected_split_sentences_to_previous(
             output_sentences
         )
+        # output_sentences = self._move_footnote_to_previous(output_sentences)
+
         return self._convert_syllables_to_sentences_with_cleaning(output_sentences)
 
     def _merge_broken_sub_sentence_in_quotes_or_brackets(
@@ -120,6 +122,47 @@ class SentencePostprocessor(SentenceProcessor):
 
                 last_open[syllable_open].remove((open_sent_idx, open_idx))
                 first_close[syllable_close].remove((close_sent_idx, close_idx))
+        return self._remove_empty_sentence(output_sentences)
+
+    def _move_footnote_to_previous(
+        self, output_sentences: List[List[Syllable]]
+    ) -> List[List[Syllable]]:
+        """
+        Move footnote to previous.
+
+        Args:
+            output_sentences (List[List[Syllable]]): list of syllables
+
+        Returns:
+            List[List[Syllable]]: corrected list of syllables.
+
+        Notes:
+            각주 처리:
+                최초로 발견되는 대괄호('[') 안에 있는 것이 대괄호 및 숫자 뿐일때 각주로 인식하고 이전 문장으로 옮긴다.
+
+            예시:
+                입력: ["그것은 사실이였다.", "[13] 하지만 그에 따라"]
+                출력: ["그것은 사실이였다.[13]", "하지만 그에 따라"]
+        """
+        for sentence_idx, output_sentence in enumerate(output_sentences):
+            if sentence_idx != 0 and len(output_sentence) != 0:
+                if output_sentence[0].next_skip_from_current("SP").text == "[":
+                    close_idx = None
+                    for syllable_idx, output_syllable in enumerate(output_sentence):
+                        if output_syllable.text not in "[0123456789]":
+                            break
+                        if output_syllable.text == "]":
+                            close_idx = syllable_idx
+
+                    if close_idx is not None:
+                        insert_idx = sentence_idx - 1
+                        while insert_idx > 0 and len(output_sentences[insert_idx]) == 0:
+                            insert_idx -= 1
+                        output_sentences[insert_idx] += output_sentence[: close_idx + 1]
+                        output_sentences[sentence_idx] = output_sentence[
+                            close_idx + 1 :
+                        ]
+
         return self._remove_empty_sentence(output_sentences)
 
     def _move_non_structural_sub_sent_in_brackets_to_previous(
