@@ -312,7 +312,7 @@ The second thing is it separates between `좋아하는데...` and `진정하고`
 This part may be recognized as an independent sentence depending on the viewer, 
 but the author of the original article did not write this as a sentence.
 
-The [original article](https://hi-e2e2.tistory.com/1930) was written like:
+The [original article](https://hi-e2e2.tistory.com/193) was written like:
     
 ![](https://github.com/hyunwoongko/kss/blob/main/assets/example_1_1.png)
 
