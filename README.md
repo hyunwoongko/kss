@@ -121,7 +121,7 @@ I tested it using the following 6 evaluation datasets. Thanks to [Minchul Lee](h
 | [sample](./bench/testset/sample.txt)       | An example used in README.md (강남 토끼정)                                                     | 41                      | [Isaac](http://semantics.kr/%ed%95%9c%ea%b5%ad%ec%96%b4-%ed%98%95%ed%83%9c%ec%86%8c-%eb%b6%84%ec%84%9d%ea%b8%b0-%eb%b3%84-%eb%ac%b8%ec%9e%a5-%eb%b6%84%eb%a6%ac-%ec%84%b1%eb%8a%a5%eb%b9%84%ea%b5%90/), modified by [Hyunwoong Ko](https://github.com/hyunwoongko) |
 
 Note that I modified labels of two sentences in `sample.txt` made by [Issac](http://semantics.kr/%ed%95%9c%ea%b5%ad%ec%96%b4-%ed%98%95%ed%83%9c%ec%86%8c-%eb%b6%84%ec%84%9d%ea%b8%b0-%eb%b3%84-%eb%ac%b8%ec%9e%a5-%eb%b6%84%eb%a6%ac-%ec%84%b1%eb%8a%a5%eb%b9%84%ea%b5%90/)
-because the original blog post was written like the following:
+because the [original blog post](https://blog.naver.com/jully1211/221437777873) was written like the following:
 
 <img width=1000px src="https://github.com/hyunwoongko/kss/blob/main/assets/rabbit_1.png">
 
