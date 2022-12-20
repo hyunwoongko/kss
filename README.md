@@ -258,7 +258,7 @@ For this, I will take the best backend of each library (Kss=mecab, Koalanlp=KKMA
 ```
 - Source
 ```
-https://hi-e2e2.tistory.com/193
+[https://hi-e2e2.tistory.com/193](https://hi-e2e2.tistory.com/193)
 ```
 - Output texts
 ```
@@ -329,7 +329,7 @@ Kss (mecab):
 ```
 The result of Kss is same with gold label. Especially it separates between `가깝답니다😉` and `메뉴판을`.
 In fact, that part is the final eomi (종결어미), but many morpheme analyzers confuse the final eomi (종결어미) with the connecting eomi (연결어미). 
-Kss has a feature to recognize wrongly recognized connected eomi (연결어미). Thus, it was able to separate that domain effectively.
+Kss has a feature to recognize wrongly recognized connecting eomi (연결어미). Thus, it was able to separate that domain effectively.
 Next, Kss doesn't split between `좋아하는데...` and `진정하고`. it doesn't split sentences simply because `. ` appears. 
 In most cases, `. ` could be the delimiter of sentences, 
 but in fact there are many exceptions about this.
@@ -352,7 +352,7 @@ but in fact there are many exceptions about this.
 ```
 - Source
 ```
-https://mrsign92.tistory.com/6099371
+[https://mrsign92.tistory.com/6099371](https://mrsign92.tistory.com/6099371)
 ```
 - Output texts
 ```
@@ -395,6 +395,105 @@ Kss (Mecab)
 The result of Kss is very similar with gold label, Kss considers predicative use of eomi transferred from noun (명사형 전성어미의 서술적 용법),
 and has many exceptions to prevent mistakes. But Kss couldn't split sentences between `산만해짐` and `소리의`.
 That part is correct split point, but it blocked by one of the exceptions which I built to prevent wrong segmentation.
+
+#### Example 3
+- Input text
+```
+책소개에 이건 소설인가 실제인가라는 문구를 보고 재밌겠다 싶어 보게 되었다. '바카라'라는 도박은 2장의 카드 합이 높은 사람이 이기는 게임으로 아주 단순한 게임이다. 이런게 중독이 되나? 싶었는데 이 책이 바카라와 비슷한 매력이 있다 생각들었다. 내용이 스피드하게 진행되고 막히는 구간없이 읽히는게 나도 모르게 페이지를 슥슥 넘기고 있었다. 물론 읽음으로써 큰 돈을 벌진 않지만 이런 스피드함에 나도 모르게 계속 게임에 참여하게 되고 나오는 타이밍을 잡지 못해 빠지지 않았을까? 라는 생각을 하게 됐다. 이 책에서 현지의 꿈은 가격표를 보지 않는 삶이라 한다. 이 부분을 읽고 나돈데! 라는 생각하면서 순간 도박이라는걸로라도 돈을 많이 벌었던 현지가 부러웠다. 그러면서 내가 도박을 했다면?라는 상상을 해봤다. 그리고 이런 상상을 할 수 있게 만들어줘서 이 책이 더 재밌게 다가왔다. 일상에 지루함을 느껴 도박같은 삶을 살고싶다면 도박하지말고 차라리 이 책을 보길^^ㅋ 
+```
+- Label
+```
+책소개에 이건 소설인가 실제인가라는 문구를 보고 재밌겠다 싶어 보게 되었다.
+'바카라'라는 도박은 2장의 카드 합이 높은 사람이 이기는 게임으로 아주 단순한 게임이다.
+이런게 중독이 되나? 싶었는데 이 책이 바카라와 비슷한 매력이 있다 생각들었다.
+내용이 스피드하게 진행되고 막히는 구간없이 읽히는게 나도 모르게 페이지를 슥슥 넘기고 있었다.
+물론 읽음으로써 큰 돈을 벌진 않지만 이런 스피드함에 나도 모르게 계속 게임에 참여하게 되고 나오는 타이밍을 잡지 못해 빠지지 않았을까? 라는 생각을 하게 됐다.
+이 책에서 현지의 꿈은 가격표를 보지 않는 삶이라 한다.
+이 부분을 읽고 나돈데! 라는 생각하면서 순간 도박이라는걸로라도 돈을 많이 벌었던 현지가 부러웠다.
+그러면서 내가 도박을 했다면?라는 상상을 해봤다.
+그리고 이런 상상을 할 수 있게 만들어줘서 이 책이 더 재밌게 다가왔다.
+일상에 지루함을 느껴 도박같은 삶을 살고싶다면 도박하지말고 차라리 이 책을 보길^^ㅋ 
+```
+- Source
+```
+[https://hi-e2e2.tistory.com/63](https://hi-e2e2.tistory.com/63)
+```
+- Output texts
+```
+Baseline:
+
+책소개에 이건 소설인가 실제인가라는 문구를 보고 재밌겠다 싶어 보게 되었다.
+'바카라'라는 도박은 2장의 카드 합이 높은 사람이 이기는 게임으로 아주 단순한 게임이다.
+이런게 중독이 되나?
+싶었는데 이 책이 바카라와 비슷한 매력이 있다 생각들었다.
+내용이 스피드하게 진행되고 막히는 구간없이 읽히는게 나도 모르게 페이지를 슥슥 넘기고 있었다.
+물론 읽음으로써 큰 돈을 벌진 않지만 이런 스피드함에 나도 모르게 계속 게임에 참여하게 되고 나오는 타이밍을 잡지 못해 빠지지 않았을까?
+라는 생각을 하게 됐다.
+이 책에서 현지의 꿈은 가격표를 보지 않는 삶이라 한다.
+이 부분을 읽고 나돈데!
+라는 생각하면서 순간 도박이라는걸로라도 돈을 많이 벌었던 현지가 부러웠다.
+그러면서 내가 도박을 했다면?라는 상상을 해봤다.
+그리고 이런 상상을 할 수 있게 만들어줘서 이 책이 더 재밌게 다가왔다.
+일상에 지루함을 느껴 도박같은 삶을 살고싶다면 도박하지말고 차라리 이 책을 보길^^ㅋ 
+```
+
+Baseline separates input text into 13 sentences because it is split when `.!?` (final symbols) appears.
+You can see it can't distinguish final eomi(종결어미) and connecting eomi(연결어미), for example it splits between `이런게 중독이 되나?` and `싶었는데`, but, in this case, `되나?` was connecting eomi (연결어미). And here's one more problem. It doesn't recognize embracing sentences (안긴문장), for example it splits between `못해 빠지지 않았을까?` and `라는 생각을 하게 됐다.`.
+```
+Koalanlp (KKMA)
+
+책 소개에 이건 소설인가 실제 인가라는 문구를 보고 재밌겠다 싶어 보게 되었다.
+' 바카라' 라는 도박은 2 장의 카드 합이 높은 사람이 이기는 게임으로 아주 단순한 게임이다.
+이런 게 중독이 되나?
+싶었는데 이 책이 바카라와 비슷한 매력이 있다 생각 들었다.
+내용이 스피드하게 진행되고 막히는 구간 없이 읽히는 게 나도 모르게 페이지를 슥슥 넘기고 있었다.
+물론 읽음으로써 큰 돈을 벌진 않지만 이런 스피드함에 나도 모르게 계속 게임에 참여하게 되고 나오는 타이밍을 잡지 못해 빠지지 않았을까?
+라는 생각을 하게 됐다.
+이 책에서 현지의 꿈은 가격표를 보지 않는 삶이라 한다.
+이 부분을 읽고 나돈데!
+라는 생각하면서 순간 도박이라는 걸로라도 돈을 많이 벌었던 현지가 부러웠다.
+그러면서 내가 도박을 했다면? 라는 상상을 해봤다.
+그리고 이런 상상을 할 수 있게 만들어 줘서 이 책이 더 재밌게 다가왔다.
+일상에 지루함을 느껴 도박 같은 삶을 살고 싶다면 도박하지 말고 차라리 이 책을 보길 ^^ ㅋ
+```
+
+The result of Koalanlp was really similar with baseline, the two problems (final-connecting eomi distinction, embracing sentences recognization).
+```
+Kiwi
+
+책소개에 이건 소설인가 실제인가
+라는 문구를 보고 재밌겠다 싶어 보게 되었다.
+'바카라'라는 도박은 2장의 카드 합이 높은 사람이 이기는 게임으로 아주 단순한 게임이다.
+이런게 중독이 되나?
+싶었는데 이 책이 바카라와 비슷한 매력이 있다 생각들었다.
+내용이 스피드하게 진행되고 막히는 구간없이 읽히는게 나도 모르게 페이지를 슥슥 넘기고 있었다.
+물론 읽음으로써 큰 돈을 벌진 않지만 이런 스피드함에 나도 모르게 계속 게임에 참여하게 되고 나오는 타이밍을 잡지 못해 빠지지 않았을까?
+라는 생각을 하게 됐다.
+이 책에서 현지의 꿈은 가격표를 보지 않는 삶이라 한다.
+이 부분을 읽고 나돈데!
+라는 생각하면서 순간 도박이라는걸로라도 돈을 많이 벌었던 현지가 부러웠다.
+그러면서 내가 도박을 했다면?
+라는 상상을 해봤다.
+그리고 이런 상상을 할 수 있게 만들어줘서 이 책이 더 재밌게 다가왔다.
+일상에 지루함을 느껴 도박같은 삶을 살고싶다면 도박하지말고 차라리 이 책을 보길^^ㅋ
+```
+The two problems are shown in result of Kiwi. It doesn't resolve the two problems.
+and it additionally splits between `실제인가` and `라는`, but it's wrong separation.
+```
+Kss (Mecab)
+
+책소개에 이건 소설인가 실제인가라는 문구를 보고 재밌겠다 싶어 보게 되었다.
+'바카라'라는 도박은 2장의 카드 합이 높은 사람이 이기는 게임으로 아주 단순한 게임이다.
+이런게 중독이 되나? 싶었는데 이 책이 바카라와 비슷한 매력이 있다 생각들었다.
+내용이 스피드하게 진행되고 막히는 구간없이 읽히는게 나도 모르게 페이지를 슥슥 넘기고 있었다.
+물론 읽음으로써 큰 돈을 벌진 않지만 이런 스피드함에 나도 모르게 계속 게임에 참여하게 되고 나오는 타이밍을 잡지 못해 빠지지 않았을까? 라는 생각을 하게 됐다.
+이 책에서 현지의 꿈은 가격표를 보지 않는 삶이라 한다.
+이 부분을 읽고 나돈데! 라는 생각하면서 순간 도박이라는걸로라도 돈을 많이 벌었던 현지가 부러웠다.
+그러면서 내가 도박을 했다면?라는 상상을 해봤다.
+그리고 이런 상상을 할 수 있게 만들어줘서 이 책이 더 재밌게 다가왔다.
+일상에 지루함을 느껴 도박같은 삶을 살고싶다면 도박하지말고 차라리 이 책을 보길^^ㅋ
+```
+The result of Kss is same with gold label, Kss considers the two problems. Of course, it's not easy to detect that parts, so Kss has one more step after splitting sentences. It's postprocessing which method to correct that problems. For example, Korean sentence doesn't start from josa (조사), so if one of the segmented result started from josa (조사), Kss attaches this to previous sentence. Besides, Kss has much more powerful postprocessing algorithms to correct wrong segementation results.
 
 #### 6) Speed analysis
 I also measured speed of tools to compare their computation efficiency. The following table shows computation time of each tool when it splits `sample.txt` (41 sentences).
