@@ -102,7 +102,7 @@ Note that the `Baseline` is regex based segmentation method (`re.split(r"(?<=[.!
 |--------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
 | Baseline                                         | `python3 ./bench/test_baseline.py ./bench/testset/*.txt`                                                  |
 | [Kiwi](https://github.com/bab2min/kiwipiepy)     | `python3 ./bench/test_kiwi.py ./bench/testset/*.txt`                                                      |
-| [Koalanlp](https://github.com/koalanlp/koalanlp) | `python3 ./bench/test_koalanlp.py ./bench/testset/*.txt --backend=OKT/HNN/KMR/RHINO/EUNJEON/ARIRANG/KAMA` |
+| [Koalanlp](https://github.com/koalanlp/koalanlp) | `python3 ./bench/test_koalanlp.py ./bench/testset/*.txt --backend=OKT/HNN/KMR/RHINO/EUNJEON/ARIRANG/KKMA` |
 | [Kss](https://github.com/hyunwoongko/kss) (ours) | `python3 ./bench/test_kss.py ./bench/testset/*.txt --backend=mecab/pecab`                                 |
 
 <br>
@@ -500,7 +500,7 @@ Note that every experiment was conducted on single thread / process environment 
 | koalanlp       | 2.1.7           | RHINO   | 978.53              |
 | koalanlp       | 2.1.7           | EUNJEON | 881.24              |
 | koalanlp       | 2.1.7           | ARIRANG | 1415.53             |
-| koalanlp       | 2.1.7           | KAMA    | 1971.31             |
+| koalanlp       | 2.1.7           | KKMA    | 1971.31             |
 | Kiwi           | 0.14.0          | N/A     | 36.41               |
 | **Kss (ours)** | 4.0.0           | pecab   | 6929.27             |
 | **Kss (ours)** | 4.0.0           | mecab   | 43.80               |
