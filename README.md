@@ -284,7 +284,7 @@ Koalanlp (KKMA):
 ```
 
 Koalanlp splits sentences better than baseline because it uses morphological information. It splits input text into 8 sentences in total.
-The first thing that catches your eye is the immature emoji handling.
+But many mispartitions still exist. The first thing that catches your eye is the immature emoji handling.
 People usually put emojis at the end of a sentence, and in this case, the emojis should be included in the sentence.
 The second thing is the mispartition between `생겼나` and `보더라구요!?`. 
 Probably this is because the KKMA morpheme analyzer recognized `생겼나` as a final eomi (종결어미). but it's a connecting eomi (연결어미).
