@@ -517,7 +517,7 @@ Note that the parameters of `split_morpehems` are exactly same with `split_sente
 
 <br>
 
-## Other languages
+## Kss in other languages
 Kss is available in various programming languages.
 - [Kss Python version](https://github.com/hyunwoongko/kss)
 - [Kss Java version](https://github.com/sangdee/kss-java)
