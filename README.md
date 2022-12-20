@@ -517,14 +517,14 @@ Note that the parameters of `split_morpehems` are exactly same with `split_sente
 
 <br>
 
-## 3. References
+## Other languages
 Kss is available in various programming languages.
-- [Python version](https://github.com/hyunwoongko/kss)
-- [Java version](https://github.com/sangdee/kss-java)
-- [Flutter version](https://github.com/khjde1207/kss_dart)
-- [C++ version](https://github.com/likejazz/korean-sentence-splitter)
+- [Kss Python version](https://github.com/hyunwoongko/kss)
+- [Kss Java version](https://github.com/sangdee/kss-java)
+- [Kss Flutter version](https://github.com/khjde1207/kss_dart)
+- [Kss C++ version](https://github.com/likejazz/korean-sentence-splitter)
 
-## 4. Citation
+## Citation
 If you find this toolkit useful, please consider citing:
 ```
 @misc{kss,
@@ -535,7 +535,7 @@ If you find this toolkit useful, please consider citing:
 }
 ```
 
-## 5. License
+## License
 Kss project is licensed under the terms of the BSD 3-Clause "New" or "Revised" License.
 
 Copyright 2021 Sang-kil Park and Hyunwoong Ko. All Rights Reserved.
