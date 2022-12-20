@@ -528,7 +528,7 @@ Kss is available in various programming languages.
 If you find this toolkit useful, please consider citing:
 ```
 @misc{kss,
-  author       = {Park, Sang-kil and Ko, Hyunwoong},
+  author       = {Ko, Hyunwoong and Park, Sang-kil},
   title        = {Kss: A Toolkit for Korean sentence segmentation},
   howpublished = {\url{https://github.com/hyunwoongko/kss}},
   year         = {2021},
@@ -538,4 +538,4 @@ If you find this toolkit useful, please consider citing:
 ## License
 Kss project is licensed under the terms of the BSD 3-Clause "New" or "Revised" License.
 
-Copyright 2021 Sang-kil Park and Hyunwoong Ko. All Rights Reserved.
+Copyright 2021 [Hyunwoong Ko](https://github.com/hyunwoongko) and [Sang-kil Park](https://github.com/likejazz). All Rights Reserved.
