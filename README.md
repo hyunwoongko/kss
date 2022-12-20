@@ -23,7 +23,7 @@ pip install kss
 ```
 
 ### Install Mecab (Optional)
-Please install one of mecab, konlpy.tag.Mecab to use Kss much faster.
+Please install mecab or konlpy.tag.Mecab to use Kss much faster.
 - mecab (Linux/MacOS): https://github.com/hyunwoongko/python-mecab-kor
 - mecab (Windows): https://cleancode-ws.tistory.com/97
 - konlpy.tag.Mecab (Linux/MacOS): https://konlpy.org/en/latest/api/konlpy.tag/#mecab-class
