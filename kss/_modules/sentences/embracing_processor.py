@@ -96,17 +96,22 @@ class EmbracingProcessor:
             self.bracket_idx = idx
             self.bracket_sent_idx = sent_idx
 
-    def realign(self, input_sentences, output_sentences, func):
+    def realign(
+        self,
+        input_sentences: List[Syllable],
+        output_sentences: List[List[Syllable]],
+        func: "function",
+    ) -> List[List[Syllable]]:
         """
         Realign wrongly split sentences because of all symbols.
 
         Args:
-            input_sentences:
-            output_sentences:
-            func:
+            input_sentences (List[Syllable]): input sentences
+            output_sentences (List[List[Syllables]): split sentences from `_split_sentences`
+            func (function): split function
 
         Returns:
-
+            List[List[Syllable]]: corrected split sentences.
         """
         if len(self.single_stack) != 0:
             return self._realign_sentences(

@@ -144,7 +144,6 @@ class SentencePostprocessor(SentenceProcessor):
         """
         for sentence_idx, output_sentence in enumerate(output_sentences):
             if sentence_idx != 0 and len(output_sentence) != 0:
-                # 1. 너무 짧은 괄호가 문장으로 처리 되었는지 검사한다.
                 if output_sentence[0].next_skip_from_current("SP").text == "(":
                     close_idx, close_last = None, None
                     for syllable_idx, output_syllable in enumerate(output_sentence):
