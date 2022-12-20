@@ -138,7 +138,7 @@ So I corrected labels of the two sentences.
 
 #### 3) Sentence segmentation performance (Quantitative Analysis)
  
-The following table shows the segmentation performance based on **exact match**.
+The following table shows the segmentation performance based on **exact match (EM)**.
 If you are unfamilar with EM score and F1 score, please refer to [this](https://qa.fastforwardlabs.com/no%20answer/null%20threshold/bert/distilbert/exact%20match/f1/robust%20predictions/2020/06/09/Evaluating_BERT_on_SQuAD.html#Metrics-for-QA).
 Kss performed best in most cases, and Kiwi performed well. Both baseline and koalanlp performed poorly.
 
