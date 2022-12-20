@@ -74,7 +74,6 @@ def _split_sentences(
         backup_sentence = preprocessor.backup(text.strip())
         morphemes = backend.pos(backup_sentence)
         syllables = preprocessor.preprocess(morphemes)
-        print(syllables)
     elif isinstance(text, tuple) and len(text) > 0 and isinstance(text[0], Syllable):
         syllables = text
     elif isinstance(text, tuple) and len(text) == 0:
@@ -82,13 +81,13 @@ def _split_sentences(
     else:
         raise ValueError("Wrong data type input for `_split_sentences`.")
 
-    # 3. define variables used for splitting
+    # 2. define variables used for splitting
     output_sentences = []
     current_sentence_syllables = []
     prev_embracing_mode = False
     split_mode = False
 
-    # 4. split sentences
+    # 3. split sentences
     for idx, syllable in enumerate(syllables):
         sent_idx = len(output_sentences)
         splitter = SentenceSplitter(syllable)
@@ -129,7 +128,7 @@ def _split_sentences(
     if len(current_sentence_syllables) != 0:
         output_sentences.append(current_sentence_syllables)
 
-    # 5. realign wrong quotes and brackets
+    # 4. realign wrong quotes and brackets
     if recursion < 10:
         output_sentences = embracing.realign(
             input_sentences=syllables,
@@ -142,7 +141,7 @@ def _split_sentences(
             ),
         )
 
-    # 6. postprocess
+    # 5. postprocess
     if postprocess is True:
         output_sentences = postprocessor.postprocess(output_sentences)
         output_sentences = [postprocessor.restore(s) for s in output_sentences]
