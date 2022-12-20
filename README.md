@@ -272,7 +272,7 @@ Baseline:
 ```
 
 Baseline separates input text into five sentences because it is split when `.!?` (final symbols) appears.
-First of all, the first sentence was well separates because the finish symbol appeared. However, since these symbols didn't appear well from the second sentence, you can see that they didn't separates.
+First of all, the first sentence was well separated because it has final symbols. However, since these symbols don't appear well from the second sentence, you can see that they were not separated.
 
 ```
 Koalanlp (KKMA):
