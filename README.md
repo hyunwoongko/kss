@@ -535,10 +535,7 @@ I've measured the performance of Kss and other libraries using 6 evaluation data
 In terms of segmentation performance, Kss performed best on most datasets. In terms of speed, baseline was the fastest, and Koalanlp (OKT backend) and Kiwi followed. 
 but Kss (mecab backend) also showed a speed that could compete with others.
 
-However, there are still many difficulties and limitations in Korean sentence segmentation libraries, including Kss. 
-In fact, it's also because very few people attack this task. 
-If anyone wants to discuss Korean sentence segmentation algorithms with me or contribute to my work, 
-feel free to send an email to kevin.ko@tunib.ai or let me know on the Github [issue](https://github.com/hyunwoongko/kss/issues) page.
+Although much progress has been made by Kiwi and Kss, there are still many difficulties and limitations in Korean sentence segmentation libraries. In fact, it's also because very few people attack this task. If anyone wants to discuss Korean sentence segmentation algorithms with me or contribute to my work, feel free to send an email to kevin.ko@tunib.ai or let me know on the Github [issue](https://github.com/hyunwoongko/kss/issues) page.
 
 </details>
 
