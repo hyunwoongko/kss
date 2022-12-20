@@ -123,13 +123,13 @@ I tested it using the following 6 evaluation datasets. Thanks to [Minchul Lee](h
 Note that I modified labels of two sentences in `sample.txt` made by [Issac](http://semantics.kr/%ed%95%9c%ea%b5%ad%ec%96%b4-%ed%98%95%ed%83%9c%ec%86%8c-%eb%b6%84%ec%84%9d%ea%b8%b0-%eb%b3%84-%eb%ac%b8%ec%9e%a5-%eb%b6%84%eb%a6%ac-%ec%84%b1%eb%8a%a5%eb%b9%84%ea%b5%90/)
 because the original blog post was written like the following:
 
-<img width=1000px src="assets/rabbit_1.png">
+<img width=1000px src="https://github.com/hyunwoongko/kss/blob/main/assets/rabbit_1.png">
 
-<img width=1000px src="assets/rabbit_2.png">
+<img width=1000px src="https://github.com/hyunwoongko/kss/blob/main/assets/rabbit_2.png">
 
 But Issac's labels were:
 
-<img width=500px src="assets/issac.png">
+<img width=500px src="https://github.com/hyunwoongko/kss/blob/main/assets/issac.png">
 
 In fact, `사실 전 고기를 안 먹어서 무슨 맛인지 모르겠지만..` and `(물론 전 안 먹었지만` are adverb clauses (부사절), not independent sentences (문장).
 So I corrected labels of the two sentences.
@@ -157,9 +157,9 @@ Kss performed best in most cases, and Kiwi performed well. Both baseline and koa
 
 You can also compare the performances with the following graphs.
 
-![](assets/tasks_performance.png)
+![](https://github.com/hyunwoongko/kss/blob/main/assets/tasks_performance.png)
 
-![](assets/average_score.png)
+![](https://github.com/hyunwoongko/kss/blob/main/assets/average_score.png)
 
 <br>
 
@@ -312,7 +312,7 @@ The second thing is it separates between `좋아하는데...` and `진정하고`
 This part may be recognized as an independent sentence depending on the viewer, 
 but the original author of the article did not write this as a sentence.
 
-![](./assets/example_1_1.png)
+![](https://github.com/hyunwoongko/kss/blob/main/assets/example_1_1.png)
 
 ```
 Kss (mecab):
@@ -416,11 +416,11 @@ Note that every experiment was conducted on single thread / process environment 
 
 You can also compare the speed of tools with the following graphs.
 
-![](assets/average_computation_time.png)
+![](https://github.com/hyunwoongko/kss/blob/main/assets/average_computation_time.png)
 
 You can also compare the speed with of faster tools the following graphs (under 100 msec).
 
-![](assets/average_computation_time_under_100.png)
+![](https://github.com/hyunwoongko/kss/blob/main/assets/average_computation_time_under_100.png)
 
 The baseline was fastest (because it's a just regex function), and Koalanlp (OKT backend), Kiwi, Kss (mecab backend) were followed.
 The slowest library was Kss (pecab backend) and it was about 160 times slower than its mecab backend.
