@@ -257,9 +257,8 @@ For this, I will take the best backend of each library (Kss=mecab, Koalanlp=KKMA
 다음에 가면 강낭콩이랑 밤 꼭 먹어봐야겠어요😙
 ```
 - Source
-```
 [https://hi-e2e2.tistory.com/193](https://hi-e2e2.tistory.com/193)
-```
+
 - Output texts
 ```
 Baseline:
@@ -351,9 +350,8 @@ but in fact there are many exceptions about this.
 들을라고 들은게 아니라 귀는 열려있으니 듣게된 대사.
 ```
 - Source
-```
 [https://mrsign92.tistory.com/6099371](https://mrsign92.tistory.com/6099371)
-```
+
 - Output texts
 ```
 Baseline:
@@ -415,9 +413,8 @@ That part is correct split point, but it blocked by one of the exceptions which 
 일상에 지루함을 느껴 도박같은 삶을 살고싶다면 도박하지말고 차라리 이 책을 보길^^ㅋ 
 ```
 - Source
-```
 [https://hi-e2e2.tistory.com/63](https://hi-e2e2.tistory.com/63)
-```
+
 - Output texts
 ```
 Baseline:
