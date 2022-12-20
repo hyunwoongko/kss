@@ -327,7 +327,7 @@ Kss (mecab):
 다음에 가면 강낭콩이랑 밤 꼭 먹어봐야겠어요😙
 ```
 The result of Kss is same with gold label. Especially it succesfully separates `가깝답니다😉` and `메뉴판을`.
-In fact, that part is the final eomi (종결어미), but many morpheme analyzers confuse the final eomi (종결어미) with the connecting eomi (연결어미). For this reason, Kss has a feature to recognize wrongly recognized connecting eomi (연결어미) and to correct those eomis. Thus, it is able to separate that domain effectively. Next, Kss doesn't split `좋아하는데...` and `진정하고` becuase `좋아하는데...` is not an independent sentence, but an embraced sentence (안긴문장). This means Kss doesn't split sentences simply because `. ` appears, unlike baseline.
+In fact, this part is the final eomi (종결어미), but many morpheme analyzers confuse the final eomi (종결어미) with the connecting eomi (연결어미). For this reason, Kss has a feature to recognize wrongly recognized connecting eomi (연결어미) and to correct those eomis. Thus, it is able to separate that domain effectively. Next, Kss doesn't split `좋아하는데...` and `진정하고` becuase `좋아하는데...` is not an independent sentence, but an embraced sentence (안긴문장). This means Kss doesn't split sentences simply because `. ` appears, unlike baseline.
 In most cases, `. ` could be the delimiter of sentences, actually there are many exceptions about this.
 
 #### Example 2
@@ -374,7 +374,7 @@ Kiwi
 
 어느화창한날 출근전에 너무일찍일어나 버렸음 (출근시간 19시) 할꺼도없고해서 카페를 찾아 시내로 나갔음 새로생긴곳에 사장님이 커피선수인지 커피박사라고 해서 갔음 오픈한지 얼마안되서 그런지 손님이 얼마없었음 조용하고 좋다며 좋아하는걸시켜서 테라스에 앉음 근데 조용하던 카페가 산만해짐 소리의 출처는 카운터였음(테라스가 카운터 바로옆) 들을라고 들은게 아니라 귀는 열려있으니 듣게된 대사.
 ```
-Kiwi couldn't separate any sentences like baseline.
+Kiwi doesn't separate any sentence, similar with baseline.
 Similarly, it doesn't consider predicative use of eomi transferred from noun (명사형 전성어미의 서술적 용법).
 
 ```
@@ -388,9 +388,8 @@ Kss (Mecab)
 근데 조용하던 카페가 산만해짐 소리의 출처는 카운터였음(테라스가 카운터 바로옆)
 들을라고 들은게 아니라 귀는 열려있으니 듣게된 대사.
 ```
-The result of Kss is very similar with gold label, Kss considers predicative use of eomi transferred from noun (명사형 전성어미의 서술적 용법),
-and has many exceptions to prevent mistakes. But Kss couldn't split `산만해짐` and `소리의`.
-That part is correct split point, but it was blocked by one of the exceptions which I built to prevent wrong segmentation.
+The result of Kss is very similar with gold label, Kss considers predicative use of eomi transferred from noun (명사형 전성어미의 서술적 용법).
+But Kss couldn't split `산만해짐` and `소리의`. That part is a correct split point, but it was blocked by one of the exceptions which I built to prevent wrong segmentation. Splitting eomi transferred from noun (명사형 전성어미) is unsafe and difficult task, so Kss has many exceptions to prevent wrong segmentation.
 
 #### Example 3
 - Input text
@@ -433,8 +432,7 @@ Baseline:
 일상에 지루함을 느껴 도박같은 삶을 살고싶다면 도박하지말고 차라리 이 책을 보길^^ㅋ 
 ```
 
-Baseline separates input text into 13 sentences because it is split when `.!?` (final symbols) appears.
-You can see it can't distinguish final eomi(종결어미) and connecting eomi(연결어미), for example it splits `이런게 중독이 되나?` and `싶었는데`, but, in this case, `되나?` was connecting eomi (연결어미). And here's one more problem. It doesn't recognize embraced sentences (안긴문장), for example it splits `못해 빠지지 않았을까?` and `라는 생각을 하게 됐다.`.
+Baseline separates input text into 13 sentences. You can see it can't distinguish final eomi(종결어미) and connecting eomi(연결어미), for example it splits `이런게 중독이 되나?` and `싶었는데`. But `되나?` is connecting eomi (연결어미). And here's one more problem. It doesn't recognize embraced sentences (안긴문장). For example it splits `못해 빠지지 않았을까?` and `라는 생각을 하게 됐다.`.
 ```
 Koalanlp (KKMA)
 
