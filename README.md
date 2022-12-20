@@ -96,7 +96,7 @@ split_sentences(
 
 #### 1) Test Commands
 You can reproduce all the following analyses using source code and datasets in `./bench/` directory and the source code was copied from [here](https://github.com/bab2min/kiwipiepy/tree/main/benchmark/sentence_split).
-Note that the `Baseline` is regex based segmentation like `re.split(r"(?<=[.!?])\s", text)`.
+Note that the `Baseline` is regex based segmentation method (`re.split(r"(?<=[.!?])\s", text)`).
 
 | Name                                             | Command (in root directory)                                                                               |
 |--------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
