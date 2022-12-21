@@ -583,8 +583,8 @@ split_morphemes(
     - `num_workers=1`: don't use multiprocessing
     - `num_workers=2~N`: use multiprocessing with the specified number of workers
 - **drop_space: Whether it drops all space characters or not**
-    - `drop_space=True`: drop all space characters from output (default)
-    - `drop_space=False`: remain all space characters from output
+    - `drop_space=True`: drop all space characters in output (default)
+    - `drop_space=False`: remain all space characters in output
 
 </details>
 
