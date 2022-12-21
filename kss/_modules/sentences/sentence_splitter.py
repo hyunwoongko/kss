@@ -100,8 +100,8 @@ class SentenceSplitter(SentenceProcessor):
                 end_split_exception = True
 
             # 예외 2
-            elif self._check_text(("－", "-", "–")) and not self._check_next_skip_sp_pos(
-                "SF"
+            elif self._check_text(("－", "-", "–")) and not (
+                self._check_next_skip_sp_pos("SF") or self._check_text(("－", "-", "–"))
             ):
                 end_split = True
                 end_split_exception = True
