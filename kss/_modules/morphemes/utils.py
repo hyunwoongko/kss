@@ -102,32 +102,35 @@ def _get_pecab():
         return None, None
 
 
-def _preserve_space(text: str, tokens: List[Tuple[str, str]]) -> List[Tuple[str, str]]:
+def _preserve_space(
+    text: str,
+    tokens: List[Tuple[str, str]],
+    spaces: str,
+) -> List[Tuple[str, str]]:
     """
     Restore spaces from analyzed results
 
     Args:
         text (str): input text
         tokens (List[Tuple[str, str]]): analyzed results
+        spaces (str): space tokens to add
 
     Returns:
         List[Tuple[str, str]]: analyzed results with space
-
-    References:
-        PororoMecabKoTokenizer from Pororo (kakaobrain)
-        https://github.com/kakaobrain/pororo/blob/master/pororo/tasks/tokenization.py#L250
     """
-    text = text.strip()
-    text_ptr = 0
     results = list()
+    len_text = len(text)
+    text_ptr = 0
+    token_ptr = 0
 
-    for unit in tokens:
-        token = unit[0]
-        pos = unit[1]
-        # \u200d is treated as EMOJI, not SP.
-        while text[text_ptr] in " \t\n\r\f\v\u200b\u200c\u2060\ufeff":
-            results.append((text[text_ptr], "SP"))
+    while text_ptr < len_text:
+        character = text[text_ptr]
+        if character in spaces:
+            results.append((character, "SP"))
             text_ptr += 1
-        results.append((token, pos))
-        text_ptr += len(token)
+        else:
+            token = tokens[token_ptr]
+            results.append(token)
+            text_ptr += len(token[0])
+            token_ptr += 1
     return results

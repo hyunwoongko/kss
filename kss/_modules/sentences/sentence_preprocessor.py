@@ -12,6 +12,9 @@ from kss._utils.const import (
     quotes_close_to_open,
     special_symbols_for_split,
     jamo,
+    spaces,
+    special_symbols_for_suffix,
+    daggers,
 )
 from kss._utils.emojis import _emojis
 
@@ -22,13 +25,16 @@ class SentencePreprocessor(SentenceProcessor):
         lambda c, p: c in ",:/ㆍ": "SC",
         lambda c, p: c in "".join(bracket_open_to_close): "SSO",
         lambda c, p: c in "".join(bracket_close_to_open): "SSC",
-        lambda c, p: c in "`'\"″": "QTN",
-        lambda c, p: c in "".join(quotes_open_to_close): "QTO",
-        lambda c, p: c in "".join(quotes_close_to_open): "QTC",
+        lambda c, p: c in "`'\"″": "QTN",  # quotes normal
+        lambda c, p: c in "".join(quotes_open_to_close): "QTO",  # quotes open
+        lambda c, p: c in "".join(quotes_close_to_open): "QTC",  # quotes close
         lambda c, p: c in jamo: "JAMO",
         lambda c, p: c == "요" and ("EC" in p or "JX" == p): "EF",
-        lambda c, p: c in special_symbols_for_split: "PS",
-        lambda c, p: (c == "^" or c in _emojis): "EMOJI",
+        lambda c, p: c in special_symbols_for_split or c in daggers: "PF",  # Prefix
+        lambda c, p: (
+            c == "^" or c in _emojis or c in special_symbols_for_suffix
+        ): "EMOJI",
+        lambda c, p: c in spaces: "SP",
     }
 
     def preprocess(self, input_morphemes: List[Tuple[str, str]]) -> List[Syllable]:

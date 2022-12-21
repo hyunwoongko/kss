@@ -14,7 +14,7 @@ from kss._utils.multiprocessing import _run_job
 from kss._utils.sanity_checks import (
     _check_num_workers,
     _check_text,
-    _check_analyzer_backend,
+    _check_analyzer_backend, _check_type,
 )
 
 preprocessor = SentencePreprocessor()
@@ -25,6 +25,7 @@ def split_sentences(
     text: Union[str, List[str], Tuple[str]],
     backend: str = "auto",
     num_workers: Union[int, str] = "auto",
+    strip: bool = True,
 ) -> Union[List[str], List[List[str]]]:
     """
     Split texts into sentences.
@@ -33,24 +34,32 @@ def split_sentences(
         text (Union[str, List[str], Tuple[str]]): single text or list/tuple of texts
         backend (str): morpheme analyzer backend. 'mecab', 'pecab' are supported.
         num_workers (Union[int, str])): the number of multiprocessing workers
+        strip (bool): strip all sentences or not
 
     Returns:
         Union[List[str], List[List[str]]]: outputs of sentence splitting.
     """
     text, finish = _check_text(text)
+    strip = _check_type(strip, "strip", bool)
 
     if finish:
         return text
 
     backend = _check_analyzer_backend(backend)
     num_workers = _check_num_workers(text, num_workers)
-    return _run_job(partial(_split_sentences, backend=backend), text, num_workers)
+
+    return _run_job(
+        func=partial(_split_sentences, backend=backend, strip=strip),
+        inputs=text,
+        num_workers=num_workers,
+    )
 
 
 @lru_cache(maxsize=500)
 def _split_sentences(
     text: Union[str, Tuple[Syllable]],
     backend: Analyzer,
+    strip: bool,
     postprocess: bool = True,
     recursion: int = 0,
 ) -> List[str]:
@@ -71,8 +80,8 @@ def _split_sentences(
 
     # 1. analyze morphemes
     if isinstance(text, str):
-        backup_sentence = preprocessor.backup(text.strip())
-        morphemes = backend.pos(backup_sentence)
+        backup_sentence = preprocessor.backup(text)
+        morphemes = backend.pos(backup_sentence, drop_space=False)
         syllables = preprocessor.preprocess(morphemes)
     elif isinstance(text, tuple) and len(text) > 0 and isinstance(text[0], Syllable):
         syllables = text
@@ -97,7 +106,12 @@ def _split_sentences(
         current_embracing_mode = not embracing.empty()
 
         if split_mode is False:
-            if splitter.check_split_start():
+            if splitter.check_split_right_now():
+                output_sentences.append(current_sentence_syllables)
+                current_sentence_syllables = [syllable]
+                syllable_added = True
+
+            elif splitter.check_split_start():
                 split_mode = True
 
         else:
@@ -136,6 +150,7 @@ def _split_sentences(
             func=partial(
                 _split_sentences,
                 backend=backend,
+                strip=strip,
                 postprocess=False,
                 recursion=recursion + 1,
             ),
@@ -143,7 +158,7 @@ def _split_sentences(
 
     # 5. postprocess
     if postprocess is True:
-        output_sentences = postprocessor.postprocess(output_sentences)
+        output_sentences = postprocessor.postprocess(output_sentences, strip)
         output_sentences = [postprocessor.restore(s) for s in output_sentences]
 
     return output_sentences

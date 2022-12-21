@@ -6,11 +6,16 @@ from functools import lru_cache
 from typing import Tuple, List, Any
 
 from kss._modules.morphemes.utils import _get_mecab, _get_pecab, _preserve_space
+from kss._utils.const import spaces
 
 
 class Analyzer(ABC):
-    def pos(self, text: str) -> Any:
+    def pos(self, text: str, drop_space: bool) -> Any:
         raise NotImplementedError
+
+    @staticmethod
+    def _drop_space(tokens: List[Tuple[str, str]]) -> List[Tuple[str, str]]:
+        return [token for token in tokens if token[0] not in spaces]
 
 
 class MecabAnalyzer(Analyzer):
@@ -18,19 +23,23 @@ class MecabAnalyzer(Analyzer):
     _analyzer, _backend = _get_mecab()
 
     @lru_cache(maxsize=500)
-    def pos(self, text: str) -> List[Tuple[str, str]]:
+    def pos(self, text: str, drop_space: bool) -> List[Tuple[str, str]]:
         """
         Get pos information.
 
         Args:
             text (str): input text
+            drop_space (bool): drop all spaces or not.
 
         Returns:
             List[Tuple[str, str]]: output of analysis.
         """
-
         output = self._analyzer.pos(text)
-        output = _preserve_space(text, output)
+        output = _preserve_space(text, output, spaces=" \n\r\t\v")
+
+        if drop_space:
+            output = self._drop_space(output)
+
         return output
 
 
@@ -39,14 +48,21 @@ class PecabAnalyzer(Analyzer):
     _analyzer, _backend = _get_pecab()
 
     @lru_cache(maxsize=500)
-    def pos(self, text: str) -> List[Tuple[str, str]]:
+    def pos(self, text: str, drop_space: bool) -> List[Tuple[str, str]]:
         """
         Get pos information.
 
         Args:
             text (str): input text
+            drop_space (bool): drop all spaces or not.
 
         Returns:
             List[Tuple[str, str]]: output of analysis.
         """
-        return self._analyzer.pos(text, drop_space=False)
+        output = self._analyzer.pos(text)
+        output = _preserve_space(text, output, spaces=" \n\r\t\v\f")
+
+        if drop_space:
+            output = self._drop_space(output)
+
+        return output

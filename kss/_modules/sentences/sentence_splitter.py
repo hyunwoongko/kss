@@ -111,6 +111,19 @@ class SentenceSplitter(SentenceProcessor):
     # Splitting Rules #
     ###################
 
+    def check_split_right_now(self) -> bool:
+        """
+        Check whether the given syllable is split end point or not.
+
+        Returns:
+            bool: whether the given syllable is split end point or not.
+
+        Notes:
+            단락기호(¶)나 섹션기호(§)가 등장하면 곧바로 분리한다.
+        """
+        available = self.syllable.check_text("¶") or self.syllable.check_text("§")
+        return available
+
     def _sf(self) -> bool:
         """
         Check whether the given syllable is split end point or not.

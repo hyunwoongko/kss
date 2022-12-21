@@ -3,7 +3,7 @@
 
 import platform
 import unicodedata
-from typing import Union, Tuple, List, Any, Optional
+from typing import Union, Tuple, List, Any, Optional, Type
 
 from kss._modules.morphemes.analyzers import (
     MecabAnalyzer,
@@ -29,6 +29,36 @@ def _message_by_user_os(linux_macos: str, windows: str) -> str:
         return windows
 
 
+def _check_type(param: Any, param_name: str, types: Union[Type, List[Type]]) -> Any:
+    """
+    Check param type is
+
+    Args:
+        param (bool): param value
+        param_name (str): param name
+        types (Union[Type, List[Type]]): types
+
+    Returns:
+        Any: param value
+    """
+    was_list = True
+
+    if not isinstance(types, list) or not isinstance(types, tuple):
+        types = [types]
+        was_list = False
+
+    available = any([isinstance(param, _type) for _type in types])
+
+    if not available:
+        raise TypeError(
+            f"Oops! '{type(param)}' is not supported type for `{param_name}`.\n"
+            f"Currently kss only supports {types if was_list else types[0]} {'types' if was_list else 'type'} for this parameter.\n"
+            f"Please check `{param_name}` parameter again ;)\n"
+        )
+
+    return param
+
+
 def _check_text(
     text: Union[str, List[str], Tuple[str]]
 ) -> Tuple[Union[str, List[str], Tuple[str]], bool]:
@@ -49,7 +79,7 @@ def _check_text(
         and not isinstance(text, list)
         and not isinstance(text, tuple)
     ):
-        raise ValueError(
+        raise TypeError(
             f"Oops! '{type(text)}' is not supported type for `text` parameter.\n"
             f"Currently kss only supports [str, List[str], Tuple[str]] types.\n"
             f"Please check `text` parameter again ;)\n"
@@ -59,7 +89,7 @@ def _check_text(
         are_strings = [isinstance(t, str) for t in text]
         if not all(are_strings):
             not_string_idx = are_strings.index(False)
-            raise ValueError(
+            raise TypeError(
                 "Oops! Some elements in `text` parameter were not string.\n"
                 f"For example, index {not_string_idx} was {type(text[not_string_idx])}.\n"
                 f"Currently kss only supports [str, List[str], Tuple[str]] for it.\n"
@@ -221,7 +251,7 @@ def _check_num_workers(
         num_workers = num_workers.lower()
 
     if not isinstance(num_workers, int) and num_workers != "auto":
-        raise ValueError(
+        raise TypeError(
             f"Oops! '{num_workers}' is not supported value for `num_workers` type.\n"
             f"Currently kss only supports [int, 'auto'] for it.\n"
             f"Please check `num_workers` parameter again ;)"

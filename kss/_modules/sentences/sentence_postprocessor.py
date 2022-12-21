@@ -1,26 +1,34 @@
 # Copyright (C) 2021 Hyunwoong Ko <kevin.ko@tunib.ai> and Sang-Kil Park <skpark1224@hyundai.com>
 # All rights reserved.
-
+import re
 from typing import List
 
 from kss._elements.subclasses import Syllable
 from kss._modules.sentences.sentence_preprocessor import SentenceProcessor
-from kss._utils.const import quotes_or_brackets_close_to_open, faces
+from kss._utils.const import quotes_or_brackets_close_to_open, faces, spaces, daggers
 
 
 class SentencePostprocessor(SentenceProcessor):
     backup = {str(abs(hash(k))): k for k in faces}
 
-    def postprocess(self, output_sentences: List[List[Syllable]]) -> List[str]:
+    def postprocess(
+        self,
+        output_sentences: List[List[Syllable]],
+        strip: bool,
+    ) -> List[str]:
         """
         Postprocess output sentences by splitting rules
 
         Args:
             output_sentences (List[List[Syllable]]): output sentences by splitting rules in syllable object
+            strip (bool): strip all sentences or not
 
         Returns:
             List[str]: postprocessed output setences in string
         """
+
+        output_sentences = self._move_footnote_to_previous(output_sentences)
+        output_sentences = self._move_daggers_to_previous(output_sentences)
 
         output_sentences = self._merge_broken_sub_sentence_in_quotes_or_brackets(
             output_sentences
@@ -31,9 +39,10 @@ class SentencePostprocessor(SentenceProcessor):
         output_sentences = self._move_unexpected_split_sentences_to_previous(
             output_sentences
         )
-        output_sentences = self._move_footnote_to_previous(output_sentences)
 
-        return self._convert_syllables_to_sentences_with_cleaning(output_sentences)
+        return self._convert_syllables_to_sentences_with_cleaning(
+            output_sentences, strip
+        )
 
     def _merge_broken_sub_sentence_in_quotes_or_brackets(
         self, output_sentences: List[List[Syllable]]
@@ -124,6 +133,70 @@ class SentencePostprocessor(SentenceProcessor):
                 first_close[syllable_close].remove((close_sent_idx, close_idx))
         return self._remove_empty_sentence(output_sentences)
 
+    @staticmethod
+    def _check_text_from_character(output_syllable: Syllable, target: str):
+        """
+        Check given text is matched from character
+
+        Args:
+            output_syllable (Syllable): output syllable
+            target (str): target string
+
+        Returns:
+            bool: match or not
+        """
+        _next = output_syllable
+        if (not target.startswith(output_syllable.text)) and _next.text in target:
+            split = target.split(_next.text)
+            if len(split) > 1:
+                target = output_syllable.text + target.split(_next.text)[1]
+
+        for idx, char in enumerate(target):
+            if _next.text != char:
+                return False
+            else:
+                _next = _next.next
+        return True
+
+    def _move_daggers_to_previous(
+        self, output_sentences: List[List[Syllable]]
+    ) -> List[List[Syllable]]:
+        """
+        Move daggers to previous.
+
+        Args:
+            output_sentences (List[List[Syllable]]): list of syllables
+
+        Returns:
+            List[List[Syllable]]: corrected list of syllables.
+
+        Notes:
+            칼표 처리:
+                칼표가 처음으로 등장한 문장의 이전문장이 행갈이나 공백으로 끝난게 아니라면 칼표를 이전 문장으로 옮긴다.
+
+            예시:
+                입력: ["GPT3는 인공지능 모델이다.", "† 그러나 이 모델은""]
+                출력: ["GPT3는 인공지능 모델이다.†", "그러나 이 모델은""] <--- 본문에 쓰인 각주로 인식.
+
+                입력: ["GPT3는 인공지능 모델이다.\n", "† 그러나 이 모델은""]
+                출력: ["GPT3는 인공지능 모델이다.\n", "† 그러나 이 모델은""]  <--- footer에 쓰인 각주로 인식. (그대로 유지)
+
+                입력: ["GPT3는 인공지능 모델이다. ", "† 그러나 이 모델은""]
+                출력: ["GPT3는 인공지능 모델이다. ", "† 그러나 이 모델은""]  <--- footer에 쓰인 각주로 인식. (그대로 유지)
+        """
+
+        for sentence_idx, output_sentence in enumerate(output_sentences):
+            if sentence_idx != 0 and len(output_sentence) != 0:
+                if output_sentence[0].next_skip_from_current("SP").text in daggers:
+                    if output_sentences[sentence_idx - 1][-1].text not in " \r\n\v\f":
+                        insert_idx = sentence_idx - 1
+                        while insert_idx > 0 and len(output_sentences[insert_idx]) == 0:
+                            insert_idx -= 1
+                        output_sentences[insert_idx].append(output_sentence[0])
+                        output_sentences[sentence_idx] = output_sentence[1:]
+
+        return self._remove_empty_sentence(output_sentences)
+
     def _move_footnote_to_previous(
         self, output_sentences: List[List[Syllable]]
     ) -> List[List[Syllable]]:
@@ -138,30 +211,74 @@ class SentencePostprocessor(SentenceProcessor):
 
         Notes:
             각주 처리:
-                최초로 발견되는 대괄호('[') 안에 있는 것이 대괄호 및 숫자 뿐일때 각주로 인식하고 이전 문장으로 옮긴다.
+                최초로 발견되는 대괄호('[') 안에 있는 것이 각주이면 이를 이전 문장으로 옮긴다.
 
             예시:
                 입력: ["그것은 사실이였다.", "[13] 하지만 그에 따라"]
                 출력: ["그것은 사실이였다.[13]", "하지만 그에 따라"]
+
+                출력: ["그것은 사실이였다.", "[편집]하지만 그에 따라"]
+                출력: ["그것은 사실이였다.[편집]", "하지만 그에 따라"]
+
+                출력: ["그것은 사실이였다.", "[편집]을 하고 싶지만 그에 따라"]
+                출력: ["그것은 사실이였다.", "[편집]을 하고 싶지만 그에 따라"] <--- 유지
+
+                출력: ["그것은 사실이였다.", "[더 보기] 마침 좋은 생각이 떠올랐다."]
+                출력: ["그것은 사실이였다.[더 보기]", "마침 좋은 생각이 떠올랐다."]
+
+                출력: ["그것은 사실이였다.", "[더 보기] 버튼을 눌러보세요."]
+                출력: ["그것은 사실이였다.", "[더 보기] 버튼을 눌러보세요."] <--- 유지
+
+                출력: ["그것은 사실이였다.", "[사각형]은"]
+                출력: ["그것은 사실이였다.", "[사각형]은"] <--- 유지
         """
+
         for sentence_idx, output_sentence in enumerate(output_sentences):
             if sentence_idx != 0 and len(output_sentence) != 0:
                 if output_sentence[0].next_skip_from_current("SP").text == "[":
                     close_idx = None
+                    move = False
                     for syllable_idx, output_syllable in enumerate(output_sentence):
-                        if output_syllable.text not in "[0123456789]":
+                        if output_sentences[sentence_idx - 1][
+                            -1
+                        ].text not in "\r\n\v\f" and (
+                            output_syllable.text in "[0123456789*]"
+                            or self._check_text_from_character(output_syllable, "편집]")
+                            or self._check_text_from_character(output_syllable, "더 보기]")
+                            or self._check_text_from_character(output_syllable, "더보기]")
+                            or self._check_text_from_character(output_syllable, "스포일러]")
+                        ):
+                            move = True
+                        else:
                             break
+
                         if output_syllable.text == "]":
                             close_idx = syllable_idx
 
                     if close_idx is not None:
-                        insert_idx = sentence_idx - 1
-                        while insert_idx > 0 and len(output_sentences[insert_idx]) == 0:
-                            insert_idx -= 1
-                        output_sentences[insert_idx] += output_sentence[: close_idx + 1]
-                        output_sentences[sentence_idx] = output_sentence[
-                            close_idx + 1 :
-                        ]
+                        if move is True:
+                            if close_idx + 1 < len(output_sentence):
+                                next_syllable = output_sentence[
+                                    close_idx + 1
+                                ].next_skip_from_current("SP")
+
+                                move = (not next_syllable.pos.startswith("J")) and (
+                                    not next_syllable.check_texts("버튼")
+                                )
+
+                        if move is True:
+                            insert_idx = sentence_idx - 1
+                            while (
+                                insert_idx > 0
+                                and len(output_sentences[insert_idx]) == 0
+                            ):
+                                insert_idx -= 1
+                            output_sentences[insert_idx] += output_sentence[
+                                : close_idx + 1
+                            ]
+                            output_sentences[sentence_idx] = output_sentence[
+                                close_idx + 1 :
+                            ]
 
         return self._remove_empty_sentence(output_sentences)
 
@@ -253,8 +370,12 @@ class SentencePostprocessor(SentenceProcessor):
 
         Notes:
             분리된 문장이 조사(J*), 긍정지정사(VCP), 연결어미(EC), 보조용언(VX)으로 시작되면 이전 문장에 이어 붙인다.
+            또는 문장이 칼표나 겹칼표 등의 주석 문자로 시작 했을때 다음 문자가 공백이 아니면
 
             예시:
+                입력: ['반드시 막아야만 한다', '라고 했다']
+                출력: ['반드시 막아야만 한다라고 했다']
+
                 입력: ['반드시 막아야만 한다', '라고 했다']
                 출력: ['반드시 막아야만 한다라고 했다']
         """
@@ -275,6 +396,7 @@ class SentencePostprocessor(SentenceProcessor):
                         exclude=("MAJ", "+J", "+VCP", "+EC", "+VX"),
                     )
                 )
+                # or (output_sentence[0].text in daggers)
             ):
                 for output_syllable in output_sentence:
                     insert_idx = sentence_idx - 1
@@ -287,12 +409,14 @@ class SentencePostprocessor(SentenceProcessor):
     @staticmethod
     def _convert_syllables_to_sentences_with_cleaning(
         output_sentences: List[List[Syllable]],
+        strip: bool,
     ) -> List[str]:
         """
         Convert syllables to sentences with cleaning
 
         Args:
             output_sentences (List[List[Syllable]]): output syllables
+            strip (bool): strip all sentences or not
 
         Returns:
             List[str]: output sentences list
@@ -302,9 +426,9 @@ class SentencePostprocessor(SentenceProcessor):
         """
         final_output_sentences = []
         for output_sentence in output_sentences:
-            output_sentence = "".join(
-                [syllable.text for syllable in output_sentence]
-            ).strip()
+            output_sentence = "".join([syllable.text for syllable in output_sentence])
+            if strip is True:
+                output_sentence = output_sentence.strip(spaces)
             if len(output_sentence) != 0:
                 final_output_sentences.append(output_sentence)
 

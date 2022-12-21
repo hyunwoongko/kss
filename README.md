@@ -39,7 +39,8 @@ from kss import split_sentences
 split_sentences(
     text: Union[str, List[str], Tuple[str]],
     backend: str = "auto",
-    num_workers: Union[int, str] = "auto" 
+    num_workers: Union[int, str] = "auto" ,
+    strip: bool = True,
 )
 ```
 
@@ -49,14 +50,17 @@ split_sentences(
 - **text: String or List/Tuple of strings**
     - string: single text segmentation
     - list/tuple of strings: batch texts segmentation
-- **backend: Morpheme analyzer backend.**
+- **backend: Morpheme analyzer backend**
     - `backend='auto'`: find `mecab` → `konlpy.tag.Mecab` → `pecab` and use first found analyzer (default)
     - `backend='mecab'`: find `mecab` → `konlpy.tag.Mecab` and use first found analyzer
     - `backend='pecab'`: use `pecab` analyzer
-- **num_workers: The number of multiprocessing workers.**
+- **num_workers: The number of multiprocessing workers**
     - `num_workers='auto'`: use multiprocessing with the maximum number of workers if possible (default)
     - `num_workers=1`: don't use multiprocessing
     - `num_workers=2~N`: use multiprocessing with the specified number of workers
+- **strip: Whether it does `strip()` for all output sentences or not**
+  - `strip=True`: do `strip()` for all output sentences (default)
+  - `strip=False`: do not `strip()` for all output sentences
 
 </details>
 
@@ -87,6 +91,16 @@ split_sentences(
   # [['회사 동료 분들과 다녀왔는데 분위기도 좋고 음식도 맛있었어요', '다만, 강남 토끼정이 강남 쉑쉑버거 골목길로 쭉 올라가야 하는데 다들 쉑쉑버거의 유혹에 넘어갈 뻔 했답니다']
   # ['강남역 맛집 토끼정의 외부 모습.', '강남 토끼정은 4층 건물 독채로 이루어져 있습니다.']
   # ['역시 토끼정 본 점 답죠?ㅎㅅㅎ', '건물은 크지만 간판이 없기 때문에 지나칠 수 있으니 조심하세요', '강남 토끼정의 내부 인테리어.']]
+  ```
+
+- Remain all prefixes/suffixes space characters for original text recoverability
+  ```python
+  import kss
+  
+  text = "회사 동료 분들과 다녀왔는데 분위기도 좋고 음식도 맛있었어요\n다만, 강남 토끼정이 강남 쉑쉑버거 골목길로 쭉 올라가야 하는데 다들 쉑쉑버거의 유혹에 넘어갈 뻔 했답니다 강남역 맛집 토끼정의 외부 모습."
+
+  kss.split_sentences(text)
+  # ['회사 동료 분들과 다녀왔는데 분위기도 좋고 음식도 맛있었어요\n', '다만, 강남 토끼정이 강남 쉑쉑버거 골목길로 쭉 올라가야 하는데 다들 쉑쉑버거의 유혹에 넘어갈 뻔 했답니다 ', '강남역 맛집 토끼정의 외부 모습.']
   ```
 
 </details>
@@ -549,14 +563,13 @@ from kss import split_morphemes
 split_morphemes(
     text: Union[str, List[str], Tuple[str]],
     backend: str = "auto",
-    num_workers: Union[int, str] = "auto" 
+    num_workers: Union[int, str] = "auto",
+    drop_space: bool = True,
 )
 ```
 
 <details>
 <summary>Parameters</summary>
-
-Note that the parameters of `split_morpehems` are exactly same with `split_sentences`.
 
 - **text: String or List/Tuple of strings**
     - string: single text segmentation
@@ -565,10 +578,13 @@ Note that the parameters of `split_morpehems` are exactly same with `split_sente
     - `backend='auto'`: find `mecab` → `konlpy.tag.Mecab` → `pecab` and use first found analyzer (default)
     - `backend='mecab'`: find `mecab` → `konlpy.tag.Mecab` and use first found analyzer
     - `backend='pecab'`: use `pecab` analyzer
-- **num_workers: The number of multiprocessing workers.**
+- **num_workers: The number of multiprocessing workers**
     - `num_workers='auto'`: use multiprocessing with the maximum number of workers if possible (default)
     - `num_workers=1`: don't use multiprocessing
     - `num_workers=2~N`: use multiprocessing with the specified number of workers
+- **drop_space: Whether it drops all space characters or not**
+    - `drop_space=True`: drop all space characters from output (default)
+    - `drop_space=False`: remain all space characters from output
 
 </details>
 
@@ -582,7 +598,7 @@ Note that the parameters of `split_morpehems` are exactly same with `split_sente
   text = "회사 동료 분들과 다녀왔는데 분위기도 좋고 음식도 맛있었어요 다만, 강남 토끼정이 강남 쉑쉑버거 골목길로 쭉 올라가야 하는데 다들 쉑쉑버거의 유혹에 넘어갈 뻔 했답니다 강남역 맛집 토끼정의 외부 모습."
 
   kss.split_morphemes(text)
-  # [('회사', 'NNG'), (' ', 'SP'), ('동료', 'NNG'), (' ', 'SP'), ('분', 'NNB'), ('들', 'XSN'), ('과', 'JKB'), (' ', 'SP'), ('다녀왔', 'VV+EP'), ('는데', 'EC'), (' ', 'SP'), ('분위기', 'NNG'), ('도', 'JX'), (' ', 'SP'), ('좋', 'VA'), ('고', 'EC'), (' ', 'SP'), ('음식', 'NNG'), ('도', 'JX'), (' ', 'SP'), ('맛있', 'VA'), ('었', 'EP'), ('어요', 'EF'), (' ', 'SP'), ('다만', 'MAJ'), (',', 'SC'), (' ', 'SP'), ('강남', 'NNP'), (' ', 'SP'), ('토끼', 'NNG'), ('정', 'NNG'), ('이', 'JKS'), (' ', 'SP'), ('강남', 'NNP'), (' ', 'SP'), ('쉑쉑', 'MAG'), ('버거', 'NNG'), (' ', 'SP'), ('골목길', 'NNG'), ('로', 'JKB'), (' ', 'SP'), ('쭉', 'MAG'), (' ', 'SP'), ('올라가', 'VV'), ('야', 'EC'), (' ', 'SP'), ('하', 'VV'), ('는데', 'EC'), (' ', 'SP'), ('다', 'MAG'), ('들', 'XSN'), (' ', 'SP'), ('쉑쉑', 'MAG'), ('버거', 'NNG'), ('의', 'JKG'), (' ', 'SP'), ('유혹', 'NNG'), ('에', 'JKB'), (' ', 'SP'), ('넘어갈', 'VV+ETM'), (' ', 'SP'), ('뻔', 'NNB'), (' ', 'SP'), ('했', 'VV+EP'), ('답니다', 'EC'), (' ', 'SP'), ('강남역', 'NNP'), (' ', 'SP'), ('맛집', 'NNG'), (' ', 'SP'), ('토끼', 'NNG'), ('정의', 'NNG'), (' ', 'SP'), ('외부', 'NNG'), (' ', 'SP'), ('모습', 'NNG'), ('.', 'SF')]
+  # [('회사', 'NNG'), ('동료', 'NNG'), ('분', 'NNB'), ('들', 'XSN'), ('과', 'JKB'), ('다녀왔', 'VV+EP'), ('는데', 'EC'), ('분위기', 'NNG'), ('도', 'JX'), ('좋', 'VA'), ('고', 'EC'), ('음식', 'NNG'), ('도', 'JX'), ('맛있', 'VA'), ('었', 'EP'), ('어요', 'EF'), ('다만', 'MAJ'), (',', 'SC'), ('강남', 'NNP'), ('토끼', 'NNG'), ('정', 'NNG'), ('이', 'JKS'), ('강남', 'NNP'), ('쉑쉑', 'MAG'), ('버거', 'NNG'), ('골목길', 'NNG'), ('로', 'JKB'), ('쭉', 'MAG'), ('올라가', 'VV'), ('야', 'EC'), ('하', 'VV'), ('는데', 'EC'), ('다', 'MAG'), ('들', 'XSN'), ('쉑쉑', 'MAG'), ('버거', 'NNG'), ('의', 'JKG'), ('유혹', 'NNG'), ('에', 'JKB'), ('넘어갈', 'VV+ETM'), ('뻔', 'NNB'), ('했', 'VV+EP'), ('답니다', 'EC'), ('강남역', 'NNP'), ('맛집', 'NNG'), ('토끼', 'NNG'), ('정의', 'NNG'), ('외부', 'NNG'), ('모습', 'NNG'), ('.', 'SF')]
   ```
 
 - Batch texts segmentation
@@ -596,9 +612,19 @@ Note that the parameters of `split_morpehems` are exactly same with `split_sente
   ]
 
   kss.split_morphemes(texts)
-  # [[('회사', 'NNG'), (' ', 'SP'), ('동료', 'NNG'), (' ', 'SP'), ('분', 'NNB'), ('들', 'XSN'), ('과', 'JKB'), (' ', 'SP'), ('다녀왔', 'VV+EP'), ('는데', 'EC'), (' ', 'SP'), ('분위기', 'NNG'), ('도', 'JX'), (' ', 'SP'), ('좋', 'VA'), ('고', 'EC'), (' ', 'SP'), ('음식', 'NNG'), ('도', 'JX'), (' ', 'SP'), ('맛있', 'VA'), ('었', 'EP'), ('어요', 'EF'), (' ', 'SP'), ('다만', 'MAJ'), (',', 'SC'), (' ', 'SP'), ('강남', 'NNP'), (' ', 'SP'), ('토끼', 'NNG'), ('정', 'NNG'), ('이', 'JKS'), (' ', 'SP'), ('강남', 'NNP'), (' ', 'SP'), ('쉑쉑', 'MAG'), ('버거', 'NNG'), (' ', 'SP'), ('골목길', 'NNG'), ('로', 'JKB'), (' ', 'SP'), ('쭉', 'MAG'), (' ', 'SP'), ('올라가', 'VV'), ('야', 'EC'), (' ', 'SP'), ('하', 'VV'), ('는데', 'EC'), (' ', 'SP'), ('다', 'MAG'), ('들', 'XSN'), (' ', 'SP'), ('쉑쉑', 'MAG'), ('버거', 'NNG'), ('의', 'JKG'), (' ', 'SP'), ('유혹', 'NNG'), ('에', 'JKB'), (' ', 'SP'), ('넘어갈', 'VV+ETM'), (' ', 'SP'), ('뻔', 'NNB'), (' ', 'SP'), ('했', 'VV+EP'), ('답니다', 'EC')], 
-  # [('강남역', 'NNP'), (' ', 'SP'), ('맛집', 'NNG'), (' ', 'SP'), ('토끼', 'NNG'), ('정의', 'NNG'), (' ', 'SP'), ('외부', 'NNG'), (' ', 'SP'), ('모습', 'NNG'), ('.', 'SF'), (' ', 'SP'), ('강남', 'NNP'), (' ', 'SP'), ('토끼', 'NNG'), ('정은', 'NNP'), (' ', 'SP'), ('4', 'SN'), ('층', 'NNG'), (' ', 'SP'), ('건물', 'NNG'), (' ', 'SP'), ('독채', 'NNG'), ('로', 'JKB'), (' ', 'SP'), ('이루어져', 'VV+EC'), (' ', 'SP'), ('있', 'VX'), ('습니다', 'EF'), ('.', 'SF')], 
-  # [('역시', 'MAJ'), (' ', 'SP'), ('토끼', 'NNG'), ('정', 'NNG'), (' ', 'SP'), ('본', 'VV+ETM'), (' ', 'SP'), ('점', 'NNB'), (' ', 'SP'), ('답', 'MAG+VCP'), ('죠', 'EF'), ('?', 'SF'), ('ㅎ', 'IC'), ('ㅅ', 'NNG'), ('ㅎ', 'IC'), (' ', 'SP'), ('건물', 'NNG'), ('은', 'JX'), (' ', 'SP'), ('크', 'VA'), ('지만', 'EC'), (' ', 'SP'), ('간판', 'NNG'), ('이', 'JKS'), (' ', 'SP'), ('없', 'VA'), ('기', 'ETN'), (' ', 'SP'), ('때문', 'NNB'), ('에', 'JKB'), (' ', 'SP'), ('지나칠', 'VV+ETM'), (' ', 'SP'), ('수', 'NNB'), (' ', 'SP'), ('있', 'VV'), ('으니', 'EC'), (' ', 'SP'), ('조심', 'NNG'), ('하', 'XSV'), ('세요', 'EP+EF'), (' ', 'SP'), ('강남', 'NNP'), (' ', 'SP'), ('토끼', 'NNG'), ('정의', 'NNG'), (' ', 'SP'), ('내부', 'NNG'), (' ', 'SP'), ('인테리어', 'NNG'), ('.', 'SF')]]
+  # [[('회사', 'NNG'), ('동료', 'NNG'), ('분', 'NNB'), ('들', 'XSN'), ('과', 'JKB'), ('다녀왔', 'VV+EP'), ('는데', 'EC'), ('분위기', 'NNG'), ('도', 'JX'), ('좋', 'VA'), ('고', 'EC'), ('음식', 'NNG'), ('도', 'JX'), ('맛있', 'VA'), ('었', 'EP'), ('어요', 'EF'), ('다만', 'MAJ'), (',', 'SC'), ('강남', 'NNP'), ('토끼', 'NNG'), ('정', 'NNG'), ('이', 'JKS'), ('강남', 'NNP'), ('쉑쉑', 'MAG'), ('버거', 'NNG'), ('골목길', 'NNG'), ('로', 'JKB'), ('쭉', 'MAG'), ('올라가', 'VV'), ('야', 'EC'), ('하', 'VV'), ('는데', 'EC'), ('다', 'MAG'), ('들', 'XSN'), ('쉑쉑', 'MAG'), ('버거', 'NNG'), ('의', 'JKG'), ('유혹', 'NNG'), ('에', 'JKB'), ('넘어갈', 'VV+ETM'), ('뻔', 'NNB'), ('했', 'VV+EP'), ('답니다', 'EC')], 
+  # [('강남역', 'NNP'), ('맛집', 'NNG'), ('토끼', 'NNG'), ('정의', 'NNG'), ('외부', 'NNG'), ('모습', 'NNG'), ('.', 'SF'), ('강남', 'NNP'), ('토끼', 'NNG'), ('정은', 'NNP'), ('4', 'SN'), ('층', 'NNG'), ('건물', 'NNG'), ('독채', 'NNG'), ('로', 'JKB'), ('이루어져', 'VV+EC'), ('있', 'VX'), ('습니다', 'EF'), ('.', 'SF')], 
+  # [('역시', 'MAJ'), ('토끼', 'NNG'), ('정', 'NNG'), ('본', 'VV+ETM'), ('점', 'NNB'), ('답', 'MAG+VCP'), ('죠', 'EF'), ('?', 'SF'), ('ㅎ', 'IC'), ('ㅅ', 'NNG'), ('ㅎ', 'IC'), ('건물', 'NNG'), ('은', 'JX'), ('크', 'VA'), ('지만', 'EC'), ('간판', 'NNG'), ('이', 'JKS'), ('없', 'VA'), ('기', 'ETN'), ('때문', 'NNB'), ('에', 'JKB'), ('지나칠', 'VV+ETM'), ('수', 'NNB'), ('있', 'VV'), ('으니', 'EC'), ('조심', 'NNG'), ('하', 'XSV'), ('세요', 'EP+EF'), ('강남', 'NNP'), ('토끼', 'NNG'), ('정의', 'NNG'), ('내부', 'NNG'), ('인테리어', 'NNG'), ('.', 'SF')]]
+  ```
+
+- Remain space characters for original text recoverability
+  ```python
+  import kss
+  
+  text = "회사 동료 분들과 다녀왔는데 분위기도 좋고 음식도 맛있었어요\n다만,\t강남 토끼정이 강남 쉑쉑버거 골목길로 쭉 올라가야 하는데 다들 쉑쉑버거의 유혹에 넘어갈 뻔 했답니다 강남역 맛집 토끼정의 외부 모습."
+
+  kss.split_morphemes(text, drop_space=False)
+  # [('회사', 'NNG'), (' ', 'SP'), ('동료', 'NNG'), (' ', 'SP'), ('분', 'NNB'), ('들', 'XSN'), ('과', 'JKB'), (' ', 'SP'), ('다녀왔', 'VV+EP'), ('는데', 'EC'), (' ', 'SP'), ('분위기', 'NNG'), ('도', 'JX'), (' ', 'SP'), ('좋', 'VA'), ('고', 'EC'), (' ', 'SP'), ('음식', 'NNG'), ('도', 'JX'), (' ', 'SP'), ('맛있', 'VA'), ('었', 'EP'), ('어요', 'EF'), ('\n', 'SP'), ('다만', 'MAJ'), (',', 'SC'), ('\t', 'SP'), ('강남', 'NNP'), (' ', 'SP'), ('토끼', 'NNG'), ('정', 'NNG'), ('이', 'JKS'), (' ', 'SP'), ('강남', 'NNP'), (' ', 'SP'), ('쉑쉑', 'MAG'), ('버거', 'NNG'), (' ', 'SP'), ('골목길', 'NNG'), ('로', 'JKB'), (' ', 'SP'), ('쭉', 'MAG'), (' ', 'SP'), ('올라가', 'VV'), ('야', 'EC'), (' ', 'SP'), ('하', 'VV'), ('는데', 'EC'), (' ', 'SP'), ('다', 'MAG'), ('들', 'XSN'), (' ', 'SP'), ('쉑쉑', 'MAG'), ('버거', 'NNG'), ('의', 'JKG'), (' ', 'SP'), ('유혹', 'NNG'), ('에', 'JKB'), (' ', 'SP'), ('넘어갈', 'VV+ETM'), (' ', 'SP'), ('뻔', 'NNB'), (' ', 'SP'), ('했', 'VV+EP'), ('답니다', 'EC'), (' ', 'SP'), ('강남역', 'NNP'), (' ', 'SP'), ('맛집', 'NNG'), (' ', 'SP'), ('토끼', 'NNG'), ('정의', 'NNG'), (' ', 'SP'), ('외부', 'NNG'), (' ', 'SP'), ('모습', 'NNG'), ('.', 'SF')]
   ```
 
 </details>

@@ -162,14 +162,11 @@ quotes_or_brackets_close_to_open.update(quotes_close_to_open)
 quotes_or_brackets_close_to_open.update(bracket_close_to_open)
 
 # special symbols
-special_symbols_for_split = (
-    """§※○●◎◇◆□■△▲▽▼→←↑↓↔◁◀▷▶♤♠♧♣⊙◈▣◐◑▒▤▥▨▧▦▩♨☏☎☜☞¶†‡↕↗↙↖↘㉿㈜№㏇㏂㏘℡ª*"""
-)
-faces = {":)", ":(", ":'(", "O:)", "&)", ">:(", "3:)", '<(")', ":-)", ":-(", "◡̈"}
-number_with_quotes = {f"{num}'" for num in range(0, 9)}
-alphabet_with_quotes = {f"{alpha}'" for alpha in alphabets}
-number_with_bracket = {f"{num})" for num in range(0, 9)}
-backup_etc = {"관야유적", "라요 바예카노"}
+special_symbols_for_split = """㈜¶§※○●◎◇◆□■△▲▽▼→↑↓↔◁◀▷▶♤♠♧♣⊙◈▣◐◑▒▤▥▨▧▦▩♨☏☎☞↕↗↙↖↘ª*"""
+special_symbols_for_suffix = """←☜㏂㏘℡"""
+daggers = """†‡⸶⸷⸸⹋‖"""
+
+spaces = " \n\t\f\v\r\u200b\u200c\u2060\ufeff"
 
 _url_prefix = "https|http|mailto|ftp"
 _url_suffix = (
@@ -191,3 +188,9 @@ url_pattern = re.compile(
 email_pattern = re.compile(
     r"[a-z0-9.\-+_]+@[a-z0-9.\-+_]+\.[a-z]+|[a-z0-9.\-+_]+@[a-z0-9.\-+_]+\.[a-z]+\.[a-z]"
 )
+
+faces = {":)", ":(", ":'(", "O:)", "&)", ">:(", "3:)", '<(")', ":-)", ":-(", "◡̈"}
+number_with_quotes = {f"{num}'" for num in range(0, 9)}
+alphabet_with_quotes = {f"{alpha}'" for alpha in alphabets}
+number_with_bracket = {f"{num})" for num in range(0, 9)}
+backup_etc = {"관야유적", "라요 바예카노", "알림 차단", "알림 수신", "알림 문자"}
