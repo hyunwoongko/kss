@@ -228,4 +228,13 @@ papers = [
 ]
 
 for i in range(0, 10):
-    papers += [f"{i}항", f"{i}조", f"{i}호", f"{i}절", f"{i}목", f"{i}권", f"{i}쪽"]
+    papers += [
+        f"{i}항",
+        f"{i}조",
+        f"{i}호",
+        f"{i}절",
+        f"{i}목",
+        f"{i}권",
+        f"{i}쪽",
+        f"{i}장",
+    ]

@@ -52,7 +52,7 @@ def _check_type(param: Any, param_name: str, types: Union[Type, List[Type]]) -> 
     if not available:
         raise TypeError(
             f"Oops! '{type(param)}' is not supported type for `{param_name}`.\n"
-            f"Currently kss only supports {types if was_list else types[0]} {'types' if was_list else 'type'} for this parameter.\n"
+            f"Currently kss only supports {types if was_list else types[0]} {'types' if was_list else 'type'} for this.\n"
             f"Please check `{param_name}` parameter again ;)\n"
         )
 
@@ -80,8 +80,8 @@ def _check_text(
         and not isinstance(text, tuple)
     ):
         raise TypeError(
-            f"Oops! '{type(text)}' is not supported type for `text` parameter.\n"
-            f"Currently kss only supports [str, List[str], Tuple[str]] types.\n"
+            f"Oops! '{type(text)}' is not supported type for `text`.\n"
+            f"Currently kss only supports [str, List[str], Tuple[str]] types for this.\n"
             f"Please check `text` parameter again ;)\n"
         )
 
@@ -90,9 +90,9 @@ def _check_text(
         if not all(are_strings):
             not_string_idx = are_strings.index(False)
             raise TypeError(
-                "Oops! Some elements in `text` parameter were not string.\n"
+                "Oops! Some elements in `text` were not string.\n"
                 f"For example, index {not_string_idx} was {type(text[not_string_idx])}.\n"
-                f"Currently kss only supports [str, List[str], Tuple[str]] for it.\n"
+                f"Currently kss only supports [str, List[str], Tuple[str]] for this.\n"
                 f"Please check `text` parameter again ;)\n"
             )
         else:
@@ -131,8 +131,8 @@ def _check_analyzer_backend(backend: str) -> Analyzer:
 
     if backend not in ["auto", "mecab", "pecab"]:
         raise ValueError(
-            f"Oops! '{backend}' is not supported value for `backend` parameter.\n"
-            f"Currently kss only supports ['auto', 'pecab', 'mecab'] backends.\n"
+            f"Oops! '{backend}' is not supported value for `backend`.\n"
+            f"Currently kss only supports ['auto', 'pecab', 'mecab'] for this.\n"
             f"Please check `backend` parameter again ;)\n"
         )
 
@@ -146,12 +146,12 @@ def _check_analyzer_backend(backend: str) -> Analyzer:
             raise ImportError(
                 _message_by_user_os(
                     linux_macos="Oops! You specified `backend` as 'mecab', but you don't have mecab in your environment.\n"
-                    "If you want to use mecab backend, please install one of mecab and konlpy.tag.Mecab!\n"
+                    "If you want to use mecab backend, please install mecab or konlpy.tag.Mecab!\n"
                     "Please refer to following web sites for details:\n"
                     f"- mecab: {_mecab_info_linux_macos}\n"
                     f"- konlpy.tag.Mecab: {_konlpy_info_linux_macos}\n",
                     windows="Oops! You specified `backend` as 'mecab', but you don't have mecab in your environment.\n"
-                    "If you want to use mecab backend, please install one of mecab and konlpy.tag.Mecab!\n"
+                    "If you want to use mecab backend, please install mecab or konlpy.tag.Mecab!\n"
                     "Please refer to following web sites for details:\n"
                     f"- mecab: {_mecab_info_windows}\n"
                     f"- konlpy.tag.Mecab: {_konlpy_info_windows}\n",
@@ -191,12 +191,12 @@ def _check_analyzer_backend(backend: str) -> Analyzer:
 
                 installation_help_message = _message_by_user_os(
                     linux_macos="For your information, Kss also supports mecab backend.\n"
-                    "We recommend you to install one of mecab and konlpy.tag.Mecab for faster execution of Kss.\n"
+                    "We recommend you to install mecab or konlpy.tag.Mecab for faster execution of Kss.\n"
                     "Please refer to following web sites for details:\n"
                     f"- mecab: {_mecab_info_linux_macos}\n"
                     f"- konlpy.tag.Mecab: {_konlpy_info_linux_macos}\n",
                     windows="For your information, Kss also supports mecab backend.\n"
-                    "We recommend you to install one of mecab and konlpy.tag.Mecab for faster execution of Kss.\n"
+                    "We recommend you to install mecab or konlpy.tag.Mecab for faster execution of Kss.\n"
                     "Please refer to following web sites for details:\n"
                     f"- mecab: {_mecab_info_windows}\n"
                     f"- konlpy.tag.Mecab: {_konlpy_info_windows}\n",
@@ -252,8 +252,8 @@ def _check_num_workers(
 
     if not isinstance(num_workers, int) and num_workers != "auto":
         raise TypeError(
-            f"Oops! '{num_workers}' is not supported value for `num_workers` type.\n"
-            f"Currently kss only supports [int, 'auto'] for it.\n"
+            f"Oops! '{num_workers}' is not supported value for `num_workers`.\n"
+            f"Currently kss only supports [int, 'auto'] for this.\n"
             f"Please check `num_workers` parameter again ;)"
         )
     elif isinstance(num_workers, int) and num_workers < 1:

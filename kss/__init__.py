@@ -5,4 +5,4 @@ from kss._modules.sentences.split_sentences import split_sentences
 from kss._modules.morphemes.split_morphemes import split_morphemes
 
 __ALL__ = [split_sentences, split_morphemes]
-__version__ = "4.1.2"
+__version__ = "4.1.3"
