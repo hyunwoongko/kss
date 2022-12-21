@@ -21,6 +21,7 @@ from kss._utils.emojis import _emojis
 
 class SentencePreprocessor(SentenceProcessor):
     _correction = {
+        lambda c, p: c in special_symbols_for_split or c in daggers: "PF",  # Prefix
         lambda c, p: c in "!?.": "SF",
         lambda c, p: c in ",:/ㆍ": "SC",
         lambda c, p: c in "".join(bracket_open_to_close): "SSO",
@@ -30,7 +31,6 @@ class SentencePreprocessor(SentenceProcessor):
         lambda c, p: c in "".join(quotes_close_to_open): "QTC",  # quotes close
         lambda c, p: c in jamo: "JAMO",
         lambda c, p: c == "요" and ("EC" in p or "JX" == p): "EF",
-        lambda c, p: c in special_symbols_for_split or c in daggers: "PF",  # Prefix
         lambda c, p: (
             c == "^" or c in _emojis or c in special_symbols_for_suffix
         ): "EMOJI",

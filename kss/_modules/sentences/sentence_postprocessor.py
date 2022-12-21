@@ -242,7 +242,7 @@ class SentencePostprocessor(SentenceProcessor):
                         if output_sentences[sentence_idx - 1][
                             -1
                         ].text not in "\r\n\v\f" and (
-                            output_syllable.text in "[0123456789*]"
+                            output_syllable.text in "[0123456789*, ]"
                             or self._check_text_from_character(output_syllable, "편집]")
                             or self._check_text_from_character(output_syllable, "더 보기]")
                             or self._check_text_from_character(output_syllable, "더보기]")

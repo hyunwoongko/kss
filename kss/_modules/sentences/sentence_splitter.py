@@ -6,6 +6,7 @@ from typing import Tuple
 
 from kss._elements.subclasses import Syllable
 from kss._modules.sentences.sentence_processor import SentenceProcessor
+from kss._utils.const import papers
 
 
 class SentenceSplitter(SentenceProcessor):
@@ -119,9 +120,9 @@ class SentenceSplitter(SentenceProcessor):
             bool: whether the given syllable is split end point or not.
 
         Notes:
-            단락기호(¶)나 섹션기호(§)가 등장하면 곧바로 분리한다.
+            단락기호(¶)가 등장하면 곧바로 분리한다.
         """
-        available = self.syllable.check_text("¶") or self.syllable.check_text("§")
+        available = self.syllable.check_text("¶")
         return available
 
     def _sf(self) -> bool:
@@ -144,6 +145,8 @@ class SentenceSplitter(SentenceProcessor):
                 6. 현재 문자 뒤의 공백(SP)과 종결부호(SF)을 제외한 문자가 접속부사(MAJ)이면 분할하지 않는다.
                 7. 현재 문자 뒤의 공백(SP)을 제외한 문자가 마침표(.)가 아니고 그 뒤 문자가 곧 바로 마침표라면 분할하지 않는다.
                 8. 현재 문자 뒤로 등장하는 한글 문자열이 몇가지 분할하지 않아야 하는 경우에 속하면 분할하지 않는다.
+                9. 현재 문자가 ' no.', ' No.', ' vol.', ' p.', ' pp.', ' page.', ' al.', ' ed.', ' eds.'
+                    ' 항.', ' 조.', ' 호.', ' 절.', ' 권.', " 쪽.' 등에 존재하면 분할하지 않는다.
         """
 
         available = False
@@ -214,6 +217,11 @@ class SentenceSplitter(SentenceProcessor):
 
             # 예외 8
             available = available and not self._check_next_is_unavailable_split()
+
+            # 예외 9
+            available = available and (
+                not self._check_multiple_prev_texts_from_before(*papers)
+            )
 
         return available
 
@@ -811,3 +819,15 @@ class SentenceSplitter(SentenceProcessor):
         return next_all_s.check_text(",") and not next_all_s.next_skip("SP").check_text(
             ","
         )
+
+    @lru_cache(30)
+    def _check_prev_texts_from_before(self, text):
+        _prev = self.syllable
+        for _ in text:
+            _prev = _prev.prev
+
+        return _prev.check_texts(text)
+
+    @lru_cache(30)
+    def _check_multiple_prev_texts_from_before(self, *texts):
+        return any(self._check_prev_texts_from_before(t) for t in texts)

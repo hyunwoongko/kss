@@ -162,10 +162,9 @@ quotes_or_brackets_close_to_open.update(quotes_close_to_open)
 quotes_or_brackets_close_to_open.update(bracket_close_to_open)
 
 # special symbols
-special_symbols_for_split = """㈜¶§※○●◎◇◆□■△▲▽▼→↑↓↔◁◀▷▶♤♠♧♣⊙◈▣◐◑▒▤▥▨▧▦▩♨☏☎☞↕↗↙↖↘ª*"""
-special_symbols_for_suffix = """←☜㏂㏘℡"""
-daggers = """†‡⸶⸷⸸⹋‖"""
-
+special_symbols_for_split = "㈜*∗¶§※○●◎◇◆□■△▲▽▼→↑↓↔◁◀▷▶♤♠♧♣⊙◈▣◐◑▒▤▥▨▧▦▩♨☏☎☞↕↗↙↖↘ª"
+special_symbols_for_suffix = "←☜㏂㏘℡"
+daggers = """†‡⸶⸷⸸⹋‖*∗"""
 spaces = " \n\t\f\v\r\u200b\u200c\u2060\ufeff"
 
 _url_prefix = "https|http|mailto|ftp"
@@ -194,3 +193,42 @@ number_with_quotes = {f"{num}'" for num in range(0, 9)}
 alphabet_with_quotes = {f"{alpha}'" for alpha in alphabets}
 number_with_bracket = {f"{num})" for num in range(0, 9)}
 backup_etc = {"관야유적", "라요 바예카노", "알림 차단", "알림 수신", "알림 문자"}
+
+papers = [
+    " no",
+    " No",
+    " pp",
+    " PP",
+    " vol",
+    " Vol",
+    " vols",
+    " Vols",
+    " al",
+    " ed",
+    " Ed",
+    " Eds",
+    " trans",
+    " Trans",
+    " rev",
+    " Rev",
+    " p",
+    " P",
+    " n.p",
+    " N.P",
+    " N.p",
+    " n.d",
+    " N.D",
+    " N.d",
+    " page",
+    " Page",
+    " para",
+    " Para",
+    " comp",
+    " Comp",
+    " 항",
+    " 조",
+    " 호",
+    " 절",
+    " 권",
+    " 쪽",
+]
