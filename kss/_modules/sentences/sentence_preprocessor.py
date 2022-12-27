@@ -115,6 +115,13 @@ class SentencePreprocessor(SentenceProcessor):
             ):
                 self._change_poses(syllable, "EF", "EF", "EF")
 
+            if (
+                syllable.check_pos_and_text("EP", "였")
+                and syllable.next.check_pos_and_text("EC", "게")
+                and syllable.next.next.check_pos_and_text("NNG", "용")
+            ):
+                self._change_poses(syllable, "EP", "EF", "EF")
+
             if syllable.check_pos_and_text(
                 "EC", "구"
             ) and syllable.next.check_pos_and_text("NNG", "용"):
