@@ -167,8 +167,8 @@ Kss performed best in most cases, and Kiwi performed well. Both baseline and koa
 | Koalanlp       | 2.1.7           | ARIRANG | 0.51176     | 0.41618     | 0.29268     | 0.44382     | 0.66564   | 0.79121     | 0.00000     | 0.44589 |
 | Koalanlp       | 2.1.7           | KKMA    | 0.52941     | 0.45954     | 0.31707     | 0.38202     | 0.57669   | 0.58242     | 0.06667     | 0.41626 |
 | Kiwi           | 0.14.1          | N/A     | 0.78235     | 0.61272     | 0.90244     | 0.66292     | 0.63804   | 0.83516     | 0.20000     | 0.66194 |
-| **Kss (ours)** | 4.1.5           | pecab   | **0.87059** | **0.82659** | **0.95122** | 0.74157     | 1.00000   | **0.86813** | **0.36667** | 0.80353 |
-| **Kss (ours)** | 4.1.5           | mecab   | **0.87059** | **0.82659** | **0.95122** | **0.75281** | 1.00000   | **0.86813** | **0.36667** | 0.80514 |
+| **Kss (ours)** | 4.2.0           | pecab   | **0.87059** | **0.82659** | **0.95122** | 0.74157     | 1.00000   | **0.86813** | **0.36667** | 0.80353 |
+| **Kss (ours)** | 4.2.0           | mecab   | **0.87059** | **0.82659** | **0.95122** | **0.75281** | 1.00000   | **0.86813** | **0.36667** | 0.80514 |
 
 You can also compare the performance with the following graphs.
 
@@ -517,8 +517,8 @@ Note that every experiment was conducted on single thread / process environment 
 | koalanlp       | 2.1.7           | ARIRANG | 1415.53             |
 | koalanlp       | 2.1.7           | KKMA    | 1971.31             |
 | Kiwi           | 0.14.1          | N/A     | 36.26               |
-| **Kss (ours)** | 4.1.5           | pecab   | 7050.50             |
-| **Kss (ours)** | 4.1.5           | mecab   | 46.81               |
+| **Kss (ours)** | 4.2.0           | pecab   | 7050.50             |
+| **Kss (ours)** | 4.2.0           | mecab   | 46.81               |
 
 You can also compare the speed of tools with the following graphs.
 
