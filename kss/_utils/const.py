@@ -196,7 +196,17 @@ email_pattern = re.compile(
 
 faces = {":)", ":(", ":'(", "O:)", "&)", ">:(", "3:)", '<(")', ":-)", ":-(", "◡̈"}
 number_with_quotes = {f"{num}'" for num in range(0, 9)}
-alphabet_with_quotes = {f"{alpha}'" for alpha in alphabets}
+# inch: 3'2 inch
+# time: 06'30
+
+double_alphabet_with_quotes = {
+    f"'{alpha1}'{alpha2}" for alpha1 in alphabets for alpha2 in alphabets
+}
+
+alphabet_with_quotes = {
+    f"{alpha1}'{alpha2}" for alpha1 in alphabets for alpha2 in alphabets
+}
+# apostrophe: I'm
 
 papers = [
     " no",
@@ -243,4 +253,18 @@ for i in range(0, 10):
         f"{i}장",
     ]
 
-backup_etc = {"관야유적", "라요 바예카노", "알림 차단", "알림 수신", "알림 문자", "에스타디오 비센테"}
+backup_etc = {
+    "관야유적",
+    "라요 바예카노",
+    "알림 차단",
+    "알림 수신",
+    "알림 문자",
+    "에스타디오 비센테",
+    "George D. Beauchamp",
+    "Monkey D. Luffy",
+    "몽키 D. 루피",
+    "'N'",
+    "'n'",
+    "N' ",
+    "n' ",
+}

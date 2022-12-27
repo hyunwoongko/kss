@@ -18,11 +18,11 @@ class SentenceProcessor:
     _all_s_poses_wo_qtn = ("SP", "SF", "SY", "SE", "SSC", "QTC", "EMOJI", "JAMO")
 
     _backup_strings = set()
+    _backup_strings.update(backup_etc)
     _backup_strings.update(faces)
     _backup_strings.update(alphabet_with_quotes)
     _backup_strings.update(number_with_quotes)
-    _backup_strings.update(backup_etc)
-
+    _backup_strings = sorted(_backup_strings)
     _backup = {k: str(abs(hash(k))) for k in _backup_strings}
 
     @staticmethod
