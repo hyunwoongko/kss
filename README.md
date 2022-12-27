@@ -169,7 +169,7 @@ Kss performed best in most cases, and Kiwi performed well. Both baseline and koa
 | **Kss (ours)** | 4.0.0           | pecab   | **0.86471** | **0.82440** | 0.71910     | **0.87912** | **0.36667** | **0.95122** | 0.76753     |
 | **Kss (ours)** | 4.0.0           | mecab   | **0.86471** | **0.82440** | **0.73034** | **0.87912** | **0.36667** | **0.95122** | **0.76941** |
 
-You can also compare the performances with the following graphs.
+You can also compare the performance with the following graphs.
 
 ![](https://github.com/hyunwoongko/kss/blob/main/assets/tasks_performance.png)
 
@@ -177,10 +177,10 @@ You can also compare the performances with the following graphs.
 
 <br>
 
-#### 4) Why don't I upload F1 score based results?
-The evaluation source code which I copied from [kiwipiepy](https://github.com/bab2min/kiwipiepy/tree/main/benchmark/sentence_split) also provides F1 score  (dice similarity), and F1 scores of Kss are also best among the segmentation tools. but I don't believe this is proper metric to measure sentence segmentation performance. For example, EM score of `text.split(" ")` on `tweets.txt` is 0.06742. This means it's terrible sentence segmentation method on tweeter style text. However, F1 score of it on `tweets.txt` is 0.54083, and it is similar with the F1 score of Koalanlp KKMA backend (0.56832).
+#### 4) Why don't I trust F1 score in sentence segmentation domain?
+The evaluation source code which I copied from [kiwipiepy](https://github.com/bab2min/kiwipiepy/tree/main/benchmark/sentence_split) provides both EM score and F1 score  (dice similarity). I measured both scores, but I didn't upload F1 score based results. Actually, F1 scores of Kss are also best among the segmentation tools. **But I don't believe this is proper metric to measure sentence segmentation performance.** For example, EM score of `text.split(" ")` on `tweets.txt` is 0.06742. This means it's terrible sentence segmentation method on tweeter style text. However, F1 score of it on `tweets.txt` is 0.54083, and it is similar with the F1 score of Koalanlp KKMA backend (0.56832).
 
-What I want to say is the actual performances of segmentation could be vastly different even if the F1 scores were similar.
+What I want to say is the actual performance of segmentation could be vastly different even if the F1 scores were similar.
 You can reproduce this with `python3 ./bench/test_word_split.py ./bench/testset/tweets.txt`, and here is one of the segmentation example of both method.
 
 ```
@@ -583,8 +583,8 @@ split_morphemes(
     - `num_workers=1`: don't use multiprocessing
     - `num_workers=2~N`: use multiprocessing with the specified number of workers
 - **drop_space: Whether it drops all space characters or not**
-    - `drop_space=True`: drop all space characters from output (default)
-    - `drop_space=False`: remain all space characters from output
+    - `drop_space=True`: drop all space characters in output (default)
+    - `drop_space=False`: remain all space characters in output
 
 </details>
 
