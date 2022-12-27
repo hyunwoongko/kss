@@ -39,6 +39,9 @@ class SentencePostprocessor(SentenceProcessor):
         output_sentences = self._move_unexpected_split_sentences_to_previous(
             output_sentences
         )
+        output_sentences = self._move_symbol_sentences_only_to_previous(
+            output_sentences
+        )
 
         return self._convert_syllables_to_sentences_with_cleaning(
             output_sentences, strip
@@ -197,6 +200,43 @@ class SentencePostprocessor(SentenceProcessor):
 
         return self._remove_empty_sentence(output_sentences)
 
+    def _move_symbol_sentences_only_to_previous(
+        self, output_sentences: List[List[Syllable]]
+    ) -> List[List[Syllable]]:
+        """
+        Move symbol only sentences to previous
+
+        Args:
+            output_sentences (List[List[Syllable]]): list of syllables
+
+        Returns:
+            List[List[Syllable]]: corrected list of syllables.
+
+        Notes:
+            Symbol 처리:
+                Symbol로만 이루어진 문장을 이전 문장으로 옮긴다.
+        """
+        for sentence_idx, output_sentence in enumerate(output_sentences):
+            if (
+                sentence_idx != 0
+                and len(output_sentence) != 0
+                and (
+                    all(
+                        [
+                            syllable.check_pos("SY", "SF", "SE", "SC", "QT", "SS", "SP")
+                            for syllable in output_sentence
+                        ]
+                    )
+                )
+            ):
+                for output_syllable in output_sentence:
+                    insert_idx = sentence_idx - 1
+                    while insert_idx > 0 and len(output_sentences[insert_idx]) == 0:
+                        insert_idx -= 1
+                    output_sentences[insert_idx].append(output_syllable)
+                output_sentences[sentence_idx] = []
+        return self._remove_empty_sentence(output_sentences)
+
     def _move_footnote_to_previous(
         self, output_sentences: List[List[Syllable]]
     ) -> List[List[Syllable]]:
@@ -247,6 +287,7 @@ class SentencePostprocessor(SentenceProcessor):
                             or self._check_text_from_character(output_syllable, "더 보기]")
                             or self._check_text_from_character(output_syllable, "더보기]")
                             or self._check_text_from_character(output_syllable, "스포일러]")
+                            or self._check_text_from_character(output_syllable, "참고 ")
                         ):
                             move = True
                         else:
@@ -396,7 +437,6 @@ class SentencePostprocessor(SentenceProcessor):
                         exclude=("MAJ", "+J", "+VCP", "+EC", "+VX"),
                     )
                 )
-                # or (output_sentence[0].text in daggers)
             ):
                 for output_syllable in output_sentence:
                     insert_idx = sentence_idx - 1

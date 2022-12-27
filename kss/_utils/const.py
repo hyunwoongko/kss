@@ -84,8 +84,14 @@ bracket_close_to_open = {v: k for k, v in bracket_open_to_close.items()}
 # doubles
 double_quotes = {'"', "“", "”", "″"}
 
+# doubles wo direction
+double_quotes_wo_direction = {'"', "″"}
+
 # singles
 single_quotes = {"'", "‘", "’", "`"}
+
+# singles wo direction
+single_quotes_wo_direction = {"'", "`"}
 
 # open to close
 double_quotes_open_to_close = {"“": "”", '"': '"', "″": "″"}
@@ -191,8 +197,6 @@ email_pattern = re.compile(
 faces = {":)", ":(", ":'(", "O:)", "&)", ">:(", "3:)", '<(")', ":-)", ":-(", "◡̈"}
 number_with_quotes = {f"{num}'" for num in range(0, 9)}
 alphabet_with_quotes = {f"{alpha}'" for alpha in alphabets}
-number_with_bracket = {f"{num})" for num in range(0, 9)}
-backup_etc = {"관야유적", "라요 바예카노", "알림 차단", "알림 수신", "알림 문자"}
 
 papers = [
     " no",
@@ -238,3 +242,5 @@ for i in range(0, 10):
         f"{i}쪽",
         f"{i}장",
     ]
+
+backup_etc = {"관야유적", "라요 바예카노", "알림 차단", "알림 수신", "알림 문자", "에스타디오 비센테"}

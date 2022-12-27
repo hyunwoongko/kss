@@ -14,7 +14,8 @@ from kss._utils.multiprocessing import _run_job
 from kss._utils.sanity_checks import (
     _check_num_workers,
     _check_text,
-    _check_analyzer_backend, _check_type,
+    _check_analyzer_backend,
+    _check_type,
 )
 
 preprocessor = SentencePreprocessor()

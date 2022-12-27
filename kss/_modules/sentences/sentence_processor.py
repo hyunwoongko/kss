@@ -6,7 +6,6 @@ from kss._utils.const import (
     faces,
     alphabet_with_quotes,
     number_with_quotes,
-    number_with_bracket,
     backup_etc,
     url_pattern,
     email_pattern,
@@ -22,7 +21,6 @@ class SentenceProcessor:
     _backup_strings.update(faces)
     _backup_strings.update(alphabet_with_quotes)
     _backup_strings.update(number_with_quotes)
-    _backup_strings.update(number_with_bracket)
     _backup_strings.update(backup_etc)
 
     _backup = {k: str(abs(hash(k))) for k in _backup_strings}

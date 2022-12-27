@@ -13,18 +13,16 @@ from kss._utils.const import (
     single_quotes,
     single_quotes_open_to_close,
     single_quotes_close_to_open,
-    brackets,
-    bracket_open_to_close,
-    bracket_close_to_open,
+    single_quotes_wo_direction, double_quotes_wo_direction,
 )
 
 
 class EmbracingProcessor:
     def __init__(self):
-        self.single_stack, self.double_stack, self.bracket_stack = [], [], []
-        self.single_pop, self.double_pop, self.bracket_pop = "'", '"', " "
-        self.single_idx, self.double_idx, self.bracket_idx = 0, 0, 0
-        self.single_sent_idx, self.double_sent_idx, self.bracket_sent_idx = 0, 0, 0
+        self.single_stack, self.double_stack = [], []
+        self.single_pop, self.double_pop = "'", '"'
+        self.single_idx, self.double_idx = 0, 0
+        self.single_sent_idx, self.double_sent_idx = 0, 0
 
     def empty(self) -> bool:
         """
@@ -33,9 +31,7 @@ class EmbracingProcessor:
         Returns:
             bool: True if all stacks are empty else False.
         """
-        return self._empty(
-            [self.single_stack, self.double_stack, self.bracket_stack], dim=2
-        )
+        return self._empty([self.single_stack, self.double_stack], dim=2)
 
     def process(self, idx: int, sent_idx: int, syllable: Syllable):
         """
@@ -46,7 +42,7 @@ class EmbracingProcessor:
             sent_idx (int): current sentence index
             syllable (Syllable): current syllable object
         """
-        if syllable.text in single_quotes:
+        if syllable.text in single_quotes_wo_direction:
             self.single_sent_idx = sent_idx
             self.single_idx = idx
             self.single_pop = self._pop_symbol(
@@ -55,7 +51,7 @@ class EmbracingProcessor:
                 open_to_close=single_quotes_open_to_close,
                 close_to_open=single_quotes_close_to_open,
             )
-        elif syllable.text in double_quotes:
+        elif syllable.text in double_quotes_wo_direction:
             self.double_sent_idx = sent_idx
             self.double_idx = idx
             self.double_pop = self._pop_symbol(
@@ -63,15 +59,6 @@ class EmbracingProcessor:
                 stack=self.double_stack,
                 open_to_close=double_quotes_open_to_close,
                 close_to_open=double_quotes_close_to_open,
-            )
-        elif syllable.text in brackets:
-            self.bracket_sent_idx = sent_idx
-            self.bracket_idx = idx
-            self.bracket_pop = self._pop_symbol(
-                syllable=syllable,
-                stack=self.bracket_stack,
-                open_to_close=bracket_open_to_close,
-                close_to_open=bracket_close_to_open,
             )
 
     def update_index(self, idx: int, sent_idx: int, syllable: Syllable):
@@ -91,10 +78,6 @@ class EmbracingProcessor:
         elif syllable.text in double_quotes:
             self.double_idx = idx
             self.double_sent_idx = sent_idx
-
-        elif syllable.text in brackets:
-            self.bracket_idx = idx
-            self.bracket_sent_idx = sent_idx
 
     def realign(
         self,
@@ -128,15 +111,6 @@ class EmbracingProcessor:
                 output_sentences=output_sentences,
                 idx=self.double_idx,
                 sent_idx=self.double_sent_idx,
-                func=func,
-            )
-
-        if len(self.bracket_stack) != 0:
-            return self._realign_sentences(
-                input_sentences=input_sentences,
-                output_sentences=output_sentences,
-                idx=self.bracket_idx,
-                sent_idx=self.bracket_sent_idx,
                 func=func,
             )
 
