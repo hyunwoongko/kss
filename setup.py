@@ -48,7 +48,7 @@ setup(
     platforms=["any"],
     install_requires=["emoji==1.2.0", "regex", "pecab"],
     long_description=long_description,
-    packages=find_packages(exclude=["bench", "assets"]),
+    packages=find_packages(exclude=["bench", "assets", ".java", ".pytest_cache"]),
     python_requires=">=3",
     zip_safe=False,
     package_data={"": ["kss/pynori/resources/*"]},
