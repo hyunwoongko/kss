@@ -127,4 +127,5 @@ dmypy.json
 *.iml
 .idea/*
 
-bench/.java
+bench/.java/
+.java/

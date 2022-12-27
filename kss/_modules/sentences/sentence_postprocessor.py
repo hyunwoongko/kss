@@ -1,16 +1,14 @@
 # Copyright (C) 2021 Hyunwoong Ko <kevin.ko@tunib.ai> and Sang-Kil Park <skpark1224@hyundai.com>
 # All rights reserved.
-import re
+
 from typing import List
 
 from kss._elements.subclasses import Syllable
 from kss._modules.sentences.sentence_preprocessor import SentenceProcessor
-from kss._utils.const import quotes_or_brackets_close_to_open, faces, spaces, daggers
+from kss._utils.const import quotes_or_brackets_close_to_open, spaces, daggers
 
 
 class SentencePostprocessor(SentenceProcessor):
-    backup = {str(abs(hash(k))): k for k in faces}
-
     def postprocess(
         self,
         output_sentences: List[List[Syllable]],
@@ -27,10 +25,13 @@ class SentencePostprocessor(SentenceProcessor):
             List[str]: postprocessed output setences in string
         """
 
-        output_sentences = self._move_footnote_to_previous(output_sentences)
-        output_sentences = self._move_daggers_to_previous(output_sentences)
-
         output_sentences = self._merge_broken_sub_sentence_in_quotes_or_brackets(
+            output_sentences
+        )
+        output_sentences = self._move_first_footnote_in_sentence_to_previous(
+            output_sentences
+        )
+        output_sentences = self._move_first_daggers_in_sentence_to_previous(
             output_sentences
         )
         output_sentences = self._move_non_structural_sub_sent_in_brackets_to_previous(
@@ -42,10 +43,10 @@ class SentencePostprocessor(SentenceProcessor):
         output_sentences = self._move_symbol_sentences_only_to_previous(
             output_sentences
         )
-
-        return self._convert_syllables_to_sentences_with_cleaning(
+        output_sentences = self._convert_syllables_to_sentences_with_cleaning(
             output_sentences, strip
         )
+        return output_sentences
 
     def _merge_broken_sub_sentence_in_quotes_or_brackets(
         self, output_sentences: List[List[Syllable]]
@@ -161,11 +162,11 @@ class SentencePostprocessor(SentenceProcessor):
                 _next = _next.next
         return True
 
-    def _move_daggers_to_previous(
+    def _move_first_daggers_in_sentence_to_previous(
         self, output_sentences: List[List[Syllable]]
     ) -> List[List[Syllable]]:
         """
-        Move daggers to previous.
+        Move first daggers in sentence to previous.
 
         Args:
             output_sentences (List[List[Syllable]]): list of syllables
@@ -237,11 +238,11 @@ class SentencePostprocessor(SentenceProcessor):
                 output_sentences[sentence_idx] = []
         return self._remove_empty_sentence(output_sentences)
 
-    def _move_footnote_to_previous(
+    def _move_first_footnote_in_sentence_to_previous(
         self, output_sentences: List[List[Syllable]]
     ) -> List[List[Syllable]]:
         """
-        Move footnote to previous.
+        Move first footnote in sentence to previous.
 
         Args:
             output_sentences (List[List[Syllable]]): list of syllables

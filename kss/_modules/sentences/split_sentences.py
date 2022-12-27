@@ -160,6 +160,6 @@ def _split_sentences(
     # 5. postprocess
     if postprocess is True:
         output_sentences = postprocessor.postprocess(output_sentences, strip)
-        output_sentences = [postprocessor.restore(s) for s in output_sentences]
+        output_sentences = [postprocessor.restore(s, text) for s in output_sentences]
 
     return output_sentences

@@ -128,7 +128,8 @@ I used the following 6 evaluation datasets for analyses. Thanks to [Minchul Lee]
 | Name                                                                                  | Descriptions                                                                              | The number of sentences | Creator                                                                                                                                                                                                                                                            |
 |---------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|-------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [blogs_lee](https://github.com/hyunwoongko/kss/blob/main/bench/testset/blogs_lee.txt) | Dataset for testing blog style text segmentation                                          | 170                     | [Minchul Lee](https://github.com/bab2min/kiwipiepy/tree/main/benchmark/sentence_split)                                                                                                                                                                             |
-| [blogs_ko](https://github.com/hyunwoongko/kss/blob/main/bench/testset/blogs_ko.txt)   | Dataset for testing blog style text segmentation, which is harder than Lee's blog dataset | 336                     | [Hyunwoong Ko](https://github.com/hyunwoongko)                                                                                                                                                                                                                     |
+| [blogs_ko](https://github.com/hyunwoongko/kss/blob/main/bench/testset/blogs_ko.txt)   | Dataset for testing blog style text segmentation, which is harder than Lee's blog dataset | 346                     | [Hyunwoong Ko](https://github.com/hyunwoongko)                                                                                                                                                                                                                     |
+| [wikipedia](https://github.com/hyunwoongko/kss/blob/main/bench/testset/wikipedia.txt) | Dataset for testing wikipedia style text segmentation                                     | 326                     | [Hyunwoong Ko](https://github.com/hyunwoongko)                                                                                                                                                                                                                     |
 | [tweets](https://github.com/hyunwoongko/kss/blob/main/bench/testset/tweets.txt)       | Dataset for testing tweeter style text segmentation                                       | 178                     | [Minchul Lee](https://github.com/bab2min/kiwipiepy/tree/main/benchmark/sentence_split)                                                                                                                                                                             |
 | [nested](https://github.com/hyunwoongko/kss/blob/main/bench/testset/nested.txt)       | Dataset for testing text which have parentheses and quotation marks segmentation          | 91                      | [Minchul Lee](https://github.com/bab2min/kiwipiepy/tree/main/benchmark/sentence_split)                                                                                                                                                                             |
 | [v_ending](https://github.com/hyunwoongko/kss/blob/main/bench/testset/v_ending.txt)   | Dataset for testing difficult eomi segmentation, it contains various dialect sentences    | 30                      | [Minchul Lee](https://github.com/bab2min/kiwipiepy/tree/main/benchmark/sentence_split)                                                                                                                                                                             |
@@ -155,19 +156,19 @@ The following table shows the segmentation performance based on **exact match (E
 If you are unfamilar with EM score and F1 score, please refer to [this](https://qa.fastforwardlabs.com/no%20answer/null%20threshold/bert/distilbert/exact%20match/f1/robust%20predictions/2020/06/09/Evaluating_BERT_on_SQuAD.html#Metrics-for-QA).
 Kss performed best in most cases, and Kiwi performed well. Both baseline and koalanlp performed poorly.
 
-| Name           | Library version | Backend | blogs_lee   | blogs_ko    | tweets      | nested      | v_ending    | sample      | Average     |
-|----------------|-----------------|---------|-------------|-------------|-------------|-------------|-------------|-------------|-------------|
-| Baseline       | N/A             | N/A     | 0.53529     | 0.44940     | 0.51124     | 0.68132     | 0.00000     | 0.34146     | 0.41987     |
-| Koalanlp       | 2.1.7           | OKT     | 0.53529     | 0.44940     | 0.53371     | 0.79121     | 0.00000     | 0.36585     | 0.44591     |
-| Koalanlp       | 2.1.7           | HNN     | 0.54118     | 0.44345     | 0.54494     | 0.78022     | 0.00000     | 0.34146     | 0.44187     |
-| Koalanlp       | 2.1.7           | KMR     | 0.51176     | 0.39583     | 0.42135     | 0.79121     | 0.00000     | 0.26829     | 0.39807     |
-| Koalanlp       | 2.1.7           | RHINO   | 0.52941     | 0.40774     | 0.39326     | 0.79121     | 0.00000     | 0.29268     | 0.40238     |
-| Koalanlp       | 2.1.7           | EUNJEON | 0.51176     | 0.37500     | 0.38202     | 0.70330     | 0.00000     | 0.21951     | 0.36526     |
-| Koalanlp       | 2.1.7           | ARIRANG | 0.51176     | 0.41071     | 0.44382     | 0.79121     | 0.00000     | 0.29268     | 0.40836     |
-| Koalanlp       | 2.1.7           | KKMA    | 0.52941     | 0.45238     | 0.38202     | 0.58242     | 0.06667     | 0.31707     | 0.38832     |
-| Kiwi           | 0.14.0          | N/A     | 0.78235     | 0.60714     | 0.66292     | 0.83516     | 0.20000     | 0.90244     | 0.66500     |
-| **Kss (ours)** | 4.0.0           | pecab   | **0.86471** | **0.82440** | 0.71910     | **0.87912** | **0.36667** | **0.95122** | 0.76753     |
-| **Kss (ours)** | 4.0.0           | mecab   | **0.86471** | **0.82440** | **0.73034** | **0.87912** | **0.36667** | **0.95122** | **0.76941** |
+| Name           | Library version | Backend | blogs_lee   | blogs_ko    | sample      | tweets      | wikipedia | nested      | v_ending    | Average |
+|----------------|-----------------|---------|-------------|-------------|-------------|-------------|-----------|-------------|-------------|---------|
+| Baseline       | N/A             | N/A     | 0.53529     | 0.43642     | 0.34146     | 0.51124     | 0.66258   | 0.68132     | 0.00000     | 0.45261 |
+| Koalanlp       | 2.1.7           | OKT     | 0.53529     | 0.43642     | 0.36585     | 0.53371     | 0.65951   | 0.79121     | 0.00000     | 0.47457 |
+| Koalanlp       | 2.1.7           | HNN     | 0.54118     | 0.44220     | 0.34146     | 0.54494     | 0.67791   | 0.78022     | 0.00000     | 0.47541 |
+| Koalanlp       | 2.1.7           | KMR     | 0.51176     | 0.38439     | 0.26829     | 0.42135     | 0.45706   | 0.79121     | 0.00000     | 0.40486 |
+| Koalanlp       | 2.1.7           | RHINO   | 0.52941     | 0.41329     | 0.29268     | 0.39326     | 0.67791   | 0.79121     | 0.00000     | 0.44253 |
+| Koalanlp       | 2.1.7           | EUNJEON | 0.51176     | 0.38728     | 0.21951     | 0.38202     | 0.59816   | 0.70330     | 0.00000     | 0.40029 |
+| Koalanlp       | 2.1.7           | ARIRANG | 0.51176     | 0.41618     | 0.29268     | 0.44382     | 0.66564   | 0.79121     | 0.00000     | 0.44589 |
+| Koalanlp       | 2.1.7           | KKMA    | 0.52941     | 0.45954     | 0.31707     | 0.38202     | 0.57669   | 0.58242     | 0.06667     | 0.41626 |
+| Kiwi           | 0.14.1          | N/A     | 0.78235     | 0.61272     | 0.90244     | 0.66292     | 0.63804   | 0.83516     | 0.20000     | 0.66194 |
+| **Kss (ours)** | 4.1.5           | pecab   | **0.87059** | **0.82659** | **0.95122** | 0.74157     | 1.00000   | **0.86813** | **0.36667** | 0.80353 |
+| **Kss (ours)** | 4.1.5           | mecab   | **0.87059** | **0.82659** | **0.95122** | **0.75281** | 1.00000   | **0.86813** | **0.36667** | 0.80514 |
 
 You can also compare the performance with the following graphs.
 
@@ -250,7 +251,7 @@ So I have more confidence in the EM score, which is a somewhat clunky but safe m
 #### 5) Where does the difference in performance come from? (Qualitative Analysis)
 It is meaningless to simply compare them by number. I definitely want you to see the segmentation results.
 Let's take `blogs_ko` samples as examples, and compare performance of each library.
-For this, I will take the best backend of each library (Kss=mecab, Koalanlp=KKMA), because looking results of all backends may make you tired.
+For this, I will take the best backend of each library (Kss=mecab, Koalanlp=KKMA) on the `blogs_ko` dataset, because looking results of all backends may make you tired.
 
 #### Example 1
 - Input text
@@ -515,9 +516,9 @@ Note that every experiment was conducted on single thread / process environment 
 | koalanlp       | 2.1.7           | EUNJEON | 881.24              |
 | koalanlp       | 2.1.7           | ARIRANG | 1415.53             |
 | koalanlp       | 2.1.7           | KKMA    | 1971.31             |
-| Kiwi           | 0.14.0          | N/A     | 36.41               |
-| **Kss (ours)** | 4.0.0           | pecab   | 6929.27             |
-| **Kss (ours)** | 4.0.0           | mecab   | 43.80               |
+| Kiwi           | 0.14.1          | N/A     | 36.26               |
+| **Kss (ours)** | 4.1.5           | pecab   | 7050.50             |
+| **Kss (ours)** | 4.1.5           | mecab   | 46.81               |
 
 You can also compare the speed of tools with the following graphs.
 

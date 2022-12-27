@@ -115,16 +115,6 @@ quotes_close_to_open = dict()
 quotes_close_to_open.update(single_quotes_close_to_open)
 quotes_close_to_open.update(double_quotes_close_to_open)
 
-# open to close
-quotes_open_to_close_with_qtn = dict()
-quotes_open_to_close_with_qtn.update(quotes_open_to_close)
-quotes_open_to_close_with_qtn.update({"'": "'", '"': '"'})
-
-# close to open
-quotes_close_to_open_with_qtn = dict()
-quotes_close_to_open_with_qtn.update(quotes_close_to_open)
-quotes_close_to_open_with_qtn.update({"'": "'", '"': '"'})
-
 # quotes
 quotes = set()
 quotes.update(single_quotes)
@@ -186,27 +176,12 @@ _url_suffix = (
     "|tg|th|tj|tk|tl|tm|tn|to|tp|tr|tt|tv|tw|tz|ua|ug|uk|us|uy|uz|va|vc|ve|vg|vi|vn|vu|wf|ws|ye|yt|yu|za"
     "|zm|zw|mp3|mp4|avi|html|idv|jpg|bmp|png|gif|htm|cdn|media"
 )
-
 url_pattern = re.compile(
     rf"""(?i)\b((?:{_url_prefix}?:(?:/{{1,3}}|[a-z0-9%])|[a-z0-9.\-]+[.](?:{_url_suffix})/)(?:[^\s()<>{{}}\[\]]+|\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\))+(?:\([^\s()]*?\([^\s()]+\)[^\s()]*?\)|\([^\s]+?\)|[^\s`!()\[\]{{}};:'".,<>?«»“”‘’])|(?:(?<!@)[a-z0-9]+(?:[.\-][a-z0-9]+)*[.](?:{_url_suffix})/?(?!@)))""",
 )
 email_pattern = re.compile(
     r"[a-z0-9.\-+_]+@[a-z0-9.\-+_]+\.[a-z]+|[a-z0-9.\-+_]+@[a-z0-9.\-+_]+\.[a-z]+\.[a-z]"
 )
-
-faces = {":)", ":(", ":'(", "O:)", "&)", ">:(", "3:)", '<(")', ":-)", ":-(", "◡̈"}
-number_with_quotes = {f"{num}'" for num in range(0, 9)}
-# inch: 3'2 inch
-# time: 06'30
-
-double_alphabet_with_quotes = {
-    f"'{alpha1}'{alpha2}" for alpha1 in alphabets for alpha2 in alphabets
-}
-
-alphabet_with_quotes = {
-    f"{alpha1}'{alpha2}" for alpha1 in alphabets for alpha2 in alphabets
-}
-# apostrophe: I'm
 
 papers = [
     " no",
@@ -253,7 +228,35 @@ for i in range(0, 10):
         f"{i}장",
     ]
 
-backup_etc = {
+
+# inch: 3'2 inch
+# time: 06'30
+# year: '60s
+numbers_with_quotes = {}
+for num in numbers:
+    numbers_with_quotes[num] = set()
+    numbers_with_quotes[num].update({f"{num}{q}" for q in ["'", "’"]})
+    numbers_with_quotes[num].update({f"{q}{num}" for q in ["'", "’"]})
+
+
+# apostrophe: I`m, You’re, ...
+alphabet_with_quotes = {}
+for alpha in alphabets:
+    alphabet_with_quotes[alpha] = {
+        f"{alpha}{q}{apo}" for apo in alphabets for q in ["'", "’", "`"]
+    }
+
+backup_normal = {
+    ":)",
+    ":(",
+    ":'(",
+    "O:)",
+    "&)",
+    ">:(",
+    "3:)",
+    '<(")',
+    ":-)",
+    ":-(",
     "관야유적",
     "라요 바예카노",
     "알림 차단",
@@ -267,4 +270,8 @@ backup_etc = {
     "'n'",
     "N' ",
     "n' ",
+    "Capt.",
+    "capt.",
+    "dept.",
+    "Dept.",
 }
