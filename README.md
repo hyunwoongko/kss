@@ -123,7 +123,7 @@ Note that the `Baseline` is regex based segmentation method (`re.split(r"(?<=[.!
 
 #### 2) Evaluation datasets:
 
-I used the following 6 evaluation datasets for analyses. Thanks to [Minchul Lee](https://github.com/bab2min) for creating various sentence segmentation datasets.
+I used the following 7 evaluation datasets for analyses. Thanks to [Minchul Lee](https://github.com/bab2min) for creating various sentence segmentation datasets.
 
 | Name                                                                                  | Descriptions                                                                              | The number of sentences | Creator                                                                                                                                                                                                                                                            |
 |---------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|-------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -546,7 +546,7 @@ There are much information about mecab installing on Windows machine in internet
 <br>
 
 #### 7) Conclusion
-I've measured the performance of Kss and other libraries using 6 evaluation datasets, and also measured their speed.
+I've measured the performance of Kss and other libraries using 7 evaluation datasets, and also measured their speed.
 In terms of segmentation performance, Kss performed best on most datasets. In terms of speed, baseline was the fastest, and Koalanlp (OKT backend) and Kiwi followed. 
 but Kss (mecab backend) also showed a speed that could compete with others.
 
