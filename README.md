@@ -174,7 +174,7 @@ The following tables show the segmentation performance based on **exact match sc
 
 ![](https://github.com/hyunwoongko/kss/blob/main/assets/avg_em.png)
 
-- **F1 score (dice similarity)**: This calculates the overlap between the output predictions and gold labels. It means this metric gives score even if the predictions are not exactly same with gold labels. This metric is less reliable because this gives huge advantages for splitters that cut sentences too finely.
+- **F1 score (dice similarity)**: This calculates the overlap between the output predictions and gold labels. It means this gives score even if the output predictions are not exactly same with gold labels. This is less reliable because this gives huge advantages to splitters which separate sentences too finely.
 
 | Name           | Library version | Backend | blogs_lee (F1) | blogs_ko (F1) | sample (F1) | tweets (F1) | wikipedia (F1) | nested (F1) | v_ending (F1) | Average (F1) |
 |----------------|-----------------|---------|----------------|---------------|-------------|-------------|----------------|-------------|---------------|--------------|
@@ -194,7 +194,7 @@ The following tables show the segmentation performance based on **exact match sc
 
 ![](https://github.com/hyunwoongko/kss/blob/main/assets/avg_f1.png)
 
-- **Normalized F1 score**: This is the most reliable metric made by the Kss project. It makes up for the downside of the F1 score by taking the F1 score but penalizing splitters that cut too finely.
+- **Normalized F1 score**: This is the most reliable metric made by the Kss project. It makes up for the downside of the F1 score by taking the F1 score but penalizing splitters which separate too finely.
 
 | Name           | Library version | Backend | blogs_lee (NF1) | blogs_ko (NF1) | sample (NF1) | tweets (NF1) | wikipedia (NF1) | nested (NF1) | v_ending (NF1) | Average (NF1) |
 |----------------|-----------------|---------|-----------------|----------------|--------------|--------------|-----------------|--------------|----------------|---------------|
