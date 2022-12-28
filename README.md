@@ -194,7 +194,7 @@ The following tables show the segmentation performance based on **exact match sc
 
 ![](https://github.com/hyunwoongko/kss/blob/main/assets/avg_f1.png)
 
-- **Normalized F1 score**: This is the most reliable metric made by the Kss project. It makes up for the downside of the F1 score by taking the F1 score but penalizing splitters which separate too finely.
+- **Normalized F1 score**: This is the most reliable metric made by the Kss project. It makes up for the downside of the F1 score by penalizing splitters which separate too finely.
 
 | Name           | Library version | Backend | blogs_lee (NF1) | blogs_ko (NF1) | sample (NF1) | tweets (NF1) | wikipedia (NF1) | nested (NF1) | v_ending (NF1) | Average (NF1) |
 |----------------|-----------------|---------|-----------------|----------------|--------------|--------------|-----------------|--------------|----------------|---------------|
