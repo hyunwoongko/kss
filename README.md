@@ -378,7 +378,7 @@ And the two splitters split this input like the following:
 Neither two splitters split the sentence perfectly, but Kiwi split sentences pretty well.
 On the contrary, the Word Split separated sentences completely wrong.
 Interestingly, Word Split's F1 score is 0.58326, which is higher than Kiwi's 0.56229.
-This means that the F1 score (dice similarity) gives a huge advantage to splitter that splits sentences too finely.
+This means that the F1 score (dice similarity) gives a huge advantage to splitters which separate sentences too finely.
 
 You can reproduce this result using the following commands:
 - Kiwi: `python3 ./bench/test_kiwi.py ./bench/metrics/f1_problem.txt`
@@ -393,7 +393,7 @@ This can be obtained by the following formula.
 Normalized_F1_score = F1_score * min(1, len(golds)/len(preds))
 ```
 
-This inherits the advantages of the F1 score, but penalizes splitters that split sentences too finely.
+This inherits the advantages of the F1 score, but penalizes splitters which separate sentences too finely.
 If we re-evaluate the above two experiments with the Normalized F1 score, the scores change as follows.
 
 | Splitter   | Library version | Input sentences    | EM score | Normalized F1 score |
