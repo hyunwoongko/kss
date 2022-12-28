@@ -394,7 +394,7 @@ Normalized_F1_score = F1_score * min(1, len(golds)/len(preds))
 ```
 
 This inherits the advantages of the F1 score, but penalizes splitters which separate sentences too finely.
-If we re-evaluate the above two experiments with the Normalized F1 score, the scores change as follows.
+If we re-evaluate the above two cases with the Normalized F1 score, the scores change as follows.
 
 | Splitter   | Library version | Input sentences    | EM score | Normalized F1 score |
 |------------|-----------------|--------------------|----------|---------------------|
