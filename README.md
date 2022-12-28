@@ -386,7 +386,7 @@ You can reproduce this result using the following commands:
 
 #### 4.3) Normalized F1 score
 
-To overcome the problem of both EM score and F1 score, I propose a new metric named `Normalized F1 score`.
+To overcome the problems of both EM score and F1 score, I propose a new metric named `Normalized F1 score`.
 This can be obtained by the following formula.
 
 ```
