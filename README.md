@@ -296,7 +296,7 @@ You can reproduce this result using the following commands:
 #### 4.2) Problem of F1 score
 
 We can utilize the F1 score to solve the problem of EM score. 
-But F1 score also has a huge problem. Let's look at an example like this:
+But F1 score has another problem. Let's look at an example like this:
 
 - Input text:
   ```
