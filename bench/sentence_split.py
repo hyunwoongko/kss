@@ -88,7 +88,7 @@ def evaluate_split(gold, pred):
 def run_evaluate(dataset, split_func, result_output=None, err_output=None):
     import time
 
-    f1, em = [], []
+    f1, norm_f1, em = [], [], []
     system_sents = 0
     elapsed = 0
 
@@ -102,6 +102,8 @@ def run_evaluate(dataset, split_func, result_output=None, err_output=None):
         pred = split_func(text)
         elapsed += time.perf_counter() - pcount
         s, e, ep, pred_matches = evaluate_split(gold, pred)
+        length_penalty = min(len(gold) / len(pred), 1)
+        norm_s = [_s * length_penalty for _s in s]
         if result_output is not None:
             rout.write("\n".join(pred) + "\n\n")
             rout.flush()
@@ -110,11 +112,13 @@ def run_evaluate(dataset, split_func, result_output=None, err_output=None):
                 if exact:
                     continue
                 r_score = None if matched_gold is None else s[matched_gold]
+                n_score = None if matched_gold is None else norm_s[matched_gold]
                 m_gold = None if matched_gold is None else gold[matched_gold]
-                fout.write(f"{r_score}\t{sent}\t{m_gold}\n")
+                fout.write(f"{r_score}\t{n_score}\t{sent}\t{m_gold}\n")
             fout.write("\n")
             fout.flush()
         f1 += s
+        norm_f1 += norm_s
         em += e
         system_sents += len(ep)
 
@@ -129,6 +133,7 @@ def run_evaluate(dataset, split_func, result_output=None, err_output=None):
         f"System: {system_sents} sents, "
         f"EM: {sum(em) / len(em):.5f}, "
         f"F1: {sum(f1) / len(f1):.5f}, "
+        f"Normalized F1: {sum(norm_f1) / len(norm_f1):.5f}, "
         f"Latency: {elapsed*1000:.2f} msec"
     )
     print()

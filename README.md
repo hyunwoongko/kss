@@ -152,104 +152,269 @@ In fact, `사실 전 고기를 안 먹어서 무슨 맛인지 모르겠지만..`
 
 #### 3) Sentence segmentation performance (Quantitative Analysis)
  
-The following table shows the segmentation performance based on **exact match (EM)**.
-If you are unfamilar with EM score and F1 score, please refer to [this](https://qa.fastforwardlabs.com/no%20answer/null%20threshold/bert/distilbert/exact%20match/f1/robust%20predictions/2020/06/09/Evaluating_BERT_on_SQuAD.html#Metrics-for-QA).
-Kss performed best in most cases, and Kiwi performed well. Both baseline and koalanlp performed poorly.
+The following tables show the segmentation performance based on **exact match score (EM)**, **F1 score (F1)** and **Normalized F1 score (NF1)**.
 
-| Name           | Library version | Backend | blogs_lee   | blogs_ko    | sample      | tweets      | wikipedia   | nested      | v_ending    | Average     |
-|----------------|-----------------|---------|-------------|-------------|-------------|-------------|-------------|-------------|-------------|-------------|
-| Baseline       | N/A             | N/A     | 0.53529     | 0.43642     | 0.34146     | 0.51124     | 0.66258     | 0.68132     | 0.00000     | 0.45261     |
-| Koalanlp       | 2.1.7           | OKT     | 0.53529     | 0.43642     | 0.36585     | 0.53371     | 0.65951     | 0.79121     | 0.00000     | 0.47457     |
-| Koalanlp       | 2.1.7           | HNN     | 0.54118     | 0.44220     | 0.34146     | 0.54494     | 0.67791     | 0.78022     | 0.00000     | 0.47541     |
-| Koalanlp       | 2.1.7           | KMR     | 0.51176     | 0.38439     | 0.26829     | 0.42135     | 0.45706     | 0.79121     | 0.00000     | 0.40486     |
-| Koalanlp       | 2.1.7           | RHINO   | 0.52941     | 0.41329     | 0.29268     | 0.39326     | 0.67791     | 0.79121     | 0.00000     | 0.44253     |
-| Koalanlp       | 2.1.7           | EUNJEON | 0.51176     | 0.38728     | 0.21951     | 0.38202     | 0.59816     | 0.70330     | 0.00000     | 0.40029     |
-| Koalanlp       | 2.1.7           | ARIRANG | 0.51176     | 0.41618     | 0.29268     | 0.44382     | 0.66564     | 0.79121     | 0.00000     | 0.44589     |
-| Koalanlp       | 2.1.7           | KKMA    | 0.52941     | 0.45954     | 0.31707     | 0.38202     | 0.57669     | 0.58242     | 0.06667     | 0.41626     |
-| Kiwi           | 0.14.1          | N/A     | 0.78235     | 0.61272     | 0.90244     | 0.66292     | 0.63804     | 0.83516     | 0.20000     | 0.66194     |
-| **Kss (ours)** | 4.2.0           | pecab   | **0.87059** | **0.82659** | **0.95122** | 0.74157     | **1.00000** | **0.86813** | **0.36667** | 0.80353     |
-| **Kss (ours)** | 4.2.0           | mecab   | **0.87059** | **0.82659** | **0.95122** | **0.75281** | **1.00000** | **0.86813** | **0.36667** | **0.80514** |
+- **EM score**: This only gives score when the output predictions are exactly the same with gold labels. This could be useful, but too harsh and clunky.
 
-You can also compare the performance with the following graphs.
+| Name           | Library version | Backend | blogs_lee (EM) | blogs_ko (EM) | sample (EM) | tweets (EM) | wikipedia (EM) | nested (EM) | v_ending (EM) | Average (EM) |
+|----------------|-----------------|---------|----------------|---------------|-------------|-------------|----------------|-------------|---------------|--------------|
+| Baseline       | N/A             | N/A     | 0.53529        | 0.43642       | 0.34146     | 0.51124     | 0.66258        | 0.68132     | 0.00000       | 0.45261      |
+| Koalanlp       | 2.1.7           | OKT     | 0.53529        | 0.43642       | 0.36585     | 0.53371     | 0.65951        | 0.79121     | 0.00000       | 0.47457      |
+| Koalanlp       | 2.1.7           | HNN     | 0.54118        | 0.44220       | 0.34146     | 0.54494     | 0.67791        | 0.78022     | 0.00000       | 0.47541      |
+| Koalanlp       | 2.1.7           | KMR     | 0.51176        | 0.38439       | 0.26829     | 0.42135     | 0.45706        | 0.79121     | 0.00000       | 0.40486      |
+| Koalanlp       | 2.1.7           | RHINO   | 0.52941        | 0.41329       | 0.29268     | 0.39326     | 0.67791        | 0.79121     | 0.00000       | 0.44253      |
+| Koalanlp       | 2.1.7           | EUNJEON | 0.51176        | 0.38728       | 0.21951     | 0.38202     | 0.59816        | 0.70330     | 0.00000       | 0.40029      |
+| Koalanlp       | 2.1.7           | ARIRANG | 0.51176        | 0.41618       | 0.29268     | 0.44382     | 0.66564        | 0.79121     | 0.00000       | 0.44589      |
+| Koalanlp       | 2.1.7           | KKMA    | 0.52941        | 0.45954       | 0.31707     | 0.38202     | 0.57669        | 0.58242     | 0.06667       | 0.41626      |
+| Kiwi           | 0.14.1          | N/A     | 0.78235        | 0.61272       | 0.90244     | 0.66292     | 0.63804        | 0.83516     | 0.20000       | 0.66194      |
+| **Kss (ours)** | 4.2.0           | pecab   | **0.87059**    | **0.82659**   | **0.95122** | 0.74157     | 0.98160        | **0.86813** | **0.36667**   | 0.80091      |
+| **Kss (ours)** | 4.2.0           | mecab   | **0.87059**    | **0.82659**   | **0.95122** | **0.75281** | **1.00000**    | **0.86813** | **0.36667**   | **0.80514**  |
 
-![](https://github.com/hyunwoongko/kss/blob/main/assets/tasks_performance.png)
+![](https://github.com/hyunwoongko/kss/blob/main/assets/tasks_em.png)
 
-![](https://github.com/hyunwoongko/kss/blob/main/assets/average_score.png)
+![](https://github.com/hyunwoongko/kss/blob/main/assets/avg_em.png)
+
+- **F1 score (dice similarity)**: This calculates the overlap between the output predictions and gold labels. It means this metric gives score even if the predictions are not exactly same with gold labels. This metric is less reliable because this gives huge advantages for splitters that cut sentences too finely.
+
+| Name           | Library version | Backend | blogs_lee (F1) | blogs_ko (F1) | sample (F1) | tweets (F1) | wikipedia (F1) | nested (F1) | v_ending (F1) | Average (F1) |
+|----------------|-----------------|---------|----------------|---------------|-------------|-------------|----------------|-------------|---------------|--------------|
+| Baseline       | N/A             | N/A     | 0.66847        | 0.55724       | 0.54732     | 0.65446     | 0.76664        | 0.85438     | 0.11359       | 0.59458      |
+| Koalanlp       | 2.1.7           | OKT     | 0.66847        | 0.55724       | 0.58642     | 0.69434     | 0.76639        | 0.93010     | 0.11359       | 0.61665      |
+| Koalanlp       | 2.1.7           | HNN     | 0.69341        | 0.59185       | 0.57092     | 0.70350     | 0.98116        | 0.94163     | 0.11359       | 0.65658      |
+| Koalanlp       | 2.1.7           | KMR     | 0.63506        | 0.48661       | 0.49026     | 0.56364     | 0.54806        | 0.85426     | 0.11359       | 0.52735      |
+| Koalanlp       | 2.1.7           | RHINO   | 0.68313        | 0.53548       | 0.52258     | 0.57900     | 0.96743        | 0.85426     | 0.11359       | 0.60792      |
+| Koalanlp       | 2.1.7           | EUNJEON | 0.67063        | 0.54010       | 0.48446     | 0.65018     | 0.91846        | 0.80233     | 0.11359       | 0.59710      |
+| Koalanlp       | 2.1.7           | ARIRANG | 0.69407        | 0.57230       | 0.56872     | 0.67882     | 0.97884        | 0.85426     | 0.11359       | 0.63722      |
+| Koalanlp       | 2.1.7           | KKMA    | 0.78127        | 0.66599       | 0.78335     | 0.56832     | 0.92527        | 0.89952     | 0.30797       | 0.70457      |
+| Kiwi           | 0.14.1          | N/A     | 0.91323        | 0.76214       | 0.96003     | **0.84503** | 0.97740        | **0.98447** | 0.38535       | 0.83252      |
+| **Kss (ours)** | 4.2.0           | pecab   | **0.92162**    | **0.90335**   | **0.96826** | 0.82720     | 0.98801        | 0.93012     | **0.48153**   | 0.86001      |
+| **Kss (ours)** | 4.2.0           | mecab   | **0.92162**    | **0.90335**   | **0.96826** | 0.83329     | **1.00000**    | 0.93012     | **0.48153**   | **0.86259**  |
+
+![](https://github.com/hyunwoongko/kss/blob/main/assets/tasks_f1.png)
+
+![](https://github.com/hyunwoongko/kss/blob/main/assets/avg_f1.png)
+
+- **Normalized F1 score**: This is the most reliable metric made by the Kss project. It makes up for the downside of the F1 score by taking the F1 score but penalizing splitters that cut too finely.
+
+| Name           | Library version | Backend | blogs_lee (NF1) | blogs_ko (NF1) | sample (NF1) | tweets (NF1) | wikipedia (NF1) | nested (NF1) | v_ending (NF1) | Average (NF1) |
+|----------------|-----------------|---------|-----------------|----------------|--------------|--------------|-----------------|--------------|----------------|---------------|
+| Baseline       | N/A             | N/A     | 0.59884         | 0.52607        | 0.54732      | 0.61806      | 0.76379         | 0.75991      | 0.11359        | 0.56108       |
+| Koalanlp       | 2.1.7           | OKT     | 0.62168         | 0.55724        | 0.58642      | 0.66198      | 0.76354         | 0.83832      | 0.11359        | 0.59182       |
+| Koalanlp       | 2.1.7           | HNN     | 0.62515         | 0.57098        | 0.57092      | 0.66922      | 0.97286         | 0.82031      | 0.11359        | 0.62043       |
+| Koalanlp       | 2.1.7           | KMR     | 0.61636         | 0.48412        | 0.49026      | 0.55535      | 0.54806         | 0.85426      | 0.11359        | 0.52314       |
+| Koalanlp       | 2.1.7           | RHINO   | 0.63619         | 0.51835        | 0.52258      | 0.55140      | 0.95886         | 0.85426      | 0.11359        | 0.59360       |
+| Koalanlp       | 2.1.7           | EUNJEON | 0.62104         | 0.52132        | 0.48446      | 0.57766      | 0.91307         | 0.80233      | 0.11359        | 0.57261       |
+| Koalanlp       | 2.1.7           | ARIRANG | 0.58979         | 0.51149        | 0.56872      | 0.53500      | 0.94617         | 0.85426      | 0.11359        | 0.58843       |
+| Koalanlp       | 2.1.7           | KKMA    | 0.73972         | 0.64048        | 0.78335      | 0.56408      | 0.89218         | 0.75068      | 0.30797        | 0.66835       |
+| Kiwi           | 0.14.1          | N/A     | 0.84378         | 0.72367        | 0.93717      | 0.79056      | 0.91031         | **0.92687**  | 0.34179        | 0.78202       |
+| **Kss (ours)** | 4.2.0           | pecab   | **0.88878**     | **0.88605**    | **0.96826**  | 0.80771      | 0.98160         | 0.92063      | **0.48153**    | 0.84957       |
+| **Kss (ours)** | 4.2.0           | mecab   | **0.88878**     | **0.88605**    | **0.96826**  | **0.81379**  | **1.00000**     | 0.92063      | **0.48153**    | **0.85129**   |
+
+![](https://github.com/hyunwoongko/kss/blob/main/assets/tasks_nf1.png)
+
+![](https://github.com/hyunwoongko/kss/blob/main/assets/avg_nf1.png)
+
+Kss performed best in most metrics and datasets, and Kiwi performed well. Both baseline and koalanlp performed poorly.
 
 <br>
 
-#### 4) Why don't I trust F1 score in sentence segmentation domain?
-The evaluation source code which I copied from [kiwipiepy](https://github.com/bab2min/kiwipiepy/tree/main/benchmark/sentence_split) provides both EM score and F1 score  (dice similarity). I measured both scores, but I didn't upload F1 score based results. Actually, F1 scores of Kss are also best among the segmentation tools. **But I don't believe this is proper metric to measure sentence segmentation performance.** For example, EM score of `text.split(" ")` on `tweets.txt` is 0.06742. This means it's terrible sentence segmentation method on tweeter style text. However, F1 score of it on `tweets.txt` is 0.54083, and it is similar with the F1 score of Koalanlp KKMA backend (0.56832).
+#### 4) Consideration of metrics and Normalized F1 score
+The evaluation source code which was copied from [kiwipiepy](https://github.com/bab2min/kiwipiepy/tree/main/benchmark/sentence_split) provides both EM score and F1 score (dice similarity). 
+**But I don't believe both scores are proper metric to measure sentence segmentation performance.**
+In this section, I will show you the problems of both EM score and F1 score, and propose a new metric, Normalized F1 score to solve these problems.
+For these experiments, I will use Kiwi (0.14.1) and Word Split, and the Word Split is equivalent to `text.split(" ")`.
 
-What I want to say is the actual performance of segmentation could be vastly different even if the F1 scores were similar.
-You can reproduce this with `python3 ./bench/test_word_split.py ./bench/testset/tweets.txt`, and here is one of the segmentation example of both method.
+#### 4.1) Problem of EM score
+
+Firstly, the EM score has a problem like the following. Let's look at an example like this:
+
+- Input text:
+  ```
+  델포이 섬에 있는 아폴론 신전은 앞일을 예언하는 신탁으로 유명하다.[3] 아폴론이 아직 태어나기 이전에 레토는, 자신이 임신한 쌍둥이들이, 아버지인 제우스 다음가는 권력을 누리게 될 것이라는 예언을 받았다고 한다. 
+  ```
+
+- Label:
+  ```
+  델포이 섬에 있는 아폴론 신전은 앞일을 예언하는 신탁으로 유명하다.[3] 
+  아폴론이 아직 태어나기 이전에 레토는, 자신이 임신한 쌍둥이들이, 아버지인 제우스 다음가는 권력을 누리게 될 것이라는 예언을 받았다고 한다. 
+  ```
+
+And the two splitters split input text like the following:
+
+-  Output of Kiwi (0.14.1):
+   ```
+   # EM score: 0.0
+
+   델포이 섬에 있는 아폴론 신전은 앞일을 예언하는 신탁으로 유명하다.
+   [3] 아폴론이 아직 태어나기 이전에 레토는, 자신이 임신한 쌍둥이들이, 아버지인 제우스 다음가는 권력을 누리게 될 것이라는 예언을 받았다고 한다. 
+   ```
+
+- Output of Word Split:
+   ```
+   # EM score: 0.0
+
+   델포이
+   섬에
+   있는
+   아폴론
+   신전은
+   앞일을
+   예언하는
+   신탁으로
+   유명하다.[3]
+   아폴론이
+   아직
+   태어나기
+   이전에
+   레토는,
+   자신이
+   임신한
+   쌍둥이들이,
+   아버지인
+   제우스
+   다음가는
+   권력을
+   누리게
+   될
+   것이라는
+   예언을
+   받았다고
+   한다. 
+   ```
+
+The Kiwi separated sentences well excluding the footnote (`[3]`).
+Even if it didn't split sentences exactly accurate, it split somewhat well.
+On the contrary, the Word Split separated sentences completely wrong.
+However, since none of these outputs are the same with label, both are rated as 0.0 EM score. 
+It's too harsh evaluation for Kiwi.
+As such, the EM score does not properly evaluate the performance in the case of the sentence segmentation is not exactly accurate.
+
+You can reproduce this result using the following commands:
+- Kiwi: `python3 ./bench/test_kiwi.py ./bench/metrics/em_problem.txt`
+- Word Split: `python3 ./bench/test_word_split.py ./bench/metrics/em_problem.txt`
+
+#### 4.2) Problem of F1 score
+
+We can utilize the F1 score to solve the problem of EM score. 
+But F1 score also has a huge problem. Let's look at an example like this:
+
+- Input text:
+  ```
+  기억해 넌 그 애의 친구야. 네가 죽으면 마 들레 느가 펑펑 울 거야 비 체는 슬퍼하겠지 이 안은 화를 낼 거야. 메이 시는 어쩌면 조금은 생각 해 주지 않을까 중요한 건 그건 네가 지키고 싶어 했던 사람들이잖아 어서 가.
+  ```
+ 
+- Label:
+  ```
+  기억해 
+  넌 그 애의 친구야.
+  네가 죽으면 마 들레 느가 펑펑 울 거야
+  비 체는 슬퍼하겠지
+  이 안은 화를 낼 거야.
+  메이 시는 어쩌면 조금은 생각 해 주지 않을까
+  중요한 건 그건 네가 지키고 싶어 했던 사람들이잖아
+  어서 가.
+  ```
+
+And the two splitters split this input like the following:
+
+- Output of Kiwi (0.14.1):
+  ```
+  F1 score: 0.56229
+  
+  Output:
+  기억해 넌 그 애의 친구야.
+  네가 죽으면 마 들레 느가 펑펑 울 거야
+  비 체는 슬퍼하겠지
+  이 안은 화를 낼 거야.
+  메이 시는 어쩌면 조금은 생각 해 주지 않을까 중요한 건 그건 네가 지키고 싶어 했던 사람들이잖아 어서 가.
+  ```
+
+- Output of Word Split:
+  ```
+  F1 score: 0.58326
+  
+  Output:
+  기억해
+  넌
+  그
+  애의
+  친구야.
+  네가
+  죽으면
+  마
+  들레
+  느가
+  펑펑
+  울
+  거야
+  비
+  체는
+  슬퍼하겠지
+  이
+  안은
+  화를
+  낼
+  거야.
+  메이
+  시는
+  어쩌면
+  조금은
+  생각
+  해
+  주지
+  않을까
+  중요한
+  건
+  그건
+  네가
+  지키고
+  싶어
+  했던
+  사람들이잖아
+  어서
+  가.
+  ```
+
+Neither two splitters split the sentence perfectly, but Kiwi split sentences pretty well.
+On the contrary, the Word Split separated sentences completely wrong.
+Interestingly, Word Split's F1 score is 0.58326, which is higher than Kiwi's 0.56229.
+This means that the F1 score (dice similarity) gives a huge advantage to splitter that splits sentences too finely.
+
+You can reproduce this result using the following commands:
+- Kiwi: `python3 ./bench/test_kiwi.py ./bench/metrics/f1_problem.txt`
+- Word Split: `python3 ./bench/test_word_split.py ./bench/metrics/f1_problem.txt`
+
+#### 4.3) Normalized F1 score
+
+To overcome the problem of both EM score and F1 score, I propose a new metric named `Normalized F1 score`.
+This can be obtained by the following formula.
 
 ```
-Input:
-
-기억해. 넌 그 애의 친구야. 네가 죽으면 마 들레 느가 펑펑 울 거야. 비 체는 슬퍼하겠지. 이 안은 화를 낼 거야. 메이 시는 어쩌면 조금은 생각 해 주지 않을까. 중요한 건 그건 네가 지키고 싶어 했던 사람들이잖아. 어서 가.
-```
-```
-Method: Koalanlp KKMA backend
-EM score: 0.38202
-F1 score: 0.56832
-
-Output:
-기억해. 넌 그 애의 친구야.
-네가 죽으면 마 들레 느가 펑펑 울 거야.
-비 체는 슬퍼하겠지.
-이 안은 화를 낼 거야.
-메이 시는 어쩌면 조금은 생각 해 주지 않을까.
-중요한 건 그건 네가 지키고 싶어 했던 사람들이잖아.
-어서 가.
+Normalized_F1_score = F1_score * min(1, len(golds)/len(preds))
 ```
 
-```
-Method: text.split(" ")
-EM score: 0.06742
-F1 score: 0.54083
+This inherits the advantages of the F1 score, but penalizes splitters that split sentences too finely.
+If we re-evaluate the above two experiments with the Normalized F1 score, the scores change as follows.
 
-Output:
-기억해.
-넌
-그
-애의
-친구야.
-네가
-죽으면
-마들레느가
-펑펑
-울거야.
-비체는
-슬퍼하겠지.
-이안은
-화를
-낼거야.
-메이시는
-어쩌면
-조금은
-생각
-해주지
-않을까.
-중요한건
-그건
-네가
-지키고
-싶어했던
-사람들이잖아.
-어서
-가.
-```
+| Splitter   | Library version | Input sentences    | EM score | Normalized F1 score |
+|------------|-----------------|--------------------|----------|---------------------|
+| Kiwi       | 0.14.1          | `델포이 섬에 있는 아폴론...` | **0.0**  | **0.96341**         |
+| Word Split | N/A             | `델포이 섬에 있는 아폴론...` | **0.0**  | 0.02145             |
 
-This means that the F1 score has the huge advantages for method that cut sentences too finely.
-Of course, measuring the performance of the sentence segmentation algorithm is difficult, and we need to think more about metrics. 
-However, the character level F1 score may cause **users to misunderstand the tool's real performance**. 
-So I have more confidence in the EM score, which is a somewhat clunky but safe metric.
+| Splitter   | Library version | Input sentences    | F1 score    | Normalized F1 score |
+|------------|-----------------|--------------------|-------------|---------------------|
+| Kiwi       | 0.14.1          | `기억해 넌 그 애의 친구...` | 0.56229     | **0.56229**         |
+| Word Split | N/A             | `기억해 넌 그 애의 친구...` | **0.58326** | 0.11964             |
+
+In both cases, Word Split scores significantly lower than Kiwi. 
+This means that the Normalized F1 score can complement the EM score and F1 score.
+That's why I'm introducing this new metric, Normalized F1 to sentence segmentation evaluation.
 
 <br>
 
 #### 5) Where does the difference in performance come from? (Qualitative Analysis)
-It is meaningless to simply compare them by number. I definitely want you to see the segmentation results.
+So far, I've conducted quantitative analysis and have been considering evaluation metrics. 
+However, it is meaningless to simply compare them by number. I definitely want you to see the segmentation results.
 Let's take `blogs_ko` samples as examples, and compare performance of each library.
 For this, I will take the best backend of each library (Kss=mecab, Koalanlp=KKMA) on the `blogs_ko` dataset, because looking results of all backends may make you tired.
 
@@ -502,7 +667,7 @@ In conclusion, Kss considers more than other libraries in Korean sentences. And 
 
 #### 6) Speed analysis
 I also measured speed of tools to compare their computation efficiency. The following table shows computation time of each tool when it splits `sample.txt` (41 sentences).
-It is a single blog post, so you can expect the following time when you split a blog post into sentences.
+This is a single blog post, so you can expect the following time when you split a blog post into sentences.
 Since the computation time may vary depending on the current CPU status, so I measured 5 times and calculated the average.
 Note that every experiment was conducted on single thread / process environment with my M1 macbook pro (2021, 13'inch).
 
@@ -520,11 +685,7 @@ Note that every experiment was conducted on single thread / process environment 
 | **Kss (ours)** | 4.2.0           | pecab   | 7050.50             |
 | **Kss (ours)** | 4.2.0           | mecab   | 46.81               |
 
-You can also compare the speed of tools with the following graphs.
-
 ![](https://github.com/hyunwoongko/kss/blob/main/assets/average_computation_time.png)
-
-You can also compare the speed of faster tools the following graphs (under 100 msec).
 
 ![](https://github.com/hyunwoongko/kss/blob/main/assets/average_computation_time_under_100.png)
 
@@ -546,11 +707,13 @@ There are much information about mecab installing on Windows machine in internet
 <br>
 
 #### 7) Conclusion
-I've measured the performance of Kss and other libraries using 6 evaluation datasets, and also measured their speed.
-In terms of segmentation performance, Kss performed best on most datasets. In terms of speed, baseline was the fastest, and Koalanlp (OKT backend) and Kiwi followed. 
+I've measured the performance of Kss and other libraries using 7 evaluation datasets, and also measured their speed.
+And I proposed a new metric named 'Normalized F1 score'. In terms of segmentation performance, Kss performed best on most datasets. 
+In terms of speed, baseline was the fastest, and Koalanlp (OKT backend) and Kiwi followed. 
 but Kss (mecab backend) also showed a speed that could compete with others.
 
-Although much progress has been made by Kiwi and Kss, there are still many difficulties and limitations in Korean sentence segmentation libraries. In fact, it's also because very few people attack this task. If anyone wants to discuss Korean sentence segmentation algorithms with me or contribute to my work, feel free to send an email to kevin.ko@tunib.ai or let me know on the Github [issue](https://github.com/hyunwoongko/kss/issues) page.
+Although much progress has been made by Kiwi and Kss, there are still many difficulties and limitations in Korean sentence segmentation libraries. 
+In fact, it's also because very few people attack this task. If anyone wants to discuss Korean sentence segmentation algorithms with me or contribute to my work, feel free to send an email to kevin.ko@tunib.ai or let me know on the Github [issue](https://github.com/hyunwoongko/kss/issues) page.
 
 </details>
 
