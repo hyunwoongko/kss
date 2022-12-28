@@ -152,7 +152,7 @@ In fact, `사실 전 고기를 안 먹어서 무슨 맛인지 모르겠지만..`
 
 #### 3) Sentence segmentation performance (Quantitative Analysis)
  
-The following tables show the segmentation performance based on **exact match score (EM)**, **F1 score (F1)** and **Normalized F1 score (NF1)**.
+The following tables show the segmentation performance based on **Exact Match (EM)**, **F1 score (F1)** and **Normalized F1 score (NF1)**.
 
 - **EM score**: This only gives score when the output predictions are exactly the same with gold labels. This could be useful, but too harsh and clunky.
 
