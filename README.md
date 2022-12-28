@@ -222,7 +222,7 @@ Kss performed best in most metrics and datasets, and Kiwi performed well. Both b
 The evaluation source code which was copied from [kiwipiepy](https://github.com/bab2min/kiwipiepy/tree/main/benchmark/sentence_split) provides both EM score and F1 score (dice similarity). 
 **But I don't believe both are good metrics to measure sentence segmentation performance.**
 In this section, I will show you the problems of both EM score and F1 score, and propose a new metric, Normalized F1 score to solve these problems.
-For these experiments, I will use Kiwi (0.14.1) and Word Split, and the Word Split is equivalent to `text.split(" ")`.
+For these experiments, I used Kiwi (0.14.1) and Word Split, and the Word Split is equivalent to `text.split(" ")`.
 
 #### 4.1) Problem of EM score
 
