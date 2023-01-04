@@ -795,6 +795,84 @@ split_morphemes(
 
 <br>
 
+
+#### 2) `summarize_sentences`: summarize text into important sentences
+
+```python
+from kss import summarize_sentences
+
+summarize_sentences(
+    text: Union[str, List[str], Tuple[str]],
+    backend: str = "auto",
+    num_workers: Union[int, str] = "auto",
+    num_sentences: int = 3,
+    tolerance: float: 0.05,
+)
+```
+
+<details>
+<summary>Parameters</summary>
+
+- **text: String or List/Tuple of strings**
+  - string: single text segmentation
+  - list/tuple of strings: batch texts segmentation
+- **backend: Morpheme analyzer backend.**
+  - `backend='auto'`: find `mecab` → `konlpy.tag.Mecab` → `pecab` and use first found analyzer (default)
+  - `backend='mecab'`: find `mecab` → `konlpy.tag.Mecab` and use first found analyzer
+  - `backend='pecab'`: use `pecab` analyzer
+- **num_workers: The number of multiprocessing workers**
+  - `num_workers='auto'`: use multiprocessing with the maximum number of workers if possible (default)
+  - `num_workers=1`: don't use multiprocessing
+  - `num_workers=2~N`: use multiprocessing with the specified number of workers
+- **max_sentences: The maximum number of output sentences**
+  - `max_sentences=1~N`: return 1~N sentences by sentence importance
+- **tolerance: Threshold for omitting edge weights.**
+
+</details>
+
+<details>
+<summary>Usages</summary>
+
+
+- Single text summarization
+  ```python
+  import kss
+
+  text = """개그맨 겸 가수 ‘개가수’ UV 유세윤이 신곡 발매 이후 많은 남편들의 응원을 받고 있다. 유세윤은 지난 3일 오후 6시 새 싱글 ‘마더 사커(Mother Soccer)(Feat. 수퍼비)’를 발매했다. ‘마더 사커’는 아내에 대한 서운한 마음을 위트 있고 강한 어조로 디스 하는 남편 유세윤의 마음을 담은 곡이다. 발매 후 소셜 미디어 상에서 화제를 모으고 있는 가운데, 가수 하동균은 “유세유니 괜찮겠어”라는 반응을 보이기도 했다. 누리꾼들은 ‘두 분의 원만한 합의가 있기를 바랍니다’, ‘집에는 들어갈 수 있겠나’ 등 유세윤의 귀가를 걱정하는 모습을 보였다. 유세윤은 점입가경으로 ‘마더 사커’ 챌린지를 시작, 자신의 SNS를 통해 “부부 싸움이 좀 커졌네요”라며 배우 송진우와 함께 촬영한 영상을 게재했다. 해당 영상에서는 양말을 신고 침대에 들어간 뒤 환호를 지르거나 화장실 불을 끄지 않고 도망가는 등 아내의 잔소리 유발 포인트를 살려 재치 있는 영상을 완성했다. 유세윤은 ‘마더 사커’를 통해 남편들의 마음을 대변해 주고 있는 한편 아내의 반응은 어떨지 궁금증을 모은다."""
+
+  kss.summarize_sentences(text)
+  # ['개그맨 겸 가수 ‘개가수’ UV 유세윤이 신곡 발매 이후 많은 남편들의 응원을 받고 있다.', '‘마더 사커’는 아내에 대한 서운한 마음을 위트 있고 강한 어조로 디스 하는 남편 유세윤의 마음을 담은 곡이다.', '유세윤은 ‘마더 사커’를 통해 남편들의 마음을 대변해 주고 있는 한편 아내의 반응은 어떨지 궁금증을 모은다.']
+  ```
+
+- Batch texts summarization
+  ```python
+  import kss
+
+  texts = [
+      """개그맨 겸 가수 ‘개가수’ UV 유세윤이 신곡 발매 이후 많은 남편들의 응원을 받고 있다. 유세윤은 지난 3일 오후 6시 새 싱글 ‘마더 사커(Mother Soccer)(Feat. 수퍼비)’를 발매했다. ‘마더 사커’는 아내에 대한 서운한 마음을 위트 있고 강한 어조로 디스 하는 남편 유세윤의 마음을 담은 곡이다. 발매 후 소셜 미디어 상에서 화제를 모으고 있는 가운데, 가수 하동균은 “유세유니 괜찮겠어”라는 반응을 보이기도 했다. 누리꾼들은 ‘두 분의 원만한 합의가 있기를 바랍니다’, ‘집에는 들어갈 수 있겠나’ 등 유세윤의 귀가를 걱정하는 모습을 보였다. 유세윤은 점입가경으로 ‘마더 사커’ 챌린지를 시작, 자신의 SNS를 통해 “부부 싸움이 좀 커졌네요”라며 배우 송진우와 함께 촬영한 영상을 게재했다. 해당 영상에서는 양말을 신고 침대에 들어간 뒤 환호를 지르거나 화장실 불을 끄지 않고 도망가는 등 아내의 잔소리 유발 포인트를 살려 재치 있는 영상을 완성했다. 유세윤은 ‘마더 사커’를 통해 남편들의 마음을 대변해 주고 있는 한편 아내의 반응은 어떨지 궁금증을 모은다.""",
+      """제임스 카메론 감독의 영화 ‘아바타: 물의 길’(아바타2)이 개봉 21일 만에 전국 누적 관객 800만명을 달성했다. 올해 국내 첫 ‘천만 영화’가 될지 주목된다. 4일 영화진흥위원회(영진위)에 따르면 지난달 14일 개봉한 ‘아바타2’는 전날 11만3902명의 관객을 모았다. 누적 관객 800만1930명으로 전편 ‘아바타’보다 4일 빠른 기록이다. 이는 한국의 신종 코로나바이러스 감염증(코로나19) 팬데믹 이후 세 번째 기록이다. 지난해 개봉한 ‘범죄도시2’와 ‘탑건: 매버릭’에 이어 관객 800만명을 넘어선 것이다. 2021년 12월 개봉한 ‘스파이더맨: 노 웨이 홈’도 800만명을 넘지 못했다. 이번에 ‘아바타2’가 1000만명을 돌파한다면 2019년 개봉한 ‘어벤져스: 엔드게임’ 이후 5년 만에 첫 1000만 국내 개봉 외국 영화가 된다. 영진위의 통합전산망에 따르면 ‘아바타2’의 국내 실시간 예매율은 53.9%(4일 오전 10시 기준)로 이날 개봉한 일본 영화 ‘더 퍼스트 슬램덩크’(12.9%)보다 약 4배 이상 높은 예매율을 기록했다. 박스오피스 2위는 정성화 주연의 한국 뮤지컬 영화 ‘영웅’으로, 누적 관객 180만명을 기록했다. 이어 작년 11월 말 개봉한 일본 영화 ‘오늘 밤, 세계에서 이 사랑이 사라진다 해도’가 누적 관객 72만명으로 3위를 유지하고 있다.""",
+  ]
+
+  kss.summarize_sentences(texts)
+  # [['개그맨 겸 가수 ‘개가수’ UV 유세윤이 신곡 발매 이후 많은 남편들의 응원을 받고 있다.', '‘마더 사커’는 아내에 대한 서운한 마음을 위트 있고 강한 어조로 디스 하는 남편 유세윤의 마음을 담은 곡이다.', '유세윤은 ‘마더 사커’를 통해 남편들의 마음을 대변해 주고 있는 한편 아내의 반응은 어떨지 궁금증을 모은다.'], 
+  # ['제임스 카메론 감독의 영화 ‘아바타: 물의 길’(아바타2)이 개봉 21일 만에 전국 누적 관객 800만명을 달성했다.', '4일 영화진흥위원회(영진위)에 따르면 지난달 14일 개봉한 ‘아바타2’는 전날 11만3902명의 관객을 모았다.', '박스오피스 2위는 정성화 주연의 한국 뮤지컬 영화 ‘영웅’으로, 누적 관객 180만명을 기록했다.']]
+  ```
+
+- Set `max_sentences` if you want get more or less three sentences from text
+  ```python
+  import kss
+
+  text = """개그맨 겸 가수 ‘개가수’ UV 유세윤이 신곡 발매 이후 많은 남편들의 응원을 받고 있다. 유세윤은 지난 3일 오후 6시 새 싱글 ‘마더 사커(Mother Soccer)(Feat. 수퍼비)’를 발매했다. ‘마더 사커’는 아내에 대한 서운한 마음을 위트 있고 강한 어조로 디스 하는 남편 유세윤의 마음을 담은 곡이다. 발매 후 소셜 미디어 상에서 화제를 모으고 있는 가운데, 가수 하동균은 “유세유니 괜찮겠어”라는 반응을 보이기도 했다. 누리꾼들은 ‘두 분의 원만한 합의가 있기를 바랍니다’, ‘집에는 들어갈 수 있겠나’ 등 유세윤의 귀가를 걱정하는 모습을 보였다. 유세윤은 점입가경으로 ‘마더 사커’ 챌린지를 시작, 자신의 SNS를 통해 “부부 싸움이 좀 커졌네요”라며 배우 송진우와 함께 촬영한 영상을 게재했다. 해당 영상에서는 양말을 신고 침대에 들어간 뒤 환호를 지르거나 화장실 불을 끄지 않고 도망가는 등 아내의 잔소리 유발 포인트를 살려 재치 있는 영상을 완성했다. 유세윤은 ‘마더 사커’를 통해 남편들의 마음을 대변해 주고 있는 한편 아내의 반응은 어떨지 궁금증을 모은다."""
+
+  kss.summarize_sentences(text, max_sentences=4)
+  # ['개그맨 겸 가수 ‘개가수’ UV 유세윤이 신곡 발매 이후 많은 남편들의 응원을 받고 있다.', '‘마더 사커’는 아내에 대한 서운한 마음을 위트 있고 강한 어조로 디스 하는 남편 유세윤의 마음을 담은 곡이다.', '유세윤은 점입가경으로 ‘마더 사커’ 챌린지를 시작, 자신의 SNS를 통해 “부부 싸움이 좀 커졌네요”라며 배우 송진우와 함께 촬영한 영상을 게재했다.', '유세윤은 ‘마더 사커’를 통해 남편들의 마음을 대변해 주고 있는 한편 아내의 반응은 어떨지 궁금증을 모은다.']
+  ```
+
+
+</details>
+
+<br>
+
 ## Kss in various programming languages
 Kss is available in various programming languages.
 - [Kss Python version](https://github.com/hyunwoongko/kss)

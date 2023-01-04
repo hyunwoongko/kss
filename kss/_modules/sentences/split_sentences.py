@@ -70,6 +70,7 @@ def _split_sentences(
     Args:
         text (Union[str, List[Syllable]]): single text
         backend (str): morpheme analyzer backend
+        strip (bool): strip all sentences or not
         postprocess (bool): whether it uses postprocessing or not
         recursion (int): recursion times
 

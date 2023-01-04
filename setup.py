@@ -46,7 +46,7 @@ setup(
     description="A Toolkit for Korean sentence segmentation",
     long_description_content_type="text/markdown",
     platforms=["any"],
-    install_requires=["emoji==1.2.0", "regex", "pecab"],
+    install_requires=["emoji==1.2.0", "regex", "pecab", "networkx"],
     long_description=long_description,
     packages=find_packages(exclude=["bench", "assets", ".java", ".pytest_cache"]),
     python_requires=">=3",

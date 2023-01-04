@@ -13,7 +13,8 @@ from kss._utils.const import (
     single_quotes,
     single_quotes_open_to_close,
     single_quotes_close_to_open,
-    single_quotes_wo_direction, double_quotes_wo_direction,
+    single_quotes_wo_direction,
+    double_quotes_wo_direction,
 )
 
 
