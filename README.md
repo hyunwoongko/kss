@@ -805,7 +805,7 @@ summarize_sentences(
     text: Union[str, List[str], Tuple[str]],
     backend: str = "auto",
     num_workers: Union[int, str] = "auto",
-    num_sentences: int = 3,
+    max_sentences: int = 3,
     tolerance: float: 0.05,
 )
 ```
