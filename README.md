@@ -878,7 +878,7 @@ summarize_sentences(
     
 There's [`textrankr`](https://github.com/theeluwin/textrankr), a text summarization module for Korean. So someone might ask me like "Why are you adding summarization feature into Kss?". **The reason of adding this feature is sentence segmentation performance is very important in text summarization domain.** 
 
-Before summarize text into sentences, we must split text into sentences. but `textrankr` has been split sentences using very naive regex based method, and this makes text summarization performance poorly. In addition, user must input tokenizer into the `TextRank` class.  this is a little bit bothering. So I fixed the two problems of `textrankr`, and added the codebase into Kss.
+Before summarize text into sentences, we must split text into sentences. but `textrankr` has been split sentences using very naive regex based method, and this makes text summarization performance poorly. In addition, user must input tokenizer into the `TextRank` class, but this is a little bit bothering. So I fixed the two problems of `textrankr`, and added the codebase into Kss.
 
 Kss has one of the best sentence segmentation module in all of the Korean language processing libraries, and this can improve text summarization performance without modifying any summarization related algorithms in `textrankr`.
 
