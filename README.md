@@ -796,7 +796,7 @@ split_morphemes(
 <br>
 
 
-#### 2) `summarize_sentences`: summarize text into important sentences
+#### 3) `summarize_sentences`: summarize text into important sentences
 
 ```python
 from kss import summarize_sentences
