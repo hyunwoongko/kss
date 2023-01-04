@@ -109,7 +109,7 @@ split_sentences(
 <summary>Performance Analysis</summary>
 
 #### 1) Test Commands
-You can reproduce all the following analyses using source code and datasets in `./bench/` directory and the source code was copied from [here](https://github.com/bab2min/kiwipiepy/tree/main/benchmark/sentence_split).
+You can reproduce all the following results using source code and datasets in `./bench/` directory and the source code was copied from [here](https://github.com/bab2min/kiwipiepy/tree/main/benchmark/sentence_split).
 Note that the `Baseline` is regex based segmentation method (`re.split(r"(?<=[.!?])\s", text)`).
 
 | Name                                             | Command (in root directory)                                                                               |
@@ -123,7 +123,7 @@ Note that the `Baseline` is regex based segmentation method (`re.split(r"(?<=[.!
 
 #### 2) Evaluation datasets:
 
-I used the following 6 evaluation datasets for analyses. Thanks to [Minchul Lee](https://github.com/bab2min) for creating various sentence segmentation datasets.
+I used the following 7 evaluation datasets for the follwing experiments. Thanks to [Minchul Lee](https://github.com/bab2min) for creating various sentence segmentation datasets.
 
 | Name                                                                                  | Descriptions                                                                              | The number of sentences | Creator                                                                                                                                                                                                                                                            |
 |---------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|-------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -152,7 +152,7 @@ In fact, `사실 전 고기를 안 먹어서 무슨 맛인지 모르겠지만..`
 
 #### 3) Sentence segmentation performance (Quantitative Analysis)
  
-The following tables show the segmentation performance based on **exact match score (EM)**, **F1 score (F1)** and **Normalized F1 score (NF1)**.
+The following tables show the segmentation performance based on **Exact Match (EM)**, **F1 score (F1)** and **Normalized F1 score (NF1)**.
 
 - **EM score**: This only gives score when the output predictions are exactly the same with gold labels. This could be useful, but too harsh and clunky.
 
@@ -174,7 +174,7 @@ The following tables show the segmentation performance based on **exact match sc
 
 ![](https://github.com/hyunwoongko/kss/blob/main/assets/avg_em.png)
 
-- **F1 score (dice similarity)**: This calculates the overlap between the output predictions and gold labels. It means this metric gives score even if the predictions are not exactly same with gold labels. This metric is less reliable because this gives huge advantages for splitters that cut sentences too finely.
+- **F1 score (dice similarity)**: This calculates the overlap between the output predictions and gold labels. It means this gives score even if the output predictions are not exactly same with gold labels. This is less reliable because this gives huge advantages to splitters which separate sentences too finely.
 
 | Name           | Library version | Backend | blogs_lee (F1) | blogs_ko (F1) | sample (F1) | tweets (F1) | wikipedia (F1) | nested (F1) | v_ending (F1) | Average (F1) |
 |----------------|-----------------|---------|----------------|---------------|-------------|-------------|----------------|-------------|---------------|--------------|
@@ -194,7 +194,7 @@ The following tables show the segmentation performance based on **exact match sc
 
 ![](https://github.com/hyunwoongko/kss/blob/main/assets/avg_f1.png)
 
-- **Normalized F1 score**: This is the most reliable metric made by the Kss project. It makes up for the downside of the F1 score by taking the F1 score but penalizing splitters that cut too finely.
+- **Normalized F1 score**: This is the most reliable metric made by the Kss project. It makes up for the downside of the F1 score by penalizing splitters which separate too finely.
 
 | Name           | Library version | Backend | blogs_lee (NF1) | blogs_ko (NF1) | sample (NF1) | tweets (NF1) | wikipedia (NF1) | nested (NF1) | v_ending (NF1) | Average (NF1) |
 |----------------|-----------------|---------|-----------------|----------------|--------------|--------------|-----------------|--------------|----------------|---------------|
@@ -220,9 +220,9 @@ Kss performed best in most metrics and datasets, and Kiwi performed well. Both b
 
 #### 4) Consideration of metrics and Normalized F1 score
 The evaluation source code which was copied from [kiwipiepy](https://github.com/bab2min/kiwipiepy/tree/main/benchmark/sentence_split) provides both EM score and F1 score (dice similarity). 
-**But I don't believe both scores are proper metric to measure sentence segmentation performance.**
+**But I don't believe both are good metrics to measure sentence segmentation performance.**
 In this section, I will show you the problems of both EM score and F1 score, and propose a new metric, Normalized F1 score to solve these problems.
-For these experiments, I will use Kiwi (0.14.1) and Word Split, and the Word Split is equivalent to `text.split(" ")`.
+For these experiments, I used Kiwi (0.14.1) and Word Split, and the Word Split is equivalent to `text.split(" ")`.
 
 #### 4.1) Problem of EM score
 
@@ -285,7 +285,7 @@ And the two splitters split input text like the following:
 The Kiwi separated sentences well excluding the footnote (`[3]`).
 Even if it didn't split sentences exactly accurate, it split somewhat well.
 On the contrary, the Word Split separated sentences completely wrong.
-However, since none of these outputs are the same with label, both are rated as 0.0 EM score. 
+However, since none of these outputs are the same with label, both are rated as 0.0 with EM score. 
 It's too harsh evaluation for Kiwi.
 As such, the EM score does not properly evaluate the performance in the case of the sentence segmentation is not exactly accurate.
 
@@ -296,7 +296,7 @@ You can reproduce this result using the following commands:
 #### 4.2) Problem of F1 score
 
 We can utilize the F1 score to solve the problem of EM score. 
-But F1 score also has a huge problem. Let's look at an example like this:
+But F1 score has another problem. Let's look at an example like this:
 
 - Input text:
   ```
@@ -378,7 +378,7 @@ And the two splitters split this input like the following:
 Neither two splitters split the sentence perfectly, but Kiwi split sentences pretty well.
 On the contrary, the Word Split separated sentences completely wrong.
 Interestingly, Word Split's F1 score is 0.58326, which is higher than Kiwi's 0.56229.
-This means that the F1 score (dice similarity) gives a huge advantage to splitter that splits sentences too finely.
+This means that the F1 score (dice similarity) gives a huge advantage to splitters which separate sentences too finely.
 
 You can reproduce this result using the following commands:
 - Kiwi: `python3 ./bench/test_kiwi.py ./bench/metrics/f1_problem.txt`
@@ -386,15 +386,15 @@ You can reproduce this result using the following commands:
 
 #### 4.3) Normalized F1 score
 
-To overcome the problem of both EM score and F1 score, I propose a new metric named `Normalized F1 score`.
+To overcome the problems of both EM score and F1 score, I propose a new metric named `Normalized F1 score`.
 This can be obtained by the following formula.
 
 ```
 Normalized_F1_score = F1_score * min(1, len(golds)/len(preds))
 ```
 
-This inherits the advantages of the F1 score, but penalizes splitters that split sentences too finely.
-If we re-evaluate the above two experiments with the Normalized F1 score, the scores change as follows.
+This inherits the advantages of the F1 score, but penalizes splitters which separate sentences too finely.
+If we re-evaluate the above two cases with the Normalized F1 score, the scores change as follows.
 
 | Splitter   | Library version | Input sentences    | EM score | Normalized F1 score |
 |------------|-----------------|--------------------|----------|---------------------|
