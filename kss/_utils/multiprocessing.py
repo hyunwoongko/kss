@@ -2,11 +2,11 @@
 # All rights reserved.
 
 import multiprocessing as mp
-from typing import Union, Any, List, Optional
+from typing import Union, Any, List, Optional, Callable
 
 
 def _run_job(
-    func: "function",
+    func: Callable,
     inputs: Any,
     num_workers: Optional[Union[int, bool]] = None,
 ) -> Union[Any, List[Any]]:
@@ -14,7 +14,7 @@ def _run_job(
     Run job with or without multiprocessing.
 
     Args:
-        func ("function"): function to run
+        func (Callable): function to run
         inputs (Any): input data
         num_workers (Optional[Union[int, bool]]): the number of multiprocessing workers.
 

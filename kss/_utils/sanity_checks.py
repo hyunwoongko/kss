@@ -3,7 +3,7 @@
 
 import platform
 import unicodedata
-from typing import Union, Tuple, List, Any, Optional, Type
+from typing import Union, Tuple, List, Any, Optional, Type, Callable
 
 from kss._modules.morphemes.analyzers import (
     MecabAnalyzer,
@@ -29,9 +29,34 @@ def _message_by_user_os(linux_macos: str, windows: str) -> str:
         return windows
 
 
+def _check_value(param: Any, param_name: str, predicate: Callable, suggestion: str) -> Any:
+    """
+    Check param value
+
+    Args:
+        param (bool): param value
+        param_name (str): param name
+        predicate (Callable): callable
+        suggestion (str): suggestion message
+
+    Returns:
+        Any: param value
+    """
+    available = predicate(param)
+
+    if not available:
+        raise TypeError(
+            f"Oops! '{param}' is not supported value for `{param_name}`.\n"
+            f"Currently kss only supports {suggestion} for this.\n"
+            f"Please check `{param_name}` parameter again ;)\n"
+        )
+
+    return param
+
+
 def _check_type(param: Any, param_name: str, types: Union[Type, List[Type]]) -> Any:
     """
-    Check param type is
+    Check param type
 
     Args:
         param (bool): param value

@@ -17,6 +17,7 @@ from kss._utils.sanity_checks import (
     _check_num_workers,
     _check_analyzer_backend,
     _check_type,
+    _check_value,
 )
 
 
@@ -48,6 +49,9 @@ def summarize_sentences(
     _check_analyzer_backend(backend)
     num_workers = _check_num_workers(text, num_workers)
     max_sentences = _check_type(max_sentences, "max_sentences", int)
+    max_sentences = _check_value(
+        max_sentences, "max_sentences", lambda x: x > 0, "integer value in 1~N"
+    )
     tolerance = _check_type(tolerance, "tolerance", float)
 
     return _run_job(
