@@ -796,7 +796,7 @@ split_morphemes(
 <br>
 
 
-#### 2) `summarize_sentences`: summarize text into important sentences
+#### 3) `summarize_sentences`: summarize text into important sentences
 
 ```python
 from kss import summarize_sentences
@@ -805,7 +805,7 @@ summarize_sentences(
     text: Union[str, List[str], Tuple[str]],
     backend: str = "auto",
     num_workers: Union[int, str] = "auto",
-    num_sentences: int = 3,
+    max_sentences: int = 3,
     tolerance: float: 0.05,
 )
 ```
@@ -870,6 +870,59 @@ summarize_sentences(
 
 
 </details>
+
+<details>
+    <summary>Why text summarization in Kss?</summary>
+
+<br>
+    
+There's [`textrankr`](https://github.com/theeluwin/textrankr), a text summarization module for Korean. So someone might ask me like "Why are you adding summarization feature into Kss?". **The reason of adding this feature is sentence segmentation performance is very important in text summarization domain.** 
+
+Before summarize text into sentences, we must split text into sentences. but `textrankr` has been split sentences using very naive regex based method, and this makes text summarization performance poorly. In addition, user must input tokenizer into the `TextRank` class, but this is a little bit bothering. So I fixed the two problems of `textrankr`, and added the codebase into Kss.
+
+Kss has one of the best sentence segmentation module in all of the Korean language processing libraries, and this can improve text summarization performance without modifying any summarization related algorithms in `textrankr`.
+
+Let's see the following example.
+
+```python
+text = """어느화창한날 출근전에 너무일찍일어나 버렸음 (출근시간 19시)
+할꺼도없고해서 카페를 찾아 시내로 나갔음
+새로생긴곳에 사장님이 커피선수인지 커피박사라고 해서 갔음
+오픈한지 얼마안되서 그런지 손님이 얼마없었음
+조용하고 좋다며 좋아하는걸시켜서 테라스에 앉음"""
+```
+
+Output of `textrankr` is:
+
+```python
+import textrankr
+import mecab
+
+tokenizer = mecab.MeCab().morphs
+textrankr_class = textrankr.TextRank(tokenizer=tokenizer)
+textrankr_output = textrankr_class.summarize(text, verbose=False)
+print(textrankr_output)
+```
+```
+output:
+
+['어느화창한날 출근전에 너무일찍일어나 버렸음 (출근시간 19시) 할꺼도없고해서 카페를 찾아 시내로 나갔음 새로생긴곳에 사장님이 커피선수인지 커피박사라고 해서 갔음 오픈한지 얼마안되서 그런지 손님이 얼마없었음 조용하고 좋다며 좋아하는걸시켜서 테라스에 앉음 근데 조용하던 카페가 산만해짐 소리의 출처는 카운터였음(테라스가 카운터 바로옆)']
+```
+
+Output of `kss` is:
+```python
+import kss
+
+kss.sumarize_sentences(text)
+``` 
+```
+output:
+
+['할꺼도없고해서 카페를 찾아 시내로 나갔음', '새로생긴곳에 사장님이 커피선수인지 커피박사라고 해서 갔음', '조용하고 좋다며 좋아하는걸시켜서 테라스에 앉음']
+```
+
+You can see `textrankr` failed summarizing text because it couldn't split input text into sentences. but Kss summarized text very well. And usage of `kss` is also much easier than `textrankr`! That's why I am adding this feature into Kss. 
+</details>    
 
 <br>
 
