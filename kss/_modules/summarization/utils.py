@@ -58,7 +58,7 @@ def _multiset_jaccard_index(counter1: Counter, counter2: Counter) -> float:
         return 0.0
 
 
-def _build_sentence_graph(sentences: List[Sentence], tolerance: float) -> Graph:
+def _build_sentence_graph(sentences: List[Sentence], tolerance: float):
     """
     Builds a `networkx.Graph` instance, using sentences as nodes.
     An edge weight is determined by the jaccard index between two sentences,
