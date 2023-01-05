@@ -478,8 +478,10 @@ class SentenceSplitter(SentenceProcessor):
             )
         ):
             _next = self.syllable.next_skip("SP")
-            while not _next.check_pos("JAMO", "EMOJI"):
+            _cur_cnt, _max_cnt = 0, 5
+            while _cur_cnt < _max_cnt and not _next.check_pos("JAMO", "EMOJI"):
                 _next = _next.next_skip("SP")
+                _cur_cnt += 1
             if not _next.check_pos("VV"):
                 return True
 
