@@ -103,7 +103,6 @@ def _split_sentences(
         sent_idx = len(output_sentences)
         splitter = SentenceSplitter(syllable)
         syllable_added = False
-        print(syllable)
         embracing.process(idx, sent_idx, syllable)
         current_embracing_mode = not embracing.empty()
 
