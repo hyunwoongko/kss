@@ -4,8 +4,6 @@
 from functools import partial
 from typing import List, Dict, Union, Tuple
 
-from networkx import Graph, pagerank
-
 from kss._modules.summarization.sentence import Sentence
 from kss._modules.summarization.utils import (
     _parse_text_into_sentences,
@@ -84,12 +82,13 @@ def _summarize_sentences(
     Returns:
         List[str]: summarized sentences
     """
+    from networkx import pagerank
 
     # parse text
     sentences: List[Sentence] = _parse_text_into_sentences(text, backend)
 
     # build graph
-    graph: Graph = _build_sentence_graph(sentences, tolerance=tolerance)
+    graph = _build_sentence_graph(sentences, tolerance=tolerance)
 
     # run pagerank
     pageranks: Dict[Sentence, float] = pagerank(graph, weight="weight")

@@ -5,8 +5,6 @@ from collections import Counter
 from itertools import combinations
 from typing import List
 
-from networkx import Graph
-
 from kss import split_morphemes, split_sentences
 from kss._modules.summarization.sentence import Sentence
 
@@ -66,6 +64,7 @@ def _build_sentence_graph(sentences: List[Sentence], tolerance: float) -> Graph:
     An edge weight is determined by the jaccard index between two sentences,
     but the edge will be ignored if the weight is lower than the given tolerance.
     """
+    from networkx import Graph
 
     # init
     graph: Graph = Graph()
