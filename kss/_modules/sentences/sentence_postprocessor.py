@@ -486,4 +486,8 @@ class SentencePostprocessor(SentenceProcessor):
         Returns:
             List[List[Syllable]]: list of syllables without empty one
         """
-        return [sentence for sentence in output_sentences if len(sentence) != 0]
+        return [
+            sentence
+            for sentence in output_sentences
+            if len("".join([i.text for i in sentence]).strip()) != 0
+        ]

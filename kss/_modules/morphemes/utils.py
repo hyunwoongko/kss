@@ -120,17 +120,21 @@ def _preserve_space(
     """
     results = list()
     len_text = len(text)
-    text_ptr = 0
-    token_ptr = 0
+    len_tokens = len(tokens)
+    text_idx = 0
+    token_idx = 0
 
-    while text_ptr < len_text:
-        character = text[text_ptr]
+    while text_idx < len_text:
+        character = text[text_idx]
         if character in spaces:
             results.append((character, "SP"))
-            text_ptr += 1
+            text_idx += 1
         else:
-            token = tokens[token_ptr]
-            results.append(token)
-            text_ptr += len(token[0])
-            token_ptr += 1
+            if token_idx < len_tokens:
+                token = tokens[token_idx]
+                results.append(token)
+                text_idx += len(token[0])
+                token_idx += 1
+            else:
+                break
     return results
