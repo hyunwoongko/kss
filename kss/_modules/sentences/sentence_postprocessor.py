@@ -24,7 +24,7 @@ class SentencePostprocessor(SentenceProcessor):
         Returns:
             List[str]: postprocessed output setences in string
         """
-
+        output_sentences = self._remove_space_before_emoji(output_sentences)
         output_sentences = self._merge_broken_sub_sentence_in_quotes_or_brackets(
             output_sentences
         )
@@ -491,3 +491,27 @@ class SentencePostprocessor(SentenceProcessor):
             for sentence in output_sentences
             if len("".join([i.text for i in sentence]).strip()) != 0
         ]
+
+    @staticmethod
+    def _remove_space_before_emoji(
+        output_sentences: List[List[Syllable]],
+    ) -> List[List[Syllable]]:
+        """
+        Remove a space character before emoji.
+        The space character was appended in preprocessing step.
+
+        Args:
+            output_sentences (List[List[Syllable]]): split list of syllables
+
+        Returns:
+            List[List[Syllable]]: list of syllables without space before emoji
+        """
+        for sentence_idx, output_sentence in enumerate(output_sentences):
+            for syllable_idx, output_syllable in enumerate(output_sentence):
+                if (
+                    output_syllable.check_pos("EMOJI")
+                    and output_syllable.prev.text == " "
+                ):
+                    output_syllable.prev = output_syllable.prev.prev
+                    output_sentences[sentence_idx].pop(syllable_idx - 1)
+        return output_sentences

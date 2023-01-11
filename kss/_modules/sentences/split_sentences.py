@@ -33,7 +33,7 @@ def split_sentences(
 
     Args:
         text (Union[str, List[str], Tuple[str]]): single text or list/tuple of texts
-        backend (str): morpheme analyzer backend. 'mecab', 'pecab' are supported.
+        backend (str): morpheme analyzer backend. 'mecab', 'pecab', 'punkt' are supported.
         num_workers (Union[int, str])): the number of multiprocessing workers
         strip (bool): strip all sentences or not
 
@@ -112,8 +112,11 @@ def _split_sentences(
                 current_sentence_syllables = [syllable]
                 syllable_added = True
 
-            elif splitter.check_split_start():
-                split_mode = True
+            else:
+                if backend._backend == "character":
+                    split_mode = splitter._sf()
+                else:
+                    split_mode = splitter.check_split_start()
 
         else:
             end_split, end_split_exception = splitter.check_split_end()

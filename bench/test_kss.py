@@ -8,7 +8,7 @@ if __name__ == "__main__":
     parser.add_argument("datasets", nargs="+")
     parser.add_argument("--write_result")
     parser.add_argument("--write_err")
-    parser.add_argument("--backend", default="mecab", choices=["mecab", "pecab"])
+    parser.add_argument("--backend", default="mecab", choices=["mecab", "pecab", "punct"])
     args = parser.parse_args()
 
     split_sentences("foo-bar", backend=args.backend)  # warm-up

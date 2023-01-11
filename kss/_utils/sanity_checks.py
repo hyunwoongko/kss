@@ -9,10 +9,16 @@ from kss._modules.morphemes.analyzers import (
     MecabAnalyzer,
     PecabAnalyzer,
     Analyzer,
+    CharacterAnalyzer,
 )
 from kss._utils.logging import logger
 
-MECAB_INFORM, KONLPY_MECAB_INFORM, PECAB_INFORM = False, False, False
+MECAB_INFORM, KONLPY_MECAB_INFORM, PECAB_INFORM, PUNCT_INFORM = (
+    False,
+    False,
+    False,
+    False,
+)
 
 _mecab_info_linux_macos = "https://github.com/hyunwoongko/python-mecab-kor"
 _konlpy_info_linux_macos = "https://konlpy.org/en/latest/api/konlpy.tag/#mecab-class"
@@ -29,7 +35,9 @@ def _message_by_user_os(linux_macos: str, windows: str) -> str:
         return windows
 
 
-def _check_value(param: Any, param_name: str, predicate: Callable, suggestion: str) -> Any:
+def _check_value(
+    param: Any, param_name: str, predicate: Callable, suggestion: str
+) -> Any:
     """
     Check param value
 
@@ -149,20 +157,24 @@ def _check_analyzer_backend(backend: str) -> Analyzer:
     Returns:
         Analyzer: morpheme analyzer backend.
     """
-    global MECAB_INFORM, KONLPY_MECAB_INFORM, PECAB_INFORM
+    global MECAB_INFORM, KONLPY_MECAB_INFORM, PECAB_INFORM, PUNCT_INFORM
 
     if isinstance(backend, str):
         backend = backend.lower()
 
-    if backend not in ["auto", "mecab", "pecab"]:
+    if backend not in ["auto", "mecab", "pecab", "punct"]:
         raise ValueError(
             f"Oops! '{backend}' is not supported value for `backend`.\n"
-            f"Currently kss only supports ['auto', 'pecab', 'mecab'] for this.\n"
+            f"Currently kss only supports ['auto', 'pecab', 'mecab', 'punct'] for this.\n"
             f"Please check `backend` parameter again ;)\n"
         )
 
     mecab_backend = MecabAnalyzer()
     pecab_backend = PecabAnalyzer()
+    punct_backend = CharacterAnalyzer()
+
+    if backend == "punct":
+        return punct_backend
 
     if backend == "mecab":
         if mecab_backend._backend is not None:
@@ -236,22 +248,29 @@ def _check_analyzer_backend(backend: str) -> Analyzer:
 
             return pecab_backend
         else:
-            raise ImportError(
-                _message_by_user_os(
-                    linux_macos="You don't have any available morpheme analyzer backend (mecab, pecab).\n"
-                    "You need to install one of mecab, konlpy.tag.Mecab and pecab to use Kss.\n"
+            if not PUNCT_INFORM:
+
+                installation_help_message = _message_by_user_os(
+                    linux_macos="For your information, Kss also supports mecab backend.\n"
+                    "We recommend you to install mecab or konlpy.tag.Mecab for faster execution of Kss.\n"
                     "Please refer to following web sites for details:\n"
                     f"- mecab: {_mecab_info_linux_macos}\n"
-                    f"- konlpy.tag.Mecab: {_konlpy_info_windows}\n"
-                    f"- pecab: {_pecab_info}\n",
-                    windows="You don't have any available morpheme analyzer backend (mecab, pecab).\n"
-                    "You need to install one of mecab, konlpy.tag.Mecab and pecab to use Kss.\n"
+                    f"- konlpy.tag.Mecab: {_konlpy_info_linux_macos}\n",
+                    windows="For your information, Kss also supports mecab backend.\n"
+                    "We recommend you to install mecab or konlpy.tag.Mecab for faster execution of Kss.\n"
                     "Please refer to following web sites for details:\n"
                     f"- mecab: {_mecab_info_windows}\n"
-                    f"- konlpy.tag.Mecab: {_konlpy_info_windows}\n"
-                    f"- pecab: {_pecab_info}\n",
-                ),
-            )
+                    f"- konlpy.tag.Mecab: {_konlpy_info_windows}\n",
+                )
+
+                logger.warning(
+                    "Because there's no supported C++ morpheme analyzer, "
+                    "Kss will take pecab as a backend. :D\n"
+                    f"{installation_help_message}"
+                )
+                PUNCT_INFORM = True
+
+            return punct_backend
 
 
 def _check_num_workers(

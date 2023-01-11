@@ -183,7 +183,7 @@ email_pattern = re.compile(
     r"[a-z0-9.\-+_]+@[a-z0-9.\-+_]+\.[a-z]+|[a-z0-9.\-+_]+@[a-z0-9.\-+_]+\.[a-z]+\.[a-z]"
 )
 
-papers = [
+sf_exception = [
     " no",
     " No",
     " pp",
@@ -214,10 +214,43 @@ papers = [
     " Para",
     " comp",
     " Comp",
+    "Capt",
+    " capt",
+    " dept",
+    "Dept",
+    "Mr",
+    " mr",
+    "Miss",
+    "Mrs",
+    " mrs",
+    "Ms",
+    " ms",
+    "Dr",
+    " dr",
+    "Prof",
+    " prof",
+    "Rev",
+    " rev",
+    "St",
+    " st",
+    " Co",
+    " co",
+    " MM",
+    " mm",
+    " Messrs",
+    " messrs",
+    " Mlle",
+    " mlle",
+    " Mme",
+    " mme",
+    " def",
+    " Def",
+    " viz",
+    " Viz",
 ]
 
 for i in range(0, 10):
-    papers += [
+    sf_exception += [
         f"{i}항",
         f"{i}조",
         f"{i}호",
@@ -226,6 +259,7 @@ for i in range(0, 10):
         f"{i}권",
         f"{i}쪽",
         f"{i}장",
+        f"{i}",
     ]
 
 
@@ -270,8 +304,4 @@ backup_normal = {
     "'n'",
     "N' ",
     "n' ",
-    "Capt.",
-    "capt.",
-    "dept.",
-    "Dept.",
 }

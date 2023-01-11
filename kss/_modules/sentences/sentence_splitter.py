@@ -6,7 +6,7 @@ from typing import Tuple
 
 from kss._elements.subclasses import Syllable
 from kss._modules.sentences.sentence_processor import SentenceProcessor
-from kss._utils.const import papers
+from kss._utils.const import sf_exception
 
 
 class SentenceSplitter(SentenceProcessor):
@@ -155,14 +155,7 @@ class SentenceSplitter(SentenceProcessor):
         # 종결부호 분할 규칙
         if self._check_pos("SF") and (
             self._check_next_pos("SP")
-            or self._check_next_skip_sp_pos(
-                (
-                    "SY",
-                    "SSO",
-                    "EMOJI",
-                    "JAMO",
-                )
-            )
+            or self._check_next_skip_sp_pos(("SY", "SSO", "EMOJI", "JAMO"))
         ):
             # 예외 1
             available = not self._prev_skip(("SP", "SF")).text.isnumeric()
@@ -220,8 +213,9 @@ class SentenceSplitter(SentenceProcessor):
             available = available and not self._check_next_is_unavailable_split()
 
             # 예외 9
-            available = available and (
-                not self._check_multiple_prev_texts_from_before(*papers)
+            available = available and not (
+                self._check_text(".")
+                and self._check_multiple_prev_texts_from_before(*sf_exception)
             )
 
         return available

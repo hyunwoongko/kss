@@ -49,6 +49,7 @@ class SentencePreprocessor(SentenceProcessor):
         """
         syllables = self._convert_morphemes_to_syllables(input_morphemes)
         syllables = self._correct_wrong_tags(syllables)
+        syllables = self._append_space_before_emoji(syllables)
         return syllables
 
     def _convert_morphemes_to_syllables(
@@ -159,3 +160,28 @@ class SentencePreprocessor(SentenceProcessor):
         for pos in poses:
             _next.pos = pos
             _next = _next.next
+
+    @staticmethod
+    def _append_space_before_emoji(syllables: List[Syllable]) -> List[Syllable]:
+        """
+        Append a space character before emoji character.
+        This could be helpful for tokenizing sentences which contain emoji.
+
+        Args:
+            syllables (List[Syllable]): input syllables
+
+        Returns:
+            List[Syllable]: preprocessed syllables
+        """
+        new_syllables = []
+        for syllable in syllables:
+            if syllable.check_pos("EMOJI") and not syllable.prev.check_pos("EMOJI"):
+                space_syllable = Syllable(" ", "SP")
+                if syllable.prev is not None:
+                    space_syllable.prev = syllable.prev
+                space_syllable.next = syllable
+                syllable.prev = space_syllable
+
+                new_syllables.append(space_syllable)
+            new_syllables.append(syllable)
+        return new_syllables

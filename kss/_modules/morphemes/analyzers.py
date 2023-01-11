@@ -10,6 +10,8 @@ from kss._utils.const import spaces
 
 
 class Analyzer(ABC):
+    _analyzer, _backend = None, None
+
     def pos(self, text: str, drop_space: bool) -> Any:
         raise NotImplementedError
 
@@ -61,6 +63,29 @@ class PecabAnalyzer(Analyzer):
         """
         output = self._analyzer.pos(text)
         output = _preserve_space(text, output, spaces=" \n\r\t\v\f")
+
+        if drop_space:
+            output = self._drop_space(output)
+
+        return output
+
+
+class CharacterAnalyzer(Analyzer):
+    _analyzer, _backend = None, "character"
+
+    @lru_cache(maxsize=500)
+    def pos(self, text: str, drop_space: bool) -> List[Tuple[str, str]]:
+        """
+        Get pos information.
+
+        Args:
+            text (str): input text
+            drop_space (bool): drop all spaces or not.
+
+        Returns:
+            List[Tuple[str, str]]: output of analysis.
+        """
+        output = [(char, "-") for char in text]
 
         if drop_space:
             output = self._drop_space(output)

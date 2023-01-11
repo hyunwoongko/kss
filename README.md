@@ -51,9 +51,10 @@ split_sentences(
     - string: single text segmentation
     - list/tuple of strings: batch texts segmentation
 - **backend: Morpheme analyzer backend**
-    - `backend='auto'`: find `mecab` → `konlpy.tag.Mecab` → `pecab` and use first found analyzer (default)
+    - `backend='auto'`: find `mecab` → `konlpy.tag.Mecab` → `pecab` → `punct` and use first found analyzer (default)
     - `backend='mecab'`: find `mecab` → `konlpy.tag.Mecab` and use first found analyzer
     - `backend='pecab'`: use `pecab` analyzer
+    - `backend='punct'`: split sentences only near punctuation marks
 - **num_workers: The number of multiprocessing workers**
     - `num_workers='auto'`: use multiprocessing with the maximum number of workers if possible (default)
     - `num_workers=1`: don't use multiprocessing
@@ -739,9 +740,10 @@ split_morphemes(
     - string: single text segmentation
     - list/tuple of strings: batch texts segmentation
 - **backend: Morpheme analyzer backend.**
-    - `backend='auto'`: find `mecab` → `konlpy.tag.Mecab` → `pecab` and use first found analyzer (default)
+    - `backend='auto'`: find `mecab` → `konlpy.tag.Mecab` → `pecab` → `punct` and use first found analyzer (default)
     - `backend='mecab'`: find `mecab` → `konlpy.tag.Mecab` and use first found analyzer
     - `backend='pecab'`: use `pecab` analyzer
+    - `backend='punct'`: split sentences only near punctuation marks
 - **num_workers: The number of multiprocessing workers**
     - `num_workers='auto'`: use multiprocessing with the maximum number of workers if possible (default)
     - `num_workers=1`: don't use multiprocessing
@@ -817,9 +819,10 @@ summarize_sentences(
   - string: single text segmentation
   - list/tuple of strings: batch texts segmentation
 - **backend: Morpheme analyzer backend.**
-  - `backend='auto'`: find `mecab` → `konlpy.tag.Mecab` → `pecab` and use first found analyzer (default)
+  - `backend='auto'`: find `mecab` → `konlpy.tag.Mecab` → `pecab` → `punct` and use first found analyzer (default)
   - `backend='mecab'`: find `mecab` → `konlpy.tag.Mecab` and use first found analyzer
   - `backend='pecab'`: use `pecab` analyzer
+  - `backend='punct'`: split sentences only near punctuation marks
 - **num_workers: The number of multiprocessing workers**
   - `num_workers='auto'`: use multiprocessing with the maximum number of workers if possible (default)
   - `num_workers=1`: don't use multiprocessing
