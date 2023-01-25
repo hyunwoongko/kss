@@ -183,70 +183,73 @@ email_pattern = re.compile(
     r"[a-z0-9.\-+_]+@[a-z0-9.\-+_]+\.[a-z]+|[a-z0-9.\-+_]+@[a-z0-9.\-+_]+\.[a-z]+\.[a-z]"
 )
 
+whitespaces = [" ", "\n", "\t", "\v", "\f", "\r"]
+whitespaces_wo_space = ["\n", "\t", "\v", "\f", "\r"]
+
 sf_exception = [
-    " no",
-    " No",
-    " pp",
-    " PP",
-    " vol",
-    " Vol",
-    " vols",
-    " Vols",
-    " al",
-    " ed",
-    " Ed",
-    " Eds",
-    " trans",
-    " Trans",
-    " rev",
-    " Rev",
-    " p",
-    " P",
-    " n.p",
-    " N.P",
-    " N.p",
-    " n.d",
-    " N.D",
-    " N.d",
-    " page",
-    " Page",
-    " para",
-    " Para",
-    " comp",
-    " Comp",
+    "no",
+    "No",
+    "pp",
+    "PP",
+    "vol",
+    "Vol",
+    "vols",
+    "Vols",
+    "al",
+    "ed",
+    "Ed",
+    "Eds",
+    "trans",
+    "Trans",
+    "rev",
+    "Rev",
+    "p",
+    "P",
+    "n.p",
+    "N.P",
+    "N.p",
+    "n.d",
+    "N.D",
+    "N.d",
+    "page",
+    "Page",
+    "para",
+    "Para",
+    "comp",
+    "Comp",
     "Capt",
-    " capt",
-    " dept",
+    "capt",
+    "dept",
     "Dept",
     "Mr",
-    " mr",
+    "mr",
     "Miss",
     "Mrs",
-    " mrs",
+    "mrs",
     "Ms",
-    " ms",
+    "ms",
     "Dr",
-    " dr",
+    "dr",
     "Prof",
-    " prof",
+    "prof",
     "Rev",
-    " rev",
+    "rev",
     "St",
-    " st",
-    " Co",
-    " co",
-    " MM",
-    " mm",
-    " Messrs",
-    " messrs",
-    " Mlle",
-    " mlle",
-    " Mme",
-    " mme",
-    " def",
-    " Def",
-    " viz",
-    " Viz",
+    "st",
+    "Co",
+    "co",
+    "MM",
+    "mm",
+    "Messrs",
+    "messrs",
+    "Mlle",
+    "mlle",
+    "Mme",
+    "mme",
+    "def",
+    "Def",
+    "viz",
+    "Viz",
 ]
 
 for i in range(0, 10):
@@ -263,11 +266,16 @@ for i in range(0, 10):
     ]
 
 sf_exception += [
-    f"{first}{c}"
+    c
     for c in list(sorted(lower_alphabets))[:10]
     + list(sorted(upper_alphabets))[:10]
     + ["ㄱ", "ㄴ", "ㄷ", "ㄹ", "ㅁ", "ㅂ", "ㅅ", "ㅇ", "ㅈ", "ㅊ", "ㅋ", "ㅌ", "ㅍ", "ㅎ"]
-    for first in [" ", "\n", "\t", "\v", "\f", "\r"]
+]
+
+sf_exception = [
+    f" {w}{s.replace(' ', '')}" if " " in s else f"{w}{s}"
+    for s in sf_exception
+    for w in whitespaces
 ]
 
 

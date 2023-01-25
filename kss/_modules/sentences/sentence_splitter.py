@@ -6,7 +6,7 @@ from typing import Tuple
 
 from kss._elements.subclasses import Syllable
 from kss._modules.sentences.sentence_processor import SentenceProcessor
-from kss._utils.const import sf_exception
+from kss._utils.const import sf_exception, jaum
 
 
 class SentenceSplitter(SentenceProcessor):
@@ -29,6 +29,7 @@ class SentenceSplitter(SentenceProcessor):
     unavailable_next.update({"할" + add for add in ["텐데"]})
 
     def __init__(self, syllable: Syllable):
+        super().__init__()
         self.syllable = syllable
 
     def __hash__(self):
@@ -76,6 +77,7 @@ class SentenceSplitter(SentenceProcessor):
             예외:
                 1. 만약 현재 문자가 물음표(?) 혹은 느낌표(!)인데 공백을 제외한 다음 문자가 구두점(.)이면 즉시 분할한다.
                 2. 만약 현재 문자가 하이푼(-)인데 공백을 제외한 다음 문자가 종결부호(SF)가 아닌 경우 지금 즉시 분할한다.
+                3. 만약 현재 문자가 자음인데 이전문자가 공백이고 다음 문자가 종결부호(SF)이며 다다음 문자가 공백이면 즉시 분할한다.
         """
 
         no_more_all_s = not self._check_pos(
@@ -103,6 +105,15 @@ class SentenceSplitter(SentenceProcessor):
             elif self._check_text(("－", "-", "–")) and not (
                 self._check_next_skip_sp_pos("SF")
                 or self._check_next_text(("－", "-", "–"))
+            ):
+                end_split = True
+                end_split_exception = True
+
+            elif (
+                self.syllable.prev.check_pos("SP")
+                and self.syllable.check_text(*jaum)
+                and self.syllable.next.check_text(".")
+                and self.syllable.next.next.check_text(" ")
             ):
                 end_split = True
                 end_split_exception = True
@@ -828,3 +839,7 @@ class SentenceSplitter(SentenceProcessor):
     @lru_cache(30)
     def _check_multiple_prev_texts_from_before(self, *texts):
         return any(self._check_prev_texts_from_before(t) for t in texts)
+
+    @lru_cache(30)
+    def _check_multiple_next_texts_from_current(self, *texts):
+        return any(self._check_texts(t) for t in texts)

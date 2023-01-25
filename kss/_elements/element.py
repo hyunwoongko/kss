@@ -13,21 +13,22 @@ class Element(object):
     _next: "Element" = None
     _prev: "Element" = None
 
-    def __init__(self, text, pos):
+    def __init__(self, text, pos, idx):
         self.text = text
         self.pos = pos
+        self.idx = idx
 
     def __str__(self):
-        return str((self.text, self.pos))
+        return str((self.text, self.pos, self.idx))
 
     def __repr__(self):
         return self.__str__()
 
     def __eq__(self, other):
-        return other.text == self.text and other.pos == self.pos
+        return other.text == self.text and other.pos == self.pos and other.idx == self.idx
 
     def __hash__(self):
-        return hash((self.text, self.pos))
+        return hash((self.text, self.pos, self.idx))
 
     @property
     def next(self):

@@ -24,6 +24,7 @@ class SentencePostprocessor(SentenceProcessor):
         Returns:
             List[str]: postprocessed output setences in string
         """
+        output_sentences = self._remove_first_space(output_sentences)
         output_sentences = self._remove_space_before_emoji(output_sentences)
         output_sentences = self._merge_broken_sub_sentence_in_quotes_or_brackets(
             output_sentences
@@ -435,7 +436,7 @@ class SentencePostprocessor(SentenceProcessor):
                         "VCP",
                         "EC",
                         "VX",
-                        exclude=("MAJ", "+J", "+VCP", "+EC", "+VX"),
+                        exclude=("MAJ", "+J", "+VCP", "+EC", "+VX", "JAMO"),
                     )
                 )
             ):
@@ -514,4 +515,28 @@ class SentencePostprocessor(SentenceProcessor):
                 ):
                     output_syllable.prev = output_syllable.prev.prev
                     output_sentences[sentence_idx].pop(syllable_idx - 1)
+        return output_sentences
+
+    @staticmethod
+    def _remove_first_space(
+        output_sentences: List[List[Syllable]],
+    ) -> List[List[Syllable]]:
+        """
+        Remove a space added by preprocessor
+
+        Args:
+            output_sentences (List[List[Syllable]]): split list of syllables
+
+        Returns:
+            List[List[Syllable]]: list of syllables without added space
+        """
+        for sentence_idx, output_sentence in enumerate(output_sentences):
+            for syllable_idx, output_syllable in enumerate(output_sentence):
+                if (
+                    sentence_idx == 0
+                    and syllable_idx == 0
+                    and output_syllable.check_pos("SP")
+                ):
+                    output_sentences[sentence_idx].pop(syllable_idx)
+
         return output_sentences

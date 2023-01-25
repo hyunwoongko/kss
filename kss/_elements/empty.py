@@ -10,9 +10,10 @@ class Empty(object):
     _next = None
     _prev = None
 
-    def __init__(self, text="", pos=""):
+    def __init__(self, text="", pos="", idx=-1):
         self.text = text
         self.pos = pos
+        self.idx = idx
 
     def __str__(self):
         return f"{self.__class__.__qualname__}()"

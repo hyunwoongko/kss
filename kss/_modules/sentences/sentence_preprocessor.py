@@ -14,7 +14,8 @@ from kss._utils.const import (
     jamo,
     spaces,
     special_symbols_for_suffix,
-    daggers, circle_bracket_charaters,
+    daggers,
+    circle_bracket_charaters, whitespaces, whitespaces_wo_space,
 )
 from kss._utils.emojis import _emojis
 
@@ -67,8 +68,10 @@ class SentencePreprocessor(SentenceProcessor):
             List[Syllable]: syllables in input text.
         """
 
-        prev = None
-        syllables = []
+        char_idx = 1
+        prev = Syllable(" ", "SP", idx=0)
+        syllables = [prev]
+
         for pos in input_morphemes:
             for char in pos[0]:
                 tag = pos[1]
@@ -76,12 +79,14 @@ class SentencePreprocessor(SentenceProcessor):
                     if _func(char, pos[1]):
                         tag = _tag
                         break
-                syllable = Syllable(char, tag)
+
+                syllable = Syllable(char, tag, idx=char_idx)
                 syllable.prev = prev
-                if prev is not None:
-                    prev.next = syllable
+                prev.next = syllable
                 syllables.append(syllable)
+
                 prev = syllable
+                char_idx += 1
 
         return syllables
 
@@ -178,7 +183,7 @@ class SentencePreprocessor(SentenceProcessor):
         new_syllables = []
         for syllable in syllables:
             if syllable.check_pos("EMOJI") and not syllable.prev.check_pos("EMOJI"):
-                space_syllable = Syllable(" ", "SP")
+                space_syllable = Syllable(" ", "SP", idx=syllable.idx)
                 if syllable.prev is not None:
                     space_syllable.prev = syllable.prev
                 space_syllable.next = syllable
