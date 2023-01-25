@@ -14,7 +14,7 @@ from kss._utils.const import (
     jamo,
     spaces,
     special_symbols_for_suffix,
-    daggers,
+    daggers, circle_bracket_charaters,
 )
 from kss._utils.emojis import _emojis
 
@@ -22,6 +22,7 @@ from kss._utils.emojis import _emojis
 class SentencePreprocessor(SentenceProcessor):
 
     _correction = {
+        lambda c, p: c in circle_bracket_charaters: "SN",
         lambda c, p: c in special_symbols_for_split or c in daggers: "PF",  # Prefix
         lambda c, p: c in "!?.": "SF",
         lambda c, p: c in ",:/ㆍ": "SC",
