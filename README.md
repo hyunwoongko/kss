@@ -41,6 +41,7 @@ split_sentences(
     backend: str = "auto",
     num_workers: Union[int, str] = "auto" ,
     strip: bool = True,
+    ignores: List[str] = None,
 )
 ```
 
@@ -62,7 +63,8 @@ split_sentences(
 - **strip: Whether it does `strip()` for all output sentences or not**
   - `strip=True`: do `strip()` for all output sentences (default)
   - `strip=False`: do not `strip()` for all output sentences
-
+- **ignores: ignore strings to do not split**
+  - See detailed usage from the following `Usages`
 </details>
 
 <details>
@@ -102,6 +104,21 @@ split_sentences(
 
   kss.split_sentences(text)
   # ['회사 동료 분들과 다녀왔는데 분위기도 좋고 음식도 맛있었어요\n', '다만, 강남 토끼정이 강남 쉑쉑버거 골목길로 쭉 올라가야 하는데 다들 쉑쉑버거의 유혹에 넘어갈 뻔 했답니다 ', '강남역 맛집 토끼정의 외부 모습.']
+  ```
+
+- Ignore strings from sentence splitting
+  ```python
+  import kss
+
+  text = """첫째. 베트남 지역에서는 일찍부터 반랑국, 어우락 왕국, 남비엣(남월) 등이 건국되어 발전하였다. 그러나 한 무제의 공격으로 중국의 지배를 받기 시작하면서 중국 문화의 영향을 받게 되었다. 특히 당의 지배를 받으면서 당 문화의 영향을 많이 받았다.
+  둘째. 베트남에서도 중국 문화의 영향 속에서 유교 문화가 발달하였다. 특히 베트남의 리 왕조 때에는 문묘가 설치되고, 과거제가 시행되기도 하였다. 한편 레(후기) 왕조 때에는 성리학을 바탕으로 한 유교 문화가 확산되었다.
+  셋째. 베트남에서는 강수량이 풍부하고, 날씨가 따뜻하여 벼농사 중심의 농경 생활이 이루어지고 있다.
+  넷째. 동아시아 지역은 계절에 따라 방향이 바뀌는 계절풍의 영향을 강하게 받는 곳이다. 서안 해양성 기후는 중위도의 대륙 서쪽 지역에 주로 나타난다.
+  """
+
+  output = kss.split_sentences(text, ignores=["첫째.", "둘째.", "셋째.", "넷째."])
+  print(output)
+  # ['첫째. 베트남 지역에서는 일찍부터 반랑국, 어우락 왕국, 남비엣(남월) 등이 건국되어 발전하였다.', '그러나 한 무제의 공격으로 중국의 지배를 받기 시작하면서 중국 문화의 영향을 받게 되었다.', '특히 당의 지배를 받으면서 당 문화의 영향을 많이 받았다.', '둘째. 베트남에서도 중국 문화의 영향 속에서 유교 문화가 발달하였다.', '특히 베트남의 리 왕조 때에는 문묘가 설치되고, 과거제가 시행되기도 하였다.', '한편 레(후기) 왕조 때에는 성리학을 바탕으로 한 유교 문화가 확산되었다.', '셋째. 베트남에서는 강수량이 풍부하고, 날씨가 따뜻하여 벼농사 중심의 농경 생활이 이루어지고 있다.', '넷째. 동아시아 지역은 계절에 따라 방향이 바뀌는 계절풍의 영향을 강하게 받는 곳이다.', '서안 해양성 기후는 중위도의 대륙 서쪽 지역에 주로 나타난다.']    
   ```
 
 </details>
@@ -830,6 +847,11 @@ summarize_sentences(
 - **max_sentences: The maximum number of output sentences**
   - `max_sentences=1~N`: return 1~N sentences by sentence importance
 - **tolerance: Threshold for omitting edge weights.**
+- **strip: Whether it does `strip()` for all output sentences or not**
+  - `strip=True`: do `strip()` for all output sentences (default)
+  - `strip=False`: do not `strip()` for all output sentences
+- **ignores: ignore strings to do not split**
+  - See detailed usage from the following `Usages`
 
 </details>
 
