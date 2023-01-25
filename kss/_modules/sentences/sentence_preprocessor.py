@@ -20,6 +20,7 @@ from kss._utils.emojis import _emojis
 
 
 class SentencePreprocessor(SentenceProcessor):
+
     _correction = {
         lambda c, p: c in special_symbols_for_split or c in daggers: "PF",  # Prefix
         lambda c, p: c in "!?.": "SF",

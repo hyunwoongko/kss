@@ -25,6 +25,8 @@ def summarize_sentences(
     num_workers: Union[str, int] = "auto",
     max_sentences: int = 3,
     tolerance: Union[float] = 0.05,
+    strip: bool = True,
+    ignores: List[str] = None,
 ) -> Union[List[str], List[List[str]]]:
     """
     Summarizes the given text, using TextRank algorithm.
@@ -35,6 +37,8 @@ def summarize_sentences(
         num_workers (Union[int, str])): the number of multiprocessing workers
         max_sentences (int): the max number of sentences in a summarization result.
         tolerance (float): a threshold for omitting edge weights.
+        strip (bool): strip all sentences or not
+        ignores (List[str]): list of strings to ignore
 
     Returns:
         Union[List[str], List[List[str]]]: outputs of text summarization
@@ -58,6 +62,8 @@ def summarize_sentences(
             backend=backend,
             max_sentences=max_sentences,
             tolerance=tolerance,
+            strip=strip,
+            ignores=ignores,
         ),
         inputs=text,
         num_workers=num_workers,
@@ -69,6 +75,8 @@ def _summarize_sentences(
     backend: str = "auto",
     max_sentences: int = 3,
     tolerance: float = 0.05,
+    strip: bool = True,
+    ignores: List[str] = None,
 ) -> List[str]:
     """
     Summarizes the given text, using TextRank algorithm.
@@ -78,6 +86,8 @@ def _summarize_sentences(
         backend (str): morpheme analyzer backend. 'mecab', 'pecab' are supported.
         max_sentences (int): the max number of sentences in a summarization result.
         tolerance (float): a threshold for omitting edge weights.
+        strip (bool): strip all sentences or not
+        ignores (List[str]): list of strings to ignore
 
     Returns:
         List[str]: summarized sentences
@@ -85,7 +95,7 @@ def _summarize_sentences(
     from networkx import pagerank
 
     # parse text
-    sentences: List[Sentence] = _parse_text_into_sentences(text, backend)
+    sentences: List[Sentence] = _parse_text_into_sentences(text, backend, strip, ignores)
 
     # build graph
     graph = _build_sentence_graph(sentences, tolerance=tolerance)

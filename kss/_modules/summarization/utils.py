@@ -9,7 +9,9 @@ from kss import split_morphemes, split_sentences
 from kss._modules.summarization.sentence import Sentence
 
 
-def _parse_text_into_sentences(text: str, backend: str) -> List[Sentence]:
+def _parse_text_into_sentences(
+    text: str, backend: str, strip: bool, ignores: List[str]
+) -> List[Sentence]:
     """
     This function splits the given text into sentence candidates using a pre-defined splitter,
     then creates a list of `sentence.Sentence` instances which have bag-of-words inside, tokenized by the given tokenizer.
@@ -21,7 +23,9 @@ def _parse_text_into_sentences(text: str, backend: str) -> List[Sentence]:
     sentences: List[Sentence] = []
 
     # parse text
-    candidates: List[str] = split_sentences(text, backend=backend, num_workers=1)
+    candidates: List[str] = split_sentences(
+        text, backend=backend, num_workers=1, strip=strip, ignores=ignores
+    )
     for candidate in candidates:
         # cleanse the candidate
         if not len(candidate):

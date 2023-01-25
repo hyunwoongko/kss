@@ -16,10 +16,11 @@ from kss._utils.sanity_checks import (
     _check_text,
     _check_analyzer_backend,
     _check_type,
+    _check_iterable_type,
 )
 
-preprocessor = SentencePreprocessor()
-postprocessor = SentencePostprocessor()
+preprocessors = {(): SentencePreprocessor()}
+postprocessors = {(): SentencePostprocessor()}
 
 
 def split_sentences(
@@ -27,6 +28,7 @@ def split_sentences(
     backend: str = "auto",
     num_workers: Union[int, str] = "auto",
     strip: bool = True,
+    ignores: List[str] = None,
 ) -> Union[List[str], List[List[str]]]:
     """
     Split texts into sentences.
@@ -36,12 +38,17 @@ def split_sentences(
         backend (str): morpheme analyzer backend. 'mecab', 'pecab', 'punkt' are supported.
         num_workers (Union[int, str])): the number of multiprocessing workers
         strip (bool): strip all sentences or not
+        ignores (List[str]): list of strings to ignore
 
     Returns:
         Union[List[str], List[List[str]]]: outputs of sentence splitting.
     """
+    if ignores is None:
+        ignores = []
+
     text, finish = _check_text(text)
     strip = _check_type(strip, "strip", bool)
+    ignores = _check_iterable_type(ignores, "ignores", list, str)
 
     if finish:
         return text
@@ -49,8 +56,21 @@ def split_sentences(
     backend = _check_analyzer_backend(backend)
     num_workers = _check_num_workers(text, num_workers)
 
+    ignores_tuple = tuple(ignores)
+    if ignores_tuple not in preprocessors:
+        preprocessors[ignores_tuple] = SentencePreprocessor(ignores)
+        postprocessors[ignores_tuple] = SentencePostprocessor(ignores)
+    _preprocessor = preprocessors[ignores_tuple]
+    _postprocessor = postprocessors[ignores_tuple]
+
     return _run_job(
-        func=partial(_split_sentences, backend=backend, strip=strip),
+        func=partial(
+            _split_sentences,
+            backend=backend,
+            strip=strip,
+            preprocessor=_preprocessor,
+            postprocessor=_postprocessor,
+        ),
         inputs=text,
         num_workers=num_workers,
     )
@@ -63,6 +83,8 @@ def _split_sentences(
     strip: bool,
     postprocess: bool = True,
     recursion: int = 0,
+    preprocessor: SentencePreprocessor = preprocessors[()],
+    postprocessor: SentencePostprocessor = postprocessors[()],
 ) -> List[str]:
     """
     Split texts into sentences.

@@ -3,7 +3,7 @@
 
 import platform
 import unicodedata
-from typing import Union, Tuple, List, Any, Optional, Type, Callable
+from typing import Union, Tuple, List, Any, Optional, Type, Callable, Iterable
 
 from kss._modules.morphemes.analyzers import (
     MecabAnalyzer,
@@ -59,6 +59,38 @@ def _check_value(
             f"Please check `{param_name}` parameter again ;)\n"
         )
 
+    return param
+
+
+def _check_iterable_type(
+    param: Iterable, param_name: str, iterable_type: Type, element_type: Type
+) -> Any:
+    """
+    Check iterable param type
+
+    Args:
+        param (Iterable): iterable param value
+        param_name (str): param name
+        iterable_type (Type): iterable type
+        element_type (Type): element type
+
+    Returns:
+        Any: param value
+    """
+    if not isinstance(param, iterable_type):
+        raise TypeError(
+            f"Oops! '{type(param)}' is not supported type for `{param_name}`.\n"
+            f"Currently kss only supports {iterable_type} for this.\n"
+            f"Please check `{param_name}` parameter again ;)\n"
+        )
+
+    for element in param:
+        if not isinstance(element, element_type):
+            raise TypeError(
+                f"Oops! '{type(param).__qualname__.capitalize()}[{type(element).__qualname__}]' is not supported type for `{param_name}`.\n"
+                f"Currently kss only supports {iterable_type.__qualname__.capitalize()}[{element_type.__qualname__}] for this.\n"
+                f"Please check `{param_name}` parameter again ;)\n"
+            )
     return param
 
 

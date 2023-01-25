@@ -2,6 +2,7 @@
 # All rights reserved.
 import re
 from functools import lru_cache
+from typing import List
 
 from kss._utils.const import (
     alphabet_with_quotes,
@@ -31,6 +32,11 @@ class SentenceProcessor:
         }
     )
     _normal_backup = {k: str(abs(hash(k))) for k in sorted(backup_normal)}
+
+    def __init__(self, ignores: List[str] = None):
+        self.ignores = ignores
+        if self.ignores is not None:
+            self._normal_backup.update({k: str(abs(hash(k))) for k in self.ignores})
 
     @staticmethod
     def _replace(text: str, purpose_dict: dict, restore: bool = False):
