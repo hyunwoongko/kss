@@ -826,6 +826,8 @@ summarize_sentences(
     num_workers: Union[int, str] = "auto",
     max_sentences: int = 3,
     tolerance: float: 0.05,
+    strip: bool = True,
+    ignores: List[str] = None,
 )
 ```
 
