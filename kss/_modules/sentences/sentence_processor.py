@@ -6,7 +6,6 @@ from typing import List
 
 from kss._utils.const import (
     alphabet_with_quotes,
-    numbers_with_quotes,
     url_pattern,
     email_pattern,
     backup_normal,
@@ -19,12 +18,6 @@ class SentenceProcessor:
     _all_s_poses_wo_qtn = ("SP", "SF", "SY", "SE", "SSC", "QTC", "EMOJI", "JAMO")
 
     _heavy_backup = {}
-    _heavy_backup.update(
-        {
-            k: {_v: str(abs(hash(_v))) for _v in v}
-            for k, v in numbers_with_quotes.items()
-        }
-    )
     _heavy_backup.update(
         {
             k: {_v: str(abs(hash(_v))) for _v in v}
@@ -58,21 +51,23 @@ class SentenceProcessor:
         }
         self._normal_backup.update(_url_or_email)
 
-    def _backup_or_restore_heavy(self, target: str, check: str, restore: bool = False):
-        for source, purpose_dict in self._heavy_backup.items():
-            if source in check:
-                target = self._replace(target, purpose_dict, restore=restore)
-        return target
-
     @lru_cache(100)
     def backup(self, inputs: str):
         self._add_url_or_email(inputs)
         inputs = self._replace(inputs, self._normal_backup)
-        inputs = self._backup_or_restore_heavy(inputs, inputs)
+
+        for source, purpose_dict in self._heavy_backup.items():
+            if source in inputs:
+                inputs = self._replace(inputs, purpose_dict, restore=False)
+
         return inputs
 
     @lru_cache(100)
     def restore(self, outputs: str, inputs: str):
         outputs = self._replace(outputs, self._normal_backup, restore=True)
-        outputs = self._backup_or_restore_heavy(outputs, inputs, restore=True)
+
+        for source, purpose_dict in self._heavy_backup.items():
+            if source in inputs:
+                outputs = self._replace(outputs, purpose_dict, restore=True)
+
         return outputs

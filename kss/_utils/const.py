@@ -279,16 +279,6 @@ sf_exception = [
 ]
 
 
-# inch: 3'2 inch
-# time: 06'30
-# year: '60s
-numbers_with_quotes = {}
-for num in numbers:
-    numbers_with_quotes[num] = set()
-    numbers_with_quotes[num].update({f"{num}{q}" for q in ["'", "’"]})
-    numbers_with_quotes[num].update({f"{q}{num}" for q in ["'", "’"]})
-
-
 # apostrophe: I`m, You’re, ...
 alphabet_with_quotes = {}
 for alpha in alphabets:
