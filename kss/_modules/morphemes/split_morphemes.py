@@ -18,7 +18,7 @@ def split_morphemes(
     backend: str = "auto",
     num_workers: Union[int, str] = "auto",
     drop_space: bool = True,
-    with_pos: bool = True,
+    return_pos: bool = True,
 ) -> Union[List[Tuple[str, str]], List[List[Tuple[str, str]]], Union[List, Tuple]]:
     """
     Split texts into morphemes.
@@ -42,7 +42,7 @@ def split_morphemes(
     num_workers = _check_num_workers(text, num_workers)
     backend = _check_analyzer_backend(backend)
     result = _run_job(partial(backend.pos, drop_space=drop_space), text, num_workers)
-    if not with_pos:
+    if not return_pos:
         if isinstance(text, str):
             result = [token[0] for token in result]
         else:
