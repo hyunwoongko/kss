@@ -747,6 +747,7 @@ split_morphemes(
     backend: str = "auto",
     num_workers: Union[int, str] = "auto",
     drop_space: bool = True,
+    return_pos: bool = True,
 )
 ```
 
@@ -768,7 +769,7 @@ split_morphemes(
 - **drop_space: Whether it drops all space characters or not**
     - `drop_space=True`: drop all space characters in output (default)
     - `drop_space=False`: remain all space characters in output
-- ** return_pos: Return pos information or not**
+- **return_pos: Return pos information or not**
     - `return_pos=True`: return results with pos information
     - `return_pos=False`: return results without pos information
 </details>
