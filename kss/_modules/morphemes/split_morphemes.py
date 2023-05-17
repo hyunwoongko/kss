@@ -47,4 +47,4 @@ def split_morphemes(
             result = [token[0] for token in result]
         else:
             result = [[token[0] for token in tokens] for tokens in result]
-    return 
+    return result
