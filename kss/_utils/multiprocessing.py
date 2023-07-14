@@ -30,4 +30,6 @@ def _run_job(
     else:
         with mp.Pool(num_workers) as pool:
             output = pool.map(func, inputs)
+            pool.close()
+            pool.join()
             return output
