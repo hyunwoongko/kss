@@ -303,7 +303,7 @@ And the two splitters split input text like the following:
 The Kiwi separated sentences well excluding the footnote (`[3]`).
 Even if it didn't split sentences exactly accurate, it split somewhat well.
 On the contrary, the Word Split separated sentences completely wrong.
-However, since none of these outputs are the same with label, both are rated as 0.0 with EM score. 
+However, since none of these outputs are same with label, both are rated as 0.0 with EM score. 
 It's too harsh evaluation for Kiwi.
 As such, the EM score does not properly evaluate the performance in the case of the sentence segmentation is not exactly accurate.
 
