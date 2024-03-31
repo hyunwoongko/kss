@@ -9,11 +9,12 @@ from kss._modules.morphemes.analyzers import (
     MecabAnalyzer,
     PecabAnalyzer,
     Analyzer,
-    CharacterAnalyzer, LegacyAnalyzer,
+    CharacterAnalyzer,
+    FastAnalyzer,
 )
 from kss._utils.logging import logger
 
-MECAB_INFORM, KONLPY_MECAB_INFORM, PECAB_INFORM, LEGACY_INFORM = (
+MECAB_INFORM, KONLPY_MECAB_INFORM, PECAB_INFORM, FAST_INFORM = (
     False,
     False,
     False,
@@ -189,7 +190,7 @@ def _check_analyzer_backend(backend: str) -> Analyzer:
     Returns:
         Analyzer: morpheme analyzer backend.
     """
-    global MECAB_INFORM, KONLPY_MECAB_INFORM, PECAB_INFORM, LEGACY_INFORM
+    global MECAB_INFORM, KONLPY_MECAB_INFORM, PECAB_INFORM, FAST_INFORM
 
     if isinstance(backend, str):
         backend = backend.lower()
@@ -204,7 +205,7 @@ def _check_analyzer_backend(backend: str) -> Analyzer:
     mecab_backend = MecabAnalyzer()
     pecab_backend = PecabAnalyzer()
     punct_backend = CharacterAnalyzer()
-    fast_backed = LegacyAnalyzer()
+    fast_backed = FastAnalyzer()
 
     if backend == "fast":
         return fast_backed
@@ -284,7 +285,7 @@ def _check_analyzer_backend(backend: str) -> Analyzer:
 
             return pecab_backend
         else:
-            if not LEGACY_INFORM:
+            if not FAST_INFORM:
 
                 logger.warning(
                     "Both mecab and pecab are not supported in your environment.\n"
@@ -292,7 +293,7 @@ def _check_analyzer_backend(backend: str) -> Analyzer:
                     "For you information, this is the fast algorithm used Kss version < 3.0.\n"
                     "So it may be inaccurate than other backends.\n"
                 )
-                LEGACY_INFORM = True
+                FAST_INFORM = True
 
             return fast_backed
 
