@@ -740,6 +740,8 @@ In fact, it's also because very few people attack this task. If anyone wants to 
 <details>
 <summary>Fast segmentation</summary>
 
+<br>
+
 If you want to split sentences quickly, you can use `split_sentences` function with `backend='fast'` or `backend='punct'` from Kss 5.0.
 
 - `fast` backend: This is based on the fast algorithm used in Kss < 3.0. It's faster than `mecab` backend, but less accurate. This could be useful when you need to split sentences very quickly but don't need high accuracy.
