@@ -748,8 +748,8 @@ It offers significantly faster processing compared to the `mecab` backend, but l
 Therefore, This feature could be useful when you need to split sentences very quickly but don't need high accuracy.
 Furthermore, the `fast` backend has been implemented in both Python and Cython.
 
-- If your environment supports the installation of `Cython`, Kss will use the Cython implementation, which boasts the fastest performance (**x600 faster than `mecab`**).
-- Otherwise, it will use the Python implementation, which is slower than the Cython version but faster than the `mecab` backend **(x4 faster than `mecab`)**.
+- If your environment supports the installation of `Cython`, Kss will use the Cython implementation, which boasts the fastest performance (**x600 faster than** `mecab`).
+- Otherwise, it will use the Python implementation, which is slower than the Cython version but faster than the `mecab` backend (**x4 faster than** `mecab`).
 
 Given the substantial speed advantage of the Cython implementation, it is strongly recommended over the Python alternative.
 Kss automatically detects the availability of Cython in your environment and will install it if feasible, so you don't need to worry about Cython and C++ dependencies.
