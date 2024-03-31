@@ -15,7 +15,7 @@ from kss._utils.const import (
     spaces,
     special_symbols_for_suffix,
     daggers,
-    circle_bracket_charaters, whitespaces, whitespaces_wo_space,
+    circle_bracket_charaters,
 )
 from kss._utils.emojis import _emojis
 

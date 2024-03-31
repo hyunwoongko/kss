@@ -91,3 +91,7 @@ class CharacterAnalyzer(Analyzer):
             output = self._drop_space(output)
 
         return output
+
+
+class FastAnalyzer(CharacterAnalyzer):
+    _analyzer, _backend = None, "fast"

@@ -8,6 +8,7 @@ If you have some good ideas about Korean sentence segmentation, please feel free
 <br>
 
 ### What's New:
+- March 31, 2024 [Released Kss 5.0 Python](https://github.com/hyunwoongko/kss/releases/tag/5.0.0).
 - December 19, 2022 [Released Kss 4.0 Python](https://github.com/hyunwoongko/kss/releases/tag/4.0.0).
 - May 5, 2022 [Released Kss Fluter](https://github.com/khjde1207/kss_dart).
 - August 25, 2021 [Released Kss Java](https://github.com/sangdee/kss-java).
@@ -52,9 +53,10 @@ split_sentences(
     - string: single text segmentation
     - list/tuple of strings: batch texts segmentation
 - **backend: Morpheme analyzer backend**
-    - `backend='auto'`: find `mecab` → `konlpy.tag.Mecab` → `pecab` → `punct` and use first found analyzer (default)
+    - `backend='auto'`: find `mecab` → `konlpy.tag.Mecab` → `pecab` → `fast` and use first found analyzer (default)
     - `backend='mecab'`: find `mecab` → `konlpy.tag.Mecab` and use first found analyzer
     - `backend='pecab'`: use `pecab` analyzer
+    - `backend='fast'`: use fast algorithm used in Kss version < 3.0 
     - `backend='punct'`: split sentences only near punctuation marks
 - **num_workers: The number of multiprocessing workers**
     - `num_workers='auto'`: use multiprocessing with the maximum number of workers if possible (default)
@@ -124,7 +126,7 @@ split_sentences(
 </details>
 
 <details>
-<summary>Performance Analysis</summary>
+<summary>Performance analysis</summary>
 
 #### 1) Test Commands
 You can reproduce all the following results using source code and datasets in `./bench/` directory and the source code was copied from [here](https://github.com/bab2min/kiwipiepy/tree/main/benchmark/sentence_split).
@@ -735,6 +737,19 @@ In fact, it's also because very few people attack this task. If anyone wants to 
 
 </details>
 
+<details>
+<summary>Fast segmentation</summary>
+
+If you want to split sentences quickly, you can use `split_sentences` function with `backend='fast'` or `backend='punct'` from Kss 5.0.
+
+- `fast` backend: This is based on the fast algorithm used in Kss < 3.0. It's faster than `mecab` backend, but less accurate. This could be useful when you need to split sentences very quickly but don't need high accuracy.
+- `punct` backend: This splits sentences only near punctuation marks. Its speed is similar with `fast` backend. This could be useful when you split well-structured Korean text or English text.
+
+Note that **the speed of the two backend are similar**. But as mentioned above, the `punct` backend can split sentences near punctuation marks, so it's more safe but insensitive.
+On the other hand, the `fast` backend can split sentences even if there are no punctuation marks, so it's more sensitive but not safe. **So please choose the backend according to your needs**.
+
+</details>
+
 <br>
 
 #### 2) `split_morphemes`: split text into morphemes
@@ -850,9 +865,10 @@ summarize_sentences(
   - string: single text segmentation
   - list/tuple of strings: batch texts segmentation
 - **backend: Morpheme analyzer backend.**
-  - `backend='auto'`: find `mecab` → `konlpy.tag.Mecab` → `pecab` → `punct` and use first found analyzer (default)
+  - `backend='auto'`: find `mecab` → `konlpy.tag.Mecab` → `pecab` → `fast` and use first found analyzer (default)
   - `backend='mecab'`: find `mecab` → `konlpy.tag.Mecab` and use first found analyzer
   - `backend='pecab'`: use `pecab` analyzer
+  - `backend='fast'`: use fast algorithm used in Kss version < 3.0
   - `backend='punct'`: split sentences only near punctuation marks
 - **num_workers: The number of multiprocessing workers**
   - `num_workers='auto'`: use multiprocessing with the maximum number of workers if possible (default)

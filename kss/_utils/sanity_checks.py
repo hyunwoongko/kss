@@ -9,11 +9,11 @@ from kss._modules.morphemes.analyzers import (
     MecabAnalyzer,
     PecabAnalyzer,
     Analyzer,
-    CharacterAnalyzer,
+    CharacterAnalyzer, LegacyAnalyzer,
 )
 from kss._utils.logging import logger
 
-MECAB_INFORM, KONLPY_MECAB_INFORM, PECAB_INFORM, PUNCT_INFORM = (
+MECAB_INFORM, KONLPY_MECAB_INFORM, PECAB_INFORM, LEGACY_INFORM = (
     False,
     False,
     False,
@@ -189,26 +189,30 @@ def _check_analyzer_backend(backend: str) -> Analyzer:
     Returns:
         Analyzer: morpheme analyzer backend.
     """
-    global MECAB_INFORM, KONLPY_MECAB_INFORM, PECAB_INFORM, PUNCT_INFORM
+    global MECAB_INFORM, KONLPY_MECAB_INFORM, PECAB_INFORM, LEGACY_INFORM
 
     if isinstance(backend, str):
         backend = backend.lower()
 
-    if backend not in ["auto", "mecab", "pecab", "punct"]:
+    if backend not in ["auto", "mecab", "pecab", "punct", "fast"]:
         raise ValueError(
             f"Oops! '{backend}' is not supported value for `backend`.\n"
-            f"Currently kss only supports ['auto', 'pecab', 'mecab', 'punct'] for this.\n"
+            f"Currently kss only supports ['auto', 'pecab', 'mecab', 'punct', 'fast'] for this.\n"
             f"Please check `backend` parameter again ;)\n"
         )
 
     mecab_backend = MecabAnalyzer()
     pecab_backend = PecabAnalyzer()
     punct_backend = CharacterAnalyzer()
+    fast_backed = LegacyAnalyzer()
 
-    if backend == "punct":
+    if backend == "fast":
+        return fast_backed
+
+    elif backend == "punct":
         return punct_backend
 
-    if backend == "mecab":
+    elif backend == "mecab":
         if mecab_backend._backend is not None:
             return mecab_backend
         else:
@@ -280,29 +284,17 @@ def _check_analyzer_backend(backend: str) -> Analyzer:
 
             return pecab_backend
         else:
-            if not PUNCT_INFORM:
-
-                installation_help_message = _message_by_user_os(
-                    linux_macos="For your information, Kss also supports mecab backend.\n"
-                    "We recommend you to install mecab or konlpy.tag.Mecab for faster execution of Kss.\n"
-                    "Please refer to following web sites for details:\n"
-                    f"- mecab: {_mecab_info_linux_macos}\n"
-                    f"- konlpy.tag.Mecab: {_konlpy_info_linux_macos}\n",
-                    windows="For your information, Kss also supports mecab backend.\n"
-                    "We recommend you to install mecab or konlpy.tag.Mecab for faster execution of Kss.\n"
-                    "Please refer to following web sites for details:\n"
-                    f"- mecab: {_mecab_info_windows}\n"
-                    f"- konlpy.tag.Mecab: {_konlpy_info_windows}\n",
-                )
+            if not LEGACY_INFORM:
 
                 logger.warning(
-                    "Because there's no supported C++ morpheme analyzer, "
-                    "Kss will take pecab as a backend. :D\n"
-                    f"{installation_help_message}"
+                    "Both mecab and pecab are not supported in your environment.\n"
+                    "Kss will take character-based analyzer as a backend. :D\n"
+                    "For you information, this is the fast algorithm used Kss version < 3.0.\n"
+                    "So it may be inaccurate than other backends.\n"
                 )
-                PUNCT_INFORM = True
+                LEGACY_INFORM = True
 
-            return punct_backend
+            return fast_backed
 
 
 def _check_num_workers(

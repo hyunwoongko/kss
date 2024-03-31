@@ -10,6 +10,7 @@ from kss._modules.sentences.embracing_processor import EmbracingProcessor
 from kss._modules.sentences.sentence_postprocessor import SentencePostprocessor
 from kss._modules.sentences.sentence_preprocessor import SentencePreprocessor
 from kss._modules.sentences.sentence_splitter import SentenceSplitter
+from kss._modules.sentences.sentence_splitter_fast import _split_sentences_fast
 from kss._utils.multiprocessing import _run_job
 from kss._utils.sanity_checks import (
     _check_num_workers,
@@ -35,7 +36,7 @@ def split_sentences(
 
     Args:
         text (Union[str, List[str], Tuple[str]]): single text or list/tuple of texts
-        backend (str): morpheme analyzer backend. 'mecab', 'pecab', 'punkt' are supported.
+        backend (str): morpheme analyzer backend. 'mecab', 'pecab', 'punct' are supported.
         num_workers (Union[int, str])): the number of multiprocessing workers
         strip (bool): strip all sentences or not
         ignores (List[str]): list of strings to ignore
@@ -53,7 +54,7 @@ def split_sentences(
     if finish:
         return text
 
-    backend = _check_analyzer_backend(backend)
+    backend_analyzer = _check_analyzer_backend(backend)
     num_workers = _check_num_workers(text, num_workers)
 
     ignores_tuple = tuple(ignores)
@@ -63,10 +64,15 @@ def split_sentences(
     _preprocessor = preprocessors[ignores_tuple]
     _postprocessor = postprocessors[ignores_tuple]
 
+    if backend_analyzer._backend == "fast":
+        split_fn = _split_sentences_fast
+    else:
+        split_fn = _split_sentences
+
     return _run_job(
         func=partial(
-            _split_sentences,
-            backend=backend,
+            split_fn,
+            backend=backend_analyzer,
             strip=strip,
             preprocessor=_preprocessor,
             postprocessor=_postprocessor,

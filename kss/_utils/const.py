@@ -574,3 +574,5 @@ circle_bracket_charaters = [
     "⓽",
     "⓾",
 ]
+
+not_endpoint = [",", ":", "\u200b"] + list(quotes_or_brackets) + ["<", ">"]
