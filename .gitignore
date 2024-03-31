@@ -129,3 +129,5 @@ dmypy.json
 
 bench/.java/
 .java/
+
+csrc/kss_cython.cpp
