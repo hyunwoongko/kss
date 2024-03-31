@@ -750,6 +750,8 @@ If you want to split sentences quickly, you can use `split_sentences` function w
 Note that **the speed of the two backend are similar**. But as mentioned above, the `punct` backend can split sentences near punctuation marks, so it's more safe but insensitive.
 On the other hand, the `fast` backend can split sentences even if there are no punctuation marks, so it's more sensitive but not safe. **So please choose the backend according to your needs**.
 
+p.s. The algorithm in the fast backend is identical to the Kss C++ (=1.3.1) version, but there were some bugs in the C++ implementation. The implementation in this fast backend has resolved most of the bugs found in the original implementation.
+
 </details>
 
 <br>
