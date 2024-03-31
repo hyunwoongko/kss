@@ -56,8 +56,8 @@ split_sentences(
     - `backend='auto'`: find `mecab` → `konlpy.tag.Mecab` → `pecab` → `fast` and use first found analyzer (default)
     - `backend='mecab'`: find `mecab` → `konlpy.tag.Mecab` and use first found analyzer
     - `backend='pecab'`: use `pecab` analyzer
-    - `backend='fast'`: use fast algorithm used in Kss version < 3.0 
     - `backend='punct'`: split sentences only near punctuation marks
+    - `backend='fast'`: use fast algorithm used in Kss version < 3.0 with cython
 - **num_workers: The number of multiprocessing workers**
     - `num_workers='auto'`: use multiprocessing with the maximum number of workers if possible (default)
     - `num_workers=1`: don't use multiprocessing
@@ -742,15 +742,35 @@ In fact, it's also because very few people attack this task. If anyone wants to 
 
 <br>
 
-If you want to split sentences quickly, you can use `split_sentences` function with `backend='fast'` or `backend='punct'` from Kss 5.0.
+If you want to split sentences quickly, you can use the `split_sentences` function with the `backend='fast'` option from Kss 5.0.0.
+This method is based on the fast algorithm utilized in Kss versions prior to 3.0.
+It offers significantly faster processing compared to the `mecab` backend, but less accurate.
+Therefore, This feature could be useful when you need to split sentences very quickly but don't need high accuracy.
+Furthermore, the `fast` backend has been implemented in both Python and Cython.
 
-- `fast` backend: This is based on the fast algorithm used in Kss < 3.0. It's faster than `mecab` backend, but less accurate. This could be useful when you need to split sentences very quickly but don't need high accuracy.
-- `punct` backend: This splits sentences only near punctuation marks. Its speed is similar with `fast` backend. This could be useful when you split well-structured Korean text or English text.
+- If your environment supports the installation of `Cython`, Kss will use the Cython implementation, which boasts the fastest performance (**x600 faster than `mecab`**).
+- Otherwise, it will use the Python implementation, which is slower than the Cython version but faster than the `mecab` backend **(x4 faster than `mecab`)**.
 
-Note that **the speed of the two backend are similar**. But as mentioned above, the `punct` backend can split sentences near punctuation marks, so it's more safe but insensitive.
-On the other hand, the `fast` backend can split sentences even if there are no punctuation marks, so it's more sensitive but not safe. **So please choose the backend according to your needs**.
+Given the substantial speed advantage of the Cython implementation, it is strongly recommended over the Python alternative.
+Kss automatically detects the availability of Cython in your environment and will install it if feasible, so you don't need to worry about Cython and C++ dependencies.
 
-p.s. The algorithm in the fast backend is identical to the Kss C++ (=1.3.1) version, but there were some bugs in the C++ implementation. The implementation in this fast backend has resolved most of the bugs found in the original implementation.
+### Accuracy (Normalized F1)
+
+| Backend         | blogs_ko   | blogs_lee  | nested     | sample     | tweets     | v_ending   | wikipedia  |
+|-----------------|------------|------------|------------|------------|------------|------------|------------|
+| `mecab`         | **0.8860** | **0.8887** | **0.9206** | **0.9682** | **0.8137** | **0.4815** | **1.0000** |
+| `fast` (Python) | 0.6281     | 0.7899     | 0.6899     | 0.7482     | 0.5315     | 0.1596     | 0.7358     |
+| `fast` (Cython) | 0.6545     | 0.8132     | 0.6372     | 0.8407     | 0.5892     | 0.1596     | 0.9566     |
+
+### Speed (msec)
+
+| Backend         | blogs_ko | blogs_lee | nested   | sample   | tweets   | v_ending | wikipedia |
+|-----------------|----------|-----------|----------|----------|----------|----------|-----------|
+| `mecab`         | 538.10   | 293.31    | 225.05   | 56.35    | 184.91   | 20.55    | 899.99    |
+| `fast` (Python) | 146.75   | 70.94     | 52.84    | 12.11    | 37.80    | 4.69     | 255.90    |
+| `fast` (Cython) | **0.91** | **0.55**  | **0.46** | **0.09** | **0.40** | **0.05** | **1.12**  |
+
+Please note that while the core algorithm in the `fast` backend mirrors that of Kss C++ 1.3.1, several bugs identified in the original implementation have been rectified in Kss 5.0.0.
 
 </details>
 
@@ -872,8 +892,8 @@ summarize_sentences(
   - `backend='auto'`: find `mecab` → `konlpy.tag.Mecab` → `pecab` → `fast` and use first found analyzer (default)
   - `backend='mecab'`: find `mecab` → `konlpy.tag.Mecab` and use first found analyzer
   - `backend='pecab'`: use `pecab` analyzer
-  - `backend='fast'`: use fast algorithm used in Kss version < 3.0
   - `backend='punct'`: split sentences only near punctuation marks
+  - `backend='fast'`: use fast algorithm used in Kss version < 3.0 with cython
 - **num_workers: The number of multiprocessing workers**
   - `num_workers='auto'`: use multiprocessing with the maximum number of workers if possible (default)
   - `num_workers=1`: don't use multiprocessing
