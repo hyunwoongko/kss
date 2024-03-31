@@ -10,7 +10,6 @@ from kss._modules.sentences.embracing_processor import EmbracingProcessor
 from kss._modules.sentences.sentence_postprocessor import SentencePostprocessor
 from kss._modules.sentences.sentence_preprocessor import SentencePreprocessor
 from kss._modules.sentences.sentence_splitter import SentenceSplitter
-from kss._modules.sentences.sentence_splitter_fast import _split_sentences_fast
 from kss._utils.multiprocessing import _run_job
 from kss._utils.sanity_checks import (
     _check_num_workers,
@@ -65,6 +64,11 @@ def split_sentences(
     _postprocessor = postprocessors[ignores_tuple]
 
     if backend_analyzer._backend == "fast":
+        try:
+            from kss_cython import split_sentences_fast as _split_sentences_fast
+        except ImportError:
+            from kss._modules.sentences.sentence_splitter_fast import _split_sentences_fast
+
         split_fn = _split_sentences_fast
     else:
         split_fn = _split_sentences

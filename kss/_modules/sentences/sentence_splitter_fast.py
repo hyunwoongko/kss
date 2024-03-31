@@ -53,6 +53,7 @@ Table = create_dict(
                 "렵": ID.PREV,
                 "렸": ID.PREV,
                 "뤘": ID.PREV,
+                "린": ID.PREV,
                 "몄": ID.PREV,
                 "밌": ID.PREV,
                 "볐": ID.PREV,
@@ -80,6 +81,7 @@ Table = create_dict(
                 "챘": ID.PREV,
                 "켰": ID.PREV,
                 "켠": ID.PREV,
+                "캔": ID.PREV,
                 "팠": ID.PREV,
                 "펐": ID.PREV,
                 "폈": ID.PREV,
@@ -91,7 +93,6 @@ Table = create_dict(
                 "는": ID.NEXT | ID.NEXT2,
                 "라": ID.NEXT,
                 "시": ID.NEXT,
-                "등": ID.NEXT,
                 "던": ID.NEXT,
                 "든": ID.NEXT,
                 "지": ID.NEXT2,
@@ -100,7 +101,7 @@ Table = create_dict(
                 "만": ID.NEXT,  # ~ 하다만
                 "며": ID.NEXT | ID.NEXT2,
                 "면": ID.NEXT | ID.NEXT1 | ID.NEXT2,
-                "서": ID.NEXT2,
+                "서": ID.PREV | ID.NEXT2,
                 "싶": ID.PREV | ID.NEXT,
                 "죠": ID.NEXT,
                 "죵": ID.NEXT,
@@ -145,7 +146,6 @@ Table = create_dict(
                 "고": ID.NEXT2,
                 "는": ID.NEXT,
                 "라": ID.NEXT1,
-                "등": ID.NEXT,
                 "를": ID.NEXT,
                 "즘": ID.NEXT,
                 "소": ID.NEXT,
@@ -167,7 +167,6 @@ Table = create_dict(
                 "냈": ID.PREV,
                 "니": ID.PREV,
                 "뒀": ID.PREV,
-                "았": ID.PREV,
                 "르": ID.PREV,
                 "랐": ID.PREV,
                 "럽": ID.PREV,
@@ -183,6 +182,7 @@ Table = create_dict(
                 "섰": ID.PREV,
                 "셨": ID.PREV,
                 "샜": ID.PREV,
+                "았": ID.PREV,
                 "않": ID.PREV,
                 "없": ID.PREV,
                 "었": ID.PREV,
@@ -194,12 +194,12 @@ Table = create_dict(
                 "켰": ID.PREV,
                 "팠": ID.PREV,
                 "폈": ID.PREV,
+                "펐": ID.PREV,
                 "하": ID.PREV,
                 "했": ID.PREV,
                 "혔": ID.PREV,
                 "고": ID.PREV | ID.NEXT2,
                 "는": ID.NEXT,
-                "등": ID.NEXT,
                 "라": ID.NEXT1,
                 "를": ID.NEXT,
                 "며": ID.NEXT2,
@@ -210,6 +210,7 @@ Table = create_dict(
         Stats.SB: create_dict(
             {
                 "것": ID.PREV,
+                "거": ID.PREV,
                 "가": ID.PREV,
                 "까": ID.PREV,
                 "걸": ID.PREV,
@@ -218,6 +219,7 @@ Table = create_dict(
                 "니": ID.PREV,
                 "네": ID.PREV,
                 "다": ID.PREV,
+                "도": ID.PREV,
                 "쎄": ID.PREV,
                 "래": ID.PREV,
                 "데": ID.PREV,
@@ -240,7 +242,7 @@ Table = create_dict(
                 "죠": ID.PREV,
                 "쥬": ID.PREV,  # ~했쥬 (사투리)
                 "죵": ID.PREV,  # ~했죵 (신조어)
-                "고": ID.NEXT2,
+                "고": ID.PREV | ID.NEXT2,
                 "는": ID.NEXT,
                 "라": ID.PREV | ID.NEXT,
                 "며": ID.NEXT2,
@@ -361,7 +363,7 @@ def _split_sentences_fast(
                     if Table[current_stat][syllable.prev.text] & ID.NEXT1:
                         current_sentence.append(syllable.prev)
 
-                    elif syllable.prev_skip("SP").text in Table[Stats.COMMON]:
+                    else:
                         # NEW RULE for KSS 3 to fix following issue.
                         # https://github.com/hyunwoongko/kss/issues/7
                         output_sentences.append(current_sentence)

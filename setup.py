@@ -1,14 +1,29 @@
 import codecs
 import os
+import platform
 import subprocess
 import sys
 from contextlib import suppress
+from distutils.extension import Extension
 
 from setuptools import setup, find_packages
-from setuptools.command.install import install
+from setuptools.command.build_ext import build_ext
+
+"""
+1. pip creates a temporary file, in Linux it's in /tmp, and on Windows it's in the temp dir of the user.
+2. pip downloads/extracts the package to that temp directory (whether from a tar.gz or from an online source or from a repository)
+3. pip runs the following operations in order:
+  - setup.py install
+  - setup.py build
+  - setup.py install_lib
+  - setup.py build_py
+    -> install mecab / Cython
+  - setup.py build_ext
+    -> build Cython extension if possible
+"""
 
 
-class InstallCommand(install):
+class PreInstall(build_ext):
     def run(self):
         try:
             import mecab
@@ -20,6 +35,54 @@ class InstallCommand(install):
                 )
 
         super().run()
+
+
+def cythonize():
+    if platform.system() == 'Linux':
+        extra_compile_args = ['-std=c++11']
+        extra_link_args = []
+    elif platform.system() == 'Darwin':
+        extra_compile_args = ['-std=c++11', '-stdlib=libc++']
+        extra_link_args = ['-stdlib=libc++']
+    elif platform.system() == 'Windows':
+        extra_compile_args = ['/utf-8']
+        extra_link_args = []
+    else:
+        return None
+
+    _ext_modules = [
+        Extension(
+            "kss_cython",
+            sources=[
+                'csrc/kss_cython.pyx',
+                'csrc/sentence_splitter.cpp',
+            ],
+            language='c++',
+            extra_compile_args=extra_compile_args,
+            extra_link_args=extra_link_args,
+            include_dirs=["."],
+        )
+    ]
+
+    try:
+        from Cython.Build import cythonize
+
+        return cythonize(_ext_modules, language_level="3")
+
+    except:
+        with suppress():
+            subprocess.call(
+                [sys.executable, "-m", "pip", "install", "Cython"],
+                stderr=subprocess.DEVNULL,
+            )
+
+            try:
+                from Cython.Build import cythonize
+
+                return cythonize(_ext_modules, language_level="3")
+            except:
+                return None
+
 
 
 def read_file(filename, cb):
@@ -51,7 +114,7 @@ setup(
     packages=find_packages(exclude=["bench", "assets", ".java", ".pytest_cache"]),
     python_requires=">=3",
     zip_safe=False,
-    package_data={"": ["kss/pynori/resources/*"]},
+    package_data={"": ["csrc/*"]},
     include_package_data=True,
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -63,5 +126,6 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
     ],
-    cmdclass={"install": InstallCommand},
+    cmdclass={"build_ext": PreInstall},
+    ext_modules=cythonize(),
 )

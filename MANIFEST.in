@@ -1,0 +1,6 @@
+exclude csrc/kss_cython.cpp
+include csrc/kss_cython.pyx
+include csrc/sentence_splitter.cpp
+include csrc/sentence_splitter.h
+include csrc/__init__.py
+include setup.py
