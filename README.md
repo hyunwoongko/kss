@@ -754,7 +754,7 @@ Furthermore, the `fast` backend has been implemented in both Python and Cython.
 Given the substantial speed advantage of the Cython implementation, it is strongly recommended over the Python alternative.
 Kss automatically detects the availability of Cython in your environment and will install it if feasible, so you don't need to worry about Cython and C++ dependencies.
 
-### Accuracy (Normalized F1)
+#### Accuracy (Normalized F1)
 
 | Backend         | blogs_ko   | blogs_lee  | nested     | sample     | tweets     | v_ending   | wikipedia  |
 |-----------------|------------|------------|------------|------------|------------|------------|------------|
@@ -762,7 +762,7 @@ Kss automatically detects the availability of Cython in your environment and wil
 | `fast` (Python) | 0.6281     | 0.7899     | 0.6899     | 0.7482     | 0.5315     | 0.1596     | 0.7358     |
 | `fast` (Cython) | 0.6545     | 0.8132     | 0.6372     | 0.8407     | 0.5892     | 0.1596     | 0.9566     |
 
-### Speed (msec)
+#### Speed (msec)
 
 | Backend         | blogs_ko | blogs_lee | nested   | sample   | tweets   | v_ending | wikipedia |
 |-----------------|----------|-----------|----------|----------|----------|----------|-----------|
