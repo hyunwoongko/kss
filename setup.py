@@ -5,11 +5,15 @@ import subprocess
 import sys
 from contextlib import suppress
 from distutils.extension import Extension
+from distutils.ccompiler import new_compiler
+from distutils.sysconfig import customize_compiler
 
 from setuptools import setup, find_packages
-from setuptools.command.build_ext import build_ext
+from setuptools.command.install import install
 
 """
+How pip install works:
+
 1. pip creates a temporary file, in Linux it's in /tmp, and on Windows it's in the temp dir of the user.
 2. pip downloads/extracts the package to that temp directory (whether from a tar.gz or from an online source or from a repository)
 3. pip runs the following operations in order:
@@ -17,27 +21,44 @@ from setuptools.command.build_ext import build_ext
   - setup.py build
   - setup.py install_lib
   - setup.py build_py
-    -> install mecab / Cython
   - setup.py build_ext
-    -> build Cython extension if possible
 """
 
 
-class PreInstall(build_ext):
+class PreInstall(install):
     def run(self):
         try:
+            # 1. Try to import mecab
             import mecab
         except:
-            with suppress():
-                subprocess.call(
-                    [sys.executable, "-m", "pip", "install", "python-mecab-kor"],
-                    stderr=subprocess.DEVNULL,
-                )
+            try:
+                # 2. Try to install python-mecab-kor and import mecab again
+                with suppress():
+                    subprocess.call(
+                        [sys.executable, "-m", "pip", "install", "python-mecab-kor"],
+                        stderr=subprocess.DEVNULL,
+                    )
+
+                import mecab
+            except:
+                try:
+                    # 3. Try to install python-mecab-ko and import mecab again
+                    with suppress():
+                        inst = "curl -s https://raw.githubusercontent.com/konlpy/konlpy/master/scripts/mecab.sh | bash > /dev/null 2>&1"
+                        os.system(inst)
+                        subprocess.call(
+                            [sys.executable, "-m", "pip", "install", "python-mecab-ko"],
+                            stderr=subprocess.DEVNULL,
+                        )
+                    import mecab
+                except:
+                    # 4. Cannot install mecab.
+                    pass
 
         super().run()
 
 
-def cythonize():
+def get_extra_compile_args():
     if platform.system() == 'Linux':
         extra_compile_args = ['-std=c++11']
         extra_link_args = []
@@ -48,7 +69,14 @@ def cythonize():
         extra_compile_args = ['/utf-8']
         extra_link_args = []
     else:
-        return None
+        extra_compile_args = []
+        extra_link_args = []
+    return extra_compile_args, extra_link_args
+
+
+def cythonize():
+    extra_compile_args, extra_link_args = \
+        get_extra_compile_args()
 
     _ext_modules = [
         Extension(
@@ -65,24 +93,47 @@ def cythonize():
     ]
 
     try:
+        # 1. Try to import Cython and cythonize
         from Cython.Build import cythonize
-
         return cythonize(_ext_modules, language_level="3")
-
     except:
-        with suppress():
-            subprocess.call(
-                [sys.executable, "-m", "pip", "install", "Cython"],
-                stderr=subprocess.DEVNULL,
-            )
+        try:
+            # 2. Try to install Cython and import Cython and cythonize again
+            with suppress():
+                subprocess.call(
+                    [sys.executable, "-m", "pip", "install", "Cython"],
+                    stderr=subprocess.DEVNULL,
+                )
 
-            try:
-                from Cython.Build import cythonize
+            from Cython.Build import cythonize
+            return cythonize(_ext_modules, language_level="3")
+        except:
+            # 3. Cannot install Cython.
+            return None
 
-                return cythonize(_ext_modules, language_level="3")
-            except:
-                return None
 
+def is_compilable():
+    try:
+        # 1. Try to compile csrc/sentence_splitter.cpp
+        extra_compile_args, extra_link_args = get_extra_compile_args()
+        compiler = new_compiler()
+        customize_compiler(compiler)
+        compiler.compile(['csrc/sentence_splitter.cpp'], extra_postargs=extra_compile_args)
+        return True
+    except:
+        # 2. Cannot compile csrc/sentence_splitter.cpp
+        return False
+
+
+def cythonize_if_possible():
+    cythonized_result = cythonize()
+
+    if cythonized_result and is_compilable():
+        # 1. Cythonize and compile csrc/sentence_splitter.cpp
+        return cythonized_result
+    else:
+        # 2. Cannot use Cython implementation
+        return None
 
 
 def read_file(filename, cb):
@@ -103,7 +154,7 @@ setup(
     name="kss",
     version=version,
     author="Hyunwoong Ko",
-    author_email="kevin.ko@tunib.ai",
+    author_email="kevin.brain@kakaobrain.com",
     url="https://github.com/hyunwoongko/kss",
     license='BSD 3-Clause "New" or "Revised" License',
     description="A Toolkit for Korean sentence segmentation",
@@ -126,6 +177,6 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
     ],
-    cmdclass={"build_ext": PreInstall},
-    ext_modules=cythonize(),
+    cmdclass={"install": PreInstall},
+    ext_modules=cythonize_if_possible(),
 )
