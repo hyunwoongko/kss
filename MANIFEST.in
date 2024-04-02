@@ -1,4 +1,5 @@
 exclude csrc/kss_cython.cpp
+exclude csrc/sentence_splitter.o
 include csrc/kss_cython.pyx
 include csrc/sentence_splitter.cpp
 include csrc/sentence_splitter.h

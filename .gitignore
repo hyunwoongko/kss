@@ -131,3 +131,4 @@ bench/.java/
 .java/
 
 csrc/kss_cython.cpp
+csrc/sentence_splitter.o
