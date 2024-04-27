@@ -88,7 +88,7 @@ Examples:
 ### 4. Multiprocessing
 If you input a list of strings, Kss will automatically use multiprocessing to process the strings in parallel.
 And you can set the number of processes to use by setting the `num_workers` parameter.
-If you input `num_workers<2`, Kss will not use multiprocessing.
+If you input `num_workers < 2`, Kss will not use multiprocessing.
 
 ```python
 from kss import Kss
