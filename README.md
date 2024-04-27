@@ -67,6 +67,7 @@ module.help()
 ```text
 Split texts into sentences.
 
+<br>
 Args:
     text (Union[str, List[str], Tuple[str]]): single text or list/tuple of texts
     backend (str): morpheme analyzer backend. 'mecab', 'pecab', 'punct' are supported
@@ -124,6 +125,7 @@ This augments text with synonym replacement method and,
 optionally it postprocesses the text by correcting josa.
 For this, Kss uses the Korean wordnet from KAIST.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]]`): single text or list of texts
 - replacement_ratio (`float`): ratio of words to be replaced
@@ -156,6 +158,7 @@ References:
 This returns collocation (연어) of given words.
 The collocation is a set of words that frequently appear together.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]]`): single word or list of words
 - num_workers (`Union[int, str]`): the number of multiprocessing workers
@@ -185,6 +188,7 @@ References:
 This function provides a way to convert Korean graphemes to phonemes.
 The 'grapheme' means a letter or a character, and the 'phoneme' means a sound.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]]`): single text or list of texts
 - descriptive (`bool`): return descriptive pronunciation, the 'descriptive' means a real-life pronunciation
@@ -219,6 +223,7 @@ References:
 <br>
 This converts the given text to Hangul pronunciation.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]`): single text or list of texts
 - lang (`str`): source language code
@@ -247,6 +252,7 @@ References:
 <br>
 This splits the given text into hanja string and non-hanja string.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]`): single text or list of texts
 - num_workers (`Union[int, str]`): the number of multiprocessing workers
@@ -274,6 +280,7 @@ This was copied from [hanja](https://github.com/suminb/hanja) and modified by Ks
 <br>
 This checks if the given character is a hanja character.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]`): single character or list of characters
 - num_workers (`Union[int, str]`): the number of multiprocessing workers
@@ -305,6 +312,7 @@ This was copied from [hanja](https://github.com/suminb/hanja) and modified by Ks
 <br>
 This converts hanja to hangul.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]`): single text or list of texts
 - combination (`bool`): whether to return hanja and hangul together or not
@@ -335,6 +343,7 @@ References:
 <br>
 This converts a string of Hangul to jamo.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]`): single text or list of texts
 - num_workers (`Union[int, str]`): the number of multiprocessing workers
@@ -363,6 +372,7 @@ References:
 <br>
 This converts a string of Hangul to Hangul Compatibility Jamo.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]`): single text or list of texts
 - num_workers (`Union[int, str]`): the number of multiprocessing workers
@@ -390,6 +400,7 @@ References:
 <br>
 This converts a string of jamo to Hangul.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]`): single text or list of texts
 - add_placeholder_for_leading_vowels (`bool`): add 'ㅇ' for leading vowels (e.g. 'ㅐ플' -> '애플')
@@ -419,6 +430,7 @@ References:
 <br>
 This converts a string of jamo to Hangul Compatibility Jamo.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]`): single text or list of texts
 - num_workers (`Union[int, str]`): the number of multiprocessing workers
@@ -447,6 +459,7 @@ References:
 <br>
 This converts a string of Hangul Compatibility Jamo to Hangul.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]`): single text or list of texts
 - num_workers (`Union[int, str]`): the number of multiprocessing workers
@@ -475,6 +488,7 @@ References:
 <br>
 This converts a string of Hangul Compatibility Jamo to jamo.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]`): single text or list of texts
 - position (`str`): the position of the HCJ character to convert to jamo character, one of 'lead', 'vowel', 'tail'
@@ -504,6 +518,7 @@ References:
 <br>
 This checks if a character is a jamo character.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]`): single text or list of texts
 - num_workers (`Union[int, str]`): the number of multiprocessing workers
@@ -532,6 +547,7 @@ References:
 <br>
 This checks if a character is a modern jamo character.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]`): single text or list of texts
 - num_workers (`Union[int, str]`): the number of multiprocessing workers
@@ -560,6 +576,7 @@ References:
 <br>
 This checks if a character is a Hangul Compatibility Jamo character.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]`): single text or list of texts
 - num_workers (`Union[int, str]`): the number of multiprocessing workers
@@ -588,6 +605,7 @@ References:
 <br>
 This checks if a character is a modern Hangul Compatibility Jamo character.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]`): single text or list of texts
 - num_workers (`Union[int, str]`): the number of multiprocessing workers
@@ -616,6 +634,7 @@ References:
 <br>
 This checks if a character is a Hangul character.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]`): single text or list of texts
 - num_workers (`Union[int, str]`): the number of multiprocessing workers
@@ -643,6 +662,7 @@ References:
 <br>
 This selects the correct josa for the given prefix.
 
+<br>
 Args:
 - prefix (`Union[str, List[str]`): single prefix or list of prefixes
 - josa (`Union[str, List[str]`): single josa or list of josas
@@ -672,6 +692,7 @@ References:
 <br>
 This combines the given prefix and josa.
 
+<br>
 Args:
 - prefix (`Union[str, List[str]`): single prefix or list of prefixes
 - josa (`Union[str, List[str]`): single josa or list of josas
@@ -702,6 +723,7 @@ References:
 This extracts keywords from the given text.
 This uses TextRank algorithm to extract keywords.
 
+<br>
 Args:
 - text (`Union[str, List[str]`): single text or list of texts
 - num_keywords (`int`): the number of keywords to extract
@@ -744,6 +766,7 @@ References:
 <br>
 This splits texts into morphemes.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]]`): single text or list/tuple of texts
 - backend (`str`): morpheme analyzer backend. 'mecab', 'pecab' are supported.
@@ -770,6 +793,7 @@ Examples:
 <br>
 This searches paradigms of the given text.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]`): single text or list of texts
 - num_workers (`Union[int, str]`): the number of multiprocessing workers
@@ -798,6 +822,7 @@ References:
 <br>
 This anonymizes sensitive information in the given text.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]`): single text or list of texts
 - phone_number_anonymization (`bool`): whether to anonymize phone numbers or not
@@ -844,6 +869,7 @@ Examples:
 <br>
 This cleans news articles by removing useless headers and footers.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]]`): Input text or list of texts.
 - min_sentences (`int`): Minimum number of sentences to keep. Defaults to 3.
@@ -872,6 +898,7 @@ Examples:
 <br>
 This checks if the given text is in completed form.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]`): single text or list of texts
 - num_workers (`Union[int, str]`): the number of multiprocessing workers
@@ -938,6 +965,7 @@ Examples:
 <br>
 This filters out bad text based on various conditions.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]]`): single text or list of texts
 - min_length (`int`): minimum length of text
@@ -1002,6 +1030,7 @@ Examples:
 <br>
 This converts half-width characters to full-width characters.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]]`): single text or list of texts
 - num_workers (`Union[int, str]`): the number of multiprocessing workers
@@ -1025,6 +1054,7 @@ Examples:
 <br>
 This normalizes text with various options.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]]`): single text or list of texts
 - normalization_type (`Optional[str]`): normalization type
@@ -1058,6 +1088,7 @@ Examples:
 This preprocesses text with various options.
 This does 1) normalization, 2) filtering out, and 3) anonymization in order.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]]`): single text or list of texts
 - normalization_type (`Optional[str]`): normalization type
@@ -1143,6 +1174,7 @@ Returns:
 <br>
 This reduces character repeats in text.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]]`): single text or list of texts
 - num_repeats (`int`): the number of character that can be repeated
@@ -1170,6 +1202,7 @@ References:
 <br>
 This reduces emoticon repeats in text.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]]`): single text or list of texts
 - num_repeats (`int`): the number of emoticon that can be repeated
@@ -1197,6 +1230,7 @@ References:
 <br>
 This removes invisible characters from text.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]]`): single text or list of texts
 - num_workers (`Union[int, str]`): the number of multiprocessing workers
@@ -1220,6 +1254,7 @@ Examples:
 <br>
 This converts text from one language to another using QWERTY keyboard layout.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]]`): single text or list of texts
 - src (`str`): source language
@@ -1250,6 +1285,7 @@ References:
 <br>
 This romanizes Korean text.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]]`): single text or list of texts
 - use_morpheme_info (`bool`): whether to use morpheme information or not
@@ -1282,6 +1318,7 @@ References:
 <br>
 This checks if the text is unsafe or not.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]]`): single text or list of texts
 - return_matches (`bool`): whether to return matches or not
@@ -1318,6 +1355,7 @@ True
 <br>
 This splits texts into sentences.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]]`): single text or list/tuple of texts
 - backend (`str`): morpheme analyzer backend. 'mecab', 'pecab', 'punct' are supported
@@ -1345,6 +1383,7 @@ Examples:
 <br>
 This corrects the spacing of the text.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]]`): single text or list/tuple of texts
 - backend (`str`): morpheme analyzer backend. 'mecab', 'pecab', 'punct' are supported
@@ -1373,6 +1412,7 @@ References:
 <br>
 This summarizes the given text, using TextRank algorithm.
 
+<br>
 Args:
 - text (`Union[str, List[str], Tuple[str]]`): single text or list/tuple of texts
 - backend (`str`): morpheme analyzer backend. 'mecab', 'pecab' are supported.
