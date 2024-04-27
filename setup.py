@@ -154,7 +154,7 @@ install_requires = [
     "emoji==1.2.0", "pecab", "networkx", "jamo",
     "hangul-jamo", "hanja==0.13.3", "tossi", "distance",
     "unidecode", "cmudict", "koparadigm", "kollocate",
-    "bs4", "numpy", "pytest",
+    "bs4", "numpy", "pytest", "scipy"
 ]
 
 setup(
