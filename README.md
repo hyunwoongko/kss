@@ -725,7 +725,7 @@ Examples:
 >>> output = extract_keywords(text, noun_only=False)
 >>> print(output)
 ['너무', '정말', '마지막', '영화', '음악']
-```        
+```
 
 References:
 - This was copied from [KR-WordRank](https://github.com/lovit/KR-WordRank) and modified by Kss
@@ -1269,10 +1269,10 @@ Examples:
 >>> is_unsafe = Kss("is_unsafe")
 >>> text = "안녕하세요"
 >>> is_unsafe(text)
-        False
+False
 >>> text = "안녕하세요. 씨발"
 >>> is_unsafe(text)
-        True
+True
 >>> text = ["안녕하세요", "안녕하세요. 씨발"]
 >>> is_unsafe(text)
 [False, True]
