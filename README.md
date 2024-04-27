@@ -119,6 +119,7 @@ Because there are so many modules, I apologize for not being able to explain eac
 <details>
 <summary>1. augment</summary>
 
+<br>
 This augments text with synonym replacement method and, 
 optionally it postprocesses the text by correcting josa.
 For this, Kss uses the Korean wordnet from KAIST.
@@ -151,6 +152,7 @@ References:
 <details>
 <summary>2. collocate</summary>
 
+<br>
 This returns collocation (연어) of given words.
 The collocation is a set of words that frequently appear together.
 
@@ -179,6 +181,7 @@ References:
 <details>
 <summary>3. g2p</summary>
 
+<br>
 This function provides a way to convert Korean graphemes to phonemes.
 The 'grapheme' means a letter or a character, and the 'phoneme' means a sound.
 
@@ -213,6 +216,7 @@ References:
 <details>
 <summary>4. hangulize</summary>
 
+<br>
 This converts the given text to Hangul pronunciation.
 
 Args:
@@ -240,6 +244,7 @@ References:
 <details>
 <summary>5. split_hanja</summary>
 
+<br>
 This splits the given text into hanja string and non-hanja string.
 
 Args:
@@ -266,6 +271,7 @@ This was copied from [hanja](https://github.com/suminb/hanja) and modified by Ks
 <details>
 <summary>6. is_hanja</summary>
 
+<br>
 This checks if the given character is a hanja character.
 
 Args:
@@ -296,6 +302,7 @@ This was copied from [hanja](https://github.com/suminb/hanja) and modified by Ks
 <details>
 <summary>7. hanja2hangul</summary>
 
+<br>
 This converts hanja to hangul.
 
 Args:
@@ -325,6 +332,7 @@ References:
 <details>
 <summary>8. h2j</summary>
 
+<br>
 This converts a string of Hangul to jamo.
 
 Args:
@@ -352,6 +360,7 @@ References:
 <details>
 <summary>9. h2hcj</summary>
 
+<br>
 This converts a string of Hangul to Hangul Compatibility Jamo.
 
 Args:
@@ -378,6 +387,7 @@ References:
 <details>
 <summary>10. j2h</summary>
 
+<br>
 This converts a string of jamo to Hangul.
 
 Args:
@@ -406,6 +416,7 @@ References:
 <details>
 <summary>11. j2hcj</summary>
 
+<br>
 This converts a string of jamo to Hangul Compatibility Jamo.
 
 Args:
@@ -433,6 +444,7 @@ References:
 <details>
 <summary>12. hcj2h</summary>
 
+<br>
 This converts a string of Hangul Compatibility Jamo to Hangul.
 
 Args:
@@ -460,6 +472,7 @@ References:
 <details>
 <summary>13. hcj2j</summary>
 
+<br>
 This converts a string of Hangul Compatibility Jamo to jamo.
 
 Args:
@@ -488,6 +501,7 @@ References:
 <details>
 <summary>14. is_jamo</summary>
 
+<br>
 This checks if a character is a jamo character.
 
 Args:
@@ -515,6 +529,7 @@ References:
 <details>
 <summary>15. is_jamo_modern</summary>
 
+<br>
 This checks if a character is a modern jamo character.
 
 Args:
@@ -542,6 +557,7 @@ References:
 <details>
 <summary>16. is_hcj</summary>
 
+<br>
 This checks if a character is a Hangul Compatibility Jamo character.
 
 Args:
@@ -569,6 +585,7 @@ References:
 <details>
 <summary>17. is_hcj_modern</summary>
 
+<br>
 This checks if a character is a modern Hangul Compatibility Jamo character.
 
 Args:
@@ -596,6 +613,7 @@ References:
 <details>
 <summary>18. is_hangul_char</summary>
 
+<br>
 This checks if a character is a Hangul character.
 
 Args:
@@ -622,6 +640,7 @@ References:
 <details>
 <summary>19. select_josa</summary>
 
+<br>
 This selects the correct josa for the given prefix.
 
 Args:
@@ -650,6 +669,7 @@ References:
 <details>
 <summary>20. combine_josa</summary>
 
+<br>
 This combines the given prefix and josa.
 
 Args:
@@ -678,6 +698,7 @@ References:
 <details>
 <summary>21. extract_keywords</summary>
 
+<br>
 This extracts keywords from the given text.
 This uses TextRank algorithm to extract keywords.
 
@@ -720,6 +741,7 @@ References:
 <details>
 <summary>22. split_morphemes</summary>
 
+<br>
 This splits texts into morphemes.
 
 Args:
@@ -745,6 +767,7 @@ Examples:
 <details>
 <summary>23. paradigm</summary>
 
+<br>
 This searches paradigms of the given text.
 
 Args:
@@ -772,6 +795,7 @@ References:
 <details>
 <summary>24. anonymize</summary>
 
+<br>
 This anonymizes sensitive information in the given text.
 
 Args:
@@ -817,6 +841,7 @@ Examples:
 <details>
 <summary>25. clean_news</summary>
 
+<br>
 This cleans news articles by removing useless headers and footers.
 
 Args:
@@ -844,6 +869,7 @@ Examples:
 <details>
 <summary>26. is_completed_form</summary>
 
+<br>
 This checks if the given text is in completed form.
 
 Args:
@@ -871,6 +897,7 @@ False
 <details>
 <summary>27. get_all_completed_form_hangul_chars</summary>
 
+<br>
 This returns all completed form Hangul characters.
 
 Returns:
@@ -889,6 +916,7 @@ Examples:
 <details>
 <summary>28. get_all_incompleted_form_hangul_chars</summary>
 
+<br>
 This returns all incompleted form Hangul characters.
 
 Returns:
@@ -907,6 +935,7 @@ Examples:
 <details>
 <summary>29. filter_out</summary>
 
+<br>
 This filters out bad text based on various conditions.
 
 Args:
@@ -970,6 +999,7 @@ Examples:
 <details>
 <summary>30. half2full</summary>
 
+<br>
 This converts half-width characters to full-width characters.
 
 Args:
@@ -992,6 +1022,7 @@ Examples:
 <details>
 <summary>31. normalize</summary>
 
+<br>
 This normalizes text with various options.
 
 Args:
@@ -1023,6 +1054,7 @@ Examples:
 <details>
 <summary>32. preprocess</summary>
 
+<br>
 This preprocesses text with various options.
 This does 1) normalization, 2) filtering out, and 3) anonymization in order.
 
@@ -1108,6 +1140,7 @@ Returns:
 <details>
 <summary>33. reduce_char_repeats</summary>
 
+<br>
 This reduces character repeats in text.
 
 Args:
@@ -1134,6 +1167,7 @@ References:
 <details>
 <summary>34. reduce_emoticon_repeats</summary>
 
+<br>
 This reduces emoticon repeats in text.
 
 Args:
@@ -1160,6 +1194,7 @@ References:
 <details>
 <summary>35. remove_invisible_chars</summary>
 
+<br>
 This removes invisible characters from text.
 
 Args:
@@ -1182,6 +1217,7 @@ Examples:
 <details>
 <summary>36. qwerty</summary>
 
+<br>
 This converts text from one language to another using QWERTY keyboard layout.
 
 Args:
@@ -1211,6 +1247,7 @@ References:
 <details>
 <summary>37. romanize</summary>
 
+<br>
 This romanizes Korean text.
 
 Args:
@@ -1242,6 +1279,7 @@ References:
 <details>
 <summary>38. is_unsafe</summary>
 
+<br>
 This checks if the text is unsafe or not.
 
 Args:
@@ -1277,6 +1315,7 @@ True
 <details>
 <summary>39. split_sentences</summary>
 
+<br>
 This splits texts into sentences.
 
 Args:
@@ -1303,6 +1342,7 @@ Examples:
 <details>
 <summary>40. correct_spacing</summary>
 
+<br>
 This corrects the spacing of the text.
 
 Args:
@@ -1330,6 +1370,7 @@ References:
 <details>
 <summary>41. summarize_sentences</summary>
 
+<br>
 This summarizes the given text, using TextRank algorithm.
 
 Args:
