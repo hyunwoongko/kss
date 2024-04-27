@@ -15,12 +15,9 @@ jobs:
       - name: pip upgrade
         run: |
           python3 -m pip install --upgrade pip & pip3 install --upgrade setuptools
-      - name: Install six
-        run: |
-          pip3 install hangulize
       - name: Install kss locally
         run: |
-          pip3 install .
+          pip3 install six && pip3 install .
       - name: Run the test suite
         run: |
           pytest -v
