@@ -84,7 +84,7 @@ Split texts into sentences.
 Args:
     text (Union[str, List[str], Tuple[str]]): single text or list/tuple of texts
     backend (str): morpheme analyzer backend. 'mecab', 'pecab', 'punct' are supported
-    num_workers (Union[int, str]`): the number of multiprocessing workers
+    num_workers (Union[int, str]): the number of multiprocessing workers
     strip (bool): strip all sentences or not
     return_morphemes (bool): whether to return morphemes or not
     ignores (List[str]): list of strings to ignore
