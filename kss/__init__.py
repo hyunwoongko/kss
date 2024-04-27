@@ -15,7 +15,7 @@ from kss._modules.paradigm.paradigm import paradigm
 from kss._modules.preprocessing.anonymize import anonymize
 from kss._modules.preprocessing.clean_news import clean_news
 from kss._modules.preprocessing.completed_form import is_completed_form, get_all_completed_form_hangul_chars, \
-    get_all_non_completed_form_hangul_chars
+    get_all_incompleted_form_hangul_chars
 from kss._modules.preprocessing.filter_out import filter_out
 from kss._modules.preprocessing.half2full import half2full
 from kss._modules.preprocessing.normalize import normalize
@@ -57,7 +57,7 @@ supported_modules = {
     "clean_news": clean_news,
     "is_completed_form": is_completed_form,
     "get_all_completed_form_hangul_chars": get_all_completed_form_hangul_chars,
-    "get_all_non_completed_form_hangul_chars": get_all_non_completed_form_hangul_chars,
+    "get_all_incompleted_form_hangul_chars": get_all_incompleted_form_hangul_chars,
     "filter_out": filter_out,
     "half2full": half2full,
     "reduce_char_repeats": reduce_char_repeats,

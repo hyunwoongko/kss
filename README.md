@@ -66,7 +66,7 @@ from kss import Kss
 Kss.available()
 ```
 ```python
-['augment', 'collocate', 'g2p', 'hangulize', 'split_hanja', 'is_hanja', 'hanja2hangul', 'h2j', 'h2hcj', 'j2h', 'j2hcj', 'hcj2h', 'hcj2j', 'is_jamo', 'is_jamo_modern', 'is_hcj', 'is_hcj_modern', 'is_hangul_char', 'select_josa', 'combine_josa', 'extract_keywords', 'split_morphemes', 'paradigm', 'anonymize', 'clean_news', 'is_completed_form', 'get_all_completed_form_hangul_chars', 'get_all_non_completed_form_hangul_chars', 'filter_out', 'half2full', 'reduce_char_repeats', 'reduce_emoticon_repeats', 'remove_invisible_chars', 'normalize', 'preprocess', 'qwerty', 'romanize', 'is_unsafe', 'split_sentences', 'correct_spacing', 'summarize_sentences']
+['augment', 'collocate', 'g2p', 'hangulize', 'split_hanja', 'is_hanja', 'hanja2hangul', 'h2j', 'h2hcj', 'j2h', 'j2hcj', 'hcj2h', 'hcj2j', 'is_jamo', 'is_jamo_modern', 'is_hcj', 'is_hcj_modern', 'is_hangul_char', 'select_josa', 'combine_josa', 'extract_keywords', 'split_morphemes', 'paradigm', 'anonymize', 'clean_news', 'is_completed_form', 'get_all_completed_form_hangul_chars', 'get_all_incompleted_form_hangul_chars', 'filter_out', 'half2full', 'reduce_char_repeats', 'reduce_emoticon_repeats', 'remove_invisible_chars', 'normalize', 'preprocess', 'qwerty', 'romanize', 'is_unsafe', 'split_sentences', 'correct_spacing', 'summarize_sentences']
 ```
 
 ### 3. Checking the usage of each module
