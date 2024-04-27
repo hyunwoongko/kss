@@ -81,7 +81,6 @@ def correct_spacing(
     )
 
 
-@lru_cache(maxsize=500)
 def _correct_spacing(
     text: str,
     backend: Analyzer,
