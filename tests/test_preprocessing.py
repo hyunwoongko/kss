@@ -154,9 +154,9 @@ def test_get_all_completed_form_hangul_chars():
                       '흰', '흴', '흼', '흽', '힁', '히', '힉', '힌', '힐', '힘', '힙', '힛', '힝']
 
 
-def test_get_all_non_completed_form_hangul_chars():
-    get_all_non_completed_form_hangul_chars = Kss("get_all_non_completed_form_hangul_chars")
-    output = get_all_non_completed_form_hangul_chars()
+def test_get_all_incompleted_form_hangul_chars():
+    get_all_incompleted_form_hangul_chars = Kss("get_all_incompleted_form_hangul_chars")
+    output = get_all_incompleted_form_hangul_chars()
     assert output == ['갂', '갃', '갅', '갆', '갋', '갌', '갍', '갎', '갏', '갘', '갞', '갟', '갡', '갢', '갣', '갥', '갦', '갧', '갨',
                       '갩', '갪', '갫', '갮', '갲', '갳', '갴', '갵', '갶', '갷', '갺', '갻', '갽', '갾', '갿', '걁', '걂', '걃', '걄',
                       '걅', '걆', '걇', '걈', '걉', '걊', '걌', '걎', '걏', '걐', '걑', '걒', '걓', '걕', '걖', '걗', '걙', '걚', '걛',
