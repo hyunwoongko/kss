@@ -151,10 +151,10 @@ with open("README.md", encoding="utf-8") as f:
     long_description = f.read()
 
 install_requires = [
-    "six", "emoji==1.2.0", "pecab", "networkx", "jamo",
-    "hangul-jamo", "hanja==0.13.3", "tossi", "hangulize",
-    "pycountry", "distance", "unidecode", "cmudict",
-    "koparadigm", "kollocate", "bs4", "numpy", "pytest",
+    "emoji==1.2.0", "pecab", "networkx", "jamo",
+    "hangul-jamo", "hanja==0.13.3", "tossi", "distance",
+    "unidecode", "cmudict", "koparadigm", "kollocate",
+    "bs4", "numpy", "pytest",
 ]
 
 setup(

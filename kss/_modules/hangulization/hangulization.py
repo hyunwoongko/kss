@@ -2,8 +2,7 @@ from functools import partial
 from typing import Union, List, Tuple
 
 import distance
-from hangulize import hangulize as _hangulize
-
+from kss._modules.hangulization.hangulize import hangulize as _hangulize
 from kss._utils.multiprocessing import _run_job
 from kss._utils.sanity_checks import _check_text, _check_type, _check_num_workers
 
