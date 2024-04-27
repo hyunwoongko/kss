@@ -280,7 +280,7 @@ def clean_news(
     verbose: bool = False,
 ) -> Union[str, List[str]]:
     """
-    Clean news articles by removing useless headers and footers.
+    This cleans news articles by removing useless headers and footers.
 
     Args:
         text (Union[str, List[str], Tuple[str]]): Input text or list of texts.
