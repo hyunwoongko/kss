@@ -1014,9 +1014,9 @@ Examples:
 ```python
 >>> from kss import Kss
 >>> normalize = Kss("normalize")
->>> text = "안녕\u200b하세요 ﾻﾻﾻﾻﾻﾻ   <br>오늘\u200b은 날이 참 좋네요.\\n\\n\\n200 &lt; 300 &amp; 400"
+>>> text = "안녕\u200b하세요 ﾻﾻﾻﾻﾻﾻ   <br>오늘\u200b은 날이 참 좋네요.\n\n\n200 &lt; 300 &amp; 400"
 >>> normalize(text, allow_doubled_spaces=False, allow_html_tags=False, allow_html_escape=False, allow_halfwidth_hangul=False, allow_hangul_jamo=False, allow_invisible_chars=False, reduce_char_repeats_over=2, reduce_emoticon_repeats_over=2)
-'안녕하세요 ㅋㅋ 오늘은 날이 참 좋네요.\\n200 < 300 & 400'
+'안녕하세요 ㅋㅋ 오늘은 날이 참 좋네요.\n200 < 300 & 400'
 ```
 </details>
 
