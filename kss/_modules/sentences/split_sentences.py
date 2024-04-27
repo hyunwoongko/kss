@@ -109,7 +109,7 @@ def _split_sentences(
     return_morphemes: bool = False,
     preprocessor: SentencePreprocessor = preprocessors[()],
     postprocessor: SentencePostprocessor = postprocessors[()],
-) -> tuple[list[Any] | list[list[Syllable]], list[tuple[str, str]]] | list[Any] | list[list[Syllable]]:
+):
     """
     Split texts into sentences.
 
