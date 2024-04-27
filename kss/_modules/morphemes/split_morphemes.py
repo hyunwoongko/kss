@@ -36,10 +36,10 @@ def split_morphemes(
     Examples:
         >>> from kss import Kss
         >>> split_morphemes = Kss("split_morphemes")
-        >>> text = "아버지가방에들어오시다"
+        >>> text = "아버지가방에들어오시다."
         >>> output = split_morphemes(text)
         >>> print(output)
-        [('아버지', 'NNG'), ('가', 'JKS'), ('방', 'NNG'), ('에', 'JKB'), ('들어오', 'VV'), ('시', 'EP'), ('다', 'EC')]
+        [('아버지', 'NNG'), ('가', 'JKS'), ('방', 'NNG'), ('에', 'JKB'), ('들어오', 'VV'), ('시', 'EP'), ('다', 'EF'), ('.', 'SF')]
     """
     text, finish = _check_text(text)
     drop_space = _check_type(drop_space, "drop_space", bool)
