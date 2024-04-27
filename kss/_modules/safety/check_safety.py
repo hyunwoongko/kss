@@ -12,7 +12,7 @@ def is_unsafe(
     num_workers: Union[int, str] = "auto",
 ) -> Union[bool, List[bool], List[bool], List[List[str]]]:
     """
-    Check if the text is unsafe or not.
+    This checks if the text is unsafe or not.
 
     Args:
         text (Union[str, List[str], Tuple[str]]): single text or list of texts
