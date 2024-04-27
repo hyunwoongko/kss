@@ -211,7 +211,8 @@ Returns:
 - `Union[str, List[str]]`: phoneme string or list of phoneme strings from the given text
 
 Examples:
-```python>>> from kss import Kss
+```python
+>>> from kss import Kss
 >>> g2p = Kss("g2p")
 >>> text = "어제는 맑았는데 오늘은 흐리다."
 >>> output = g2p(text)
@@ -398,7 +399,7 @@ Args:
 - add_placeholder_for_leading_vowels (`bool`): add 'ㅇ' for leading vowels (e.g. 'ㅐ플' -> '애플')
 - num_workers (`Union[int, str]`): the number of multiprocessing workers
 
-- Returns:
+Returns:
 - `Union[str, List[str]]`: Hangul string of the given text
 
 Examples:
@@ -647,7 +648,7 @@ Returns:
 
 Examples:
 ```python
->>>  from kss import Kss
+>>> from kss import Kss
 >>> select_josa = Kss("select_josa")
 >>> prefix = "철수"
 >>> josa = "은"
@@ -675,7 +676,7 @@ Returns:
 
 Examples:
 ```python
->>>  from kss import Kss
+>>> from kss import Kss
 >>> combine_josa = Kss("combine_josa")
 >>> prefix = "철수"
 >>> josa = "은"
@@ -706,7 +707,7 @@ Args:
 
 Examples:
 ```python
->>>  from kss import Kss
+>>> from kss import Kss
 >>> extract_keywords = Kss("extract_keywords")
 >>> text = ['여운이 크게남는영화 엠마스톤 너무 사랑스럽고 라이언고슬링 남자가봐도 정말 매력적인 배우인듯 영상미 음악 연기 구성 전부 좋았고 마지막 엔딩까지 신선하면서 애틋하구요 30중반에 감정이 많이 메말라있었는데 오랜만에 가슴이 촉촉해지네요',
 ...         '영상미도 너무 아름답고 신나는 음악도 좋았다 마지막 세바스찬과 미아의 눈빛교환은 정말 마음 아팠음 영화관에 고딩들이 엄청 많던데 고딩들은 영화 내용 이해를 못하더라ㅡㅡ사랑을 깊게 해본 사람이라면 누구나 느껴볼수있는 먹먹함이 있다',
@@ -746,7 +747,7 @@ Returns:
 
 Examples:
 ```python
->>>  from kss import Kss
+>>> from kss import Kss
 >>> split_morphemes = Kss("split_morphemes")
 >>> text = "아버지가방에들어오시다."
 >>> output = split_morphemes(text)
@@ -770,7 +771,7 @@ Returns:
 
 Examples:
 ```python
->>>  from kss import Kss
+>>> from kss import Kss
 >>> paradigm = Kss("paradigm")
 >>> text = "곱"
 >>> output = paradigm(text)
@@ -817,7 +818,7 @@ Returns:
 
 Examples:
 ```python
->>>  from kss import Kss
+>>> from kss import Kss
 >>> anonymize = Kss("anonymize")
 >>> text = "제 전화번호는 010-1234-5678, 이메일 주소는 kevin.brain@kakaobrain.com입니다."
 >>> output = anonymize(text)
@@ -843,7 +844,7 @@ Returns:
 
 Examples:
 ```python
->>>  from kss import Kss
+>>> from kss import Kss
 >>> clean_news = Kss("clean_news")
 >>> text = "[사진]에버랜드, 봄꽃 펼쳐진 '튤립축제' 오픈\n\n[ 뉴스1 제공](서울=뉴스1) 이동원 기자 = 에버랜드가 오는 22일부터 봄을 상징하는 튤립 120만 송이와 함께 '튤립축제'를 오픈해 본격적인 봄의 시작을 알린다. 지난 1992년 국내 첫 튤립 축제를 연 이후 올해로 22회째를 맞이한 에버랜드 '튤립축제'는 지난해 첫 선을 보이며 좋은 반응을 얻었던 오감(五感)체험 '시크릿가든'을 리뉴얼하고, 신규 테마 꽃길을 조성하는 등 봄꽃을 활용한 다양한 볼거리를 강화한 것이 특징이다. 또한 4월 28일까지 열리는 '튤립축제'에서는 야간 개장과 함께 손님 참여요소가 늘어난 인기 공연, 퍼레이드가 재오픈하는 등 봄을 맞아 나들이 나온 상춘객들의 눈과 귀를 즐겁게 할 예정이다. (에버랜드 제공)2013.3.10/뉴스1 < 저작권자 뉴스1 코리아, 무단전재 및 재배포 금지 > ☞ 뉴스1 바로가기 [스타뉴스 공식 글로벌 버전 애플리케이션] [증권알리미]국내외 증시핫이슈 및 오늘의 승부주! [머니원]北 리스크로 조정, 매수 기회로 [머니투데이 핫뉴스] ☞ 신입사원 재테크, 5년 안에 '1억 만들기' ☞ '박시후·박준' 고소女, 둘다 '여기'가더니 ☞ 늙으면 '돈이라도' 있어야 하는 진짜 이유 ☞ 손연재 가방 시끌…'신입생은 명품 안돼?' ☞ '바람난 부인 뒷조사' 300만원 줬더니… [book]10년의 선택, 중국에 투자하라 [핫이슈]'멘사' 천재들 뭉쳐 15년 투자했는데... '맙소사' 뉴스1 제공 < 저작권자 ⓒ '돈이 보이는 리얼타임 뉴스' 머니투데이, 무단전재 및 재배포 금지"
 >>> output = clean_news(text)
@@ -881,7 +882,7 @@ False
 
 <details>
 <summary>27. get_all_completed_form_hangul_chars</summary>
-"""
+
 This returns all non-completed form Hangul characters.
 
 Returns:
@@ -889,7 +890,7 @@ Returns:
 
 Examples:
 ```python
->>>  from kss import Kss
+>>> from kss import Kss
 >>> get_all_incompleted_form_hangul_chars = Kss("get_all_incompleted_form_hangul_chars")
 >>> output = get_all_incompleted_form_hangul_chars()
 >>> print(output)
@@ -907,7 +908,7 @@ Returns:
 
 Examples:
 ```python
->>>  from kss import Kss
+>>> from kss import Kss
 >>> get_all_incompleted_form_hangul_chars = Kss("get_all_incompleted_form_hangul_chars")
 >>> output = get_all_incompleted_form_hangul_chars()
 >>> print(output)
@@ -966,6 +967,16 @@ Args:
 
 Returns:
 - `Union[Tuple[bool, Dict[str, Any]], List[Tuple[bool, Dict[str, Any]]]]`: filtered out text or list of filtered out texts
+
+Examples:
+```python
+>>> from kss import Kss
+>>> filter_out = Kss("filter_out")
+>>> text = "▲ 12월 17일 (목)=============================================================================시간 경기내용 방송사=============================================================================[축구] 프랑스 리그 103:00 (AS모나코-스타드 렌) SBS스포츠[축구] 09-10 UEFA 유로파리그04:00 (스파르타프라하-FC코펜하겐) MBC-ESPN[축구] 09-10 프리미어리그05:00 (토트넘-맨체스터시티) SBS스포츠-----------------------------------------------------------------------------[농구] 2009-10 NBA10:00 (LA레이커스-밀워키) SBS스포츠[농구] 2009-10 신한은행 여자농구17:00 (삼성생명-금호생명) SBS스포츠[농구] 2009-10 KCC 프로농구19:00 (KCC-KT) MBC-ESPN19:00 (LG-SK) SBS스포츠-----------------------------------------------------------------------------[배구] 2009-10 NH농협 V리그17:00 (흥국생명-현대건설)19:00 (대한항공-신협상무) KBS N 스포츠-----------------------------------------------------------------------------19:20 [핸드볼] 2009 세계여자선수권대회-----------------------------------------------------------------------------19:00 [배드민턴] 한국 최강전=============================================================================※ 상기 경기일정 및 방송 편성정보는 사정에 따라 변동될 수 있습니다< pre >/한국아이닷컴 뉴스부 한국아이닷컴 뉴스부 '스타화보 VM' 무료다운받기 [**8253+NATE 또는 통화] [ⓒ 인터넷한국일보(www.hankooki.com), 무단 전재 및 재배포 금지]"
+>>> output = filter_out(text, min_mean_words_length=2, max_mean_words_length=10)
+>>> print(output)
+(True, {'reason': 'mean_words_length', 'value': 13.025316455696203})
+```
 </details>
 
 <details>
@@ -982,7 +993,7 @@ Returns:
 
 Examples:
 ```python
->>>  from kss import Kss
+>>> from kss import Kss
 >>> half2full = Kss("half2full")
 >>> text = "ﾻﾻﾻﾻﾻﾻ"
 >>> half2full(text)
@@ -1013,7 +1024,7 @@ Returns:
 
 Examples:
 ```python
->>>  from kss import Kss
+>>> from kss import Kss
 >>> normalize = Kss("normalize")
 >>> text = "안녕\u200b하세요 ﾻﾻﾻﾻﾻﾻ   <br>오늘\u200b은 날이 참 좋네요.\\n\\n\\n200 &lt; 300 &amp; 400"
 >>> normalize(text, allow_doubled_spaces=False, allow_html_tags=False, allow_html_escape=False, allow_halfwidth_hangul=False, allow_hangul_jamo=False, allow_invisible_chars=False, reduce_char_repeats_over=2, reduce_emoticon_repeats_over=2)
@@ -1121,7 +1132,7 @@ Returns:
 
 Examples:
 ```python
->>>  from kss import Kss
+>>> from kss import Kss
 >>> reduce_char_repeats = Kss("reduce_char_repeats")
 >>> text = "고고고고고고고"
 >>> output = reduce_char_repeats(text)
@@ -1147,7 +1158,7 @@ Returns:
 
 Examples:
 ```python
->>>  from kss import Kss
+>>> from kss import Kss
 >>> reduce_emoticon_repeats = Kss("reduce_emoticon_repeats")
 >>> text = "앜ㅋㅋㅋㅋㅋㅋ"
 >>> output = reduce_emoticon_repeats(text)
@@ -1172,7 +1183,7 @@ Returns:
 
 Examples:
 ```python
->>>  from kss import Kss
+>>> from kss import Kss
 >>> remove_invisible_chars = Kss("remove_invisible_chars")
 >>> text = "안녕\u200b하세요"
 >>> remove_invisible_chars(text)
@@ -1196,7 +1207,7 @@ Returns:
 
 Examples:
 ```python
->>>  from kss import Kss
+>>> from kss import Kss
 >>> qwerty = Kss("qwerty")
 >>> text = "dkssudgktpdy"
 >>> qwerty(text, src="en", tgt="ko")
@@ -1227,7 +1238,7 @@ Returns:
 
 Examples:
 ```python
->>>  from kss import Kss
+>>> from kss import Kss
 >>> romanize = Kss("romanize")
 >>> text = "안녕하세요"
 >>> romanize(text)
@@ -1254,7 +1265,7 @@ Returns:
 
 Examples:
 ```python
->>>  from kss import Kss
+>>> from kss import Kss
 >>> is_unsafe = Kss("is_unsafe")
 >>> text = "안녕하세요"
 >>> is_unsafe(text)
@@ -1292,7 +1303,7 @@ Returns:
 
 Examples:
 ```python
->>>  from kss import Kss
+>>> from kss import Kss
 >>> split_sentences = Kss("split_sentences")
 >>> text = "회사 동료 분들과 다녀왔는데 분위기도 좋고 음식도 맛있었어요 다만, 강남 토끼정이 강남 쉑쉑버거 골목길로 쭉 올라가야 하는데 다들 쉑쉑버거의 유혹에 넘어갈 뻔 했답니다 강남역 맛집 토끼정의 외부 모습."
 >>> split_sentences(text)
@@ -1317,7 +1328,7 @@ Returns:
 
 Examples:
 ```python
->>>  from kss import Kss
+>>> from kss import Kss
 >>> correct_spacing = Kss("correct_spacing")
 >>> text = "아버지가방에들어가시다"
 >>> correct_spacing(text)
@@ -1346,7 +1357,7 @@ Returns:
 
 Examples:
 ```python
->>>  from kss import Kss
+>>> from kss import Kss
 >>> summarize_sentences = Kss("summarize_sentences")
 >>> text = "개그맨 겸 가수 ‘개가수’ UV 유세윤이 신곡 발매 이후 많은 남편들의 응원을 받고 있다. 유세윤은 지난 3일 오후 6시 새 싱글 ‘마더 사커(Mother Soccer)(Feat. 수퍼비)’를 발매했다. ‘마더 사커’는 아내에 대한 서운한 마음을 위트 있고 강한 어조로 디스 하는 남편 유세윤의 마음을 담은 곡이다. 발매 후 소셜 미디어 상에서 화제를 모으고 있는 가운데, 가수 하동균은 “유세유니 괜찮겠어”라는 반응을 보이기도 했다. 누리꾼들은 ‘두 분의 원만한 합의가 있기를 바랍니다’, ‘집에는 들어갈 수 있겠나’ 등 유세윤의 귀가를 걱정하는 모습을 보였다. 유세윤은 점입가경으로 ‘마더 사커’ 챌린지를 시작, 자신의 SNS를 통해 “부부 싸움이 좀 커졌네요”라며 배우 송진우와 함께 촬영한 영상을 게재했다. 해당 영상에서는 양말을 신고 침대에 들어간 뒤 환호를 지르거나 화장실 불을 끄지 않고 도망가는 등 아내의 잔소리 유발 포인트를 살려 재치 있는 영상을 완성했다. 유세윤은 ‘마더 사커’를 통해 남편들의 마음을 대변해 주고 있는 한편 아내의 반응은 어떨지 궁금증을 모은다."
 >>> summarize_sentences(text)
