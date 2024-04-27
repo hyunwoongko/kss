@@ -3,21 +3,7 @@ KSS: Korean String processing Suite
 </h1>
 
 <p align="center">
-    <a href="https://github.com/hyunwoongko/kss/releases">
-        <img alt="GitHub release" src="https://img.shields.io/github/release/hyunwoongko/kss.svg">
-    </a> 
-    <a href="https://github.com/hyunwoongko/kss/issues">
-        <img alt="Issues" src="https://img.shields.io/github/issues/hyunwoongko/kss">
-    </a>
-    <a href="https://github.com/hyunwoongko/kss/actions">
-        <img alt="Tests on Ubuntu" src="https://github.com/hyunwoongko/kss/actions/workflows/test_ubuntu.yaml/badge.svg">
-    </a>
-    <a href="https://github.com/hyunwoongko/kss/actions">
-        <img alt="Tests on MacOS" src="https://github.com/hyunwoongko/kss/actions/workflows/test_macos.yaml/badge.svg">
-    </a>
-    <a href="https://github.com/hyunwoongko/kss/actions">
-        <img alt="Tests on Windows" src="https://github.com/hyunwoongko/kss/actions/workflows/test_windows.yaml/badge.svg">
-    </a>
+    <a href="https://github.com/hyunwoongko/kss/releases"><img alt="GitHub release" src="https://img.shields.io/github/release/hyunwoongko/kss.svg"></a> <a href="https://github.com/hyunwoongko/kss/issues"><img alt="Issues" src="https://img.shields.io/github/issues/hyunwoongko/kss"></a> <a href="https://github.com/hyunwoongko/kss/actions"><img alt="Tests on Ubuntu" src="https://github.com/hyunwoongko/kss/actions/workflows/test_ubuntu.yaml/badge.svg"></a> <a href="https://github.com/hyunwoongko/kss/actions"><img alt="Tests on MacOS" src="https://github.com/hyunwoongko/kss/actions/workflows/test_macos.yaml/badge.svg"></a> <a href="https://github.com/hyunwoongko/kss/actions"><img alt="Tests on Windows" src="https://github.com/hyunwoongko/kss/actions/workflows/test_windows.yaml/badge.svg"></a>
 </p>
 
 
