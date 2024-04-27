@@ -25,7 +25,6 @@ preprocessors = {(): SentencePreprocessor()}
 postprocessors = {(): SentencePostprocessor()}
 
 
-@lru_cache(maxsize=500)
 def split_sentences(
     text: Union[str, List[str], Tuple[str]],
     backend: str = "auto",

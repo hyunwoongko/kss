@@ -3,7 +3,7 @@
 
 import re
 import sys
-from functools import partial, lru_cache
+from functools import partial
 from typing import Union, Tuple, Dict, Any, List
 
 from kss._modules.preprocessing.completed_form import _incompleted_form_ratio
@@ -123,7 +123,6 @@ def _symbols_to_word_ratio(text):
     return num_symbol_words / len(words)
 
 
-@lru_cache(maxsize=500)
 def filter_out(
     text: Union[str, List[str], Tuple[str]],
     min_length: int = 0,

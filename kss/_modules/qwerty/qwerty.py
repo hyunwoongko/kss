@@ -23,7 +23,6 @@ from kss._utils.multiprocessing import _run_job
 from kss._utils.sanity_checks import _check_text, _check_type, _check_num_workers
 
 
-@lru_cache(maxsize=500)
 def qwerty(
     text: Union[str, List[str], Tuple[str]],
     src: str,
@@ -74,6 +73,7 @@ def qwerty(
     )
 
 
+@lru_cache(maxsize=500)
 def _qwerty(text, src, tgt):
     if src == tgt:
         return text

@@ -1,4 +1,4 @@
-from functools import partial, lru_cache
+from functools import partial
 from typing import Union, List, Tuple
 
 from kss._modules.augmentation.replacement import SynonymReplacement
@@ -8,7 +8,6 @@ from kss._utils.multiprocessing import _run_job
 from kss._utils.sanity_checks import _check_text, _check_type, _check_num_workers, _check_backend_mecab_pecab_only
 
 
-@lru_cache(maxsize=500)
 def augment(
     text: Union[str, List[str], Tuple[str]],
     replacement_ratio: float = 0.3,

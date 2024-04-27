@@ -1,7 +1,7 @@
 # Core algorithm was copied from Kiwi (https://github.com/bab2min/kiwipiepy).
 # And modified by Hyunwoong Ko [https://github.com/hyunwoongko]
 import re
-from functools import partial, lru_cache
+from functools import partial
 from typing import Union, List, Tuple
 
 from kss._elements.subclasses import Token
@@ -30,7 +30,6 @@ restore_dict = {
 }
 
 
-@lru_cache(maxsize=500)
 def correct_spacing(
     text: Union[str, List[str], Tuple[str]],
     backend: str = "auto",

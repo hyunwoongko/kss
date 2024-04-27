@@ -1,10 +1,8 @@
-from functools import lru_cache
 from typing import Union, List
 
 from kss._modules.josa.utils import _check_text, _check_num_workers, _combine_josa, _run_job, _select_josa
 
 
-@lru_cache(maxsize=500)
 def select_josa(
     prefix: Union[str, List[str]],
     josa: Union[str, List[str]],
@@ -46,7 +44,6 @@ def select_josa(
     )
 
 
-@lru_cache(maxsize=500)
 def combine_josa(
     prefix: Union[str, List[str]],
     josa: Union[str, List[str]],

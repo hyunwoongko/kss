@@ -1,4 +1,4 @@
-from functools import partial, lru_cache
+from functools import partial
 from typing import Union, List, Tuple
 
 from kollocate import Kollocate
@@ -10,7 +10,6 @@ from kss._utils.sanity_checks import _check_text, _check_type, _check_num_worker
 kollocate_obj = Kollocate()
 
 
-@lru_cache(maxsize=500)
 def collocate(
     text: Union[str, List[str], Tuple[str]],
     num_workers: Union[int, str] = "auto",

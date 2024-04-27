@@ -1,4 +1,4 @@
-from functools import partial, lru_cache
+from functools import partial
 from typing import Union, List, Tuple
 
 import distance
@@ -48,7 +48,6 @@ supported_langs = languages = {
 }
 
 
-@lru_cache(maxsize=500)
 def hangulize(
     text: Union[str, List[str], Tuple[str]],
     lang: str,

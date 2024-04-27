@@ -2,7 +2,7 @@
 # And modified by Hyunwoong Ko [https://github.com/hyunwoongko]
 
 import re
-from functools import partial, lru_cache
+from functools import partial
 from typing import Union, List, Tuple
 
 from kss._modules.g2p.english import convert_eng
@@ -35,7 +35,6 @@ from kss._utils.multiprocessing import _run_job
 from kss._utils.sanity_checks import _check_text, _check_num_workers, _check_type, _check_backend_mecab_pecab_only
 
 
-@lru_cache(maxsize=500)
 def g2p(
     text: Union[str, List[str], Tuple[str]],
     descriptive: bool = False,

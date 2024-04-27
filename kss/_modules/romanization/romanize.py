@@ -2,7 +2,7 @@
 # And modified by Hyunwoong Ko [https://github.com/hyunwoongko] and Sohyeon Yim [https://github.com/sohyunwriter]
 
 import re
-from functools import partial, lru_cache
+from functools import partial
 from typing import Union, List, Tuple
 
 from unidecode import unidecode
@@ -82,7 +82,6 @@ coda = {
 }
 
 
-@lru_cache(maxsize=500)
 def romanize(
     text: Union[str, List[str], Tuple[str]],
     use_morpheme_info: bool = True,

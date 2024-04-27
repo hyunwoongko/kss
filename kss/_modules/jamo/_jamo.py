@@ -1,4 +1,4 @@
-from functools import partial, lru_cache
+from functools import partial
 from typing import Union, List, Tuple
 
 import hangul_jamo
@@ -9,7 +9,6 @@ from kss._utils.multiprocessing import _run_job
 from kss._utils.sanity_checks import _check_num_workers, _check_text, _check_type, _check_char
 
 
-@lru_cache(maxsize=500)
 def h2j(
     text: Union[str, List[str], Tuple[str]],
     num_workers: Union[int, str] = "auto",
@@ -50,7 +49,6 @@ def h2j(
     )
 
 
-@lru_cache(maxsize=500)
 def h2hcj(
     text: Union[str, List[str], Tuple[str]],
     num_workers: Union[int, str] = "auto",
@@ -91,7 +89,6 @@ def h2hcj(
     )
 
 
-@lru_cache(maxsize=500)
 def j2h(
     text: Union[str, List[str], Tuple[str]],
     add_placeholder_for_leading_vowels: bool = False,
@@ -137,7 +134,6 @@ def j2h(
     )
 
 
-@lru_cache(maxsize=500)
 def j2hcj(
     text: Union[str, List[str], Tuple[str]],
     num_workers: Union[int, str] = "auto",
@@ -177,7 +173,6 @@ def j2hcj(
     )
 
 
-@lru_cache(maxsize=500)
 def hcj2h(
     text: Union[str, List[str], Tuple[str]],
     num_workers: Union[int, str] = "auto",
@@ -218,7 +213,6 @@ def hcj2h(
     )
 
 
-@lru_cache(maxsize=500)
 def hcj2j(
     text: Union[str, List[str], Tuple[str]],
     position: str = "vowel",
@@ -266,7 +260,6 @@ def hcj2j(
     )
 
 
-@lru_cache(maxsize=500)
 def is_jamo(
     text: Union[str, List[str], Tuple[str]],
     num_workers: Union[int, str] = "auto",
@@ -308,7 +301,6 @@ def is_jamo(
     )
 
 
-@lru_cache(maxsize=500)
 def is_jamo_modern(
     text: Union[str, List[str], Tuple[str]],
     num_workers: Union[int, str] = "auto",
@@ -350,7 +342,6 @@ def is_jamo_modern(
     )
 
 
-@lru_cache(maxsize=500)
 def is_hcj(
     text: Union[str, List[str], Tuple[str]],
     num_workers: Union[int, str] = "auto",
@@ -392,7 +383,6 @@ def is_hcj(
     )
 
 
-@lru_cache(maxsize=500)
 def is_hcj_modern(
     text: Union[str, List[str], Tuple[str]],
     num_workers: Union[int, str] = "auto",
@@ -434,7 +424,6 @@ def is_hcj_modern(
     )
 
 
-@lru_cache(maxsize=500)
 def is_hangul_char(
     text: Union[str, List[str], Tuple[str]],
     num_workers: Union[int, str] = "auto",

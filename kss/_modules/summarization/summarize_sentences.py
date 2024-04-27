@@ -1,7 +1,7 @@
 # This code was copied from Text Rank KR [https://github.com/theeluwin/textrankr]
 # And modified by Hyunwoong Ko [https://github.com/hyunwoongko]
 
-from functools import partial, lru_cache
+from functools import partial
 from typing import List, Dict, Union, Tuple
 
 from kss._modules.summarization.utils import (
@@ -19,7 +19,6 @@ from kss._utils.sanity_checks import (
 )
 
 
-@lru_cache(maxsize=500)
 def summarize_sentences(
     text: Union[str, List[str], Tuple[str]],
     backend: str = "auto",

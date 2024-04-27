@@ -1,4 +1,4 @@
-from functools import partial, lru_cache
+from functools import partial
 from typing import List, Union, Tuple
 
 from kss._modules.hanja.utils import _split_hanja, _is_hanja, _hanja2hangul
@@ -6,7 +6,6 @@ from kss._utils.multiprocessing import _run_job
 from kss._utils.sanity_checks import _check_text, _check_num_workers, _check_char, _check_type
 
 
-@lru_cache(maxsize=500)
 def split_hanja(
     text: Union[str, List[str], Tuple[str]],
     num_workers: Union[int, str] = "auto",
@@ -46,7 +45,6 @@ def split_hanja(
     )
 
 
-@lru_cache(maxsize=500)
 def is_hanja(
     text: Union[str, List[str], Tuple[str]],
     num_workers: Union[int, str] = "auto",
@@ -92,7 +90,6 @@ def is_hanja(
     )
 
 
-@lru_cache(maxsize=500)
 def hanja2hangul(
     text: Union[str, List[str], Tuple[str]],
     combination: bool = False,

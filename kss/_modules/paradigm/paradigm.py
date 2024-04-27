@@ -1,4 +1,4 @@
-from functools import partial, lru_cache
+from functools import partial
 from typing import Union, List, Tuple, Dict
 
 import xlrd
@@ -15,7 +15,6 @@ from koparadigm import Paradigm, prettify
 paradigm_obj = Paradigm()
 
 
-@lru_cache(maxsize=500)
 def paradigm(
     text: Union[str, List[str], Tuple[str]],
     num_workers: Union[int, str] = "auto",

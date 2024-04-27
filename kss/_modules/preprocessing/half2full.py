@@ -1,44 +1,7 @@
-from functools import lru_cache
 from typing import Union, List, Tuple
 
 from kss._utils.multiprocessing import _run_job
 from kss._utils.sanity_checks import _check_num_workers, _check_text
-
-
-@lru_cache(maxsize=500)
-def half2full(
-    text: Union[str, List[str], Tuple[str]],
-    num_workers: Union[int, str] = "auto",
-) -> Union[str, List[str]]:
-    """
-    This converts half-width characters to full-width characters.
-
-    Args:
-        text (Union[str, List[str], Tuple[str]]): single text or list of texts
-        num_workers (Union[int, str]): the number of multiprocessing workers
-
-    Returns:
-        Union[str, List[str]]: converted text or list of converted texts
-
-    Examples:
-        >>> from kss import Kss
-        >>> half2full = Kss("half2full")
-        >>> text = "ﾻﾻﾻﾻﾻﾻ"
-        >>> half2full(text)
-        'ㅋㅋㅋㅋㅋㅋ'
-    """
-    text, finish = _check_text(text)
-
-    if finish:
-        return text
-
-    num_workers = _check_num_workers(text, num_workers)
-
-    return _run_job(
-        func=_half2full,
-        inputs=text,
-        num_workers=num_workers,
-    )
 
 
 replace_map = {
@@ -91,6 +54,41 @@ replace_map = {
     "ￎ": "ㅙ",
     "ￕ": "ㅞ",
 }
+
+
+def half2full(
+    text: Union[str, List[str], Tuple[str]],
+    num_workers: Union[int, str] = "auto",
+) -> Union[str, List[str]]:
+    """
+    This converts half-width characters to full-width characters.
+
+    Args:
+        text (Union[str, List[str], Tuple[str]]): single text or list of texts
+        num_workers (Union[int, str]): the number of multiprocessing workers
+
+    Returns:
+        Union[str, List[str]]: converted text or list of converted texts
+
+    Examples:
+        >>> from kss import Kss
+        >>> half2full = Kss("half2full")
+        >>> text = "ﾻﾻﾻﾻﾻﾻ"
+        >>> half2full(text)
+        'ㅋㅋㅋㅋㅋㅋ'
+    """
+    text, finish = _check_text(text)
+
+    if finish:
+        return text
+
+    num_workers = _check_num_workers(text, num_workers)
+
+    return _run_job(
+        func=_half2full,
+        inputs=text,
+        num_workers=num_workers,
+    )
 
 
 def _half2full(text: str):

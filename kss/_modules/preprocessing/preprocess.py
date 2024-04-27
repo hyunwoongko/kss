@@ -1,5 +1,5 @@
 import sys
-from functools import partial, lru_cache
+from functools import partial
 from typing import List, Optional, Tuple, Union
 
 from kss._modules.preprocessing.anonymize import _anonymize
@@ -9,7 +9,6 @@ from kss._utils.multiprocessing import _run_job
 from kss._utils.sanity_checks import _check_text, _check_type, _check_num_workers
 
 
-@lru_cache(maxsize=500)
 def preprocess(
     text: Union[str, List[str], Tuple[str]],
     normalization_type: Optional[str] = None,

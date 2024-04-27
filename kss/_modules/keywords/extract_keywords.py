@@ -1,13 +1,11 @@
 # This code was copied from KR-WordRank [https://github.com/lovit/KR-WordRank]
 # And modified by Hyunwoong Ko [https://github.com/hyuwoongko]
-from functools import lru_cache
 from typing import List, Union
 
 from kss._modules.keywords.utils import KRWordRank
 from kss._utils.sanity_checks import _check_text, _check_type, _check_backend_mecab_pecab_only
 
 
-@lru_cache(maxsize=500)
 def extract_keywords(
     text: Union[str, List[str]],
     num_keywords: int = 5,

@@ -1,11 +1,9 @@
-from functools import lru_cache
 from typing import Tuple, List, Union
 
 from kss._utils.multiprocessing import _run_job
 from kss._utils.sanity_checks import _check_text, _check_num_workers, _check_char
 
 
-@lru_cache(maxsize=500)
 def is_completed_form(
     text: Union[str, List[str], Tuple[str]],
     num_workers: Union[int, str] = "auto",
@@ -47,7 +45,6 @@ def is_completed_form(
     )
 
 
-@lru_cache(maxsize=500)
 def get_all_completed_form_hangul_chars() -> List[str]:
     """
     This returns all completed form Hangul characters.
@@ -69,7 +66,6 @@ def get_all_completed_form_hangul_chars() -> List[str]:
     return completed_form
 
 
-@lru_cache(maxsize=500)
 def get_all_incompleted_form_hangul_chars():
     """
     This returns all non-completed form Hangul characters.
