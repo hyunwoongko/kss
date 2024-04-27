@@ -2,7 +2,7 @@
 # All rights reserved.
 
 import emoji
-import regex
+import re
 
 _emojis = {}
 _specials = ["♡", "♥"]
@@ -37,9 +37,9 @@ except Exception as e:
 
 def get_emoji(text):
     emoji_list = []
-    flags = regex.findall("[\U0001F1E6-\U0001F1FF]", text)
+    flags = re.findall("[\U0001F1E6-\U0001F1FF]", text)
 
-    for grapheme in regex.findall(r"\X", text):
+    for grapheme in re.findall(r"\X", text):
         if any(char in _emojis for char in grapheme):
             emoji_list.append(grapheme)
 

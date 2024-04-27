@@ -1,6 +1,6 @@
 # Copyright (C) 2021 Hyunwoong Ko <kevin.brain@kakaobrain.com> and Sang-Kil Park <skpark1224@hyundai.com>
 # All rights reserved.
-
+import numbers
 import platform
 import unicodedata
 from typing import Union, Tuple, List, Any, Optional, Type, Callable, Iterable
@@ -12,7 +12,7 @@ from kss._modules.morphemes.analyzers import (
     CharacterAnalyzer,
     FastAnalyzer,
 )
-from kss._utils.logging import logger
+from kss._utils.logger import logger
 
 MECAB_INFORM, KONLPY_MECAB_INFORM, PECAB_INFORM, FAST_INFORM = (
     False,
@@ -109,6 +109,9 @@ def _check_type(param: Any, param_name: str, types: Union[Type, List[Type]]) -> 
     """
     was_list = True
 
+    if types == int or types == float:
+        types = numbers.Number
+
     if not isinstance(types, list) or not isinstance(types, tuple):
         types = [types]
         was_list = False
@@ -123,6 +126,26 @@ def _check_type(param: Any, param_name: str, types: Union[Type, List[Type]]) -> 
         )
 
     return param
+
+
+def _check_char(text: str) -> str:
+    """
+    Check text length is 1.
+
+    Args:
+        text (str): text
+
+    Returns:
+        str: text
+    """
+    if len(text) != 1:
+        raise ValueError(
+            f"Oops! '{text}' is not a single character.\n"
+            f"Currently kss only supports single character for this.\n"
+            f"Please check `text` parameter again ;)"
+        )
+
+    return text
 
 
 def _check_text(
@@ -161,8 +184,6 @@ def _check_text(
                 f"Currently kss only supports [str, List[str], Tuple[str]] for this.\n"
                 f"Please check `text` parameter again ;)\n"
             )
-        else:
-            text = [unicodedata.normalize("NFC", t) for t in text]
 
         # unwrap list or tuple with single text
         if len(text) == 1:
@@ -171,13 +192,109 @@ def _check_text(
         if isinstance(text, list):
             text = tuple(text)
 
-    elif not isinstance(text, str) and len(text) == 0:
+    elif len(text) == 0:
         finish = True
 
-    elif isinstance(text, str):
-        text = unicodedata.normalize("NFC", text)
-
     return text, finish
+
+
+def _check_backend_mecab_pecab_only(backend: str) -> Analyzer:
+    global MECAB_INFORM, KONLPY_MECAB_INFORM, PECAB_INFORM
+
+    if isinstance(backend, str):
+        backend = backend.lower()
+
+    if backend not in ["auto", "mecab", "pecab"]:
+        raise ValueError(
+            f"Oops! '{backend}' is not supported value for spacing correction module.\n"
+            f"Currently the spacing correction module only supports ['auto', 'pecab', 'mecab'] for this.\n"
+            f"Please check `backend` parameter again ;)\n"
+        )
+
+    mecab_backend = MecabAnalyzer()
+    pecab_backend = PecabAnalyzer()
+
+    if backend == "mecab":
+        if mecab_backend._backend is not None:
+            return mecab_backend
+        else:
+            raise ImportError(
+                _message_by_user_os(
+                    linux_macos="Oops! You specified `backend` as 'mecab', but you don't have mecab in your environment.\n"
+                    "If you want to use mecab backend, please install mecab or konlpy.tag.Mecab!\n"
+                    "Please refer to following web sites for details:\n"
+                    f"- mecab: {_mecab_info_linux_macos}\n"
+                    f"- konlpy.tag.Mecab: {_konlpy_info_linux_macos}\n",
+                    windows="Oops! You specified `backend` as 'mecab', but you don't have mecab in your environment.\n"
+                    "If you want to use mecab backend, please install mecab or konlpy.tag.Mecab!\n"
+                    "Please refer to following web sites for details:\n"
+                    f"- mecab: {_mecab_info_windows}\n"
+                    f"- konlpy.tag.Mecab: {_konlpy_info_windows}\n",
+                )
+            )
+
+    elif backend == "pecab":
+        if pecab_backend._backend is not None:
+            return pecab_backend
+        else:
+            raise ImportError(
+                "Oops! You specified `backend` as 'pecab', but you don't have pecab in your environment.\n"
+                "If you want to use pecab backend, please install pecab!\n"
+                "Please refer to following web sites for details:\n"
+                "- pecab: https://github.com/hyunwoongko/pecab\n"
+            )
+
+    elif backend == "auto":
+        if mecab_backend._backend == "mecab":
+            if not MECAB_INFORM:
+                logger.warning(
+                    "Oh! You have mecab in your environment. Kss will take this as a backend! :D\n"
+                )
+                MECAB_INFORM = True
+            return mecab_backend
+
+        elif mecab_backend._backend == "konlpy":
+            if not KONLPY_MECAB_INFORM:
+                logger.warning(
+                    "Oh! You have konlpy.tag.Mecab in your environment. Kss will take this as a backend! :D\n"
+                )
+                KONLPY_MECAB_INFORM = True
+            return mecab_backend
+
+        elif pecab_backend._backend == "pecab":
+            if not PECAB_INFORM:
+
+                installation_help_message = _message_by_user_os(
+                    linux_macos="For your information, Kss also supports mecab backend.\n"
+                    "We recommend you to install mecab or konlpy.tag.Mecab for faster execution of Kss.\n"
+                    "Please refer to following web sites for details:\n"
+                    f"- mecab: {_mecab_info_linux_macos}\n"
+                    f"- konlpy.tag.Mecab: {_konlpy_info_linux_macos}\n",
+                    windows="For your information, Kss also supports mecab backend.\n"
+                    "We recommend you to install mecab or konlpy.tag.Mecab for faster execution of Kss.\n"
+                    "Please refer to following web sites for details:\n"
+                    f"- mecab: {_mecab_info_windows}\n"
+                    f"- konlpy.tag.Mecab: {_konlpy_info_windows}\n",
+                )
+
+                logger.warning(
+                    "Because there's no supported C++ morpheme analyzer, "
+                    "Kss will take pecab as a backend. :D\n"
+                    f"{installation_help_message}"
+                )
+                PECAB_INFORM = True
+
+            return pecab_backend
+        else:
+            raise ImportError(
+                f"Oops! You don't have any supported morpheme analyzer in your environment.\n"
+                f"If you want to use spacing correction module, please install mecab or pecab!\n"
+                f"Please refer to following web sites for details:\n"
+                f"- mecab:\n"
+                f"  - Linux/MacOS: {_mecab_info_linux_macos}\n"
+                f"  - Windows: {_mecab_info_windows}\n"
+                f"- pecab: {_pecab_info}\n"
+            )
 
 
 def _check_analyzer_backend(backend: str) -> Analyzer:
@@ -339,7 +456,7 @@ def _check_num_workers(
         or (
             (isinstance(inputs, list) or isinstance(inputs, tuple)) and len(inputs) == 1
         )
-        or num_workers == 1
+        or (isinstance(num_workers, numbers.Number) and num_workers < 2)
     ):
         return False
         # no multiprocessing worker

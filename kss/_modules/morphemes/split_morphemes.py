@@ -18,10 +18,9 @@ def split_morphemes(
     backend: str = "auto",
     num_workers: Union[int, str] = "auto",
     drop_space: bool = True,
-    return_pos: bool = True,
 ) -> Union[List[Tuple[str, str]], List[List[Tuple[str, str]]], Union[List, Tuple]]:
     """
-    Split texts into morphemes.
+    This splits texts into morphemes.
 
     Args:
         text (Union[str, List[str], Tuple[str]]): single text or list/tuple of texts
@@ -32,6 +31,14 @@ def split_morphemes(
     Returns:
         Union[List[Tuple[str, str]], List[List[Tuple[str, str]]], Union[List, Tuple]]:
             outputs of morpheme analysis.
+
+    Examples:
+        >>> from kss import Kss
+        >>> split_morphemes = Kss("split_morphemes")
+        >>> text = "아버지가방에들어오시다."
+        >>> output = split_morphemes(text)
+        >>> print(output)
+        [('아버지', 'NNG'), ('가', 'JKS'), ('방', 'NNG'), ('에', 'JKB'), ('들어오', 'VV'), ('시', 'EP'), ('다', 'EF'), ('.', 'SF')]
     """
     text, finish = _check_text(text)
     drop_space = _check_type(drop_space, "drop_space", bool)
@@ -42,9 +49,4 @@ def split_morphemes(
     num_workers = _check_num_workers(text, num_workers)
     backend = _check_analyzer_backend(backend)
     result = _run_job(partial(backend.pos, drop_space=drop_space), text, num_workers)
-    if not return_pos:
-        if isinstance(text, str):
-            result = [token[0] for token in result]
-        else:
-            result = [[token[0] for token in tokens] for tokens in result]
     return result

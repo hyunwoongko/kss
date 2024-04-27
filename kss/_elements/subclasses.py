@@ -9,3 +9,10 @@ class Syllable(Element):
         if len(text) != 1:
             raise ValueError("Length of syllable must be 1.")
         super().__init__(text, pos, idx)
+
+
+class Token(Element):
+    def __init__(self, text, pos, idx, start, end):
+        super().__init__(text, pos, idx)
+        self.start = start
+        self.end = end
