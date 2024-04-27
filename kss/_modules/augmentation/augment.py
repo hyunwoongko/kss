@@ -1,7 +1,6 @@
 from functools import partial
 from typing import Union, List, Tuple
 
-from kss._modules.spacing.correct_spacing import correct_spacing
 from kss._modules.augmentation.replacement import SynonymReplacement
 from kss._modules.augmentation.utils import correct_josa
 from kss._utils.logger import highlight_diffs, logger
@@ -12,7 +11,6 @@ from kss._utils.sanity_checks import _check_text, _check_type, _check_num_worker
 def augment(
     text: Union[str, List[str], Tuple[str]],
     replacement_ratio: float = 0.3,
-    space_normalization: bool = True,
     josa_normalization: bool = True,
     num_workers: Union[int, str] = "auto",
     backend: str = "auto",
@@ -48,7 +46,6 @@ def augment(
         return text
 
     replacement_ratio = _check_type(replacement_ratio, "replacement_ratio", float)
-    space_normalization = _check_type(space_normalization, "space_normalization", bool)
     josa_normalization = _check_type(josa_normalization, "josa_normalization", bool)
     verbose = _check_type(verbose, "verbose", bool)
     num_workers = _check_num_workers(text, num_workers)
@@ -65,7 +62,6 @@ def augment(
         func=partial(
             _augment,
             replacement_ratio=replacement_ratio,
-            space_normalization=space_normalization,
             josa_normalization=josa_normalization,
             backend=backend,
             verbose=verbose,
@@ -78,7 +74,6 @@ def augment(
 def _augment(
     text: str,
     replacement_ratio: float = 0.3,
-    space_normalization: bool = True,
     josa_normalization: bool = True,
     backend: str = "auto",
     verbose: bool = False,
@@ -89,9 +84,6 @@ def _augment(
 
     if josa_normalization:
         text = correct_josa(text)
-
-    if space_normalization:
-        text = correct_spacing(text)
 
     if verbose:
         print()
