@@ -1,8 +1,8 @@
-# This code is copied from g2pk [https://github.com/kyubyong/g2pK]
+# This code was copied from g2pk [https://github.com/kyubyong/g2pK]
 # And modified by Hyunwoong Ko [https://github.com/hyunwoongko]
 
 import re
-from functools import partial
+from functools import partial, lru_cache
 from typing import Union, List, Tuple
 
 from kss._modules.g2p.english import convert_eng
@@ -35,6 +35,7 @@ from kss._utils.multiprocessing import _run_job
 from kss._utils.sanity_checks import _check_text, _check_num_workers, _check_type, _check_backend_mecab_pecab_only
 
 
+@lru_cache(maxsize=500)
 def g2p(
     text: Union[str, List[str], Tuple[str]],
     descriptive: bool = False,
@@ -62,7 +63,7 @@ def g2p(
         verbose (bool): whether to print verbose outputs or not
 
     Returns:
-        Union[str, List[str]]: phoneme string or list of phoneme strings from the given text (graphemes)
+        Union[str, List[str]]: phoneme string or list of phoneme strings from the given text
 
     Examples:
         >>> from kss import Kss
@@ -71,6 +72,9 @@ def g2p(
         >>> output = g2p(text)
         >>> print(output)
         "어제는 말간는데 오느른 흐리다."
+
+    References:
+        This was copied from [g2pk](https://github.com/Kyubyong/g2pk) and modified by Kss
     """
     text, finish = _check_text(text)
 

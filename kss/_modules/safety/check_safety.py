@@ -1,4 +1,4 @@
-from functools import partial
+from functools import partial, lru_cache
 from typing import Union, List, Tuple
 
 from kss._modules.safety.utils import bad_words, exceptions, pattern
@@ -6,6 +6,7 @@ from kss._utils.multiprocessing import _run_job
 from kss._utils.sanity_checks import _check_text, _check_num_workers, _check_type
 
 
+@lru_cache(maxsize=500)
 def is_unsafe(
     text: Union[str, List[str], Tuple[str]],
     return_matches: bool = False,

@@ -2,7 +2,7 @@
 # And modified by Hyunwoong Ko [https://github.com/hyunwoongko] and Sohyeon Yim [https://github.com/sohyunwriter]
 
 import re
-from functools import partial
+from functools import partial, lru_cache
 from typing import Union, List, Tuple
 
 from unidecode import unidecode
@@ -82,6 +82,7 @@ coda = {
 }
 
 
+@lru_cache(maxsize=500)
 def romanize(
     text: Union[str, List[str], Tuple[str]],
     use_morpheme_info: bool = True,
@@ -91,7 +92,7 @@ def romanize(
     num_workers: Union[int, str] = "auto",
 ) -> Union[str, List[str]]:
     """
-    Romanize Korean text.
+    This romanizes Korean text.
 
     Args:
         text (Union[str, List[str], Tuple[str]]): single text or list of texts
@@ -113,6 +114,9 @@ def romanize(
         >>> text = "대관령"
         >>> romanize(text)
         'daegwallyeong'
+
+    References:
+        This was copied from [korean-romanizer](https://github.com/osori/korean-romanizer) and modified by Kss
     """
 
     text, finish = _check_text(text)

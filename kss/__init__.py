@@ -133,8 +133,8 @@ class Kss(object):
     def __call__(self, *args, **kwargs):
         return self.module(*args, **kwargs)
 
-    def usage(self):
-        return self.module.__doc__
+    def help(self):
+        print(self.module.__doc__.strip())
 
     @staticmethod
     def available():

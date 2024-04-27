@@ -2,7 +2,7 @@
 # And modified by Hyunwoong Ko [https://github.com/hyunwoongko]
 
 import re
-from functools import partial
+from functools import partial, lru_cache
 from typing import Tuple, List, Union
 
 from kss._utils.multiprocessing import _run_job
@@ -104,6 +104,7 @@ URL_PATTERN_2 = re.compile(
 )
 
 
+@lru_cache(maxsize=500)
 def anonymize(
     text: Union[str, List[str], Tuple[str]],
     phone_number_anonymization: bool = True,

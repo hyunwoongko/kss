@@ -1,4 +1,4 @@
-from functools import partial
+from functools import partial, lru_cache
 from typing import Union, List, Tuple
 
 import hangul_jamo
@@ -9,12 +9,13 @@ from kss._utils.multiprocessing import _run_job
 from kss._utils.sanity_checks import _check_num_workers, _check_text, _check_type, _check_char
 
 
+@lru_cache(maxsize=500)
 def h2j(
     text: Union[str, List[str], Tuple[str]],
     num_workers: Union[int, str] = "auto",
 ) -> Union[str, List[str]]:
     """
-    Convert a string of Hangul to jamo.
+    This converts a string of Hangul to jamo.
 
     Args:
         text (Union[str, List[str], Tuple[str]): single text or list of texts
@@ -22,6 +23,17 @@ def h2j(
 
     Returns:
         Union[str, List[str]]: jamo string of the given text
+
+    Examples:
+        >>> from kss import Kss
+        >>> h2j = Kss("h2j")
+        >>> text = "안녕하세요"
+        >>> output = h2j(text)
+        >>> print(output)
+        '안녕하세요'
+
+    References:
+        This was copied from [jamo](https://github.com/JDongian/python-jamo) and modified by Kss
     """
 
     text, finish = _check_text(text)
@@ -38,12 +50,13 @@ def h2j(
     )
 
 
+@lru_cache(maxsize=500)
 def h2hcj(
     text: Union[str, List[str], Tuple[str]],
     num_workers: Union[int, str] = "auto",
-):
+) -> Union[str, List[str]]:
     """
-    Convert a string of Hangul to Hangul Compatibility Jamo.
+    This converts a string of Hangul to Hangul Compatibility Jamo.
 
     Args:
         text (Union[str, List[str], Tuple[str]): single text or list of texts
@@ -51,6 +64,17 @@ def h2hcj(
 
     Returns:
         Union[str, List[str]]: Hangul Compatibility Jamo string of the given text
+
+    Examples:
+        >>> from kss import Kss
+        >>> h2hcj = Kss("h2hcj")
+        >>> text = "안녕하세요"
+        >>> output = h2hcj(text)
+        >>> print(output)
+        'ㅇㅏㄴㄴㅕㅇㅎㅏㅅㅔㅇㅛ'
+
+    References:
+        This was copied from [hangul-jamo](https://github.com/jonghwanhyeon/hangul-jamo) and modified by Kss
     """
 
     text, finish = _check_text(text)
@@ -67,20 +91,33 @@ def h2hcj(
     )
 
 
+@lru_cache(maxsize=500)
 def j2h(
     text: Union[str, List[str], Tuple[str]],
     add_placeholder_for_leading_vowels: bool = False,
     num_workers: Union[int, str] = "auto",
 ) -> Union[str, List[str]]:
     """
-    Convert a string of jamo to Hangul.
+    This converts a string of jamo to Hangul.
 
     Args:
         text (Union[str, List[str], Tuple[str]): single text or list of texts
         add_placeholder_for_leading_vowels (bool): add 'ㅇ' for leading vowels (e.g. 'ㅐ플' -> '애플')
+        num_workers (Union[int, str]): the number of multiprocessing workers
 
     Returns:
         Union[str, List[str]]: Hangul string of the given text
+
+    Examples:
+        >>> from kss import Kss
+        >>> j2h = Kss("j2h")
+        >>> text = '안녕하세요'
+        >>> output = j2h(text)
+        >>> print(output)
+        '안녕하세요'
+
+    References:
+        This was copied from [jamo](https://github.com/JDongian/python-jamo) and modified by Kss
     """
 
     text, finish = _check_text(text)
@@ -100,12 +137,13 @@ def j2h(
     )
 
 
+@lru_cache(maxsize=500)
 def j2hcj(
     text: Union[str, List[str], Tuple[str]],
     num_workers: Union[int, str] = "auto",
 ) -> Union[str, List[str]]:
     """
-    Convert a string of jamo to Hangul Compatibility Jamo.
+    This converts a string of jamo to Hangul Compatibility Jamo.
 
     Args:
         text (Union[str, List[str], Tuple[str]): single text or list of texts
@@ -113,6 +151,17 @@ def j2hcj(
 
     Returns:
         Union[str, List[str]]: Hangul Compatibility Jamo string of the given text
+
+    Examples:
+        >>> from kss import Kss
+        >>> j2hcj = Kss("j2hcj")
+        >>> text = '안녕하세요'
+        >>> output = j2hcj(text)
+        >>> print(output)
+        'ㅇㅏㄴㄴㅕㅇㅎㅏㅅㅔㅇㅛ'
+
+    References:
+        This was copied from [jamo](https://github.com/JDongian/python-jamo) and modified by Kss
     """
     text, finish = _check_text(text)
 
@@ -128,12 +177,13 @@ def j2hcj(
     )
 
 
+@lru_cache(maxsize=500)
 def hcj2h(
     text: Union[str, List[str], Tuple[str]],
     num_workers: Union[int, str] = "auto",
 ) -> Union[str, List[str]]:
     """
-    Convert a string of Hangul Compatibility Jamo to Hangul.
+    This converts a string of Hangul Compatibility Jamo to Hangul.
 
     Args:
         text (Union[str, List[str], Tuple[str]): single text or list of texts
@@ -141,6 +191,17 @@ def hcj2h(
 
     Returns:
         Union[str, List[str]]: Hangul string of the given text
+
+    Examples:
+        >>> from kss import Kss
+        >>> hcj2h = Kss("hcj2h")
+        >>> text = 'ㅇㅏㄴㄴㅕㅇㅎㅏㅅㅔㅇㅛ'
+        >>> output = hcj2h(text)
+        >>> print(output)
+        '안녕하세요'
+
+    References:
+        This was copied from [hangul-jamo](https://github.com/jonghwanhyeon/hangul-jamo) and modified by Kss
     """
 
     text, finish = _check_text(text)
@@ -157,13 +218,14 @@ def hcj2h(
     )
 
 
+@lru_cache(maxsize=500)
 def hcj2j(
     text: Union[str, List[str], Tuple[str]],
     position: str = "vowel",
     num_workers: Union[int, str] = "auto",
 ) -> Union[str, List[str]]:
     """
-    Convert a string of Hangul Compatibility Jamo to jamo.
+    This converts a string of Hangul Compatibility Jamo to jamo.
 
     Args:
         text (Union[str, List[str], Tuple[str]): single text or list of texts
@@ -172,6 +234,17 @@ def hcj2j(
 
     Returns:
         Union[str, List[str]]: jamo string of the given text
+
+    Examples:
+        >>> from kss import Kss
+        >>> hcj2j = Kss("hcj2j")
+        >>> text = 'ㅇ'
+        >>> output = hcj2j(text)
+        >>> print(output)
+        'ᄋ'
+
+    References:
+        This was copied from [jamo](https://github.com/JDongian/python-jamo) and modified by Kss
     """
 
     text, finish = _check_text(text)
@@ -193,12 +266,13 @@ def hcj2j(
     )
 
 
+@lru_cache(maxsize=500)
 def is_jamo(
     text: Union[str, List[str], Tuple[str]],
     num_workers: Union[int, str] = "auto",
 ) -> Union[bool, List[bool]]:
     """
-    Check if a character is a jamo character.
+    This checks if a character is a jamo character.
 
     Args:
         text (Union[str, List[str], Tuple[str]): single text or list of texts
@@ -206,6 +280,17 @@ def is_jamo(
 
     Returns:
         Union[bool, List[bool]]: whether the given character is a jamo character or not
+
+    Examples:
+        >>> from kss import Kss
+        >>> is_jamo = Kss("is_jamo")
+        >>> text = 'ᄋ'
+        >>> output = is_jamo(text)
+        >>> print(output)
+        True
+
+    References:
+        This was copied from [jamo](https://github.com/JDongian/python-jamo) and modified by Kss
     """
 
     text, finish = _check_text(text)
@@ -223,12 +308,13 @@ def is_jamo(
     )
 
 
+@lru_cache(maxsize=500)
 def is_jamo_modern(
     text: Union[str, List[str], Tuple[str]],
     num_workers: Union[int, str] = "auto",
 ) -> Union[bool, List[bool]]:
     """
-    Check if a character is a modern jamo character.
+    This checks if a character is a modern jamo character.
 
     Args:
         text (Union[str, List[str], Tuple[str]): single text or list of texts
@@ -236,6 +322,17 @@ def is_jamo_modern(
 
     Returns:
         Union[bool, List[bool]]: whether the given character is a modern jamo character or not
+
+    Examples:
+        >>> from kss import Kss
+        >>> is_jamo_modern = Kss("is_jamo_modern")
+        >>> text = 'ᄋ'
+        >>> output = is_jamo_modern(text)
+        >>> print(output)
+        True
+
+    References:
+        This was copied from [jamo](https://github.com/JDongian/python-jamo) and modified by Kss
     """
 
     text, finish = _check_text(text)
@@ -253,12 +350,13 @@ def is_jamo_modern(
     )
 
 
+@lru_cache(maxsize=500)
 def is_hcj(
     text: Union[str, List[str], Tuple[str]],
     num_workers: Union[int, str] = "auto",
 ) -> Union[bool, List[bool]]:
     """
-    Check if a character is a Hangul Compatibility Jamo character.
+    This checks if a character is a Hangul Compatibility Jamo character.
 
     Args:
         text (Union[str, List[str], Tuple[str]): single text or list of texts
@@ -266,6 +364,17 @@ def is_hcj(
 
     Returns:
         Union[bool, List[bool]]: whether the given character is a Hangul Compatibility Jamo character or not
+
+    Examples:
+        >>> from kss import Kss
+        >>> is_hcj = Kss("is_hcj")
+        >>> text = 'ㅇ'
+        >>> output = is_hcj(text)
+        >>> print(output)
+        True
+
+    References:
+        This was copied from [jamo](https://github.com/JDongian/python-jamo) and modified by Kss
     """
 
     text, finish = _check_text(text)
@@ -283,12 +392,13 @@ def is_hcj(
     )
 
 
+@lru_cache(maxsize=500)
 def is_hcj_modern(
     text: Union[str, List[str], Tuple[str]],
     num_workers: Union[int, str] = "auto",
 ) -> Union[bool, List[bool]]:
     """
-    Check if a character is a modern Hangul Compatibility Jamo character.
+    This checks if a character is a modern Hangul Compatibility Jamo character.
 
     Args:
         text (Union[str, List[str], Tuple[str]): single text or list of texts
@@ -296,6 +406,17 @@ def is_hcj_modern(
 
     Returns:
         Union[bool, List[bool]]: whether the given character is a modern Hangul Compatibility Jamo character or not
+
+    Examples:
+        >>> from kss import Kss
+        >>> is_hcj_modern = Kss("is_hcj_modern")
+        >>> text = 'ㅇ'
+        >>> output = is_hcj_modern(text)
+        >>> print(output)
+        True
+
+    References:
+        This was copied from [jamo](https://github.com/JDongian/python-jamo) and modified by Kss
     """
 
     text, finish = _check_text(text)
@@ -313,12 +434,13 @@ def is_hcj_modern(
     )
 
 
+@lru_cache(maxsize=500)
 def is_hangul_char(
     text: Union[str, List[str], Tuple[str]],
     num_workers: Union[int, str] = "auto",
 ) -> Union[bool, List[bool]]:
     """
-    Check if a character is a Hangul character.
+    This checks if a character is a Hangul character.
 
     Args:
         text (Union[str, List[str], Tuple[str]): single text or list of texts
@@ -326,6 +448,17 @@ def is_hangul_char(
 
     Returns:
         Union[bool, List[bool]]: whether the given character is a Hangul character or not
+
+    Examples:
+        >>> from kss import Kss
+        >>> is_hangul_char = Kss("is_hangul_char")
+        >>> text = '안'
+        >>> output = is_hangul_char(text)
+        >>> print(output)
+        True
+
+    References:
+        This was copied from [jamo](https://github.com/JDongian/python-jamo) and modified by Kss
     """
 
     text, finish = _check_text(text)

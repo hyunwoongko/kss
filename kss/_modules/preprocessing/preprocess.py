@@ -1,5 +1,5 @@
 import sys
-from functools import partial
+from functools import partial, lru_cache
 from typing import List, Optional, Tuple, Union
 
 from kss._modules.preprocessing.anonymize import _anonymize
@@ -9,6 +9,7 @@ from kss._utils.multiprocessing import _run_job
 from kss._utils.sanity_checks import _check_text, _check_type, _check_num_workers
 
 
+@lru_cache(maxsize=500)
 def preprocess(
     text: Union[str, List[str], Tuple[str]],
     normalization_type: Optional[str] = None,
@@ -50,7 +51,7 @@ def preprocess(
     max_ellipsis_ratio: float = 1,
     min_hangul_ratio: float = 0,
     max_hangul_ratio: float = 1,
-    max_hangul_non_completed_form_ratio: float = 1,
+    max_hangul_incompleted_form_ratio: float = 1,
     max_words_length: int = sys.maxsize,
     max_line_repeats: int = sys.maxsize,
     max_line_by_char_repeats: int = sys.maxsize,
@@ -85,8 +86,8 @@ def preprocess(
     num_workers: Union[int, str] = "auto",
 ) -> Union[str, List[str]]:
     """
-    Preprocess text with various options.
-    This processes 1) normalization, 2) filtering out, and 3) anonymization in order.
+    This preprocesses text with various options.
+    This does 1) normalization, 2) filtering out, and 3) anonymization in order.
 
     Args:
         text (Union[str, List[str], Tuple[str]]): single text or list of texts
@@ -129,7 +130,7 @@ def preprocess(
         max_ellipsis_ratio (float): maximum ellipsis ratio
         min_hangul_ratio (float): minimum Hangul ratio
         max_hangul_ratio (float): maximum Hangul ratio
-        max_hangul_non_completed_form_ratio (float): maximum Hangul non-completed form ratio
+        max_hangul_incompleted_form_ratio (float): maximum Hangul non-completed form ratio
         max_words_length (int): maximum words length
         max_line_repeats (int): maximum line repeats
         max_line_by_char_repeats (int): maximum line by char repeats
@@ -227,8 +228,8 @@ def preprocess(
                                                              "ngram_size_for_repeating_top_ngram_repeats", int)
     ngram_size_for_repeating_duplicate_ngrams = _check_type(ngram_size_for_repeating_duplicate_ngrams,
                                                             "ngram_size_for_repeating_duplicate_ngrams", int)
-    max_hangul_non_completed_form_ratio = _check_type(max_hangul_non_completed_form_ratio,
-                                                      "max_hangul_non_completed_form_ratio", float)
+    max_hangul_incompleted_form_ratio = _check_type(max_hangul_incompleted_form_ratio,
+                                                      "max_hangul_incompleted_form_ratio", float)
     phone_number_anonymization = _check_type(phone_number_anonymization, "phone_number_anonymization", bool)
     rrn_anonymization = _check_type(rrn_anonymization, "rrn_anonymization", bool)
     card_anonymization = _check_type(card_anonymization, "card_anonymization", bool)
@@ -295,7 +296,7 @@ def preprocess(
             max_ellipsis_ratio=max_ellipsis_ratio,
             min_hangul_ratio=min_hangul_ratio,
             max_hangul_ratio=max_hangul_ratio,
-            max_hangul_non_completed_form_ratio=max_hangul_non_completed_form_ratio,
+            max_hangul_incompleted_form_ratio=max_hangul_incompleted_form_ratio,
             max_words_length=max_words_length,
             max_line_repeats=max_line_repeats,
             max_line_by_char_repeats=max_line_by_char_repeats,
@@ -374,7 +375,7 @@ def _preprocess(
     max_ellipsis_ratio=1,
     min_hangul_ratio=0,
     max_hangul_ratio=1,
-    max_hangul_non_completed_form_ratio=1,
+    max_hangul_incompleted_form_ratio=1,
     max_words_length=sys.maxsize,
     max_line_repeats=sys.maxsize,
     max_line_by_char_repeats=sys.maxsize,
@@ -463,7 +464,7 @@ def _preprocess(
         max_repeating_duplicate_ngrams_score=max_repeating_duplicate_ngrams_score,
         ngram_size_for_repeating_top_ngram_repeats=ngram_size_for_repeating_top_ngram_repeats,
         ngram_size_for_repeating_duplicate_ngrams=ngram_size_for_repeating_duplicate_ngrams,
-        max_hangul_non_completed_form_ratio=max_hangul_non_completed_form_ratio,
+        max_hangul_incompleted_form_ratio=max_hangul_incompleted_form_ratio,
     )
 
     if is_filtered_out:

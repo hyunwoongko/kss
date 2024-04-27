@@ -2,7 +2,7 @@ import html
 import re
 import sys
 import unicodedata
-from functools import partial
+from functools import partial, lru_cache
 from typing import Union, List, Optional, Tuple
 
 from bs4 import BeautifulSoup
@@ -17,6 +17,7 @@ from kss._utils.sanity_checks import _check_text, _check_type, _check_num_worker
 doubled_spaces_pattern = re.compile('(\s)\\1{2,}')
 
 
+@lru_cache(maxsize=500)
 def normalize(
     text: Union[str, List[str], Tuple[str]],
     normalization_type: Optional[str] = None,
@@ -31,7 +32,7 @@ def normalize(
     num_workers: Union[int, str] = "auto",
 ) -> Union[str, List[str]]:
     """
-    Normalize text with various options.
+    This normalizes text with various options.
 
     Args:
         text (Union[str, List[str], Tuple[str]]): single text or list of texts

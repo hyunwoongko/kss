@@ -1,4 +1,4 @@
-from functools import partial
+from functools import partial, lru_cache
 from typing import Union, List, Tuple
 
 from kss._modules.qwerty.utils import (
@@ -23,6 +23,7 @@ from kss._utils.multiprocessing import _run_job
 from kss._utils.sanity_checks import _check_text, _check_type, _check_num_workers
 
 
+@lru_cache(maxsize=500)
 def qwerty(
     text: Union[str, List[str], Tuple[str]],
     src: str,
@@ -30,7 +31,7 @@ def qwerty(
     num_workers: Union[int, str] = "auto",
 ) -> Union[str, List[str]]:
     """
-    Convert text from one language to another using QWERTY keyboard layout.
+    This converts text from one language to another using QWERTY keyboard layout.
 
     Args:
         text (Union[str, List[str], Tuple[str]]): single text or list of texts
@@ -50,6 +51,9 @@ def qwerty(
         >>> text = "안녕하세요"
         >>> qwerty(text, src="ko", tgt="en")
         'dkssudgktpdy'
+
+    References:
+        This was copied from [inko.py](https://github.com/738/inko.py) and modified by Kss
     """
     text, finish = _check_text(text)
 

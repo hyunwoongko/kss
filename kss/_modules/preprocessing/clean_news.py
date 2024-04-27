@@ -1,5 +1,5 @@
 import re
-from functools import partial
+from functools import partial, lru_cache
 from typing import Union, List, Tuple
 
 from kss._utils.logger import highlight_diffs, logger
@@ -271,6 +271,7 @@ def _pre_split(text):
     return text
 
 
+@lru_cache(maxsize=500)
 def clean_news(
     text: Union[str, List[str], Tuple[str]],
     min_sentences: int = 3,
@@ -300,7 +301,6 @@ def clean_news(
         >>> output = clean_news(text)
         >>> print(output)
         '에버랜드, 봄꽃 펼쳐진 '튤립축제' 오픈\\n\\n에버랜드가 오는 22일부터 봄을 상징하는 튤립 120만 송이와 함께 '튤립축제'를 오픈해 본격적인 봄의 시작을 알린다. 지난 1992년 국내 첫 튤립 축제를 연 이후 올해로 22회째를 맞이한 에버랜드 '튤립축제'는 지난해 첫 선을 보이며 좋은 반응을 얻었던 오감(五感)체험 '시크릿가든'을 리뉴얼하고, 신규 테마 꽃길을 조성하는 등 봄꽃을 활용한 다양한 볼거리를 강화한 것이 특징이다. 또한 4월 28일까지 열리는 '튤립축제'에서는 야간 개장과 함께 손님 참여요소가 늘어난 인기 공연, 퍼레이드가 재오픈하는 등 봄을 맞아 나들이 나온 상춘객들의 눈과 귀를 즐겁게 할 예정이다.'
-
     """
     text, finish = _check_text(text)
 

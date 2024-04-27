@@ -30,6 +30,7 @@ restore_dict = {
 }
 
 
+@lru_cache(maxsize=500)
 def correct_spacing(
     text: Union[str, List[str], Tuple[str]],
     backend: str = "auto",
@@ -38,7 +39,7 @@ def correct_spacing(
     return_morphemes: bool = False,
 ) -> Union[str, List[str]]:
     """
-    Correct the spacing of the text.
+    This corrects the spacing of the text.
 
     Args:
         text (Union[str, List[str], Tuple[str]]): single text or list/tuple of texts
@@ -56,6 +57,10 @@ def correct_spacing(
         >>> text = "아버지가방에들어가시다"
         >>> correct_spacing(text)
         '아버지가 방에 들어가시다'
+
+    References:
+        This was copied from [Kiwi](https://github.com/bab2min/kiwipiepy) and [ko-prfrdr](https://github.com/ychoi-kr/ko-prfrdr)
+        and modified by Kss
     """
     text, finish = _check_text(text)
 

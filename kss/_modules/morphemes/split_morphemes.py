@@ -21,7 +21,7 @@ def split_morphemes(
     drop_space: bool = True,
 ) -> Union[List[Tuple[str, str]], List[List[Tuple[str, str]]], Union[List, Tuple]]:
     """
-    Split texts into morphemes.
+    This splits texts into morphemes.
 
     Args:
         text (Union[str, List[str], Tuple[str]]): single text or list/tuple of texts

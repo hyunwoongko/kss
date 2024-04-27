@@ -25,6 +25,7 @@ preprocessors = {(): SentencePreprocessor()}
 postprocessors = {(): SentencePostprocessor()}
 
 
+@lru_cache(maxsize=500)
 def split_sentences(
     text: Union[str, List[str], Tuple[str]],
     backend: str = "auto",
@@ -34,7 +35,7 @@ def split_sentences(
     ignores: List[str] = None,
 ) -> Union[List[str], List[List[str]]]:
     """
-    Split texts into sentences.
+    This splits texts into sentences.
 
     Args:
         text (Union[str, List[str], Tuple[str]]): single text or list/tuple of texts

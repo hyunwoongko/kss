@@ -1,12 +1,13 @@
-# This code is copied from KR-WordRank [https://github.com/lovit/KR-WordRank]
+# This code was copied from KR-WordRank [https://github.com/lovit/KR-WordRank]
 # And modified by Hyunwoong Ko [https://github.com/hyuwoongko]
-
+from functools import lru_cache
 from typing import List, Union
 
 from kss._modules.keywords.utils import KRWordRank
 from kss._utils.sanity_checks import _check_text, _check_type, _check_backend_mecab_pecab_only
 
 
+@lru_cache(maxsize=500)
 def extract_keywords(
     text: Union[str, List[str]],
     num_keywords: int = 5,
@@ -18,7 +19,7 @@ def extract_keywords(
     num_workers: Union[int, str] = "auto",
 ):
     """
-    Extract keywords from the given text.
+    This extracts keywords from the given text.
     This uses TextRank algorithm to extract keywords.
 
     Args:
@@ -50,6 +51,9 @@ def extract_keywords(
         >>> output = extract_keywords(text, noun_only=False)
         >>> print(output)
         ['너무', '정말', '마지막', '영화', '음악']
+
+        References:
+            This was copied from [KR-WordRank](https://github.com/lovit/KR-WordRank) and modified by Kss
     """
 
     text, finish = _check_text(text)

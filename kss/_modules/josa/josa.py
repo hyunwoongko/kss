@@ -1,15 +1,17 @@
+from functools import lru_cache
 from typing import Union, List
 
 from kss._modules.josa.utils import _check_text, _check_num_workers, _combine_josa, _run_job, _select_josa
 
 
+@lru_cache(maxsize=500)
 def select_josa(
     prefix: Union[str, List[str]],
     josa: Union[str, List[str]],
     num_workers: Union[int, str] = "auto",
 ) -> Union[str, List[str]]:
     """
-    Select the correct josa for the given prefix.
+    This selects the correct josa for the given prefix.
 
     Args:
         prefix (Union[str, List[str]): single prefix or list of prefixes
@@ -27,6 +29,9 @@ def select_josa(
         >>> output = select_josa(prefix, josa)
         >>> print(output)
         "는"
+
+    References:
+        This was copied from [tossi](https://github.com/what-studio/tossi) and modified by Kss
     """
     prefix, josa = _check_text(prefix, josa, "prefix", "josa")
     num_workers = _check_num_workers(prefix, josa, "prefix", "josa", num_workers)
@@ -41,13 +46,14 @@ def select_josa(
     )
 
 
+@lru_cache(maxsize=500)
 def combine_josa(
     prefix: Union[str, List[str]],
     josa: Union[str, List[str]],
     num_workers: Union[int, str] = "auto",
 ) -> Union[str, List[str]]:
     """
-    Combine the given prefix and josa.
+    This combines the given prefix and josa.
 
     Args:
         prefix (Union[str, List[str]): single prefix or list of prefixes
@@ -65,6 +71,9 @@ def combine_josa(
         >>> output = combine_josa(prefix, josa)
         >>> print(output)
         "철수는"
+
+    References:
+        This was copied from [tossi](https://github.com/what-studio/tossi) and modified by Kss
     """
     prefix, josa = _check_text(prefix, josa, "prefix", "josa")
     num_workers = _check_num_workers(prefix, josa, "prefix", "josa", num_workers)

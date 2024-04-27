@@ -1,4 +1,4 @@
-# This code is copied from g2pk [https://github.com/kyubyong/g2pK]
+# This code was copied from g2pk [https://github.com/kyubyong/g2pK]
 # And modified by Hyunwoong Ko [https://github.com/hyunwoongko]
 
 

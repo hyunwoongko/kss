@@ -1,4 +1,4 @@
-# This code is copied from KR-WordRank [https://github.com/lovit/KR-WordRank]
+# This code was copied from KR-WordRank [https://github.com/lovit/KR-WordRank]
 # And modified by Hyunwoong Ko [https://github.com/hyuwoongko]
 
 # Almost all code for wordrank is same with the original code.

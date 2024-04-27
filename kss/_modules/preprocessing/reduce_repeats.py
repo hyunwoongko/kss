@@ -1,5 +1,8 @@
+# This code was copied from [soynlp](https://github.com/lovit/soynlp)
+# And modified by Hyunwoong Ko [https://github.com/hyunwoongko]
+
 import re
-from functools import partial
+from functools import partial, lru_cache
 from typing import List, Tuple, Union
 
 from kss._utils.multiprocessing import _run_job
@@ -93,13 +96,14 @@ def _character_is_punctuation(i):
     return i == 33 or i == 34 or i == 39 or i == 44 or i == 46 or i == 63 or i == 96
 
 
+@lru_cache(maxsize=500)
 def reduce_char_repeats(
     text: Union[str, List[str], Tuple[str]],
     num_repeats: int = 2,
     num_workers: Union[int, str] = "auto",
 ) -> Union[str, List[str]]:
     """
-    Reduce character repeats in text.
+    This reduces character repeats in text.
 
     Args:
         text (Union[str, List[str], Tuple[str]]): single text or list of texts
@@ -116,6 +120,9 @@ def reduce_char_repeats(
         >>> output = reduce_char_repeats(text)
         >>> print(output)
         '고고'
+
+    References:
+        This was copied from [soynlp](https://github.com/lovit/soynlp) and modified by Kss
     """
 
     text, finish = _check_text(text)
@@ -133,13 +140,14 @@ def reduce_char_repeats(
     )
 
 
+@lru_cache(maxsize=500)
 def reduce_emoticon_repeats(
     text: Union[str, List[str], Tuple[str]],
     num_repeats: int = 2,
     num_workers: Union[int, str] = "auto",
 ) -> Union[str, List[str]]:
     """
-    Reduce emoticon repeats in text.
+    This reduces emoticon repeats in text.
 
     Args:
         text (Union[str, List[str], Tuple[str]]): single text or list of texts
@@ -156,6 +164,9 @@ def reduce_emoticon_repeats(
         >>> output = reduce_emoticon_repeats(text)
         >>> print(output)
         '아ㅋㅋ'
+
+    References:
+        This was copied from [soynlp](https://github.com/lovit/soynlp) and modified by Kss
     """
 
     text, finish = _check_text(text)

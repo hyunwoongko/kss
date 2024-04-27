@@ -1,4 +1,4 @@
-from functools import partial
+from functools import partial, lru_cache
 from typing import List, Union, Tuple
 
 from kss._modules.hanja.utils import _split_hanja, _is_hanja, _hanja2hangul
@@ -6,12 +6,13 @@ from kss._utils.multiprocessing import _run_job
 from kss._utils.sanity_checks import _check_text, _check_num_workers, _check_char, _check_type
 
 
+@lru_cache(maxsize=500)
 def split_hanja(
     text: Union[str, List[str], Tuple[str]],
     num_workers: Union[int, str] = "auto",
 ) -> Union[List[str], List[List[str]]]:
     """
-    Split the given text into hanja string and non-hanja string.
+    This splits the given text into hanja string and non-hanja string.
 
     Args:
         text (Union[str, List[str], Tuple[str]): single text or list of texts
@@ -27,7 +28,10 @@ def split_hanja(
         >>> output = split_hanja(text)
         >>> print(output)
         ["大韓民國", "은 ", "民主共和國", "이다."]
-     """
+
+    References:
+        This was copied from [hanja](https://github.com/suminb/hanja) and modified by Kss
+    """
     text, finish = _check_text(text)
 
     if finish:
@@ -42,19 +46,20 @@ def split_hanja(
     )
 
 
+@lru_cache(maxsize=500)
 def is_hanja(
     text: Union[str, List[str], Tuple[str]],
     num_workers: Union[int, str] = "auto",
-) -> bool:
+) -> Union[bool, List[bool]]:
     """
-    Check if the given character is a hanja character.
+    This checks if the given character is a hanja character.
 
     Args:
         text (Union[str, List[str], Tuple[str]): single character or list of characters
         num_workers (Union[int, str]): the number of multiprocessing workers
 
     Returns:
-        bool: whether the given character is a hanja character or not
+        Union[bool, List[bool]]: whether the given character is a hanja character or not
 
     Examples:
         >>> from kss import Kss
@@ -67,6 +72,9 @@ def is_hanja(
         >>> output = is_hanja(text)
         >>> print(output)
         False
+
+    References:
+        This was copied from [hanja](https://github.com/suminb/hanja) and modified by Kss
     """
 
     text, finish = _check_text(text)
@@ -84,6 +92,7 @@ def is_hanja(
     )
 
 
+@lru_cache(maxsize=500)
 def hanja2hangul(
     text: Union[str, List[str], Tuple[str]],
     combination: bool = False,
@@ -92,7 +101,7 @@ def hanja2hangul(
     num_workers: Union[int, str] = "auto",
 ) -> Union[str, List[str]]:
     """
-    Convert hanja to hangul.
+    This converts hanja to hangul.
 
     Args:
         text (Union[str, List[str], Tuple[str]): single text or list of texts
@@ -111,6 +120,9 @@ def hanja2hangul(
         >>> output = hanja2hangul(text)
         >>> print(output)
         "대한민국은 민주공화국이다."
+
+    References:
+        This was copied from [hanja](https://github.com/suminb/hanja) and modified by Kss
     """
     text, finish = _check_text(text)
 

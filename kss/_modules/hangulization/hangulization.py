@@ -1,4 +1,4 @@
-from functools import partial
+from functools import partial, lru_cache
 from typing import Union, List, Tuple
 
 import distance
@@ -48,13 +48,14 @@ supported_langs = languages = {
 }
 
 
+@lru_cache(maxsize=500)
 def hangulize(
     text: Union[str, List[str], Tuple[str]],
     lang: str,
     num_workers: Union[int, str] = "auto",
 ) -> Union[str, List[str]]:
     """
-    Convert the given text to Hangul pronunciation.
+    This converts the given text to Hangul pronunciation.
 
     Args:
         text (Union[str, List[str], Tuple[str]): single text or list of texts
@@ -71,6 +72,9 @@ def hangulize(
         >>> output = hangulize(text, lang="ita")
         >>> print(output)
         "지로 디탈리아"
+
+    References:
+        This was copied from [hangulize](https://github.com/sublee/hangulize) and modified by Kss
     """
     text, finish = _check_text(text)
 

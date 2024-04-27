@@ -1,3 +1,4 @@
+from functools import lru_cache
 from typing import Union, List, Tuple
 
 from kss._utils.multiprocessing import _run_job
@@ -155,12 +156,13 @@ UNICODE_TO_REPLACE = {
 # UNICODE_TO_REMAIN.update({char: chr(char) for char in range(0x1E0100, 0x1E01EF + 1)})  # Variation Selectors
 
 
+@lru_cache(maxsize=500)
 def remove_invisible_chars(
     text: Union[str, List[str], Tuple[str]],
     num_workers: Union[int, str] = "auto",
 ) -> Union[str, List[str]]:
     """
-    Remove invisible characters from text.
+    This removes invisible characters from text.
 
     Args:
         text (Union[str, List[str], Tuple[str]]): single text or list of texts

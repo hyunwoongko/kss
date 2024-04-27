@@ -3,10 +3,10 @@
 
 import re
 import sys
-from functools import partial
+from functools import partial, lru_cache
 from typing import Union, Tuple, Dict, Any, List
 
-from kss._modules.preprocessing.completed_form import _non_completed_form_ratio
+from kss._modules.preprocessing.completed_form import _incompleted_form_ratio
 from kss._utils.multiprocessing import _run_job
 from kss._utils.sanity_checks import _check_type, _check_num_workers, _check_text
 
@@ -123,6 +123,7 @@ def _symbols_to_word_ratio(text):
     return num_symbol_words / len(words)
 
 
+@lru_cache(maxsize=500)
 def filter_out(
     text: Union[str, List[str], Tuple[str]],
     min_length: int = 0,
@@ -164,11 +165,11 @@ def filter_out(
     max_repeating_duplicate_ngrams_score: float = sys.maxsize,
     ngram_size_for_repeating_top_ngram_repeats: int = 3,
     ngram_size_for_repeating_duplicate_ngrams: int = 3,
-    max_hangul_non_completed_form_ratio: float = 1,
+    max_hangul_incompleted_form_ratio: float = 1,
     num_workers: Union[int, str] = "auto",
 ) -> Union[Tuple[bool, Dict[str, Any]], List[Tuple[bool, Dict[str, Any]]]]:
     """
-    Filter out bad text based on various conditions.
+    This filters out bad text based on various conditions.
 
     Args:
         text (Union[str, List[str], Tuple[str]]): single text or list of texts
@@ -211,7 +212,7 @@ def filter_out(
         max_repeating_duplicate_ngrams_score (float): maximum repeating duplicate ngrams score
         ngram_size_for_repeating_top_ngram_repeats (int): ngram size for repeating top ngram repeats
         ngram_size_for_repeating_duplicate_ngrams (int): ngram size for repeating duplicate ngrams
-        max_hangul_non_completed_form_ratio (float): maximum hangul non completed form ratio
+        max_hangul_incompleted_form_ratio (float): maximum hangul non completed form ratio
         num_workers (Union[int, str]): the number of multiprocessing workers
 
     Returns:
@@ -275,8 +276,8 @@ def filter_out(
                                                              "ngram_size_for_repeating_top_ngram_repeats", int)
     ngram_size_for_repeating_duplicate_ngrams = _check_type(ngram_size_for_repeating_duplicate_ngrams,
                                                             "ngram_size_for_repeating_duplicate_ngrams", int)
-    max_hangul_non_completed_form_ratio = _check_type(max_hangul_non_completed_form_ratio,
-                                                      "max_hangul_non_completed_form_ratio", float)
+    max_hangul_incompleted_form_ratio = _check_type(max_hangul_incompleted_form_ratio,
+                                                      "max_hangul_incompleted_form_ratio", float)
     num_workers = _check_num_workers(text, num_workers)
 
     return _run_job(
@@ -321,7 +322,7 @@ def filter_out(
             max_repeating_duplicate_ngrams_score=max_repeating_duplicate_ngrams_score,
             ngram_size_for_repeating_top_ngram_repeats=ngram_size_for_repeating_top_ngram_repeats,
             ngram_size_for_repeating_duplicate_ngrams=ngram_size_for_repeating_duplicate_ngrams,
-            max_hangul_non_completed_form_ratio=max_hangul_non_completed_form_ratio,
+            max_hangul_incompleted_form_ratio=max_hangul_incompleted_form_ratio,
         ),
         inputs=text,
         num_workers=num_workers,
@@ -369,7 +370,7 @@ def _filter_out(
     max_repeating_duplicate_ngrams_score=sys.maxsize,
     ngram_size_for_repeating_top_ngram_repeats=3,
     ngram_size_for_repeating_duplicate_ngrams=3,
-    max_hangul_non_completed_form_ratio=1,
+    max_hangul_incompleted_form_ratio=1,
 ):
     words = text.split()
     lines = [x.strip() for x in text.split('\n') if len(x.strip()) > 0]
@@ -468,8 +469,8 @@ def _filter_out(
     if max_repeating_duplicate_ngrams_score <= _max_repeating_duplicate_ngrams_score:
         return True, {"reason": "repeating_duplicate_ngrams_score", "value": _max_repeating_duplicate_ngrams_score}
 
-    _hangul_non_completed_form_ratio = _non_completed_form_ratio(text)
-    if max_hangul_non_completed_form_ratio <= _hangul_non_completed_form_ratio:
-        return True, {"reason": "hangul_non_completed_form_ratio", "value": _hangul_non_completed_form_ratio}
+    _hangul_incompleted_form_ratio = _incompleted_form_ratio(text)
+    if max_hangul_incompleted_form_ratio <= _hangul_incompleted_form_ratio:
+        return True, {"reason": "hangul_incompleted_form_ratio", "value": _hangul_incompleted_form_ratio}
 
     return False, {"reason": "pass", "value": None}

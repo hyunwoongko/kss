@@ -1,15 +1,17 @@
+from functools import lru_cache
 from typing import Union, List, Tuple
 
 from kss._utils.multiprocessing import _run_job
 from kss._utils.sanity_checks import _check_num_workers, _check_text
 
 
+@lru_cache(maxsize=500)
 def half2full(
     text: Union[str, List[str], Tuple[str]],
     num_workers: Union[int, str] = "auto",
 ) -> Union[str, List[str]]:
     """
-    Convert half-width characters to full-width characters.
+    This converts half-width characters to full-width characters.
 
     Args:
         text (Union[str, List[str], Tuple[str]]): single text or list of texts

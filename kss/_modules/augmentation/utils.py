@@ -1,3 +1,6 @@
+# This was copied from KoEDA [https://github.com/toriving/KoEDA]
+# And modified by Hyunwoong Ko [https://github.com/hyunwoongko]
+
 import json
 import os
 
