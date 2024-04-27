@@ -161,11 +161,10 @@ setup(
     long_description_content_type="text/markdown",
     platforms=["any"],
     install_requires=[
-        "emoji==1.2.0", "pecab", "networkx", "jamo",
+        "six", "emoji==1.2.0", "pecab", "networkx", "jamo",
         "hangul-jamo", "hanja==0.13.3", "tossi", "hangulize",
         "pycountry", "distance", "unidecode", "cmudict",
         "koparadigm", "kollocate", "bs4", "numpy", "pytest",
-        "six"
     ],
     long_description=long_description,
     packages=find_packages(exclude=["bench", "assets", ".java", ".pytest_cache"]),
