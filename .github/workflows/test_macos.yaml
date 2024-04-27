@@ -12,10 +12,9 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.10.11
-
-      - name: pip upgrade
+      - name: Install pytest locally
         run: |
-          python3 -m pip install --upgrade pip & pip3 install --upgrade setuptools
+          python3 -m pip install pytest
       - name: Install kss locally
         run: |
           python setup.py install
