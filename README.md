@@ -53,7 +53,7 @@ All functions can be used by creating an instance of the Kss class and calling t
 ```python
 from kss import Kss
 
-module = Kss("module_name")
+module = Kss("MODULE_NAME")
 output = module("YOUR_INPUT_STRING", **kwargs)
 ```
 
@@ -107,7 +107,7 @@ If you input `num_workers<2`, Kss will not use multiprocessing.
 ```python
 from kss import Kss
 
-module = Kss("module_name")
+module = Kss("MODULE_NAME")
 
 # using all cores
 output = module(["YOUR_INPUT_STRING1", "YOUR_INPUT_STRING2", ...], **kwargs)
