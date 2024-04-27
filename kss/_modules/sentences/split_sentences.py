@@ -2,7 +2,9 @@
 # All rights reserved.
 
 from functools import partial, lru_cache
-from typing import List, Union, Tuple
+from typing import List, Union, Tuple, Any
+
+from kss._modules.morphemes.utils import _reset_spaces
 
 from kss._elements.subclasses import Syllable
 from kss._modules.morphemes.analyzers import Analyzer
@@ -28,6 +30,7 @@ def split_sentences(
     backend: str = "auto",
     num_workers: Union[int, str] = "auto",
     strip: bool = True,
+    return_morphemes: bool = False,
     ignores: List[str] = None,
 ) -> Union[List[str], List[List[str]]]:
     """
@@ -35,19 +38,28 @@ def split_sentences(
 
     Args:
         text (Union[str, List[str], Tuple[str]]): single text or list/tuple of texts
-        backend (str): morpheme analyzer backend. 'mecab', 'pecab', 'punct' are supported.
+        backend (str): morpheme analyzer backend. 'mecab', 'pecab', 'punct' are supported
         num_workers (Union[int, str])): the number of multiprocessing workers
         strip (bool): strip all sentences or not
+        return_morphemes (bool): whether to return morphemes or not
         ignores (List[str]): list of strings to ignore
 
     Returns:
-        Union[List[str], List[List[str]]]: outputs of sentence splitting.
+        Union[List[str], List[List[str]]]: outputs of sentence splitting
+
+    Examples:
+        >>> from kss import Kss
+        >>> split_sentences = Kss("split_sentences")
+        >>> text = "회사 동료 분들과 다녀왔는데 분위기도 좋고 음식도 맛있었어요 다만, 강남 토끼정이 강남 쉑쉑버거 골목길로 쭉 올라가야 하는데 다들 쉑쉑버거의 유혹에 넘어갈 뻔 했답니다 강남역 맛집 토끼정의 외부 모습."
+        >>> split_sentences(text)
+        ['회사 동료 분들과 다녀왔는데 분위기도 좋고 음식도 맛있었어요', '다만, 강남 토끼정이 강남 쉑쉑버거 골목길로 쭉 올라가야 하는데 다들 쉑쉑버거의 유혹에 넘어갈 뻔 했답니다', '강남역 맛집 토끼정의 외부 모습.']
     """
     if ignores is None:
         ignores = []
 
     text, finish = _check_text(text)
     strip = _check_type(strip, "strip", bool)
+    return_morphemes = _check_type(return_morphemes, "return_morphemes", bool)
     ignores = _check_iterable_type(ignores, "ignores", list, str)
 
     if finish:
@@ -78,6 +90,7 @@ def split_sentences(
             split_fn,
             backend=backend_analyzer,
             strip=strip,
+            return_morphemes=return_morphemes,
             preprocessor=_preprocessor,
             postprocessor=_postprocessor,
         ),
@@ -93,9 +106,10 @@ def _split_sentences(
     strip: bool,
     postprocess: bool = True,
     recursion: int = 0,
+    return_morphemes: bool = False,
     preprocessor: SentencePreprocessor = preprocessors[()],
     postprocessor: SentencePostprocessor = postprocessors[()],
-) -> List[str]:
+) -> tuple[list[Any] | list[list[Syllable]], list[tuple[str, str]]] | list[Any] | list[list[Syllable]]:
     """
     Split texts into sentences.
 
@@ -105,6 +119,9 @@ def _split_sentences(
         strip (bool): strip all sentences or not
         postprocess (bool): whether it uses postprocessing or not
         recursion (int): recursion times
+        return_morphemes (bool): whether to return morphemes or not
+        preprocessor (SentencePreprocessor): sentence preprocessor
+        postprocessor (SentencePostprocessor): sentence postprocessor
 
     Returns:
         List[str]: outputs of sentence splitting.
@@ -187,6 +204,7 @@ def _split_sentences(
                 _split_sentences,
                 backend=backend,
                 strip=strip,
+                return_morphemes=False,
                 postprocess=False,
                 recursion=recursion + 1,
             ),
@@ -197,4 +215,8 @@ def _split_sentences(
         output_sentences = postprocessor.postprocess(output_sentences, strip)
         output_sentences = [postprocessor.restore(s, text) for s in output_sentences]
 
-    return output_sentences
+    if return_morphemes and isinstance(text, str):
+        morphs_with_spaces = _reset_spaces(" ".join(output_sentences), morphemes)
+        return output_sentences, morphs_with_spaces
+    else:
+        return output_sentences

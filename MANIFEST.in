@@ -4,4 +4,8 @@ include csrc/kss_cython.pyx
 include csrc/sentence_splitter.cpp
 include csrc/sentence_splitter.h
 include csrc/__init__.py
+include kss/_modules/g2p/assets/rules.txt
+include kss/_modules/g2p/assets/idiom.txt
+include kss/_modules/g2p/assets/table.csv
+include kss/_modules/augmentation/assets/wordnet.json
 include setup.py

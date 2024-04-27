@@ -1,7 +1,7 @@
 # Copyright (C) 2021 Hyunwoong Ko <kevin.brain@kakaobrain.com> and Sang-Kil Park <skpark1224@hyundai.com>
 # All rights reserved.
 
-from functools import partial
+from functools import partial, lru_cache
 from typing import List, Union, Tuple
 
 from kss._utils.multiprocessing import _run_job
@@ -13,12 +13,12 @@ from kss._utils.sanity_checks import (
 )
 
 
+@lru_cache(maxsize=500)
 def split_morphemes(
     text: Union[str, List[str], Tuple[str]],
     backend: str = "auto",
     num_workers: Union[int, str] = "auto",
     drop_space: bool = True,
-    return_pos: bool = True,
 ) -> Union[List[Tuple[str, str]], List[List[Tuple[str, str]]], Union[List, Tuple]]:
     """
     Split texts into morphemes.
@@ -32,6 +32,14 @@ def split_morphemes(
     Returns:
         Union[List[Tuple[str, str]], List[List[Tuple[str, str]]], Union[List, Tuple]]:
             outputs of morpheme analysis.
+
+    Examples:
+        >>> from kss import Kss
+        >>> split_morphemes = Kss("split_morphemes")
+        >>> text = "아버지가방에들어오시다"
+        >>> output = split_morphemes(text)
+        >>> print(output)
+        [('아버지', 'NNG'), ('가', 'JKS'), ('방', 'NNG'), ('에', 'JKB'), ('들어오', 'VV'), ('시', 'EP'), ('다', 'EC')]
     """
     text, finish = _check_text(text)
     drop_space = _check_type(drop_space, "drop_space", bool)
@@ -42,9 +50,4 @@ def split_morphemes(
     num_workers = _check_num_workers(text, num_workers)
     backend = _check_analyzer_backend(backend)
     result = _run_job(partial(backend.pos, drop_space=drop_space), text, num_workers)
-    if not return_pos:
-        if isinstance(text, str):
-            result = [token[0] for token in result]
-        else:
-            result = [[token[0] for token in tokens] for tokens in result]
     return result

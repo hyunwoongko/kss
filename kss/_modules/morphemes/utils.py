@@ -138,3 +138,8 @@ def _preserve_space(
             else:
                 break
     return results
+
+
+def _reset_spaces(text: str, tokens: List[Tuple[str, str]]):
+    tokens = [(text, pos) for text, pos in tokens if pos != "SP"]
+    return _preserve_space(text, tokens, " \n\r\t\v\f")

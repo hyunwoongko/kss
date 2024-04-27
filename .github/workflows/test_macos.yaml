@@ -1,0 +1,21 @@
+name: macos-latest
+on: push
+
+jobs:
+  test:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9.12
+
+      - name: Install kss locally
+        run: |
+          pip install .
+      - name: Run the test suite
+        run: |
+          pytest -v
