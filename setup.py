@@ -150,6 +150,13 @@ with open(os.path.join("kss", "__init__.py"), encoding="utf-8") as f:
 with open("README.md", encoding="utf-8") as f:
     long_description = f.read()
 
+install_requires = [
+    "six", "emoji==1.2.0", "pecab", "networkx", "jamo",
+    "hangul-jamo", "hanja==0.13.3", "tossi", "hangulize",
+    "pycountry", "distance", "unidecode", "cmudict",
+    "koparadigm", "kollocate", "bs4", "numpy", "pytest",
+]
+
 setup(
     name="kss",
     version=version,
@@ -160,12 +167,7 @@ setup(
     description="A Toolkit for Korean sentence segmentation",
     long_description_content_type="text/markdown",
     platforms=["any"],
-    install_requires=[
-        "six", "emoji==1.2.0", "pecab", "networkx", "jamo",
-        "hangul-jamo", "hanja==0.13.3", "tossi", "hangulize",
-        "pycountry", "distance", "unidecode", "cmudict",
-        "koparadigm", "kollocate", "bs4", "numpy", "pytest",
-    ],
+    install_requires=install_requires,
     long_description=long_description,
     packages=find_packages(exclude=["bench", "assets", ".java", ".pytest_cache"]),
     python_requires=">=3",
