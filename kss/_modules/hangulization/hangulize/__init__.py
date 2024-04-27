@@ -23,8 +23,7 @@ def hangulize(string, code=None):
         글로리아
 
     :param string: a loan word
-    :param code: a language code as ISO 639-3. if ``lang`` is not given,
-                 it is required
+    :param code: a language code as ISO 639-3.
     """
     return get_lang(code).hangulize(string)
 

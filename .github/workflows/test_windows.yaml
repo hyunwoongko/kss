@@ -21,4 +21,4 @@ jobs:
           pip3 install -e .
       - name: Run the test suite
         run: |
-          pytest -v
+          cd tests && pytest -v
