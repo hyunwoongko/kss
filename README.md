@@ -771,6 +771,7 @@ References:
 
 <details>
 <summary>24. anonymize</summary>
+
 This anonymizes sensitive information in the given text.
 
 Args:
@@ -815,7 +816,8 @@ Examples:
 
 <details>
 <summary>25. clean_news</summary>
-Clean news articles by removing useless headers and footers.
+
+This cleans news articles by removing useless headers and footers.
 
 Args:
 - text (`Union[str, List[str], Tuple[str]]`): Input text or list of texts.
@@ -1239,6 +1241,7 @@ References:
 
 <details>
 <summary>38. is_unsafe</summary>
+
 This checks if the text is unsafe or not.
 
 Args:
