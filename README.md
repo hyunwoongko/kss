@@ -771,7 +771,7 @@ References:
 
 <details>
 <summary>24. anonymize</summary>
-Anonymize sensitive information in the given text.
+This anonymizes sensitive information in the given text.
 
 Args:
 - text (`Union[str, List[str], Tuple[str]`): single text or list of texts
