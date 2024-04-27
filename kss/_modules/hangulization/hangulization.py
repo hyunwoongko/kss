@@ -59,7 +59,7 @@ def hangulize(
 
     Args:
         text (Union[str, List[str], Tuple[str]): single text or list of texts
-        lang: source language code
+        lang (str): source language code
         num_workers (Union[int, str]): the number of multiprocessing workers
 
     Returns:

@@ -42,9 +42,9 @@ pip install kss
 
 ### Install Mecab (Optional)
 Please install mecab or konlpy.tag.Mecab to use Kss much faster.
-- mecab (Linux/MacOS): https://github.com/hyunwoongko/python-mecab-kor
+- mecab (`Linux/MacOS): https://github.com/hyunwoongko/python-mecab-kor
 - mecab (Windows): https://cleancode-ws.tistory.com/97
-- konlpy.tag.Mecab (Linux/MacOS): https://konlpy.org/en/latest/api/konlpy.tag/#mecab-class
+- konlpy.tag.Mecab (`Linux/MacOS): https://konlpy.org/en/latest/api/konlpy.tag/#mecab-class
 - konlpy.tag.Mecab (Windows): https://uwgdqo.tistory.com/363
 
 ## Usage
@@ -84,7 +84,7 @@ Split texts into sentences.
 Args:
     text (Union[str, List[str], Tuple[str]]): single text or list/tuple of texts
     backend (str): morpheme analyzer backend. 'mecab', 'pecab', 'punct' are supported
-    num_workers (Union[int, str])): the number of multiprocessing workers
+    num_workers (Union[int, str]`): the number of multiprocessing workers
     strip (bool): strip all sentences or not
     return_morphemes (bool): whether to return morphemes or not
     ignores (List[str]): list of strings to ignore
@@ -138,15 +138,15 @@ optionally it postprocesses the text by correcting josa.
 For this, Kss uses the Korean wordnet from KAIST.
 
 Args:
-- text (Union[str, List[str], Tuple[str]]): single text or list of texts
-- replacement_ratio (float): ratio of words to be replaced
-- josa_correction (bool): whether to correct josa or not
-- num_workers (Union[int, str]): the number of multiprocessing workers
-- backend (str): morpheme analyzer backend. 'mecab', 'pecab' are supported
-- verbose (bool): whether to print verbose outputs or not
+- text (`Union[str, List[str], Tuple[str]]`): single text or list of texts
+- replacement_ratio (`float`): ratio of words to be replaced
+- josa_correction (`bool`): whether to correct josa or not
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
+- backend (`str`): morpheme analyzer backend. 'mecab', 'pecab' are supported
+- verbose (`bool`): whether to print verbose outputs or not
 
 Returns:
-- Union[str, List[str]]: augmented text or list of augmented texts
+- `Union[str, List[str]]`: augmented text or list of augmented texts
 
 Examples:
 ```python
@@ -169,12 +169,12 @@ This returns collocation (연어) of given words.
 The collocation is a set of words that frequently appear together.
 
 Args:
-- text (Union[str, List[str], Tuple[str]]): single word or list of words
-- num_workers (Union[int, str]): the number of multiprocessing workers
-- verbose (bool): whether to print verbose outputs or not
+- text (`Union[str, List[str], Tuple[str]]`): single word or list of words
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
+- verbose (`bool`): whether to print verbose outputs or not
 
 Returns:
-- Union[dict, List[dict]]: collocations and frequencies of words in text or list of collocations and frequencies
+- `Union[dict, List[dict]]`: collocations and frequencies of words in text or list of collocations and frequencies
 
 Examples:
 ```python
@@ -197,18 +197,18 @@ This function provides a way to convert Korean graphemes to phonemes.
 The 'grapheme' means a letter or a character, and the 'phoneme' means a sound.
 
 Args:
-- text (Union[str, List[str], Tuple[str]]): single text or list of texts
-- descriptive (bool): return descriptive pronunciation, the 'descriptive' means a real-life pronunciation
-- group_vowels (bool): If True, the vowels of the identical sound are normalized. (e.g. ㅒ -> ㅖ)
+- text (`Union[str, List[str], Tuple[str]]`): single text or list of texts
+- descriptive (`bool`): return descriptive pronunciation, the 'descriptive' means a real-life pronunciation
+- group_vowels (`bool`): If True, the vowels of the identical sound are normalized. (e.g. ㅒ -> ㅖ)
 - to_syllable: If True, hangul letters or jamo are assembled to form syllables.
-- convert_english_to_hangul_phonemes (bool): If True, convert English to Hangul phonemes
-- convert_numbers_to_hangul_phonemes (bool): If True, convert numbers to Hangul phonemes
-- num_workers (Union[int, str]): the number of multiprocessing workers
-- backend (str): morpheme analyzer backend. 'mecab', 'pecab' are supported
-- verbose (bool): whether to print verbose outputs or not
+- convert_english_to_hangul_phonemes (`bool`): If True, convert English to Hangul phonemes
+- convert_numbers_to_hangul_phonemes (`bool`): If True, convert numbers to Hangul phonemes
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
+- backend (`str`): morpheme analyzer backend. 'mecab', 'pecab' are supported
+- verbose (`bool`): whether to print verbose outputs or not
 
 Returns:
-- Union[str, List[str]]: phoneme string or list of phoneme strings from the given text
+- `Union[str, List[str]]`: phoneme string or list of phoneme strings from the given text
 
 Examples:
 ```python>>> from kss import Kss
@@ -229,12 +229,12 @@ References:
 This converts the given text to Hangul pronunciation.
 
 Args:
-- text (Union[str, List[str], Tuple[str]): single text or list of texts
-- lang: source language code
-- num_workers (Union[int, str]): the number of multiprocessing workers
+- text (`Union[str, List[str], Tuple[str]`): single text or list of texts
+- lang (`str`): source language code
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
 
 Returns:
-- Union[str, List[str]]: Hangul pronunciation of the given text
+- `Union[str, List[str]]`: Hangul pronunciation of the given text
 
 Examples:
 ```python
@@ -256,11 +256,11 @@ References:
 This splits the given text into hanja string and non-hanja string.
 
 Args:
-- text (Union[str, List[str], Tuple[str]): single text or list of texts
-- num_workers (Union[int, str]): the number of multiprocessing workers
+- text (`Union[str, List[str], Tuple[str]`): single text or list of texts
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
 
 Returns:
-- Union[str, List[str]]: hanja string and non-hanja string of the given text
+- `Union[str, List[str]]`: hanja string and non-hanja string of the given text
 
 Examples:
 ```python
@@ -282,11 +282,11 @@ This was copied from [hanja](https://github.com/suminb/hanja) and modified by Ks
 This checks if the given character is a hanja character.
 
 Args:
-- text (Union[str, List[str], Tuple[str]): single character or list of characters
-- num_workers (Union[int, str]): the number of multiprocessing workers
+- text (`Union[str, List[str], Tuple[str]`): single character or list of characters
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
 
 Returns:
-- Union[bool, List[bool]]: whether the given character is a hanja character or not
+- `Union[bool, List[bool]]`: whether the given character is a hanja character or not
 
 Examples:
 ```python
@@ -312,14 +312,14 @@ This was copied from [hanja](https://github.com/suminb/hanja) and modified by Ks
 This converts hanja to hangul.
 
 Args:
-- text (Union[str, List[str], Tuple[str]): single text or list of texts
-- combination (bool): whether to return hanja and hangul together or not
-- reverse (bool): whether to reverse the order of hanja and hangul or not
-- html (bool): whether to return html format or not
-- num_workers (Union[int, str]): the number of multiprocessing workers
+- text (`Union[str, List[str], Tuple[str]`): single text or list of texts
+- combination (`bool`): whether to return hanja and hangul together or not
+- reverse (`bool`): whether to reverse the order of hanja and hangul or not
+- html (`bool`): whether to return html format or not
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
 
 Returns:
-- Union[str, List[str]]: hanja to hangul converted text or list of texts
+- `Union[str, List[str]]`: hanja to hangul converted text or list of texts
 
 Examples:
 ```python
@@ -341,11 +341,11 @@ References:
 This converts a string of Hangul to jamo.
 
 Args:
-- text (Union[str, List[str], Tuple[str]): single text or list of texts
-- num_workers (Union[int, str]): the number of multiprocessing workers
+- text (`Union[str, List[str], Tuple[str]`): single text or list of texts
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
 
 Returns:
-- Union[str, List[str]]: jamo string of the given text
+- `Union[str, List[str]]`: jamo string of the given text
 
 Examples:
 ```python
@@ -368,11 +368,11 @@ References:
 This converts a string of Hangul to Hangul Compatibility Jamo.
 
 Args:
-- text (Union[str, List[str], Tuple[str]): single text or list of texts
-- num_workers (Union[int, str]): the number of multiprocessing workers
+- text (`Union[str, List[str], Tuple[str]`): single text or list of texts
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
 
 Returns:
-- Union[str, List[str]]: Hangul Compatibility Jamo string of the given text
+- `Union[str, List[str]]`: Hangul Compatibility Jamo string of the given text
 
 Examples:
 ```python
@@ -394,12 +394,12 @@ References:
 This converts a string of jamo to Hangul.
 
 Args:
-- text (Union[str, List[str], Tuple[str]): single text or list of texts
-- add_placeholder_for_leading_vowels (bool): add 'ㅇ' for leading vowels (e.g. 'ㅐ플' -> '애플')
-- num_workers (Union[int, str]): the number of multiprocessing workers
+- text (`Union[str, List[str], Tuple[str]`): single text or list of texts
+- add_placeholder_for_leading_vowels (`bool`): add 'ㅇ' for leading vowels (e.g. 'ㅐ플' -> '애플')
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
 
 - Returns:
-- Union[str, List[str]]: Hangul string of the given text
+- `Union[str, List[str]]`: Hangul string of the given text
 
 Examples:
 ```python
@@ -422,11 +422,11 @@ References:
 This converts a string of jamo to Hangul Compatibility Jamo.
 
 Args:
-- text (Union[str, List[str], Tuple[str]): single text or list of texts
-- num_workers (Union[int, str]): the number of multiprocessing workers
+- text (`Union[str, List[str], Tuple[str]`): single text or list of texts
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
 
 Returns:
-- Union[str, List[str]]: Hangul Compatibility Jamo string of the given text
+- `Union[str, List[str]]`: Hangul Compatibility Jamo string of the given text
 
 Examples:
 ```python
@@ -449,11 +449,11 @@ References:
 This converts a string of Hangul Compatibility Jamo to Hangul.
 
 Args:
-- text (Union[str, List[str], Tuple[str]): single text or list of texts
-- num_workers (Union[int, str]): the number of multiprocessing workers
+- text (`Union[str, List[str], Tuple[str]`): single text or list of texts
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
 
 Returns:
-- Union[str, List[str]]: Hangul string of the given text
+- `Union[str, List[str]]`: Hangul string of the given text
 
 Examples:
 ```python
@@ -476,12 +476,12 @@ References:
 This converts a string of Hangul Compatibility Jamo to jamo.
 
 Args:
-- text (Union[str, List[str], Tuple[str]): single text or list of texts
-- position (str): the position of the HCJ character to convert to jamo character, one of 'lead', 'vowel', 'tail'
-- num_workers (Union[int, str]): the number of multiprocessing workers
+- text (`Union[str, List[str], Tuple[str]`): single text or list of texts
+- position (`str`): the position of the HCJ character to convert to jamo character, one of 'lead', 'vowel', 'tail'
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
 
 Returns:
-- Union[str, List[str]]: jamo string of the given text
+- `Union[str, List[str]]`: jamo string of the given text
 
 Examples:
 ```python
@@ -504,11 +504,11 @@ References:
 This checks if a character is a jamo character.
 
 Args:
-- text (Union[str, List[str], Tuple[str]): single text or list of texts
-- num_workers (Union[int, str]): the number of multiprocessing workers
+- text (`Union[str, List[str], Tuple[str]`): single text or list of texts
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
 
 Returns:
-- Union[bool, List[bool]]: whether the given character is a jamo character or not
+- `Union[bool, List[bool]]`: whether the given character is a jamo character or not
 
 Examples:
 ```python
@@ -531,11 +531,11 @@ References:
 This checks if a character is a modern jamo character.
 
 Args:
-- text (Union[str, List[str], Tuple[str]): single text or list of texts
-- num_workers (Union[int, str]): the number of multiprocessing workers
+- text (`Union[str, List[str], Tuple[str]`): single text or list of texts
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
 
 Returns:
-- Union[bool, List[bool]]: whether the given character is a modern jamo character or not
+- `Union[bool, List[bool]]`: whether the given character is a modern jamo character or not
 
 Examples:
 ```python
@@ -558,11 +558,11 @@ References:
 This checks if a character is a Hangul Compatibility Jamo character.
 
 Args:
-- text (Union[str, List[str], Tuple[str]): single text or list of texts
-- num_workers (Union[int, str]): the number of multiprocessing workers
+- text (`Union[str, List[str], Tuple[str]`): single text or list of texts
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
 
 Returns:
-- Union[bool, List[bool]]: whether the given character is a Hangul Compatibility Jamo character or not
+- `Union[bool, List[bool]]`: whether the given character is a Hangul Compatibility Jamo character or not
 
 Examples:
 ```python
@@ -585,11 +585,11 @@ References:
 This checks if a character is a modern Hangul Compatibility Jamo character.
 
 Args:
-- text (Union[str, List[str], Tuple[str]): single text or list of texts
-- num_workers (Union[int, str]): the number of multiprocessing workers
+- text (`Union[str, List[str], Tuple[str]`): single text or list of texts
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
 
 Returns:
-- Union[bool, List[bool]]: whether the given character is a modern Hangul Compatibility Jamo character or not
+- `Union[bool, List[bool]]`: whether the given character is a modern Hangul Compatibility Jamo character or not
 
 Examples:
 ```python
@@ -612,11 +612,11 @@ References:
 This checks if a character is a Hangul character.
 
 Args:
-- text (Union[str, List[str], Tuple[str]): single text or list of texts
-- num_workers (Union[int, str]): the number of multiprocessing workers
+- text (`Union[str, List[str], Tuple[str]`): single text or list of texts
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
 
 Returns:
-- Union[bool, List[bool]]: whether the given character is a Hangul character or not
+- `Union[bool, List[bool]]`: whether the given character is a Hangul character or not
 
 Examples:
 ```python
@@ -638,12 +638,12 @@ References:
 This selects the correct josa for the given prefix.
 
 Args:
-- prefix (Union[str, List[str]): single prefix or list of prefixes
-- josa (Union[str, List[str]): single josa or list of josas
-- num_workers (Union[int, str]): the number of multiprocessing workers
+- prefix (`Union[str, List[str]`): single prefix or list of prefixes
+- josa (`Union[str, List[str]`): single josa or list of josas
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
 
 Returns:
-- Union[str, List[str]]: the correct josa for the given prefix
+- `Union[str, List[str]]`: the correct josa for the given prefix
 
 Examples:
 ```python
@@ -666,12 +666,12 @@ References:
 This combines the given prefix and josa.
 
 Args:
-- prefix (Union[str, List[str]): single prefix or list of prefixes
-- josa (Union[str, List[str]): single josa or list of josas
-- num_workers (Union[int, str]): the number of multiprocessing workers
+- prefix (`Union[str, List[str]`): single prefix or list of prefixes
+- josa (`Union[str, List[str]`): single josa or list of josas
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
 
 Returns:
-- Union[str, List[str]]: the combined prefix and josa
+- `Union[str, List[str]]`: the combined prefix and josa
 
 Examples:
 ```python
@@ -695,29 +695,29 @@ This extracts keywords from the given text.
 This uses TextRank algorithm to extract keywords.
 
 Args:
-- text (Union[str, List[str]): single text or list of texts
-- num_keywords (int): the number of keywords to extract
-- min_word_count (int): the minimum count of words
-- max_word_length (int): the maximum length of words
-- return_scores (bool): whether to return scores or not
-- backend (str): morpheme analyzer backend. 'mecab', 'pecab' are supported
-- noun_only (bool): whether to extract only nouns or not
-- num_workers (Union[int, str]): the number of multiprocessing workers
+- text (`Union[str, List[str]`): single text or list of texts
+- num_keywords (`int`): the number of keywords to extract
+- min_word_count (`int`): the minimum count of words
+- max_word_length (`int`): the maximum length of words
+- return_scores (`bool`): whether to return scores or not
+- backend (`str`): morpheme analyzer backend. 'mecab', 'pecab' are supported
+- noun_only (`bool`): whether to extract only nouns or not
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
 
 Examples:
 ```python
 >>>  from kss import Kss
 >>> extract_keywords = Kss("extract_keywords")
 >>> text = ['여운이 크게남는영화 엠마스톤 너무 사랑스럽고 라이언고슬링 남자가봐도 정말 매력적인 배우인듯 영상미 음악 연기 구성 전부 좋았고 마지막 엔딩까지 신선하면서 애틋하구요 30중반에 감정이 많이 메말라있었는데 오랜만에 가슴이 촉촉해지네요',
-        ... '영상미도 너무 아름답고 신나는 음악도 좋았다 마지막 세바스찬과 미아의 눈빛교환은 정말 마음 아팠음 영화관에 고딩들이 엄청 많던데 고딩들은 영화 내용 이해를 못하더라ㅡㅡ사랑을 깊게 해본 사람이라면 누구나 느껴볼수있는 먹먹함이 있다',
-        ... '정말 영상미랑 음악은 최고였다 그리고 신선했다 음악이 너무 멋있어서 연기를 봐야 할지 노래를 들어야 할지 모를 정도로 그리고 보고 나서 생각 좀 많아진 영화 정말 이 연말에 보기 좋은 영화 인 것 같다',
-        ... '무언의 마지막 피아노연주 완전 슬픔ㅠ보는이들에게 꿈을 상기시켜줄듯 또 보고 싶은 내생에 최고의 뮤지컬영화였음 단순할수 있는 내용에 뮤지컬을 가미시켜째즈음악과 춤으로 지루할틈없이 빠져서봄 ost너무좋았음',
-        ... '처음엔 초딩들 보는 그냥 그런영화인줄 알았는데 정말로 눈과 귀가 즐거운 영화였습니다 어찌보면 뻔한 스토리일지 몰라도 그냥 보고 듣는게 즐거운 그러다가 정말 마지막엔 너무 아름답고 슬픈 음악이 되어버린',
-        ... '정말 멋진 노래와 음악과 영상미까지 정말 너무 멋있는 영화 눈물을 흘리면서 봤습니다 영화가 끝난 순간 감탄과 동시에 여운이 길게 남아 또 눈물을 흘렸던내 인생 최고의 뮤지컬 영화',
-        ... '평소 뮤지컬 영화 좋아하는 편인데도 평점에 비해 너무나 별로였던 영화 재즈음악이나 영상미 같은 건 좋았지만 줄거리도 글쎄 결말은 정말 별로 6 7점 정도 주는게 맞다고 생각하지만 개인적으로 후반부가 너무 별로여서',
-        ... '오랜만에 좋은 영화봤다는 생각들었구요 음악도 영상도 스토리도 너무나좋았고 무엇보다 진한 여운이 남는 영화는 정말 오랜만이었어요 연인끼리 가서 보기 정말 좋은영화 너뮤너뮤너뮤 재밌게 잘 봤습니다',
-        ... '음악 미술 연기 등 모든 것이 좋았지만 마지막 결말이 너무 현실에 뒤떨어진 꿈만 같다 꿈을 이야기하는 영화지만 과정과 결과에 있어 예술가들의 현실을 너무 반영하지 못한 것이 아닌가하는 생각이든다 그래서 보고 난 뒤 나는 꿈을 꿔야하는데 허탈했다',
-        ... '마지막 회상씬의 감동이 잊혀지질않는다마지막 십분만으로 티켓값이 아깝지않은 영화 음악들도 너무 아름다웠다옛날 뮤지컬 같은 빈티지영상미도 최고']
+...         '영상미도 너무 아름답고 신나는 음악도 좋았다 마지막 세바스찬과 미아의 눈빛교환은 정말 마음 아팠음 영화관에 고딩들이 엄청 많던데 고딩들은 영화 내용 이해를 못하더라ㅡㅡ사랑을 깊게 해본 사람이라면 누구나 느껴볼수있는 먹먹함이 있다',
+...         '정말 영상미랑 음악은 최고였다 그리고 신선했다 음악이 너무 멋있어서 연기를 봐야 할지 노래를 들어야 할지 모를 정도로 그리고 보고 나서 생각 좀 많아진 영화 정말 이 연말에 보기 좋은 영화 인 것 같다',
+...         '무언의 마지막 피아노연주 완전 슬픔ㅠ보는이들에게 꿈을 상기시켜줄듯 또 보고 싶은 내생에 최고의 뮤지컬영화였음 단순할수 있는 내용에 뮤지컬을 가미시켜째즈음악과 춤으로 지루할틈없이 빠져서봄 ost너무좋았음',
+...         '처음엔 초딩들 보는 그냥 그런영화인줄 알았는데 정말로 눈과 귀가 즐거운 영화였습니다 어찌보면 뻔한 스토리일지 몰라도 그냥 보고 듣는게 즐거운 그러다가 정말 마지막엔 너무 아름답고 슬픈 음악이 되어버린',
+...         '정말 멋진 노래와 음악과 영상미까지 정말 너무 멋있는 영화 눈물을 흘리면서 봤습니다 영화가 끝난 순간 감탄과 동시에 여운이 길게 남아 또 눈물을 흘렸던내 인생 최고의 뮤지컬 영화',
+...         '평소 뮤지컬 영화 좋아하는 편인데도 평점에 비해 너무나 별로였던 영화 재즈음악이나 영상미 같은 건 좋았지만 줄거리도 글쎄 결말은 정말 별로 6 7점 정도 주는게 맞다고 생각하지만 개인적으로 후반부가 너무 별로여서',
+...         '오랜만에 좋은 영화봤다는 생각들었구요 음악도 영상도 스토리도 너무나좋았고 무엇보다 진한 여운이 남는 영화는 정말 오랜만이었어요 연인끼리 가서 보기 정말 좋은영화 너뮤너뮤너뮤 재밌게 잘 봤습니다',
+...         '음악 미술 연기 등 모든 것이 좋았지만 마지막 결말이 너무 현실에 뒤떨어진 꿈만 같다 꿈을 이야기하는 영화지만 과정과 결과에 있어 예술가들의 현실을 너무 반영하지 못한 것이 아닌가하는 생각이든다 그래서 보고 난 뒤 나는 꿈을 꿔야하는데 허탈했다',
+...         '마지막 회상씬의 감동이 잊혀지질않는다마지막 십분만으로 티켓값이 아깝지않은 영화 음악들도 너무 아름다웠다옛날 뮤지컬 같은 빈티지영상미도 최고']
 >>> output = extract_keywords(text, noun_only=True)
 >>> print(output)
 ['마지막', '영화', '음악', '라이언고슬링', '뮤지컬']
@@ -736,13 +736,13 @@ References:
 This splits texts into morphemes.
 
 Args:
-- text (Union[str, List[str], Tuple[str]]): single text or list/tuple of texts
-- backend (str): morpheme analyzer backend. 'mecab', 'pecab' are supported.
-- num_workers (Union[int, str])): the number of multiprocessing workers
-- drop_space (bool): drop all spaces in output or not
+- text (`Union[str, List[str], Tuple[str]]`): single text or list/tuple of texts
+- backend (`str`): morpheme analyzer backend. 'mecab', 'pecab' are supported.
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
+- drop_space (`bool`): drop all spaces in output or not
 
 Returns:
-- Union[List[Tuple[str, str]], List[List[Tuple[str, str]]], Union[List, Tuple]]: outputs of morpheme analysis.
+- `Union[List[Tuple[str, str]], List[List[Tuple[str, str]]], Union[List, Tuple]]`: outputs of morpheme analysis.
 
 Examples:
 ```python
@@ -761,12 +761,12 @@ Examples:
 This searches paradigms of the given text.
 
 Args:
-- text (Union[str, List[str], Tuple[str]): single text or list of texts
-- num_workers (Union[int, str]): the number of multiprocessing workers
-- verbose (bool): whether to print the results or not
+- text (`Union[str, List[str], Tuple[str]`): single text or list of texts
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
+- verbose (`bool`): whether to print the results or not
 
 Returns:
-- Union[Dict[str, str], List[Dict[str, str]]]: paradigms of the given text
+- `Union[Dict[str, str], List[Dict[str, str]]]`: paradigms of the given text
 
 Examples:
 ```python
@@ -775,7 +775,7 @@ Examples:
 >>> text = "곱"
 >>> output = paradigm(text)
 >>> print(output)
-        {'Action Verb': [('거나', '곱거나'), ('거늘', '곱거늘'), ('거니', '곱거니'), ('거니와', '곱거니와'), ('거드면', '곱거드면'), ('거든', '곱거든'), ('건', '곱건'), ('건마는', '곱건마는'), ('것다', '곱것다'), ('게', '곱게'), ('겠', '곱겠'), ('고', '곱고'), ('고도', '곱고도'), ('고말고', '곱고말고'), ('관데', '곱관데'), ('기', '곱기'), ('기로', '곱기로'), ('기로니', '곱기로니'), ('기로서', '곱기로서'), ('기로서니', '곱기로서니'), ('기로선들', '곱기로선들'), ('기에', '곱기에'), ('네', '곱네'), ('니', '곱니'), ('다', '곱다'), ('다가', '곱다가'), ('다가는', '곱다가는'), ('다간', '곱다간'), ('다니', '곱다니'), ('다마다', '곱다마다'), ('더', '곱더'), ('더구나', '곱더구나'), ('더구려', '곱더구려'), ('더군', '곱더군'), ('더냐', '곱더냐'), ('더뇨', '곱더뇨'), ('더니', '곱더니'), ('더니라', '곱더니라'), ('더니마는', '곱더니마는'), ('더니만', '곱더니만'), ('더니이까', '곱더니이까'), ('더니이다', '곱더니이다'), ('더라', '곱더라'), ('더라나', '곱더라나'), ('더라니', '곱더라니'), ('더라니까', '곱더라니까'), ('더라도', '곱더라도'), ('더라며', '곱더라며'), ('더라면', '곱더라면'), ('더라면서', '곱더라면서'), ('더라손', '곱더라손'), ('더라지', '곱더라지'), ('더람', '곱더람'), ('더이까', '곱더이까'), ('더이다', '곱더이다'), ('던', '곱던'), ('던가', '곱던가'), ('던감', '곱던감'), ('던걸', '곱던걸'), ('던고', '곱던고'), ('던데', '곱던데'), ('던바', '곱던바'), ('던지', '곱던지'), ('데', '곱데'), ('데요', '곱데요'), ('도다', '곱도다'), ('되', '곱되'), ('든', '곱든'), ('든가', '곱든가'), ('든지', '곱든지'), ('듯', '곱듯'), ('듯이', '곱듯이'), ('소이까', '곱소이까'), ('죠', '곱죠'), ('지마는', '곱지마는'), ('지만', '곱지만'), ('지요', '곱지요'), ('게', '곱게'), ('고는', '곱고는'), ('누', '곱누'), ('디', '곱디'), ('소', '곱소'), ('지', '곱지'), ('아', '곱아'), ('아도', '곱아도'), ('아라', '곱아라'), ('아서', '곱아서'), ('아야', '곱아야'), ('아야만', '곱아야만'), ('아야지', '곱아야지'), ('아요', '곱아요'), ('아지이다', '곱아지이다'), ('았', '곱았'), ('았었', '곱았었'), ('았자', '곱았자'), ('으나', '곱으나'), ('으나마', '곱으나마'), ('으니', '곱으니'), ('으니까', '곱으니까'), ('으니까는', '곱으니까는'), ('으니만치', '곱으니만치'), ('으니만큼', '곱으니만큼'), ('으려니와', '곱으려니와'), ('으려면', '곱으려면'), ('으련마는', '곱으련마는'), ('으렷다', '곱으렷다'), ('으리', '곱으리'), ('으리까', '곱으리까'), ('으리니', '곱으리니'), ('으리니라', '곱으리니라'), ('으리다', '곱으리다'), ('으리라', '곱으리라'), ('으리로다', '곱으리로다'), ('으리만치', '곱으리만치'), ('으리만큼', '곱으리만큼'), ('으리오', '곱으리오'), ('으매', '곱으매'), ('으며', '곱으며'), ('으면', '곱으면'), ('으면서', '곱으면서'), ('으므로', '곱으므로'), ('으사', '곱으사'), ('으세요', '곱으세요'), ('으셔요', '곱으셔요'), ('으소서', '곱으소서'), ('으시', '곱으시'), ('으시어요', '곱으시어요'), ('으오', '곱으오'), ('으오니까', '곱으오니까'), ('으오리까', '곱으오리까'), ('으오리다', '곱으오리다'), ('으오리이까', '곱으오리이까'), ('으오리이다', '곱으오리이다'), ('으오이다', '곱으오이다'), ('으옵', '곱으옵'), ('으옵나이까', '곱으옵나이까'), ('으옵나이다', '곱으옵나이다'), ('으옵니까', '곱으옵니까'), ('으옵니다', '곱으옵니다'), ('으옵디까', '곱으옵디까'), ('으옵디다', '곱으옵디다'), ('으옵소서', '곱으옵소서'), ('으옵시', '곱으옵시'), ('으와', '곱으와'), ('으우', '곱으우'), ('은', '곱은'), ('은걸', '곱은걸'), ('은들', '곱은들'), ('은즉', '곱은즉'), ('은즉슨', '곱은즉슨'), ('을', '곱을'), ('을걸', '곱을걸'), ('을까', '곱을까'), ('을는지', '곱을는지'), ('을라', '곱을라'), ('을라고', '곱을라고'), ('을러니', '곱을러니'), ('을러라', '곱을러라'), ('을런가', '곱을런가'), ('을런고', '곱을런고'), ('을레', '곱을레'), ('을레라', '곱을레라'), ('을망정', '곱을망정'), ('을밖에', '곱을밖에'), ('을뿐더러', '곱을뿐더러'), ('을새', '곱을새'), ('을세', '곱을세'), ('을세라', '곱을세라'), ('을세말이지', '곱을세말이지'), ('을수록', '곱을수록'), ('을시', '곱을시'), ('을쏘냐', '곱을쏘냐'), ('을쏜가', '곱을쏜가'), ('을지', '곱을지'), ('을지나', '곱을지나'), ('을지니', '곱을지니'), ('을지니라', '곱을지니라'), ('을지라', '곱을지라'), ('을지라도', '곱을지라도'), ('을지로다', '곱을지로다'), ('을지며', '곱을지며'), ('을지어다', '곱을지어다'), ('을지언정', '곱을지언정'), ('을진대', '곱을진대'), ('을진대는', '곱을진대는'), ('을진저', '곱을진저'), ('음', '곱음'), ('음에도', '곱음에도'), ('음에랴', '곱음에랴'), ('읍시오', '곱읍시오'), ('습네', '곱습네'), ('습늰다', '곱습늰다'), ('습니까', '곱습니까'), ('습니다', '곱습니다'), ('습디까', '곱습디까'), ('습디다', '곱습디다'), ('습딘다', '곱습딘다'), ('습죠', '곱습죠'), ('습지요', '곱습지요'), ('거라', '곱거라'), ('건대', '곱건대'), ('게', '곱게'), ('게끔', '곱게끔'), ('게나', '곱게나'), ('고는', '곱고는'), ('고서', '곱고서'), ('고야', '곱고야'), ('곤', '곱곤'), ('구려', '곱구려'), ('구먼', '곱구먼'), ('나', '곱나'), ('나니', '곱나니'), ('남', '곱남'), ('노니', '곱노니'), ('노라', '곱노라'), ('노라고', '곱노라고'), ('누나', '곱누나'), ('누먼', '곱누먼'), ('느라', '곱느라'), ('느라고', '곱느라고'), ('는구나', '곱는구나'), ('는구려', '곱는구려'), ('는군', '곱는군'), ('도록', '곱도록'), ('세나', '곱세나'), ('자', '곱자'), ('자고', '곱자고'), ('자꾸나', '곱자꾸나'), ('자느니', '곱자느니'), ('자니까', '곱자니까'), ('자마자', '곱자마자'), ('자며', '곱자며'), ('자면', '곱자면'), ('자면서', '곱자면서'), ('자손', '곱자손'), ('아다', '곱아다'), ('아다가', '곱아다가'), ('고자', '곱고자'), ('나이까', '곱나이까'), ('나이다', '곱나이다'), ('노라니', '곱노라니'), ('노라니까', '곱노라니까'), ('노라면', '곱노라면'), ('느냐', '곱느냐'), ('느냐고', '곱느냐고'), ('느뇨', '곱느뇨'), ('느니', '곱느니'), ('느니라', '곱느니라'), ('느니만', '곱느니만'), ('느니만치', '곱느니만치'), ('느니만큼', '곱느니만큼'), ('는', '곱는'), ('는가', '곱는가'), ('는감', '곱는감'), ('는걸', '곱는걸'), ('는고', '곱는고'), ('는데', '곱는데'), ('는뎁쇼', '곱는뎁쇼'), ('는바', '곱는바'), ('는지', '곱는지'), ('는지고', '곱는지고'), ('는지라', '곱는지라'), ('으라', '곱으라'), ('으라고', '곱으라고'), ('으라나', '곱으라나'), ('으라느니', '곱으라느니'), ('으라니까', '곱으라니까'), ('으라며', '곱으라며'), ('으라면서', '곱으라면서'), ('으라손', '곱으라손'), ('으락', '곱으락'), ('으란', '곱으란'), ('으람', '곱으람'), ('으랴', '곱으랴'), ('으러', '곱으러'), ('으려', '곱으려'), ('으려거든', '곱으려거든'), ('으려고', '곱으려고'), ('으려나', '곱으려나'), ('으려니', '곱으려니'), ('으려든', '곱으려든'), ('으려무나', '곱으려무나'), ('으련', '곱으련'), ('으렴', '곱으렴'), ('으렵니까', '곱으렵니까'), ('으렵니다', '곱으렵니다'), ('으마', '곱으마'), ('으사이다', '곱으사이다'), ('으세', '곱으세'), ('으시라', '곱으시라'), ('으시압', '곱으시압'), ('으십사', '곱으십사'), ('으십시다', '곱으십시다'), ('으십시오', '곱으십시오'), ('을거나', '곱을거나'), ('을게', '곱을게'), ('을깝쇼', '곱을깝쇼'), ('을라치면', '곱을라치면'), ('을락', '곱을락'), ('을래', '곱을래'), ('을작시면', '곱을작시면'), ('음세', '곱음세'), ('읍시다', '곱읍시다'), ('읍시사', '곱읍시사'), ('는다', '곱는다'), ('는다고', '곱는다고'), ('는다나', '곱는다나'), ('는다네', '곱는다네'), ('는다느니', '곱는다느니'), ('는다니', '곱는다니'), ('는다니까', '곱는다니까'), ('는다더라', '곱는다더라'), ('는다마는', '곱는다마는'), ('는다며', '곱는다며'), ('는다면', '곱는다면'), ('는다면서', '곱는다면서'), ('는다손', '곱는다손'), ('는다오', '곱는다오'), ('는다지', '곱는다지'), ('는단다', '곱는단다'), ('는담', '곱는담'), ('는답니까', '곱는답니까'), ('는답니다', '곱는답니다'), ('는답시고', '곱는답시고'), ('는대', '곱는대'), ('는대요', '곱는대요')], 'Descriptive Verb': [('거나', '곱거나'), ('거늘', '곱거늘'), ('거니', '곱거니'), ('거니와', '곱거니와'), ('거드면', '곱거드면'), ('거든', '곱거든'), ('건', '곱건'), ('건마는', '곱건마는'), ('것다', '곱것다'), ('게', '곱게'), ('겠', '곱겠'), ('고', '곱고'), ('고도', '곱고도'), ('고말고', '곱고말고'), ('관데', '곱관데'), ('기', '곱기'), ('기로', '곱기로'), ('기로니', '곱기로니'), ('기로서', '곱기로서'), ('기로서니', '곱기로서니'), ('기로선들', '곱기로선들'), ('기에', '곱기에'), ('네', '곱네'), ('니', '곱니'), ('다', '곱다'), ('다가', '곱다가'), ('다가는', '곱다가는'), ('다간', '곱다간'), ('다니', '곱다니'), ('다마다', '곱다마다'), ('더', '곱더'), ('더구나', '곱더구나'), ('더구려', '곱더구려'), ('더군', '곱더군'), ('더냐', '곱더냐'), ('더뇨', '곱더뇨'), ('더니', '곱더니'), ('더니라', '곱더니라'), ('더니마는', '곱더니마는'), ('더니만', '곱더니만'), ('더니이까', '곱더니이까'), ('더니이다', '곱더니이다'), ('더라', '곱더라'), ('더라나', '곱더라나'), ('더라니', '곱더라니'), ('더라니까', '곱더라니까'), ('더라도', '곱더라도'), ('더라며', '곱더라며'), ('더라면', '곱더라면'), ('더라면서', '곱더라면서'), ('더라손', '곱더라손'), ('더라지', '곱더라지'), ('더람', '곱더람'), ('더이까', '곱더이까'), ('더이다', '곱더이다'), ('던', '곱던'), ('던가', '곱던가'), ('던감', '곱던감'), ('던걸', '곱던걸'), ('던고', '곱던고'), ('던데', '곱던데'), ('던바', '곱던바'), ('던지', '곱던지'), ('데', '곱데'), ('데요', '곱데요'), ('도다', '곱도다'), ('되', '곱되'), ('든', '곱든'), ('든가', '곱든가'), ('든지', '곱든지'), ('듯', '곱듯'), ('듯이', '곱듯이'), ('소이까', '곱소이까'), ('죠', '곱죠'), ('지마는', '곱지마는'), ('지만', '곱지만'), ('지요', '곱지요'), ('게', '곱게'), ('고는', '곱고는'), ('누', '곱누'), ('디', '곱디'), ('소', '곱소'), ('지', '곱지'), ('아', '고와'), ('아도', '고와도'), ('아라', '고와라'), ('아서', '고와서'), ('아야', '고와야'), ('아야만', '고와야만'), ('아야지', '고와야지'), ('아요', '고와요'), ('아지이다', '고와지이다'), ('았', '고왔'), ('았었', '고왔었'), ('았자', '고왔자'), ('으나', '고우나'), ('으나마', '고우나마'), ('으니', '고우니'), ('으니까', '고우니까'), ('으니까는', '고우니까는'), ('으니만치', '고우니만치'), ('으니만큼', '고우니만큼'), ('으려니와', '고우려니와'), ('으려면', '고우려면'), ('으련마는', '고우련마는'), ('으렷다', '고우렷다'), ('으리', '고우리'), ('으리까', '고우리까'), ('으리니', '고우리니'), ('으리니라', '고우리니라'), ('으리다', '고우리다'), ('으리라', '고우리라'), ('으리로다', '고우리로다'), ('으리만치', '고우리만치'), ('으리만큼', '고우리만큼'), ('으리오', '고우리오'), ('으매', '고우매'), ('으며', '고우며'), ('으면', '고우면'), ('으면서', '고우면서'), ('으므로', '고우므로'), ('으사', '고우사'), ('으세요', '고우세요'), ('으셔요', '고우셔요'), ('으소서', '고우소서'), ('으시', '고우시'), ('으시어요', '고우시어요'), ('으오', '고우오'), ('으오니까', '고우오니까'), ('으오리까', '고우오리까'), ('으오리다', '고우오리다'), ('으오리이까', '고우오리이까'), ('으오리이다', '고우오리이다'), ('으오이다', '고우오이다'), ('으옵', '고우옵'), ('으옵나이까', '고우옵나이까'), ('으옵나이다', '고우옵나이다'), ('으옵니까', '고우옵니까'), ('으옵니다', '고우옵니다'), ('으옵디까', '고우옵디까'), ('으옵디다', '고우옵디다'), ('으옵소서', '고우옵소서'), ('으옵시', '고우옵시'), ('으와', '고우와'), ('으우', '고우우'), ('은', '고운'), ('은걸', '고운걸'), ('은들', '고운들'), ('은즉', '고운즉'), ('은즉슨', '고운즉슨'), ('을', '고울'), ('을걸', '고울걸'), ('을까', '고울까'), ('을는지', '고울는지'), ('을라', '고울라'), ('을라고', '고울라고'), ('을러니', '고울러니'), ('을러라', '고울러라'), ('을런가', '고울런가'), ('을런고', '고울런고'), ('을레', '고울레'), ('을레라', '고울레라'), ('을망정', '고울망정'), ('을밖에', '고울밖에'), ('을뿐더러', '고울뿐더러'), ('을새', '고울새'), ('을세', '고울세'), ('을세라', '고울세라'), ('을세말이지', '고울세말이지'), ('을수록', '고울수록'), ('을시', '고울시'), ('을쏘냐', '고울쏘냐'), ('을쏜가', '고울쏜가'), ('을지', '고울지'), ('을지나', '고울지나'), ('을지니', '고울지니'), ('을지니라', '고울지니라'), ('을지라', '고울지라'), ('을지라도', '고울지라도'), ('을지로다', '고울지로다'), ('을지며', '고울지며'), ('을지어다', '고울지어다'), ('을지언정', '고울지언정'), ('을진대', '고울진대'), ('을진대는', '고울진대는'), ('을진저', '고울진저'), ('음', '고움'), ('음에도', '고움에도'), ('음에랴', '고움에랴'), ('읍시오', '고웁시오'), ('습네', '곱습네'), ('습늰다', '곱습늰다'), ('습니까', '곱습니까'), ('습니다', '곱습니다'), ('습디까', '곱습디까'), ('습디다', '곱습디다'), ('습딘다', '곱습딘다'), ('습죠', '곱습죠'), ('습지요', '곱습지요'), ('구나', '곱구나'), ('구려', '곱구려'), ('군', '곱군'), ('다고', '곱다고'), ('다나', '곱다나'), ('다네', '곱다네'), ('다느니', '곱다느니'), ('다니', '곱다니'), ('다니까', '곱다니까'), ('다더라', '곱다더라'), ('다마는', '곱다마는'), ('다며', '곱다며'), ('다면', '곱다면'), ('다면서', '곱다면서'), ('다손', '곱다손'), ('다지', '곱다지'), ('단다', '곱단다'), ('담', '곱담'), ('답니까', '곱답니까'), ('답니다', '곱답니다'), ('답시고', '곱답시고'), ('대', '곱대'), ('대요', '곱대요'), ('디', '곱디'), ('우', '곱우'), ('으냐', '고우냐'), ('으냐고', '고우냐고'), ('으뇨', '고우뇨'), ('으니', '고우니'), ('으니라', '고우니라'), ('으이', '고우이'), ('은가', '고운가'), ('은감', '고운감'), ('은고', '고운고'), ('은데', '고운데'), ('은뎁쇼', '고운뎁쇼'), ('은지', '고운지'), ('을데라니', '고울데라니'), ('을시고', '고울시고')]}
+{'Action Verb': [('거나', '곱거나'), ('거늘', '곱거늘'), ('거니', '곱거니'), ('거니와', '곱거니와'), ('거드면', '곱거드면'), ('거든', '곱거든'), ('건', '곱건'), ('건마는', '곱건마는'), ('것다', '곱것다'), ('게', '곱게'), ('겠', '곱겠'), ('고', '곱고'), ('고도', '곱고도'), ('고말고', '곱고말고'), ('관데', '곱관데'), ('기', '곱기'), ('기로', '곱기로'), ('기로니', '곱기로니'), ('기로서', '곱기로서'), ('기로서니', '곱기로서니'), ('기로선들', '곱기로선들'), ('기에', '곱기에'), ('네', '곱네'), ('니', '곱니'), ('다', '곱다'), ('다가', '곱다가'), ('다가는', '곱다가는'), ('다간', '곱다간'), ('다니', '곱다니'), ('다마다', '곱다마다'), ('더', '곱더'), ('더구나', '곱더구나'), ('더구려', '곱더구려'), ('더군', '곱더군'), ('더냐', '곱더냐'), ('더뇨', '곱더뇨'), ('더니', '곱더니'), ('더니라', '곱더니라'), ('더니마는', '곱더니마는'), ('더니만', '곱더니만'), ('더니이까', '곱더니이까'), ('더니이다', '곱더니이다'), ('더라', '곱더라'), ('더라나', '곱더라나'), ('더라니', '곱더라니'), ('더라니까', '곱더라니까'), ('더라도', '곱더라도'), ('더라며', '곱더라며'), ('더라면', '곱더라면'), ('더라면서', '곱더라면서'), ('더라손', '곱더라손'), ('더라지', '곱더라지'), ('더람', '곱더람'), ('더이까', '곱더이까'), ('더이다', '곱더이다'), ('던', '곱던'), ('던가', '곱던가'), ('던감', '곱던감'), ('던걸', '곱던걸'), ('던고', '곱던고'), ('던데', '곱던데'), ('던바', '곱던바'), ('던지', '곱던지'), ('데', '곱데'), ('데요', '곱데요'), ('도다', '곱도다'), ('되', '곱되'), ('든', '곱든'), ('든가', '곱든가'), ('든지', '곱든지'), ('듯', '곱듯'), ('듯이', '곱듯이'), ('소이까', '곱소이까'), ('죠', '곱죠'), ('지마는', '곱지마는'), ('지만', '곱지만'), ('지요', '곱지요'), ('게', '곱게'), ('고는', '곱고는'), ('누', '곱누'), ('디', '곱디'), ('소', '곱소'), ('지', '곱지'), ('아', '곱아'), ('아도', '곱아도'), ('아라', '곱아라'), ('아서', '곱아서'), ('아야', '곱아야'), ('아야만', '곱아야만'), ('아야지', '곱아야지'), ('아요', '곱아요'), ('아지이다', '곱아지이다'), ('았', '곱았'), ('았었', '곱았었'), ('았자', '곱았자'), ('으나', '곱으나'), ('으나마', '곱으나마'), ('으니', '곱으니'), ('으니까', '곱으니까'), ('으니까는', '곱으니까는'), ('으니만치', '곱으니만치'), ('으니만큼', '곱으니만큼'), ('으려니와', '곱으려니와'), ('으려면', '곱으려면'), ('으련마는', '곱으련마는'), ('으렷다', '곱으렷다'), ('으리', '곱으리'), ('으리까', '곱으리까'), ('으리니', '곱으리니'), ('으리니라', '곱으리니라'), ('으리다', '곱으리다'), ('으리라', '곱으리라'), ('으리로다', '곱으리로다'), ('으리만치', '곱으리만치'), ('으리만큼', '곱으리만큼'), ('으리오', '곱으리오'), ('으매', '곱으매'), ('으며', '곱으며'), ('으면', '곱으면'), ('으면서', '곱으면서'), ('으므로', '곱으므로'), ('으사', '곱으사'), ('으세요', '곱으세요'), ('으셔요', '곱으셔요'), ('으소서', '곱으소서'), ('으시', '곱으시'), ('으시어요', '곱으시어요'), ('으오', '곱으오'), ('으오니까', '곱으오니까'), ('으오리까', '곱으오리까'), ('으오리다', '곱으오리다'), ('으오리이까', '곱으오리이까'), ('으오리이다', '곱으오리이다'), ('으오이다', '곱으오이다'), ('으옵', '곱으옵'), ('으옵나이까', '곱으옵나이까'), ('으옵나이다', '곱으옵나이다'), ('으옵니까', '곱으옵니까'), ('으옵니다', '곱으옵니다'), ('으옵디까', '곱으옵디까'), ('으옵디다', '곱으옵디다'), ('으옵소서', '곱으옵소서'), ('으옵시', '곱으옵시'), ('으와', '곱으와'), ('으우', '곱으우'), ('은', '곱은'), ('은걸', '곱은걸'), ('은들', '곱은들'), ('은즉', '곱은즉'), ('은즉슨', '곱은즉슨'), ('을', '곱을'), ('을걸', '곱을걸'), ('을까', '곱을까'), ('을는지', '곱을는지'), ('을라', '곱을라'), ('을라고', '곱을라고'), ('을러니', '곱을러니'), ('을러라', '곱을러라'), ('을런가', '곱을런가'), ('을런고', '곱을런고'), ('을레', '곱을레'), ('을레라', '곱을레라'), ('을망정', '곱을망정'), ('을밖에', '곱을밖에'), ('을뿐더러', '곱을뿐더러'), ('을새', '곱을새'), ('을세', '곱을세'), ('을세라', '곱을세라'), ('을세말이지', '곱을세말이지'), ('을수록', '곱을수록'), ('을시', '곱을시'), ('을쏘냐', '곱을쏘냐'), ('을쏜가', '곱을쏜가'), ('을지', '곱을지'), ('을지나', '곱을지나'), ('을지니', '곱을지니'), ('을지니라', '곱을지니라'), ('을지라', '곱을지라'), ('을지라도', '곱을지라도'), ('을지로다', '곱을지로다'), ('을지며', '곱을지며'), ('을지어다', '곱을지어다'), ('을지언정', '곱을지언정'), ('을진대', '곱을진대'), ('을진대는', '곱을진대는'), ('을진저', '곱을진저'), ('음', '곱음'), ('음에도', '곱음에도'), ('음에랴', '곱음에랴'), ('읍시오', '곱읍시오'), ('습네', '곱습네'), ('습늰다', '곱습늰다'), ('습니까', '곱습니까'), ('습니다', '곱습니다'), ('습디까', '곱습디까'), ('습디다', '곱습디다'), ('습딘다', '곱습딘다'), ('습죠', '곱습죠'), ('습지요', '곱습지요'), ('거라', '곱거라'), ('건대', '곱건대'), ('게', '곱게'), ('게끔', '곱게끔'), ('게나', '곱게나'), ('고는', '곱고는'), ('고서', '곱고서'), ('고야', '곱고야'), ('곤', '곱곤'), ('구려', '곱구려'), ('구먼', '곱구먼'), ('나', '곱나'), ('나니', '곱나니'), ('남', '곱남'), ('노니', '곱노니'), ('노라', '곱노라'), ('노라고', '곱노라고'), ('누나', '곱누나'), ('누먼', '곱누먼'), ('느라', '곱느라'), ('느라고', '곱느라고'), ('는구나', '곱는구나'), ('는구려', '곱는구려'), ('는군', '곱는군'), ('도록', '곱도록'), ('세나', '곱세나'), ('자', '곱자'), ('자고', '곱자고'), ('자꾸나', '곱자꾸나'), ('자느니', '곱자느니'), ('자니까', '곱자니까'), ('자마자', '곱자마자'), ('자며', '곱자며'), ('자면', '곱자면'), ('자면서', '곱자면서'), ('자손', '곱자손'), ('아다', '곱아다'), ('아다가', '곱아다가'), ('고자', '곱고자'), ('나이까', '곱나이까'), ('나이다', '곱나이다'), ('노라니', '곱노라니'), ('노라니까', '곱노라니까'), ('노라면', '곱노라면'), ('느냐', '곱느냐'), ('느냐고', '곱느냐고'), ('느뇨', '곱느뇨'), ('느니', '곱느니'), ('느니라', '곱느니라'), ('느니만', '곱느니만'), ('느니만치', '곱느니만치'), ('느니만큼', '곱느니만큼'), ('는', '곱는'), ('는가', '곱는가'), ('는감', '곱는감'), ('는걸', '곱는걸'), ('는고', '곱는고'), ('는데', '곱는데'), ('는뎁쇼', '곱는뎁쇼'), ('는바', '곱는바'), ('는지', '곱는지'), ('는지고', '곱는지고'), ('는지라', '곱는지라'), ('으라', '곱으라'), ('으라고', '곱으라고'), ('으라나', '곱으라나'), ('으라느니', '곱으라느니'), ('으라니까', '곱으라니까'), ('으라며', '곱으라며'), ('으라면서', '곱으라면서'), ('으라손', '곱으라손'), ('으락', '곱으락'), ('으란', '곱으란'), ('으람', '곱으람'), ('으랴', '곱으랴'), ('으러', '곱으러'), ('으려', '곱으려'), ('으려거든', '곱으려거든'), ('으려고', '곱으려고'), ('으려나', '곱으려나'), ('으려니', '곱으려니'), ('으려든', '곱으려든'), ('으려무나', '곱으려무나'), ('으련', '곱으련'), ('으렴', '곱으렴'), ('으렵니까', '곱으렵니까'), ('으렵니다', '곱으렵니다'), ('으마', '곱으마'), ('으사이다', '곱으사이다'), ('으세', '곱으세'), ('으시라', '곱으시라'), ('으시압', '곱으시압'), ('으십사', '곱으십사'), ('으십시다', '곱으십시다'), ('으십시오', '곱으십시오'), ('을거나', '곱을거나'), ('을게', '곱을게'), ('을깝쇼', '곱을깝쇼'), ('을라치면', '곱을라치면'), ('을락', '곱을락'), ('을래', '곱을래'), ('을작시면', '곱을작시면'), ('음세', '곱음세'), ('읍시다', '곱읍시다'), ('읍시사', '곱읍시사'), ('는다', '곱는다'), ('는다고', '곱는다고'), ('는다나', '곱는다나'), ('는다네', '곱는다네'), ('는다느니', '곱는다느니'), ('는다니', '곱는다니'), ('는다니까', '곱는다니까'), ('는다더라', '곱는다더라'), ('는다마는', '곱는다마는'), ('는다며', '곱는다며'), ('는다면', '곱는다면'), ('는다면서', '곱는다면서'), ('는다손', '곱는다손'), ('는다오', '곱는다오'), ('는다지', '곱는다지'), ('는단다', '곱는단다'), ('는담', '곱는담'), ('는답니까', '곱는답니까'), ('는답니다', '곱는답니다'), ('는답시고', '곱는답시고'), ('는대', '곱는대'), ('는대요', '곱는대요')], 'Descriptive Verb': [('거나', '곱거나'), ('거늘', '곱거늘'), ('거니', '곱거니'), ('거니와', '곱거니와'), ('거드면', '곱거드면'), ('거든', '곱거든'), ('건', '곱건'), ('건마는', '곱건마는'), ('것다', '곱것다'), ('게', '곱게'), ('겠', '곱겠'), ('고', '곱고'), ('고도', '곱고도'), ('고말고', '곱고말고'), ('관데', '곱관데'), ('기', '곱기'), ('기로', '곱기로'), ('기로니', '곱기로니'), ('기로서', '곱기로서'), ('기로서니', '곱기로서니'), ('기로선들', '곱기로선들'), ('기에', '곱기에'), ('네', '곱네'), ('니', '곱니'), ('다', '곱다'), ('다가', '곱다가'), ('다가는', '곱다가는'), ('다간', '곱다간'), ('다니', '곱다니'), ('다마다', '곱다마다'), ('더', '곱더'), ('더구나', '곱더구나'), ('더구려', '곱더구려'), ('더군', '곱더군'), ('더냐', '곱더냐'), ('더뇨', '곱더뇨'), ('더니', '곱더니'), ('더니라', '곱더니라'), ('더니마는', '곱더니마는'), ('더니만', '곱더니만'), ('더니이까', '곱더니이까'), ('더니이다', '곱더니이다'), ('더라', '곱더라'), ('더라나', '곱더라나'), ('더라니', '곱더라니'), ('더라니까', '곱더라니까'), ('더라도', '곱더라도'), ('더라며', '곱더라며'), ('더라면', '곱더라면'), ('더라면서', '곱더라면서'), ('더라손', '곱더라손'), ('더라지', '곱더라지'), ('더람', '곱더람'), ('더이까', '곱더이까'), ('더이다', '곱더이다'), ('던', '곱던'), ('던가', '곱던가'), ('던감', '곱던감'), ('던걸', '곱던걸'), ('던고', '곱던고'), ('던데', '곱던데'), ('던바', '곱던바'), ('던지', '곱던지'), ('데', '곱데'), ('데요', '곱데요'), ('도다', '곱도다'), ('되', '곱되'), ('든', '곱든'), ('든가', '곱든가'), ('든지', '곱든지'), ('듯', '곱듯'), ('듯이', '곱듯이'), ('소이까', '곱소이까'), ('죠', '곱죠'), ('지마는', '곱지마는'), ('지만', '곱지만'), ('지요', '곱지요'), ('게', '곱게'), ('고는', '곱고는'), ('누', '곱누'), ('디', '곱디'), ('소', '곱소'), ('지', '곱지'), ('아', '고와'), ('아도', '고와도'), ('아라', '고와라'), ('아서', '고와서'), ('아야', '고와야'), ('아야만', '고와야만'), ('아야지', '고와야지'), ('아요', '고와요'), ('아지이다', '고와지이다'), ('았', '고왔'), ('았었', '고왔었'), ('았자', '고왔자'), ('으나', '고우나'), ('으나마', '고우나마'), ('으니', '고우니'), ('으니까', '고우니까'), ('으니까는', '고우니까는'), ('으니만치', '고우니만치'), ('으니만큼', '고우니만큼'), ('으려니와', '고우려니와'), ('으려면', '고우려면'), ('으련마는', '고우련마는'), ('으렷다', '고우렷다'), ('으리', '고우리'), ('으리까', '고우리까'), ('으리니', '고우리니'), ('으리니라', '고우리니라'), ('으리다', '고우리다'), ('으리라', '고우리라'), ('으리로다', '고우리로다'), ('으리만치', '고우리만치'), ('으리만큼', '고우리만큼'), ('으리오', '고우리오'), ('으매', '고우매'), ('으며', '고우며'), ('으면', '고우면'), ('으면서', '고우면서'), ('으므로', '고우므로'), ('으사', '고우사'), ('으세요', '고우세요'), ('으셔요', '고우셔요'), ('으소서', '고우소서'), ('으시', '고우시'), ('으시어요', '고우시어요'), ('으오', '고우오'), ('으오니까', '고우오니까'), ('으오리까', '고우오리까'), ('으오리다', '고우오리다'), ('으오리이까', '고우오리이까'), ('으오리이다', '고우오리이다'), ('으오이다', '고우오이다'), ('으옵', '고우옵'), ('으옵나이까', '고우옵나이까'), ('으옵나이다', '고우옵나이다'), ('으옵니까', '고우옵니까'), ('으옵니다', '고우옵니다'), ('으옵디까', '고우옵디까'), ('으옵디다', '고우옵디다'), ('으옵소서', '고우옵소서'), ('으옵시', '고우옵시'), ('으와', '고우와'), ('으우', '고우우'), ('은', '고운'), ('은걸', '고운걸'), ('은들', '고운들'), ('은즉', '고운즉'), ('은즉슨', '고운즉슨'), ('을', '고울'), ('을걸', '고울걸'), ('을까', '고울까'), ('을는지', '고울는지'), ('을라', '고울라'), ('을라고', '고울라고'), ('을러니', '고울러니'), ('을러라', '고울러라'), ('을런가', '고울런가'), ('을런고', '고울런고'), ('을레', '고울레'), ('을레라', '고울레라'), ('을망정', '고울망정'), ('을밖에', '고울밖에'), ('을뿐더러', '고울뿐더러'), ('을새', '고울새'), ('을세', '고울세'), ('을세라', '고울세라'), ('을세말이지', '고울세말이지'), ('을수록', '고울수록'), ('을시', '고울시'), ('을쏘냐', '고울쏘냐'), ('을쏜가', '고울쏜가'), ('을지', '고울지'), ('을지나', '고울지나'), ('을지니', '고울지니'), ('을지니라', '고울지니라'), ('을지라', '고울지라'), ('을지라도', '고울지라도'), ('을지로다', '고울지로다'), ('을지며', '고울지며'), ('을지어다', '고울지어다'), ('을지언정', '고울지언정'), ('을진대', '고울진대'), ('을진대는', '고울진대는'), ('을진저', '고울진저'), ('음', '고움'), ('음에도', '고움에도'), ('음에랴', '고움에랴'), ('읍시오', '고웁시오'), ('습네', '곱습네'), ('습늰다', '곱습늰다'), ('습니까', '곱습니까'), ('습니다', '곱습니다'), ('습디까', '곱습디까'), ('습디다', '곱습디다'), ('습딘다', '곱습딘다'), ('습죠', '곱습죠'), ('습지요', '곱습지요'), ('구나', '곱구나'), ('구려', '곱구려'), ('군', '곱군'), ('다고', '곱다고'), ('다나', '곱다나'), ('다네', '곱다네'), ('다느니', '곱다느니'), ('다니', '곱다니'), ('다니까', '곱다니까'), ('다더라', '곱다더라'), ('다마는', '곱다마는'), ('다며', '곱다며'), ('다면', '곱다면'), ('다면서', '곱다면서'), ('다손', '곱다손'), ('다지', '곱다지'), ('단다', '곱단다'), ('담', '곱담'), ('답니까', '곱답니까'), ('답니다', '곱답니다'), ('답시고', '곱답시고'), ('대', '곱대'), ('대요', '곱대요'), ('디', '곱디'), ('우', '곱우'), ('으냐', '고우냐'), ('으냐고', '고우냐고'), ('으뇨', '고우뇨'), ('으니', '고우니'), ('으니라', '고우니라'), ('으이', '고우이'), ('은가', '고운가'), ('은감', '고운감'), ('은고', '고운고'), ('은데', '고운데'), ('은뎁쇼', '고운뎁쇼'), ('은지', '고운지'), ('을데라니', '고울데라니'), ('을시고', '고울시고')]}
 ```
 
 References:
@@ -787,33 +787,33 @@ References:
 Anonymize sensitive information in the given text.
 
 Args:
-- text (Union[str, List[str], Tuple[str]): single text or list of texts
-- phone_number_anonymization (bool): whether to anonymize phone numbers or not
-- rrn_anonymization (bool): whether to anonymize resident registration numbers or not
-- card_anonymization (bool): whether to anonymize card numbers or not
-- email_anonymization (bool): whether to anonymize email addresses or not
-- back_account_anonymization (bool): whether to anonymize bank account numbers or not
-- credit_card_anonymization (bool): whether to anonymize credit card numbers or not
-- zip_anonymization (bool): whether to anonymize zip codes or not
-- bitcoin_anonymization (bool): whether to anonymize bitcoin addresses or not
-- url_anonymization (bool): whether to anonymize URLs or not
-- ip_v6_anonymization (bool): whether to anonymize IPv6 addresses or not
-- ip_v4_anonymization (bool): whether to anonymize IPv4 addresses or not
-- phone_number_replacement (str): the replacement string for phone numbers, default is "<PHONE_NUMBER>"
-- rrn_replacement (str): the replacement string for resident registration numbers, default is "<RRN>"
-- card_replacement (str): the replacement string for card numbers, default is "<CARD>"
-- email_replacement (str): the replacement string for email addresses, default is "<EMAIL>"
-- back_account_replacement (str): the replacement string for bank account numbers, default is "<BANK_ACCOUNT>"
-- credit_card_replacement (str): the replacement string for credit card numbers, default is "<CREDIT_CARD>"
-- zip_replacement (str): the replacement string for zip codes, default is "<ZIP>"
-- bitcoin_replacement (str): the replacement string for bitcoin addresses, default is "<BITCOIN>"
-- url_replacement (str): the replacement string for URLs, default is "<URL>"
-- ip_v6_replacement (str): the replacement string for IPv6 addresses, default is "<IPV6>"
-- ip_v4_replacement (str): the replacement string for IPv4 addresses, default is "<IPV4>"
-- num_workers (Union[int, str]): the number of multiprocessing workers
+- text (`Union[str, List[str], Tuple[str]`): single text or list of texts
+- phone_number_anonymization (`bool`): whether to anonymize phone numbers or not
+- rrn_anonymization (`bool`): whether to anonymize resident registration numbers or not
+- card_anonymization (`bool`): whether to anonymize card numbers or not
+- email_anonymization (`bool`): whether to anonymize email addresses or not
+- back_account_anonymization (`bool`): whether to anonymize bank account numbers or not
+- credit_card_anonymization (`bool`): whether to anonymize credit card numbers or not
+- zip_anonymization (`bool`): whether to anonymize zip codes or not
+- bitcoin_anonymization (`bool`): whether to anonymize bitcoin addresses or not
+- url_anonymization (`bool`): whether to anonymize URLs or not
+- ip_v6_anonymization (`bool`): whether to anonymize IPv6 addresses or not
+- ip_v4_anonymization (`bool`): whether to anonymize IPv4 addresses or not
+- phone_number_replacement (`str`): the replacement string for phone numbers, default is "<PHONE_NUMBER>"
+- rrn_replacement (`str`): the replacement string for resident registration numbers, default is "<RRN>"
+- card_replacement (`str`): the replacement string for card numbers, default is "<CARD>"
+- email_replacement (`str`): the replacement string for email addresses, default is "<EMAIL>"
+- back_account_replacement (`str`): the replacement string for bank account numbers, default is "<BANK_ACCOUNT>"
+- credit_card_replacement (`str`): the replacement string for credit card numbers, default is "<CREDIT_CARD>"
+- zip_replacement (`str`): the replacement string for zip codes, default is "<ZIP>"
+- bitcoin_replacement (`str`): the replacement string for bitcoin addresses, default is "<BITCOIN>"
+- url_replacement (`str`): the replacement string for URLs, default is "<URL>"
+- ip_v6_replacement (`str`): the replacement string for IPv6 addresses, default is "<IPV6>"
+- ip_v4_replacement (`str`): the replacement string for IPv4 addresses, default is "<IPV4>"
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
 
 Returns:
-- Union[str, List[str], Tuple[str]]: anonymized text or list of anonymized texts
+- `Union[str, List[str], Tuple[str]]`: anonymized text or list of anonymized texts
 
 Examples:
 ```python
@@ -831,15 +831,15 @@ Examples:
 Clean news articles by removing useless headers and footers.
 
 Args:
-- text (Union[str, List[str], Tuple[str]]): Input text or list of texts.
-- min_sentences (int, optional): Minimum number of sentences to keep. Defaults to 3.
-- header_ratio (float, optional): Ratio of the number of sentences to check in the header. Defaults to 0.4.
-- footer_ratio (float, optional): Ratio of the number of sentences to check in the footer. Defaults to 0.4.
-- num_workers (Union[int, str]): the number of multiprocessing workers
-- verbose (bool): whether to print verbose outputs or not
+- text (`Union[str, List[str], Tuple[str]]`): Input text or list of texts.
+- min_sentences (`int`): Minimum number of sentences to keep. Defaults to 3.
+- header_ratio (`float`): Ratio of the number of sentences to check in the header. Defaults to 0.4.
+- footer_ratio (`float`): Ratio of the number of sentences to check in the footer. Defaults to 0.4.
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
+- verbose (`bool`): whether to print verbose outputs or not
 
 Returns:
-- Union[str, List[str]]: Cleaned text or list of cleaned texts.
+- `Union[str, List[str]]`: Cleaned text or list of cleaned texts.
 
 Examples:
 ```python
@@ -858,11 +858,11 @@ Examples:
 This checks if the given text is in completed form.
 
 Args:
-- text (Union[str, List[str], Tuple[str]): single text or list of texts
-- num_workers (Union[int, str]): the number of multiprocessing workers
+- text (`Union[str, List[str], Tuple[str]`): single text or list of texts
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
 
 Returns:
-- Union[bool, List[bool]]: whether the given text is in completed form or not
+- `Union[bool, List[bool]]`: whether the given text is in completed form or not
 
 Examples:
 ```python
@@ -885,7 +885,7 @@ False
 This returns all non-completed form Hangul characters.
 
 Returns:
-        List[str]: all non-completed form Hangul characters
+- `List[str]`: all non-completed form Hangul characters
 
 Examples:
 ```python
@@ -903,7 +903,7 @@ Examples:
 This returns all non-completed form Hangul characters.
 
 Returns:
-- List[str]: all non-completed form Hangul characters
+- `List[str]`: all non-completed form Hangul characters
 
 Examples:
 ```python
@@ -921,51 +921,51 @@ Examples:
 This filters out bad text based on various conditions.
 
 Args:
-- text (Union[str, List[str], Tuple[str]]): single text or list of texts
-- min_length (int): minimum length of text
-- max_length (int): maximum length of text
-- min_mean_words_length (int): minimum mean words length
-- max_mean_words_length (int): maximum mean words length
-- min_words (int): minimum number of words
-- max_words (int): maximum number of words
-- min_lines (int): minimum number of lines
-- max_lines (int): maximum number of lines
-- min_paragraphs (int): minimum number of paragraphs
-- max_paragraphs (int): maximum number of paragraphs
-- min_alphabet_ratio (float): minimum alphabet ratio
-- max_alphabet_ratio (float): maximum alphabet ratio
-- min_alphanumeric_ratio (float): minimum alphanumeric ratio
-- max_alphanumeric_ratio (float): maximum alphanumeric ratio
-- min_number_ratio (float): minimum number ratio
-- max_number_ratio (float): maximum number ratio
-- min_punctuation_ratio (float): minimum punctuation ratio
-- max_punctuation_ratio (float): maximum punctuation ratio
-- min_symbols_to_words_ratio (float): minimum symbols to words ratio
-- max_symbols_to_words_ratio (float): maximum symbols to words ratio
-- min_lines_started_with_bullets_ratio (float): minimum lines started with bullets ratio
-- max_lines_started_with_bullets_ratio (float): maximum lines started with bullets ratio
-- min_whitespace_ratio (float): minimum whitespace ratio
-- max_whitespace_ratio (float): maximum whitespace ratio
-- min_parenthesis_ratio (float): minimum parenthesis ratio
-- max_parenthesis_ratio (float): maximum parenthesis ratio
-- min_ellipsis_ratio (float): minimum ellipsis ratio
-- max_ellipsis_ratio (float): maximum ellipsis ratio
-- min_hangul_ratio (float): minimum hangul ratio
-- max_hangul_ratio (float): maximum hangul ratio
-- max_words_length (int): maximum words length
-- max_line_repeats (int): maximum line repeats
-- max_line_by_char_repeats (int): maximum line by char repeats
-- max_paragraph_repeats (int): maximum paragraph repeats
-- max_paragraph_by_char_repeats (int): maximum paragraph by char repeats
-- max_repeating_top_ngram_repeats_score (float): maximum repeating top ngram repeats score
-- max_repeating_duplicate_ngrams_score (float): maximum repeating duplicate ngrams score
-- ngram_size_for_repeating_top_ngram_repeats (int): ngram size for repeating top ngram repeats
-- ngram_size_for_repeating_duplicate_ngrams (int): ngram size for repeating duplicate ngrams
-- max_hangul_incompleted_form_ratio (float): maximum hangul non completed form ratio
-- num_workers (Union[int, str]): the number of multiprocessing workers
+- text (`Union[str, List[str], Tuple[str]]`): single text or list of texts
+- min_length (`int`): minimum length of text
+- max_length (`int`): maximum length of text
+- min_mean_words_length (`int`): minimum mean words length
+- max_mean_words_length (`int`): maximum mean words length
+- min_words (`int`): minimum number of words
+- max_words (`int`): maximum number of words
+- min_lines (`int`): minimum number of lines
+- max_lines (`int`): maximum number of lines
+- min_paragraphs (`int`): minimum number of paragraphs
+- max_paragraphs (`int`): maximum number of paragraphs
+- min_alphabet_ratio (`float`): minimum alphabet ratio
+- max_alphabet_ratio (`float`): maximum alphabet ratio
+- min_alphanumeric_ratio (`float`): minimum alphanumeric ratio
+- max_alphanumeric_ratio (`float`): maximum alphanumeric ratio
+- min_number_ratio (`float`): minimum number ratio
+- max_number_ratio (`float`): maximum number ratio
+- min_punctuation_ratio (`float`): minimum punctuation ratio
+- max_punctuation_ratio (`float`): maximum punctuation ratio
+- min_symbols_to_words_ratio (`float`): minimum symbols to words ratio
+- max_symbols_to_words_ratio (`float`): maximum symbols to words ratio
+- min_lines_started_with_bullets_ratio (`float`): minimum lines started with bullets ratio
+- max_lines_started_with_bullets_ratio (`float`): maximum lines started with bullets ratio
+- min_whitespace_ratio (`float`): minimum whitespace ratio
+- max_whitespace_ratio (`float`): maximum whitespace ratio
+- min_parenthesis_ratio (`float`): minimum parenthesis ratio
+- max_parenthesis_ratio (`float`): maximum parenthesis ratio
+- min_ellipsis_ratio (`float`): minimum ellipsis ratio
+- max_ellipsis_ratio (`float`): maximum ellipsis ratio
+- min_hangul_ratio (`float`): minimum hangul ratio
+- max_hangul_ratio (`float`): maximum hangul ratio
+- max_words_length (`int`): maximum words length
+- max_line_repeats (`int`): maximum line repeats
+- max_line_by_char_repeats (`int`): maximum line by char repeats
+- max_paragraph_repeats (`int`): maximum paragraph repeats
+- max_paragraph_by_char_repeats (`int`): maximum paragraph by char repeats
+- max_repeating_top_ngram_repeats_score (`float`): maximum repeating top ngram repeats score
+- max_repeating_duplicate_ngrams_score (`float`): maximum repeating duplicate ngrams score
+- ngram_size_for_repeating_top_ngram_repeats (`int`): ngram size for repeating top ngram repeats
+- ngram_size_for_repeating_duplicate_ngrams (`int`): ngram size for repeating duplicate ngrams
+- max_hangul_incompleted_form_ratio (`float`): maximum hangul non completed form ratio
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
 
 Returns:
-- Union[Tuple[bool, Dict[str, Any]], List[Tuple[bool, Dict[str, Any]]]]: filtered out text or list of filtered out texts
+- `Union[Tuple[bool, Dict[str, Any]], List[Tuple[bool, Dict[str, Any]]]]`: filtered out text or list of filtered out texts
 </details>
 
 <details>
@@ -974,11 +974,11 @@ Returns:
 This converts half-width characters to full-width characters.
 
 Args:
-- text (Union[str, List[str], Tuple[str]]): single text or list of texts
-- num_workers (Union[int, str]): the number of multiprocessing workers
+- text (`Union[str, List[str], Tuple[str]]`): single text or list of texts
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
 
 Returns:
-- Union[str, List[str]]: converted text or list of converted texts
+- `Union[str, List[str]]`: converted text or list of converted texts
 
 Examples:
 ```python
@@ -996,20 +996,20 @@ Examples:
 This normalizes text with various options.
 
 Args:
-- text (Union[str, List[str], Tuple[str]]): single text or list of texts
-- normalization_type (Optional[str]): normalization type
-- allow_doubled_spaces (bool): whether to allow doubled spaces or not
-- allow_html_tags (bool): whether to allow HTML tags or not
-- allow_html_escape (bool): whether to allow HTML unescape or not
-- allow_halfwidth_hangul (bool): whether to allow halfwidth Hangul or not
-- allow_hangul_jamo (bool): whether to allow Hangul jamo or not
-- allow_invisible_chars (bool): whether to allow invisible characters or not
-- reduce_char_repeats_over (int): the maximum number of character that can be repeated
-- reduce_emoticon_repeats_over (int): the maximum number of emoticon that can be repeated
-- num_workers (Union[int, str]): the number of multiprocessing workers
+- text (`Union[str, List[str], Tuple[str]]`): single text or list of texts
+- normalization_type (`Optional[str]`): normalization type
+- allow_doubled_spaces (`bool`): whether to allow doubled spaces or not
+- allow_html_tags (`bool`): whether to allow HTML tags or not
+- allow_html_escape (`bool`): whether to allow HTML unescape or not
+- allow_halfwidth_hangul (`bool`): whether to allow halfwidth Hangul or not
+- allow_hangul_jamo (`bool`): whether to allow Hangul jamo or not
+- allow_invisible_chars (`bool`): whether to allow invisible characters or not
+- reduce_char_repeats_over (`int`): the maximum number of character that can be repeated
+- reduce_emoticon_repeats_over (`int`): the maximum number of emoticon that can be repeated
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
 
 Returns:
-- Union[str, List[str]]: normalized text or list of normalized texts
+- `Union[str, List[str]]`: normalized text or list of normalized texts
 
 Examples:
 ```python
@@ -1028,82 +1028,82 @@ This preprocesses text with various options.
 This does 1) normalization, 2) filtering out, and 3) anonymization in order.
 
 Args:
-- text (Union[str, List[str], Tuple[str]]): single text or list of texts
-- normalization_type (Optional[str]): normalization type
-- allow_doubled_spaces (bool): whether to allow doubled spaces or not
-- allow_html_tags (bool): whether to allow HTML tags or not
-- allow_html_escape (bool): whether to allow HTML escape or not
-- allow_halfwidth_hangul (bool): whether to allow halfwidth Hangul or not
-- allow_hangul_jamo (bool): whether to allow Hangul jamo or not
-- allow_invisible_chars (bool): whether to allow invisible characters or not
-- reduce_char_repeats_over (int): the maximum number of character that can be repeated
-- reduce_emoticon_repeats_over (int): the maximum number of emoticon that can be repeated
-- min_length (int): minimum length of text
-- max_length (int): maximum length of text
-- min_mean_words_length (int): minimum mean words length
-- max_mean_words_length (int): maximum mean words length
-- min_words (int): minimum number of words
-- max_words (int): maximum number of words
-- min_lines (int): minimum number of lines
-- max_lines (int): maximum number of lines
-- min_paragraphs (int): minimum number of paragraphs
-- max_paragraphs (int): maximum number of paragraphs
-- min_alphabet_ratio (float): minimum alphabet ratio
-- max_alphabet_ratio (float): maximum alphabet ratio
-- min_alphanumeric_ratio (float): minimum alphanumeric ratio
-- max_alphanumeric_ratio (float): maximum alphanumeric ratio
-- min_number_ratio (float): minimum number ratio
-- max_number_ratio (float): maximum number ratio
-- min_punctuation_ratio (float): minimum punctuation ratio
-- max_punctuation_ratio (float): maximum punctuation ratio
-- min_symbols_to_words_ratio (float): minimum symbols to words ratio
-- max_symbols_to_words_ratio (float): maximum symbols to words ratio
-- min_lines_started_with_bullets_ratio (float): minimum lines started with bullets ratio
-- max_lines_started_with_bullets_ratio (float): maximum lines started with bullets ratio
-- min_whitespace_ratio (float): minimum whitespace ratio
-- max_whitespace_ratio (float): maximum whitespace ratio
-- min_parenthesis_ratio (float): minimum parenthesis ratio
-- max_parenthesis_ratio (float): maximum parenthesis ratio
-- min_ellipsis_ratio (float): minimum ellipsis ratio
-- max_ellipsis_ratio (float): maximum ellipsis ratio
-- min_hangul_ratio (float): minimum Hangul ratio
-- max_hangul_ratio (float): maximum Hangul ratio
-- max_hangul_incompleted_form_ratio (float): maximum Hangul non-completed form ratio
-- max_words_length (int): maximum words length
-- max_line_repeats (int): maximum line repeats
-- max_line_by_char_repeats (int): maximum line by char repeats
-- max_paragraph_repeats (int): maximum paragraph repeats
-- max_paragraph_by_char_repeats (int): maximum paragraph by char repeats
-- max_repeating_top_ngram_repeats_score (float): maximum repeating top ngram repeats score
-- max_repeating_duplicate_ngrams_score (float): maximum repeating duplicate ngrams score
-- ngram_size_for_repeating_top_ngram_repeats (int): ngram size for repeating top ngram repeats
-- ngram_size_for_repeating_duplicate_ngrams (int): ngram size for repeating duplicate ngrams
-- phone_number_anonymization (bool): whether to anonymize phone number or not
-- rrn_anonymization (bool): whether to anonymize RRN or not
-- card_anonymization (bool): whether to anonymize card or not
-- email_anonymization (bool): whether to anonymize email or not
-- back_account_anonymization (bool): whether to anonymize bank account or not
-- credit_card_anonymization (bool): whether to anonymize credit card or not
-- zip_anonymization (bool): whether to anonymize zip or not
-- bitcoin_anonymization (bool): whether to anonymize bitcoin or not
-- url_anonymization (bool): whether to anonymize URL or not
-- ip_v6_anonymization (bool): whether to anonymize IPv6 or not
-- ip_v4_anonymization (bool): whether to anonymize IPv4 or not
-- phone_number_replacement (str): replacement for phone number
-- rrn_replacement (str): replacement for RRN
-- card_replacement (str): replacement for card
-- email_replacement (str): replacement for email
-- back_account_replacement (str): replacement for bank account
-- credit_card_replacement (str): replacement for credit card
-- zip_replacement (str): replacement for zip
-- bitcoin_replacement (str): replacement for bitcoin
-- url_replacement (str): replacement for URL
-- ip_v6_replacement (str): replacement for IPv6
-- ip_v4_replacement (str): replacement for IPv4
-- num_workers (Union[int, str]): the number of multiprocessing workers
+- text (`Union[str, List[str], Tuple[str]]`): single text or list of texts
+- normalization_type (`Optional[str]`): normalization type
+- allow_doubled_spaces (`bool`): whether to allow doubled spaces or not
+- allow_html_tags (`bool`): whether to allow HTML tags or not
+- allow_html_escape (`bool`): whether to allow HTML escape or not
+- allow_halfwidth_hangul (`bool`): whether to allow halfwidth Hangul or not
+- allow_hangul_jamo (`bool`): whether to allow Hangul jamo or not
+- allow_invisible_chars (`bool`): whether to allow invisible characters or not
+- reduce_char_repeats_over (`int`): the maximum number of character that can be repeated
+- reduce_emoticon_repeats_over (`int`): the maximum number of emoticon that can be repeated
+- min_length (`int`): minimum length of text
+- max_length (`int`): maximum length of text
+- min_mean_words_length (`int`): minimum mean words length
+- max_mean_words_length (`int`): maximum mean words length
+- min_words (`int`): minimum number of words
+- max_words (`int`): maximum number of words
+- min_lines (`int`): minimum number of lines
+- max_lines (`int`): maximum number of lines
+- min_paragraphs (`int`): minimum number of paragraphs
+- max_paragraphs (`int`): maximum number of paragraphs
+- min_alphabet_ratio (`float`): minimum alphabet ratio
+- max_alphabet_ratio (`float`): maximum alphabet ratio
+- min_alphanumeric_ratio (`float`): minimum alphanumeric ratio
+- max_alphanumeric_ratio (`float`): maximum alphanumeric ratio
+- min_number_ratio (`float`): minimum number ratio
+- max_number_ratio (`float`): maximum number ratio
+- min_punctuation_ratio (`float`): minimum punctuation ratio
+- max_punctuation_ratio (`float`): maximum punctuation ratio
+- min_symbols_to_words_ratio (`float`): minimum symbols to words ratio
+- max_symbols_to_words_ratio (`float`): maximum symbols to words ratio
+- min_lines_started_with_bullets_ratio (`float`): minimum lines started with bullets ratio
+- max_lines_started_with_bullets_ratio (`float`): maximum lines started with bullets ratio
+- min_whitespace_ratio (`float`): minimum whitespace ratio
+- max_whitespace_ratio (`float`): maximum whitespace ratio
+- min_parenthesis_ratio (`float`): minimum parenthesis ratio
+- max_parenthesis_ratio (`float`): maximum parenthesis ratio
+- min_ellipsis_ratio (`float`): minimum ellipsis ratio
+- max_ellipsis_ratio (`float`): maximum ellipsis ratio
+- min_hangul_ratio (`float`): minimum Hangul ratio
+- max_hangul_ratio (`float`): maximum Hangul ratio
+- max_hangul_incompleted_form_ratio (`float`): maximum Hangul non-completed form ratio
+- max_words_length (`int`): maximum words length
+- max_line_repeats (`int`): maximum line repeats
+- max_line_by_char_repeats (`int`): maximum line by char repeats
+- max_paragraph_repeats (`int`): maximum paragraph repeats
+- max_paragraph_by_char_repeats (`int`): maximum paragraph by char repeats
+- max_repeating_top_ngram_repeats_score (`float`): maximum repeating top ngram repeats score
+- max_repeating_duplicate_ngrams_score (`float`): maximum repeating duplicate ngrams score
+- ngram_size_for_repeating_top_ngram_repeats (`int`): ngram size for repeating top ngram repeats
+- ngram_size_for_repeating_duplicate_ngrams (`int`): ngram size for repeating duplicate ngrams
+- phone_number_anonymization (`bool`): whether to anonymize phone number or not
+- rrn_anonymization (`bool`): whether to anonymize RRN or not
+- card_anonymization (`bool`): whether to anonymize card or not
+- email_anonymization (`bool`): whether to anonymize email or not
+- back_account_anonymization (`bool`): whether to anonymize bank account or not
+- credit_card_anonymization (`bool`): whether to anonymize credit card or not
+- zip_anonymization (`bool`): whether to anonymize zip or not
+- bitcoin_anonymization (`bool`): whether to anonymize bitcoin or not
+- url_anonymization (`bool`): whether to anonymize URL or not
+- ip_v6_anonymization (`bool`): whether to anonymize IPv6 or not
+- ip_v4_anonymization (`bool`): whether to anonymize IPv4 or not
+- phone_number_replacement (`str`): replacement for phone number
+- rrn_replacement (`str`): replacement for RRN
+- card_replacement (`str`): replacement for card
+- email_replacement (`str`): replacement for email
+- back_account_replacement (`str`): replacement for bank account
+- credit_card_replacement (`str`): replacement for credit card
+- zip_replacement (`str`): replacement for zip
+- bitcoin_replacement (`str`): replacement for bitcoin
+- url_replacement (`str`): replacement for URL
+- ip_v6_replacement (`str`): replacement for IPv6
+- ip_v4_replacement (`str`): replacement for IPv4
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
 
 Returns:
-- Union[Tuple[str, Dict[str, Any]], List[Tuple[str, Dict[str, Any]]]]: preprocessed text and filtering metadata or list of preprocessed texts and filtering metadata
+- `Union[Tuple[str, Dict[str, Any]], List[Tuple[str, Dict[str, Any]]]]`: preprocessed text and filtering metadata or list of preprocessed texts and filtering metadata
 </details>
 
 <details>
@@ -1112,12 +1112,12 @@ Returns:
 This reduces character repeats in text.
 
 Args:
-- text (Union[str, List[str], Tuple[str]]): single text or list of texts
-- num_repeats (int): the number of character that can be repeated
-- num_workers (Union[int, str]): the number of multiprocessing workers
+- text (`Union[str, List[str], Tuple[str]]`): single text or list of texts
+- num_repeats (`int`): the number of character that can be repeated
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
 
 Returns:
-- Union[str, List[str]]: text with reduced character repeats or list of texts with reduced character repeats
+- `Union[str, List[str]]`: text with reduced character repeats or list of texts with reduced character repeats
 
 Examples:
 ```python
@@ -1138,12 +1138,12 @@ References:
 This reduces emoticon repeats in text.
 
 Args:
-- text (Union[str, List[str], Tuple[str]]): single text or list of texts
-- num_repeats (int): the number of emoticon that can be repeated
-- num_workers (Union[int, str]): the number of multiprocessing workers
+- text (`Union[str, List[str], Tuple[str]]`): single text or list of texts
+- num_repeats (`int`): the number of emoticon that can be repeated
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
 
 Returns:
-- Union[str, List[str]]: text with reduced emoticon repeats or list of texts with reduced emoticon repeats
+- `Union[str, List[str]]`: text with reduced emoticon repeats or list of texts with reduced emoticon repeats
 
 Examples:
 ```python
@@ -1164,11 +1164,11 @@ References:
 This removes invisible characters from text.
 
 Args:
-- text (Union[str, List[str], Tuple[str]]): single text or list of texts
-- num_workers (Union[int, str]): the number of multiprocessing workers
+- text (`Union[str, List[str], Tuple[str]]`): single text or list of texts
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
 
 Returns:
-- Union[str, List[str]]: text with removed invisible characters or list of texts with removed invisible characters
+- `Union[str, List[str]]`: text with removed invisible characters or list of texts with removed invisible characters
 
 Examples:
 ```python
@@ -1186,13 +1186,13 @@ Examples:
 This converts text from one language to another using QWERTY keyboard layout.
 
 Args:
-- text (Union[str, List[str], Tuple[str]]): single text or list of texts
-- src (str): source language
-- tgt (str): target language
-- num_workers (Union[int, str]): the number of multiprocessing workers
+- text (`Union[str, List[str], Tuple[str]]`): single text or list of texts
+- src (`str`): source language
+- tgt (`str`): target language
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
 
 Returns:
-- Union[str, List[str]]: converted text or list of converted texts
+- `Union[str, List[str]]`: converted text or list of converted texts
 
 Examples:
 ```python
@@ -1215,15 +1215,15 @@ References:
 This romanizes Korean text.
 
 Args:
-- text (Union[str, List[str], Tuple[str]]): single text or list of texts
-- use_morpheme_info (bool): whether to use morpheme information or not
-- backend (str): morpheme analyzer backend. 'mecab', 'pecab' are supported
-- convert_english_to_hangul_phonemes (bool): whether to convert English to Hangul phonemes or not
-- convert_numbers_to_hangul_phonemes (bool): whether to convert numbers to Hangul phonemes or not
-- num_workers (Union[int, str]): the number of multiprocessing workers
+- text (`Union[str, List[str], Tuple[str]]`): single text or list of texts
+- use_morpheme_info (`bool`): whether to use morpheme information or not
+- backend (`str`): morpheme analyzer backend. 'mecab', 'pecab' are supported
+- convert_english_to_hangul_phonemes (`bool`): whether to convert English to Hangul phonemes or not
+- convert_numbers_to_hangul_phonemes (`bool`): whether to convert numbers to Hangul phonemes or not
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
 
 Returns:
-- Union[str, List[str]]: romanized text or list of romanized texts
+- `Union[str, List[str]]`: romanized text or list of romanized texts
 
 Examples:
 ```python
@@ -1245,12 +1245,12 @@ References:
 Check if the text is unsafe or not.
 
 Args:
-- text (Union[str, List[str], Tuple[str]]): single text or list of texts
-- return_matches (bool): whether to return matches or not
-- num_workers (Union[int, str]): the number of multiprocessing workers
+- text (`Union[str, List[str], Tuple[str]]`): single text or list of texts
+- return_matches (`bool`): whether to return matches or not
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
 
 Returns:
-- Union[bool, List[bool], List[bool], List[List[str]]]: whether the text is unsafe or not or list of whether the texts are unsafe or not or list of matched bad words in the texts
+- `Union[bool, List[bool], List[bool], List[List[str]]]`: whether the text is unsafe or not or list of whether the texts are unsafe or not or list of matched bad words in the texts
 
 Examples:
 ```python
@@ -1280,15 +1280,15 @@ Examples:
 This splits texts into sentences.
 
 Args:
-- text (Union[str, List[str], Tuple[str]]): single text or list/tuple of texts
-- backend (str): morpheme analyzer backend. 'mecab', 'pecab', 'punct' are supported
-- num_workers (Union[int, str])): the number of multiprocessing workers
-- strip (bool): strip all sentences or not
-- return_morphemes (bool): whether to return morphemes or not
-- ignores (List[str]): list of strings to ignore
+- text (`Union[str, List[str], Tuple[str]]`): single text or list/tuple of texts
+- backend (`str`): morpheme analyzer backend. 'mecab', 'pecab', 'punct' are supported
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
+- strip (`bool`): strip all sentences or not
+- return_morphemes (`bool`): whether to return morphemes or not
+- ignores (`List[str]`): list of strings to ignore
 
 Returns:
-- Union[List[str], List[List[str]]]: outputs of sentence splitting
+- `Union[List[str], List[List[str]]]`: outputs of sentence splitting
 
 Examples:
 ```python
@@ -1306,14 +1306,14 @@ Examples:
 This corrects the spacing of the text.
 
 Args:
-- text (Union[str, List[str], Tuple[str]]): single text or list/tuple of texts
-- backend (str): morpheme analyzer backend. 'mecab', 'pecab', 'punct' are supported
-- num_workers (Union[int, str])): the number of multiprocessing workers
-- reset_whitespaces (bool): reset whitespaces or not
-- return_morphemes (bool): whether to return morphemes or not
+- text (`Union[str, List[str], Tuple[str]]`): single text or list/tuple of texts
+- backend (`str`): morpheme analyzer backend. 'mecab', 'pecab', 'punct' are supported
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
+- reset_whitespaces (`bool`): reset whitespaces or not
+- return_morphemes (`bool`): whether to return morphemes or not
 
 Returns:
-- Union[str, List[str]]: corrected text or list of corrected texts
+- `Union[str, List[str]]`: corrected text or list of corrected texts
 
 Examples:
 ```python
@@ -1333,16 +1333,16 @@ References:
 This summarizes the given text, using TextRank algorithm.
 
 Args:
-- text (Union[str, List[str], Tuple[str]]): single text or list/tuple of texts
-- backend (str): morpheme analyzer backend. 'mecab', 'pecab' are supported.
-- num_workers (Union[int, str])): the number of multiprocessing workers
-- max_sentences (int): the max number of sentences in a summarization result.
-- tolerance (float): a threshold for omitting edge weights.
-- strip (bool): strip all sentences or not
-- ignores (List[str]): list of strings to ignore
+- text (`Union[str, List[str], Tuple[str]]`): single text or list/tuple of texts
+- backend (`str`): morpheme analyzer backend. 'mecab', 'pecab' are supported.
+- num_workers (`Union[int, str]`): the number of multiprocessing workers
+- max_sentences (`int`): the max number of sentences in a summarization result.
+- tolerance (`float`): a threshold for omitting edge weights.
+- strip (`bool`): strip all sentences or not
+- ignores (`List[str]`): list of strings to ignore
 
 Returns:
-- Union[List[str], List[List[str]]]: outputs of text summarization
+- `Union[List[str], List[List[str]]]`: outputs of text summarization
 
 Examples:
 ```python

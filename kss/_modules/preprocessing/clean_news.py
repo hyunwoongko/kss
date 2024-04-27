@@ -285,9 +285,9 @@ def clean_news(
 
     Args:
         text (Union[str, List[str], Tuple[str]]): Input text or list of texts.
-        min_sentences (int, optional): Minimum number of sentences to keep. Defaults to 3.
-        header_ratio (float, optional): Ratio of the number of sentences to check in the header. Defaults to 0.4.
-        footer_ratio (float, optional): Ratio of the number of sentences to check in the footer. Defaults to 0.4.
+        min_sentences (int): Minimum number of sentences to keep. Defaults to 3.
+        header_ratio (float): Ratio of the number of sentences to check in the header. Defaults to 0.4.
+        footer_ratio (float): Ratio of the number of sentences to check in the footer. Defaults to 0.4.
         num_workers (Union[int, str]): the number of multiprocessing workers
         verbose (bool): whether to print verbose outputs or not
 
