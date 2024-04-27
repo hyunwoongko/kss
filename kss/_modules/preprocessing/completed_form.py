@@ -68,10 +68,10 @@ def get_all_completed_form_hangul_chars() -> List[str]:
 
 def get_all_incompleted_form_hangul_chars():
     """
-    This returns all non-completed form Hangul characters.
+    This returns all incompleted form Hangul characters.
 
     Returns:
-        List[str]: all non-completed form Hangul characters
+        List[str]: all incompleted form Hangul characters
 
     Examples:
         >>> from kss import Kss
