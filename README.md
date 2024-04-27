@@ -1239,7 +1239,7 @@ References:
 
 <details>
 <summary>38. is_unsafe</summary>
-Check if the text is unsafe or not.
+This checks if the text is unsafe or not.
 
 Args:
 - text (`Union[str, List[str], Tuple[str]]`): single text or list of texts
