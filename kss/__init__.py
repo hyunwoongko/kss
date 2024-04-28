@@ -181,4 +181,4 @@ class Kss(object):
 
 
 __ALL__ = list(supported_modules.keys()) + ["Kss"]
-__version__ = "6.0.0"
+__version__ = "6.0.1"
