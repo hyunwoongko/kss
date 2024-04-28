@@ -1,6 +1,6 @@
 # This code was copied from KR-WordRank [https://github.com/lovit/KR-WordRank]
 # And modified by Hyunwoong Ko [https://github.com/hyuwoongko]
-from typing import List, Union
+from typing import List, Union, Tuple
 
 from kss._modules.keywords.utils import KRWordRank
 from kss._utils.sanity_checks import _check_text, _check_type, _check_backend_mecab_pecab_only
@@ -15,7 +15,7 @@ def extract_keywords(
     backend: str = "auto",
     noun_only: bool = True,
     num_workers: Union[int, str] = "auto",
-):
+) -> Union[List[str], List[Tuple[str, float]]]:
     """
     This extracts keywords from the given text.
     This uses TextRank algorithm to extract keywords.
@@ -29,6 +29,9 @@ def extract_keywords(
         backend (str): morpheme analyzer backend. 'mecab', 'pecab' are supported
         noun_only (bool): whether to extract only nouns or not
         num_workers (Union[int, str]): the number of multiprocessing workers
+
+    Returns:
+        Union[List[str], List[Tuple[str, float]]]: list of keywords or list of tuples of keywords and scores
 
     Examples:
         >>> from kss import Kss
@@ -50,8 +53,8 @@ def extract_keywords(
         >>> print(output)
         ['너무', '정말', '마지막', '영화', '음악']
 
-        References:
-            This was copied from [KR-WordRank](https://github.com/lovit/KR-WordRank) and modified by Kss
+    References:
+        This was copied from [KR-WordRank](https://github.com/lovit/KR-WordRank) and modified by Kss
     """
 
     text, finish = _check_text(text)

@@ -111,6 +111,28 @@ from kss import split_sentences
 output = split_sentences("YOUR_INPUT_STRING", **kwargs)
 ```
 
+### 6. Alias of module names
+Because there are so many modules in Kss, user may have difficulty remembering the names of each module.
+Kss provides aliases for some modules to make it easier to use them.
+```python
+from kss import Kss
+
+module_1 = Kss("split_morphemes")
+module_2 = Kss("tokenize")
+# For example, 'split_morphemes' module can be loaded by using the alias named 'tokenize'.
+```
+
+You can check the alias of each module by using the `alias()` function.
+```python
+from kss import Kss
+
+Kss.alias()
+```
+
+```python
+{'aug': 'augment', 'augmentation': 'augment', 'collocation': 'collocate', 'hangulization': 'hangulize', 'hangulisation': 'hangulize', 'hangulise': 'hangulize', 'hanja': 'hanja2hangul', 'hangul2jamo': 'h2j', 'hangul2hcj': 'h2hcj', 'jamo2hangul': 'j2h', 'jamo2hcj': 'j2hcj', 'hcj2hangul': 'hcj2h', 'hcj2jamo': 'hcj2j', 'josa': 'select_josa', 'keyword': 'extract_keywords', 'keywords': 'extract_keywords', 'morpheme': 'split_morphemes', 'morphemes': 'split_morphemes', 'annonymization': 'anonymize', 'news_cleaning': 'clean_news', 'news': 'clean_news', 'completed_form': 'is_completed_form', 'completed': 'is_completed_form', 'filter': 'filter_out', 'reduce_repeats': 'reduce_char_repeats', 'reduce_char': 'reduce_char_repeats', 'reduce_chars': 'reduce_char_repeats', 'reduce_emoticon': 'reduce_emoticon_repeats', 'reduce_emoticons': 'reduce_emoticon_repeats', 'reduce_emo': 'reduce_emoticon_repeats', 'remove_invisible': 'remove_invisible_chars', 'invisible_chars': 'remove_invisible_chars', 'invisible': 'remove_invisible_chars', 'normalization': 'normalize', 'normalisation': 'normalize', 'normalise': 'normalize', 'preprocessing': 'preprocess', 'prep': 'preprocess', 'romanization': 'romanize', 'romanisation': 'romanize', 'romanise': 'romanize', 'safety': 'is_unsafe', 'check_safety': 'is_unsafe', 'sentence': 'split_sentences', 'sentences': 'split_sentences', 'sent_split': 'split_sentences', 'sent_splits': 'split_sentences', 'sents_split': 'split_sentences', 'split_sent': 'split_sentences', 'split_sents': 'split_sentences', 'spacing': 'correct_spacing', 'space': 'correct_spacing', 'spaces': 'correct_spacing', 'summarization': 'summarize_sentences', 'summarize': 'summarize_sentences', 'summ': 'summarize_sentences', 'morph': 'split_morphemes', 'morphs': 'split_morphemes', 'tokenize': 'split_morphemes', 'tokenization': 'split_morphemes', 'split_morph': 'split_morphemes', 'split_morphs': 'split_morphemes', 'morph_split': 'split_morphemes', 'morph_splits': 'split_morphemes', 'morphs_split': 'split_morphemes'}
+```
+
 ## Supported Modules
 Kss supports the following modules and there are the simple usages of each module in the following sections.
 
@@ -186,7 +208,7 @@ Args:
 - text (`Union[str, List[str], Tuple[str]]`): single text or list of texts
 - descriptive (`bool`): return descriptive pronunciation, the 'descriptive' means a real-life pronunciation
 - group_vowels (`bool`): If True, the vowels of the identical sound are normalized. (e.g. ㅒ -> ㅖ)
-- to_syllable: If True, hangul letters or jamo are assembled to form syllables.
+- to_syllable (`bool`): If True, hangul letters or jamo are assembled to form syllables.
 - convert_english_to_hangul_phonemes (`bool`): If True, convert English to Hangul phonemes
 - convert_numbers_to_hangul_phonemes (`bool`): If True, convert numbers to Hangul phonemes
 - num_workers (`Union[int, str]`): the number of multiprocessing workers
@@ -690,6 +712,9 @@ Args:
 - backend (`str`): morpheme analyzer backend. 'mecab', 'pecab' are supported
 - noun_only (`bool`): whether to extract only nouns or not
 - num_workers (`Union[int, str]`): the number of multiprocessing workers
+
+Returns:
+- `Union[List[str], List[Tuple[str, float]]]`: list of keywords or list of tuples of keywords and scores
 
 Examples:
 ```python

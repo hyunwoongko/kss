@@ -100,8 +100,12 @@ alias = {
     "filter": "filter_out",
     "reduce_repeats": "reduce_char_repeats",
     "reduce_char": "reduce_char_repeats",
+    "reduce_chars": "reduce_char_repeats",
     "reduce_emoticon": "reduce_emoticon_repeats",
+    "reduce_emoticons": "reduce_emoticon_repeats",
+    "reduce_emo": "reduce_emoticon_repeats",
     "remove_invisible": "remove_invisible_chars",
+    "invisible_chars": "remove_invisible_chars",
     "invisible": "remove_invisible_chars",
     "normalization": "normalize",
     "normalisation": "normalize",
@@ -117,12 +121,24 @@ alias = {
     "sentences": "split_sentences",
     "sent_split": "split_sentences",
     "sent_splits": "split_sentences",
+    "sents_split": "split_sentences",
+    "split_sent": "split_sentences",
+    "split_sents": "split_sentences",
     "spacing": "correct_spacing",
     "space": "correct_spacing",
     "spaces": "correct_spacing",
     "summarization": "summarize_sentences",
     "summarize": "summarize_sentences",
     "summ": "summarize_sentences",
+    "morph": "split_morphemes",
+    "morphs": "split_morphemes",
+    "tokenize": "split_morphemes",
+    "tokenization": "split_morphemes",
+    "split_morph": "split_morphemes",
+    "split_morphs": "split_morphemes",
+    "morph_split": "split_morphemes",
+    "morph_splits": "split_morphemes",
+    "morphs_split": "split_morphemes",
 }
 
 
@@ -139,6 +155,10 @@ class Kss(object):
     @staticmethod
     def available():
         return list(supported_modules.keys())
+
+    @staticmethod
+    def alias():
+        return alias
 
     def _check_module(self, module: str, supported_modules, alias):
         from kss._utils.sanity_checks import _check_type
@@ -181,4 +201,4 @@ class Kss(object):
 
 
 __ALL__ = list(supported_modules.keys()) + ["Kss"]
-__version__ = "6.0.1"
+__version__ = "6.0.2"

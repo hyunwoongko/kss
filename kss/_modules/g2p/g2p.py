@@ -54,7 +54,7 @@ def g2p(
         text (Union[str, List[str], Tuple[str]]): single text or list of texts
         descriptive (bool): return descriptive pronunciation, the 'descriptive' means a real-life pronunciation
         group_vowels (bool): If True, the vowels of the identical sound are normalized. (e.g. ㅒ -> ㅖ)
-        to_syllable: If True, hangul letters or jamo are assembled to form syllables.
+        to_syllable (bool): If True, hangul letters or jamo are assembled to form syllables.
         convert_english_to_hangul_phonemes (bool): If True, convert English to Hangul phonemes
         convert_numbers_to_hangul_phonemes (bool): If True, convert numbers to Hangul phonemes
         num_workers (Union[int, str]): the number of multiprocessing workers
