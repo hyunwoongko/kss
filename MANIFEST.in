@@ -8,4 +8,5 @@ include kss/_modules/g2p/assets/rules.txt
 include kss/_modules/g2p/assets/idioms.txt
 include kss/_modules/g2p/assets/table.csv
 include kss/_modules/augmentation/assets/wordnet.json
+include kss/_modules/hanja/assets/table.yml
 include setup.py

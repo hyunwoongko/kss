@@ -152,9 +152,9 @@ with open("README.md", encoding="utf-8") as f:
 
 install_requires = [
     "emoji==1.2.0", "pecab", "networkx", "jamo",
-    "hangul-jamo", "hanja==0.13.3", "tossi", "distance",
+    "hangul-jamo", "tossi", "distance", "pyyaml==6.0",
     "unidecode", "cmudict", "koparadigm", "kollocate",
-    "bs4", "numpy", "pytest", "scipy"
+    "bs4", "numpy", "pytest", "scipy",
 ]
 
 setup(
@@ -176,6 +176,7 @@ setup(
         "cython": ["csrc/*"],
         "g2p": ["kss/_modules/g2p/assets/*"],
         "augmentation": ["kss/_modules/augmentation/assets/*"],
+        "hanja": ["kss/_modules/hanja/assets/*"]
     },
     include_package_data=True,
     classifiers=[

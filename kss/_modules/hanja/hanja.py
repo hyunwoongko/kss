@@ -1,7 +1,9 @@
 from functools import partial
 from typing import List, Union, Tuple
 
-from kss._modules.hanja.utils import _split_hanja, _is_hanja, _hanja2hangul
+from kss._modules.hanja.utils import translate
+from kss._modules.hanja.utils import split_hanja as _split_hanja
+from kss._modules.hanja.utils import is_hanja as _is_hanja
 from kss._utils.multiprocessing import _run_job
 from kss._utils.sanity_checks import _check_text, _check_num_workers, _check_char, _check_type
 
@@ -146,3 +148,19 @@ def hanja2hangul(
         inputs=text,
         num_workers=num_workers,
     )
+
+
+def _hanja2hangul(text, combination=False, reverse=False, html=False):
+    # translate hangul to hanja
+    if combination is False:
+        return translate(text, 'substitution')
+    elif combination is True and reverse is False and html is False:
+        return translate(text, 'combination-text')
+    elif combination is True and reverse is True and html is False:
+        return translate(text, 'combination-text-reversed')
+    elif combination is True and reverse is False and html is True:
+        return translate(text, 'combination-html')
+    elif combination is True and reverse is True and html is True:
+        return translate(text, 'combination-html-reversed')
+    else:
+        raise ValueError("Invalid combination of `combination`, `reverse`, and `html`")

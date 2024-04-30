@@ -5,7 +5,7 @@ from kss._modules.augmentation.augment import augment
 from kss._modules.collocation.collocate import collocate
 from kss._modules.g2p.g2p import g2p
 from kss._modules.hangulization.hangulization import hangulize
-from kss._modules.hanja._hanja import split_hanja, is_hanja, hanja2hangul
+from kss._modules.hanja.hanja import split_hanja, is_hanja, hanja2hangul
 from kss._modules.jamo._jamo import h2j, h2hcj, j2h, j2hcj, hcj2h, hcj2j, is_jamo, is_jamo_modern, is_hcj, \
     is_hcj_modern, is_hangul_char
 from kss._modules.josa.josa import select_josa, combine_josa
@@ -201,4 +201,4 @@ class Kss(object):
 
 
 __ALL__ = list(supported_modules.keys()) + ["Kss"]
-__version__ = "6.0.2"
+__version__ = "6.0.3"
