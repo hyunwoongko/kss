@@ -32,7 +32,7 @@ from kss._modules.g2p.utils import (
 )
 from kss._modules.jamo._jamo import h2j, j2h
 from kss._utils.multiprocessing import _run_job
-from kss._utils.sanity_checks import _check_text, _check_num_workers, _check_type, _check_backend_mecab_pecab_only
+from kss._utils.sanity_checks import _check_text, _check_num_workers, _check_type, _check_analyzer_backend_mecab_pecab_only
 
 
 def g2p(
@@ -89,7 +89,7 @@ def g2p(
                                                      "convert_numbers_to_hangul_phonemes", bool)
     verbose = _check_type(verbose, "verbose", bool)
     num_workers = _check_num_workers(text, num_workers)
-    _check_backend_mecab_pecab_only(backend)
+    _check_analyzer_backend_mecab_pecab_only(backend)
 
     return _run_job(
         func=partial(

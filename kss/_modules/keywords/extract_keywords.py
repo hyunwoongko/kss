@@ -3,7 +3,7 @@
 from typing import List, Union, Tuple
 
 from kss._modules.keywords.utils import KRWordRank
-from kss._utils.sanity_checks import _check_text, _check_type, _check_backend_mecab_pecab_only
+from kss._utils.sanity_checks import _check_text, _check_type, _check_analyzer_backend_mecab_pecab_only
 
 
 def extract_keywords(
@@ -67,7 +67,7 @@ def extract_keywords(
     max_word_length = _check_type(max_word_length, "max_word_length", int)
     return_scores = _check_type(return_scores, "return_scores", bool)
     noun_only = _check_type(noun_only, "noun_only", bool)
-    _check_backend_mecab_pecab_only(backend)
+    _check_analyzer_backend_mecab_pecab_only(backend)
 
     if num_workers != "auto":
         raise ValueError("`extract_keywords` does not support `num_workers` argument")

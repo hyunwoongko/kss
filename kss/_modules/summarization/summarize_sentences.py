@@ -33,7 +33,7 @@ def summarize_sentences(
 
     Args:
         text (Union[str, List[str], Tuple[str]]): single text or list/tuple of texts
-        backend (str): morpheme analyzer backend. 'mecab', 'pecab' are supported.
+        backend (str): morpheme analyzer backend. 'mecab', 'pecab', 'punct', 'fast' are supported.
         num_workers (Union[int, str])): the number of multiprocessing workers
         max_sentences (int): the max number of sentences in a summarization result.
         tolerance (float): a threshold for omitting edge weights.

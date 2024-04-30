@@ -69,7 +69,7 @@ Split texts into sentences.
 
 Args:
     text (Union[str, List[str], Tuple[str]]): single text or list/tuple of texts
-    backend (str): morpheme analyzer backend. 'mecab', 'pecab', 'punct' are supported
+    backend (str): morpheme analyzer backend. 'mecab', 'pecab', 'punct', 'fast' are supported
     num_workers (Union[int, str]): the number of multiprocessing workers
     strip (bool): strip all sentences or not
     return_morphemes (bool): whether to return morphemes or not
@@ -1306,7 +1306,7 @@ This splits texts into sentences.
 
 Args:
 - text (`Union[str, List[str], Tuple[str]]`): single text or list/tuple of texts
-- backend (`str`): morpheme analyzer backend. 'mecab', 'pecab', 'punct' are supported
+- backend (`str`): morpheme analyzer backend. 'mecab', 'pecab', 'punct', 'fast' are supported
 - num_workers (`Union[int, str]`): the number of multiprocessing workers
 - strip (`bool`): strip all sentences or not
 - return_morphemes (`bool`): whether to return morphemes or not
@@ -1332,7 +1332,7 @@ This corrects the spacing of the text.
 
 Args:
 - text (`Union[str, List[str], Tuple[str]]`): single text or list/tuple of texts
-- backend (`str`): morpheme analyzer backend. 'mecab', 'pecab', 'punct' are supported
+- backend (`str`): morpheme analyzer backend. 'mecab', 'pecab' are supported
 - num_workers (`Union[int, str]`): the number of multiprocessing workers
 - reset_whitespaces (`bool`): reset whitespaces or not
 - return_morphemes (`bool`): whether to return morphemes or not
@@ -1359,7 +1359,7 @@ This summarizes the given text, using TextRank algorithm.
 
 Args:
 - text (`Union[str, List[str], Tuple[str]]`): single text or list/tuple of texts
-- backend (`str`): morpheme analyzer backend. 'mecab', 'pecab' are supported.
+- backend (`str`): morpheme analyzer backend. 'mecab', 'pecab', 'punct', 'fast' are supported.
 - num_workers (`Union[int, str]`): the number of multiprocessing workers
 - max_sentences (`int`): the max number of sentences in a summarization result.
 - tolerance (`float`): a threshold for omitting edge weights.

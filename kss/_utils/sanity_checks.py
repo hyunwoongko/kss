@@ -198,7 +198,7 @@ def _check_text(
     return text, finish
 
 
-def _check_backend_mecab_pecab_only(backend: str) -> Analyzer:
+def _check_analyzer_backend_mecab_pecab_only(backend: str) -> Analyzer:
     global MECAB_INFORM, KONLPY_MECAB_INFORM, PECAB_INFORM
 
     if isinstance(backend, str):

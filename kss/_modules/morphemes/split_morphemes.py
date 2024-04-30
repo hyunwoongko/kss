@@ -7,7 +7,7 @@ from typing import List, Union, Tuple
 from kss._utils.multiprocessing import _run_job
 from kss._utils.sanity_checks import (
     _check_text,
-    _check_analyzer_backend,
+    _check_analyzer_backend_mecab_pecab_only,
     _check_num_workers,
     _check_type,
 )
@@ -47,6 +47,6 @@ def split_morphemes(
         return text
 
     num_workers = _check_num_workers(text, num_workers)
-    backend = _check_analyzer_backend(backend)
+    backend = _check_analyzer_backend_mecab_pecab_only(backend)
     result = _run_job(partial(backend.pos, drop_space=drop_space), text, num_workers)
     return result

@@ -5,7 +5,7 @@ from kss._modules.augmentation.replacement import SynonymReplacement
 from kss._modules.augmentation.utils import correct_josa
 from kss._utils.logger import highlight_diffs, logger
 from kss._utils.multiprocessing import _run_job
-from kss._utils.sanity_checks import _check_text, _check_type, _check_num_workers, _check_backend_mecab_pecab_only
+from kss._utils.sanity_checks import _check_text, _check_type, _check_num_workers, _check_analyzer_backend_mecab_pecab_only
 
 
 def augment(
@@ -52,7 +52,7 @@ def augment(
     josa_correction = _check_type(josa_correction, "josa_correction", bool)
     verbose = _check_type(verbose, "verbose", bool)
     num_workers = _check_num_workers(text, num_workers)
-    _check_backend_mecab_pecab_only(backend)
+    _check_analyzer_backend_mecab_pecab_only(backend)
 
     if num_workers is not False and verbose:
         verbose = False

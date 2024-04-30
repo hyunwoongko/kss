@@ -10,7 +10,7 @@ from unidecode import unidecode
 from kss._modules.g2p.g2p import g2p
 from kss._modules.romanization.utils import pronounce, Syllable
 from kss._utils.multiprocessing import _run_job
-from kss._utils.sanity_checks import _check_text, _check_type, _check_num_workers, _check_backend_mecab_pecab_only
+from kss._utils.sanity_checks import _check_text, _check_type, _check_num_workers, _check_analyzer_backend_mecab_pecab_only
 
 vowel = {
     # 단모음 monophthongs
@@ -124,7 +124,7 @@ def romanize(
         return text
 
     use_morpheme_info = _check_type(use_morpheme_info, "use_morpheme_info", bool)
-    _check_backend_mecab_pecab_only(backend)
+    _check_analyzer_backend_mecab_pecab_only(backend)
     convert_english_to_hangul_phonemes = _check_type(convert_english_to_hangul_phonemes,
                                                      "convert_english_to_hangul_phonemes", bool)
     convert_numbers_to_hangul_phonemes = _check_type(convert_numbers_to_hangul_phonemes,

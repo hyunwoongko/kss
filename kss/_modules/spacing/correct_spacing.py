@@ -11,7 +11,7 @@ from kss._modules.morphemes.utils import _reset_spaces
 from kss._modules.sentences.split_sentences import _split_sentences
 from kss._modules.spacing.utils import postprocess, postprocess_heuristic
 from kss._utils.multiprocessing import _run_job
-from kss._utils.sanity_checks import _check_text, _check_backend_mecab_pecab_only, _check_num_workers
+from kss._utils.sanity_checks import _check_text, _check_analyzer_backend_mecab_pecab_only, _check_num_workers
 
 any_ws = re.compile(r"\s+")
 space_insertable = r"(([^SUWX]|X[RS]|S[EH]).* ([NMI]|V[VAX]|VCN|XR|XPN|S[WLHN]))|(SN ([MI]|N[PR]|NN[GP]|V[VAX]|VCN|XR|XPN|S[WHN]))|((S[FPL]).* ([NMI]|V[VAX]|VCN|XR|XPN|S[WHN]))"
@@ -42,7 +42,7 @@ def correct_spacing(
 
     Args:
         text (Union[str, List[str], Tuple[str]]): single text or list/tuple of texts
-        backend (str): morpheme analyzer backend. 'mecab', 'pecab', 'punct' are supported
+        backend (str): morpheme analyzer backend. 'mecab', 'pecab' are supported
         num_workers (Union[int, str])): the number of multiprocessing workers
         reset_whitespaces (bool): reset whitespaces or not
         return_morphemes (bool): whether to return morphemes or not
@@ -67,7 +67,7 @@ def correct_spacing(
         return text
 
     backend_string = backend
-    backend = _check_backend_mecab_pecab_only(backend)
+    backend = _check_analyzer_backend_mecab_pecab_only(backend)
     _num_workers = _check_num_workers(text, num_workers)
 
     return _run_job(
