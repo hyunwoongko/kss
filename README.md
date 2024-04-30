@@ -7,7 +7,7 @@ KSS: Korean String processing Suite
 </p>
 
 
-KSS is a Korean string processing suite that provides various functions for processing Korean strings. It is designed to be simple and easy to use, and it is designed to be used in various fields such as natural language processing, data preprocessing, and data analysis.
+Kss is a Korean string processing suite that provides various functions for processing Korean strings. It is designed to be simple and easy to use, and it is designed to be used in various fields such as natural language processing, data preprocessing, and data analysis.
 
 ### What's New:
 - April 27, 2024 [Released Kss 6.0 Python](https://github.com/hyunwoongko/kss/releases/tag/6.0.0).
@@ -104,7 +104,7 @@ output = module(["YOUR_INPUT_STRING1", "YOUR_INPUT_STRING2", ...], num_workers=1
 ``` 
 
 ### 5. Backward Compatibility
-The old version of Kss used functional usage. KSS also supports this for backward compatibility.
+The old version of Kss used functional usage. Kss also supports this for backward compatibility.
 ```python
 from kss import split_sentences
 
@@ -1398,7 +1398,7 @@ If you find this toolkit useful, please consider citing:
 ```
 @misc{kss,
   author       = {Ko, Hyunwoong and Park, Sang-kil},
-  title        = {Kss: A Toolkit for Korean sentence segmentation},
+  title        = {KSS: Korean String processing Suite},
   howpublished = {\url{https://github.com/hyunwoongko/kss}},
   year         = {2021},
 }
