@@ -16,8 +16,8 @@ Kss is a Korean string processing suite that provides various functions for proc
 - May 5, 2022 [Released Kss Fluter](https://github.com/khjde1207/kss_dart).
 - August 25, 2021 [Released Kss Java](https://github.com/sangdee/kss-java).
 - August 18, 2021 [Released Kss 3.0 Python](https://github.com/hyunwoongko/kss/releases/tag/3.0.1).
-- December 21, 2020 [Released Kss 2.0 Python](https://github.com/hyunwoongko/kss/releases/tag/3.0.1).
-- August 16, 2019 [Released Kss 1.0 C++](https://github.com/hyunwoongko/kss/releases/tag/3.0.1).
+- December 21, 2020 [Released Kss 2.0 Python](https://pypi.org/project/kss/2.0.0/).
+- August 16, 2019 [Released Kss 1.0 C++](https://docs.likejazz.com/kss/).
 
 ## Installation
 ### Install Kss
@@ -1407,4 +1407,4 @@ If you find this toolkit useful, please consider citing:
 ## License
 Kss project is licensed under the terms of the BSD 3-Clause "New" or "Revised" License.
 
-Copyright 2021 [Hyunwoong Ko](https://github.com/hyunwoongko) and [Sang-kil Park](https://github.com/likejazz). All Rights Reserved.
+Copyright 2021 [Hyunwoong Ko](https://github.com/hyunwoongko) and [Sang Park](https://github.com/likejazz). All Rights Reserved.
