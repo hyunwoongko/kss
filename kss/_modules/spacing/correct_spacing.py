@@ -1,3 +1,6 @@
+# Copyright (C) 2021 Hyunwoong Ko <kevin.brain@kakaobrain.com> and Sang Park <sang.park@dnotitia.com>
+# All rights reserved.
+
 # Core algorithm was copied from Kiwi (https://github.com/bab2min/kiwipiepy).
 # And modified by Hyunwoong Ko [https://github.com/hyunwoongko]
 import re

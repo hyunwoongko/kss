@@ -1,4 +1,7 @@
-# This code is copied from korean-romanizer [https://github.com/osori/korean-romanizer]
+# Copyright (C) 2021 Hyunwoong Ko <kevin.brain@kakaobrain.com> and Sang Park <sang.park@dnotitia.com>
+# All rights reserved.
+
+# This code was copied from korean-romanizer [https://github.com/osori/korean-romanizer]
 # And modified by Hyunwoong Ko [https://github.com/hyunwoongko] and Sohyeon Yim [https://github.com/sohyunwriter]
 
 import re

@@ -1,4 +1,7 @@
-# Copied from ko-prfrdr (https://github.com/ychoi-kr/ko-prfrdr)
+# Copyright (C) 2021 Hyunwoong Ko <kevin.brain@kakaobrain.com> and Sang Park <sang.park@dnotitia.com>
+# All rights reserved.
+
+# This was copied from ko-prfrdr (https://github.com/ychoi-kr/ko-prfrdr)
 # And modified by Hyunwoong Ko [https://github.com/hyunwoongko]
 
 import re

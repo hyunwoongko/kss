@@ -1,3 +1,6 @@
+# Copyright (C) 2021 Hyunwoong Ko <kevin.brain@kakaobrain.com> and Sang Park <sang.park@dnotitia.com>
+# All rights reserved.
+
 from typing import Union, List, Tuple
 
 from kss._utils.multiprocessing import _run_job

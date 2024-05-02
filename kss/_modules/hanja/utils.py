@@ -1,4 +1,7 @@
 # -*- coding:utf-8 -*-
+# Copyright (C) 2021 Hyunwoong Ko <kevin.brain@kakaobrain.com> and Sang Park <sang.park@dnotitia.com>
+# All rights reserved.
+
 # This was copied from [hanja](https://github.com/suminb/hanja) and modified by Kss
 
 import os

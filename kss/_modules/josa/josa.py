@@ -1,3 +1,6 @@
+# Copyright (C) 2021 Hyunwoong Ko <kevin.brain@kakaobrain.com> and Sang Park <sang.park@dnotitia.com>
+# All rights reserved.
+
 from typing import Union, List
 
 from kss._modules.josa.utils import _check_text, _check_num_workers, _combine_josa, _run_job, _select_josa

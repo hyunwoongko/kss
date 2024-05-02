@@ -1,5 +1,7 @@
-# Copyright (C) 2021 Hyunwoong Ko <kevin.brain@kakaobrain.com> and Sang-Kil Park <skpark1224@hyundai.com>
+# Copyright (C) 2021 Hyunwoong Ko <kevin.brain@kakaobrain.com> and Sang Park <sang.park@dnotitia.com>
 # All rights reserved.
+
+
 import re
 from functools import lru_cache
 from typing import List
