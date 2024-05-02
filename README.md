@@ -10,9 +10,9 @@ KSS: Korean String processing Suite
 Kss is a Korean string processing suite that provides various functions for processing Korean strings. It is designed to be simple and easy to use, and it is designed to be used in various fields such as natural language processing, data preprocessing, and data analysis.
 
 ### What's New:
-- April 27, 2024 [Released Kss 6.0 Python](https://github.com/hyunwoongko/kss/releases/tag/6.0.0).
-- March 31, 2024 [Released Kss 5.0 Python](https://github.com/hyunwoongko/kss/releases/tag/5.1.0).
-- December 19, 2022 [Released Kss 4.0 Python](https://github.com/hyunwoongko/kss/releases/tag/4.0.0).
+- April 27, 2024 [Released Kss 6.0 Python](https://github.com/hyunwoongko/kss/releases/tag/v6.0.0).
+- March 31, 2024 [Released Kss 5.0 Python](https://github.com/hyunwoongko/kss/releases/tag/v5.1.0).
+- December 19, 2022 [Released Kss 4.0 Python](https://github.com/hyunwoongko/kss/releases/tag/v4.0.0).
 - May 5, 2022 [Released Kss Fluter](https://github.com/khjde1207/kss_dart).
 - August 25, 2021 [Released Kss Java](https://github.com/sangdee/kss-java).
 - August 18, 2021 [Released Kss 3.0 Python](https://github.com/hyunwoongko/kss/releases/tag/3.0.1).
