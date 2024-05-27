@@ -1397,7 +1397,7 @@ Please note that previous versions of Kss only included sentence segmentation fu
 If you find this toolkit useful, please consider citing:
 ```
 @misc{kss,
-  author       = {Ko, Hyunwoong and Park, Sang-kil},
+  author       = {Ko, Hyunwoong and Park, Sang},
   title        = {KSS: Korean String processing Suite},
   howpublished = {\url{https://github.com/hyunwoongko/kss}},
   year         = {2021},
