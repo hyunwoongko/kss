@@ -6,7 +6,7 @@ import logging
 from logging import getLogger
 
 logging.basicConfig(format="[Kss]: %(message)s", level=logging.WARNING)
-logger = getLogger()
+logger = getLogger("Kss")
 
 
 def highlight_diffs(old, new):
