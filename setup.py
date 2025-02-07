@@ -152,7 +152,7 @@ with open("README.md", encoding="utf-8") as f:
 
 install_requires = [
     "emoji==1.2.0", "pecab", "networkx", "jamo",
-    "hangul-jamo", "tossi", "distance", "pyyaml==6.0",
+    "hangul-jamo", "tossi", "distance", "pyyaml>=6.0.2",
     "unidecode", "cmudict", "koparadigm", "kollocate",
     "bs4", "numpy", "pytest", "scipy",
 ]
