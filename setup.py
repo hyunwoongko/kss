@@ -27,34 +27,8 @@ How pip install works:
 
 class PreInstall(install):
     def run(self):
-        try:
-            # 1. Try to import mecab
-            import mecab
-        except:
-            try:
-                # 2. Try to install python-mecab-kor and import mecab again
-                with suppress():
-                    subprocess.call(
-                        [sys.executable, "-m", "pip", "install", "python-mecab-kor"],
-                        stderr=subprocess.DEVNULL,
-                    )
-
-                import mecab
-            except:
-                try:
-                    # 3. Try to install python-mecab-ko and import mecab again
-                    with suppress():
-                        inst = "curl -s https://raw.githubusercontent.com/konlpy/konlpy/master/scripts/mecab.sh | bash > /dev/null 2>&1"
-                        os.system(inst)
-                        subprocess.call(
-                            [sys.executable, "-m", "pip", "install", "python-mecab-ko"],
-                            stderr=subprocess.DEVNULL,
-                        )
-                    import mecab
-                except:
-                    # 4. Cannot install mecab.
-                    pass
-
+        # Disabled auto-installation of mecab and related packages to avoid privilege escalation and password prompts.
+        # Please install mecab and its Python bindings manually if needed.
         super().run()
 
 

@@ -20,6 +20,12 @@ Kss is a Korean string processing suite that provides various functions for proc
 - August 16, 2019 [Released Kss 1.0 C++](https://docs.likejazz.com/kss/).
 
 ## Installation
+> **⚠️ Note (2025-08-01):**
+> 
+> The automatic installation of mecab and related Python packages has been removed from `setup.py` to prevent password prompts and privilege escalation during installation. 
+> 
+> If you require mecab functionality, please install mecab and its Python bindings manually before installing or using KSS. See below for instructions.
+
 ### Install Kss
 Kss can be easily installed using the pip package manager.
 ```console
