@@ -120,17 +120,23 @@ class SentencePostprocessor(SentenceProcessor):
 
                 if close_sent_idx <= open_sent_idx:
                     continue
+                close_end = close_idx + 1
+                closing_sentence = output_sentences[close_sent_idx]
+                if all(syllable.check_pos("SP") for syllable in closing_sentence[close_end:]):
+                    # Keep trailing whitespace with the merged sentence instead of
+                    # leaving a whitespace-only remainder that cleanup discards.
+                    close_end = len(closing_sentence)
                 for sub_sent_idx in range(open_sent_idx + 1, close_sent_idx + 1):
                     sub_sent = output_sentences[sub_sent_idx]
                     if sub_sent_idx == close_sent_idx:
-                        sub_sent = sub_sent[: close_idx + 1]
+                        sub_sent = sub_sent[:close_end]
 
                     for sub_syllable in sub_sent:
                         output_sentences[open_sent_idx].append(sub_syllable)
 
                     if sub_sent_idx == close_sent_idx:
                         output_sentences[sub_sent_idx] = output_sentences[sub_sent_idx][
-                            close_idx + 1 :
+                            close_end:
                         ]
                     else:
                         output_sentences[sub_sent_idx] = []
